@@ -1,7 +1,10 @@
-/*
-	NPC Name: 		Nineheart
-	Description: 		Quest - Cygnus movie Intro
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20020
+ * 功能描述：Nineheart，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

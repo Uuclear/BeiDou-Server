@@ -40,7 +40,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * @author Ronan
+ * 阿里安特竞技场（组队踢炸弹/宝石）逻辑。
  */
 public class AriantColiseum {
 
@@ -59,6 +59,11 @@ public class AriantColiseum {
 
     private boolean eventClear = false;
 
+    /**
+     * 构造 AriantColiseum 实例。
+     * @param eventMap eventMap
+     * @param expedition expedition
+     */
     public AriantColiseum(MapleMap eventMap, Expedition expedition) {
         exped = expedition;
         exped.finishRegistration();
@@ -129,15 +134,29 @@ public class AriantColiseum {
         cancelAriantScoreBoard();
     }
 
+    /**
+     * 获取Ariant、Score。
+     * @param chr 角色
+     * @return int 类型结果
+     */
     public int getAriantScore(Character chr) {
         Integer chrScore = score.get(chr);
         return chrScore != null ? chrScore : 0;
     }
 
+    /**
+     * 执行 clear、Ariant、Score 操作。
+     * @param chr 角色
+     */
     public void clearAriantScore(Character chr) {
         score.remove(chr);
     }
 
+    /**
+     * 更新Ariant、Score。
+     * @param chr 角色
+     * @param points points
+     */
     public void updateAriantScore(Character chr, int points) {
         if (map != null) {
             score.put(chr, points);
@@ -154,19 +173,36 @@ public class AriantColiseum {
         }
     }
 
+    /**
+     * 获取Ariant、Reward、层级。
+     * @param chr 角色
+     * @return int 类型结果
+     */
     public int getAriantRewardTier(Character chr) {
         Integer reward = rewardTier.get(chr);
         return reward != null ? reward : 0;
     }
 
+    /**
+     * 执行 clear、Ariant、Reward、层级 操作。
+     * @param chr 角色
+     */
     public void clearAriantRewardTier(Character chr) {
         rewardTier.remove(chr);
     }
 
+    /**
+     * 添加Lost、Shards。
+     * @param quantity quantity
+     */
     public void addLostShards(int quantity) {
         lostShards += quantity;
     }
 
+    /**
+     * 离开Arena。
+     * @param chr 角色
+     */
     public void leaveArena(Character chr) {
         if (!(eventClear && GameConstants.isAriantColiseumArena(chr.getMapId()))) {
             leaveArenaInternal(chr);
@@ -189,6 +225,10 @@ public class AriantColiseum {
         }
     }
 
+    /**
+     * 执行 player、Disconnected 操作。
+     * @param chr 角色
+     */
     public void playerDisconnected(Character chr) {
         leaveArenaInternal(chr);
     }
@@ -223,6 +263,9 @@ public class AriantColiseum {
         return matchRes < 0.81770726891980117713114871015349 && (runnerupsScoreCount < 7 || runnerupRes < 0.5929);
     }
 
+    /**
+     * 执行 distribute、Ariant、Points 操作。
+     */
     public void distributeAriantPoints() {
         int firstTop = -1, secondTop = -1;
         Character winner = null;

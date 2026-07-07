@@ -11,12 +11,22 @@ import org.gms.model.dto.*;
 import org.gms.service.CommandService;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * GM 命令管理控制器，支持命令库维护及通过 GM 命令触发热重载（事件、传送点、地图）。
+ * 连接管理后台与 CommandService，复用游戏内 GM 命令执行逻辑。
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/command")
 public class CommandController {
     private final CommandService commandService;
 
+    /**
+     * 查询命令库所有指令与状态。
+     *
+     * @param submitBody 提交数据封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "查询命令库所有指令与状态")
     @PostMapping("/" + ApiConstant.LATEST + "/getCommandListFromDB")
@@ -24,6 +34,12 @@ public class CommandController {
         return ResultBody.success(commandService.getCommandListFromDB(submitBody.getData()));
     }
 
+    /**
+     * 更新命令库所有指令与状态。
+     *
+     * @param submitBody 提交数据封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "更新命令库所有指令与状态")
     @PostMapping("/" + ApiConstant.LATEST + "/updateCommand")
@@ -32,6 +48,10 @@ public class CommandController {
     }
 
     //重载事件
+    /**
+     * 复用GM命令代码进行重载事件。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "复用GM命令代码进行重载事件")
     @GetMapping("/" + ApiConstant.LATEST + "/reloadEventsByGMCommand")
@@ -40,6 +60,10 @@ public class CommandController {
         return ResultBody.success();
     }
     //重装传送点
+    /**
+     * 复用GM命令代码进行重装传送点。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "复用GM命令代码进行重装传送点")
     @GetMapping("/" + ApiConstant.LATEST + "/reloadPortalsByGMCommand")
@@ -49,6 +73,10 @@ public class CommandController {
     }
 
     //重装地图
+    /**
+     * 复用GM命令代码进行重装地图。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "复用GM命令代码进行重装地图")
     @GetMapping("/" + ApiConstant.LATEST + "/reloadMapsByGMCommand")

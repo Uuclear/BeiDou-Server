@@ -20,15 +20,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* ===========================================================
-        @author Resonance
-	NPC Name: 		Pusla
-	Map(s): 		Snow Island: Rien (140000000)
-	Description: 	Open Storage
-=============================================================
-Version 1.0 - Script Done.(11/6/2010)
-=============================================================
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1200000
+ * 功能描述：Pusla，仓库服务。
+ */
 function start() {
     cm.getPlayer().getStorage().sendStorage(cm.getClient(), 1200000);
     cm.dispose();

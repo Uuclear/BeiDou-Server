@@ -29,18 +29,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务需求接口。
  */
 public class QuestRequirement extends AbstractQuestRequirement {
     Map<Integer, Integer> quests = new HashMap<>();
 
+    /**
+     * 构造 QuestRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public QuestRequirement(Quest quest, Data data) {
         super(QuestRequirementType.QUEST);
         processData(data);
     }
-
     /**
-     * @param data
+     * 处理数据。
+     * @param data WZ 数据节点
      */
     @Override
     public void processData(Data data) {
@@ -52,6 +57,12 @@ public class QuestRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         for (Integer questID : quests.keySet()) {

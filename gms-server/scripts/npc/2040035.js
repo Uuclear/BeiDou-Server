@@ -20,13 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @author: Ronan
- * 
- * Arturo
-	Abandoned Tower <Determine to Adventure> (922011100)
-	Gives LudiPQ Reward.
- */
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040035
+ * 功能描述：NPC脚本，提供地图传送。
+ * 原作者：Ronan
+ */
 function start() {
     status = -1;
     action(1, 0, 0);

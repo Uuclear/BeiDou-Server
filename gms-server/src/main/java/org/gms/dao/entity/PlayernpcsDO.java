@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `playernpcs` 的实体类（DO）。
+ * <p>
+ * 玩家自定义 NPC 主表，定义由玩家创建并放置于地图上的 NPC 基本信息。
  */
 @Data
 @Builder

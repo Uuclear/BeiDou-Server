@@ -1,4 +1,5 @@
 <template>
+  <!-- GM 工作台首页：服务器状态监控、启停控制、版本信息及快捷操作。 -->
   <div class="container" :loading="loading">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.dashboard.workplace')">
@@ -158,6 +159,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 工作台页面，展示并操作游戏服务器运行状态（启动/停止/重启等）。
+   */
   import { onMounted, reactive, ref } from 'vue';
   import {
     getServerStatus,

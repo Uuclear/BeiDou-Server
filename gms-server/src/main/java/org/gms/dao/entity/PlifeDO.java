@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `plife` 的实体类（DO）。
+ * <p>
+ * 玩家生活技能（种植）数据表，记录植物生长阶段、收获时间等 plife 状态。
  */
 @Data
 @Builder

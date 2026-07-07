@@ -31,7 +31,12 @@ import org.gms.exception.EmptyMovementException;
 import java.awt.*;
 
 
+/**
+ * 处理客户端 MOVE_DRAGON（移动龙） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOVE_DRAGON}</p>
+ */
 public class MoveDragonHandler extends AbstractMovementPacketHandler {
+    /** 处理 移动龙 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         final Character chr = c.getPlayer();

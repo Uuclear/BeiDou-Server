@@ -26,30 +26,49 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Ronan
+ * info 编号匹配需求。
  */
 public class InfoNumberRequirement extends AbstractQuestRequirement {
 
     private short infoNumber;
     private final int questID;
 
+    /**
+     * 构造 InfoNumberRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public InfoNumberRequirement(Quest quest, Data data) {
         super(QuestRequirementType.INFO_NUMBER);
         questID = quest.getId();
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         infoNumber = (short) DataTool.getIntConvert(data, 0);
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return true;
     }
 
+    /**
+     * 获取信息编号。
+     * @return short 类型结果
+     */
     public short getInfoNumber() {
         return infoNumber;
     }

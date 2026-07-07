@@ -36,11 +36,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
- * @author Ronan
- * @author Ubaware
+ * 处理跨世界转移请求（WORLD_TRANSFER）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#WORLD_TRANSFER}</p>
  */
 public final class TransferWorldHandler extends AbstractPacketHandler {
 
+    /** 处理 世界转移 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readInt(); //cid

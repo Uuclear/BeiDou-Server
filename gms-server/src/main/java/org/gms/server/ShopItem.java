@@ -22,7 +22,7 @@
 package org.gms.server;
 
 /**
- * @author Matze
+ * 商店中的单个商品条目（物品 ID、价格、库存等）。
  */
 public class ShopItem {
     private final short buyable;
@@ -30,6 +30,13 @@ public class ShopItem {
     private final int price;
     private final int pitch;
 
+    /**
+     * 构造 ShopItem 实例。
+     * @param buyable buyable
+     * @param itemId 物品 ID
+     * @param price price
+     * @param pitch pitch
+     */
     public ShopItem(short buyable, int itemId, int price, int pitch) {
         this.buyable = buyable;
         this.itemId = itemId;
@@ -37,18 +44,34 @@ public class ShopItem {
         this.pitch = pitch;
     }
 
+    /**
+     * 获取Buyable。
+     * @return short 类型结果
+     */
     public short getBuyable() {
         return buyable;
     }
 
+    /**
+     * 获取物品ID。
+     * @return int 类型结果
+     */
     public int getItemId() {
         return itemId;
     }
 
+    /**
+     * 获取Price。
+     * @return int 类型结果
+     */
     public int getPrice() {
         return price;
     }
 
+    /**
+     * 获取Pitch。
+     * @return int 类型结果
+     */
     public int getPitch() {
         return pitch;
     }

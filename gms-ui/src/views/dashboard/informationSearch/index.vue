@@ -1,4 +1,5 @@
 <template>
+  <!-- 游戏资料查询页：按类型与关键字搜索物品、NPC、地图等游戏数据。 -->
   <div class="container">
     <Breadcrumb />
     <a-card
@@ -114,6 +115,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 资料检索页面，调用 informationSearch API 展示多类型查询结果。
+   */
   import { ref } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { Message } from '@arco-design/web-vue';

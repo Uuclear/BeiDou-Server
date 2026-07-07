@@ -11,7 +11,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Manages session initialization using remote host (ip address).
+ * 会话初始化协调器，基于远程主机 IP 串行化并发登录初始化并支持重试。
  */
 public class SessionInitialization {
     private final static Logger log = LoggerFactory.getLogger(SessionInitialization.class);

@@ -21,6 +21,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：kpq3
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 /*
 Kerning PQ: 4th stage to last stage portal
 */

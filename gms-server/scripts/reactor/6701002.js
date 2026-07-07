@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Ronan
- * 
- * Box - bonus for couples
- * 
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：6701002
+ * 功能描述：反应堆触发后召唤怪物。
+ * 原作者：Ronan
+ */
 function act() {
     var startId = 9400523;
     var mobObj, mapObj = rm.getMap();

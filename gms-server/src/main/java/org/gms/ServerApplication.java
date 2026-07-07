@@ -17,10 +17,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedHashMap;
 
+/**
+ * 北斗服务端 Spring Boot 启动入口。
+ * <p>
+ * 负责在 Spring 容器启动前自动创建 MySQL 数据库（若不存在），
+ * 随后启动 REST 管理 API。游戏核心 {@link org.gms.net.server.Server}
+ * 由 {@link org.gms.manager.ServerManager} 在 Spring 就绪后初始化。
+ */
 @SpringBootApplication
 @MapperScan("org.gms.dao.mapper")
 @Slf4j
 public class ServerApplication {
+
+    /**
+     * 应用主入口：先确保数据库存在，再启动 Spring Boot。
+     *
+     * @param args 命令行参数，支持 {@code --spring.config.location} 等覆盖配置
+     */
     public static void main(String[] args) {
         try {
             initDb(args);
@@ -81,11 +94,27 @@ public class ServerApplication {
         }
     }
 
+    /**
+     * 加载 JDBC 驱动并建立数据库连接。
+     *
+     * @param driver   JDBC 驱动类名
+     * @param url      连接 URL（不含库名时连接 mysql 系统库）
+     * @param username 数据库用户名
+     * @param password 数据库密码
+     * @return 新建的 JDBC 连接，调用方负责关闭
+     */
     private static Connection getConnection(String driver, String url, String username, String password) throws Exception {
         Class.forName(driver);
         return DriverManager.getConnection(url, username, password);
     }
 
+    /**
+     * 按优先级读取启动参数：JVM 系统属性 &gt; Spring 命令行参数 &gt; 环境变量。
+     *
+     * @param args      命令行参数数组
+     * @param paramName 参数名（如 {@code mybatis-flex.datasource.mysql.url}）
+     * @return 参数值，三级均未设置时返回 {@code null}
+     */
     private static String getStartParam(String[] args, String paramName) {
         // 第一优先级 jvm参数
         String property = System.getProperty(paramName);

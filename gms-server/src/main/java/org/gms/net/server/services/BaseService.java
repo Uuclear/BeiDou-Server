@@ -22,6 +22,8 @@ package org.gms.net.server.services;
 import org.gms.config.GameConfig;
 
 /**
+ * 跨频道/跨世界服务抽象基类，提供地图分区索引计算与资源释放接口。
+ *
  * @author Ronan
  */
 public abstract class BaseService {

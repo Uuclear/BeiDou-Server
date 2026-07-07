@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1032109
+ * 功能描述：NPC脚本，提供经验奖励。
+ */
 /*
 	NPC: Corner of the Magic Library
 	MAP: Hidden Street - Magic Library (910110000)

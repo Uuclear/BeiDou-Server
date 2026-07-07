@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 远程主机到 HWID 的内存缓存，支持过期清理与条目增删查。
+ */
 class HostHwidCache {
     private final ConcurrentHashMap<String, HostHwid> hostHwidCache = new ConcurrentHashMap<>(); // Key: remoteHost
 

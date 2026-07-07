@@ -26,7 +26,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 import org.gms.exception.EmptyMovementException;
 
+/**
+ * 处理客户端 MOVE_PLAYER（移动玩家） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOVE_PLAYER}</p>
+ */
 public final class MovePlayerHandler extends AbstractMovementPacketHandler {
+    /** 处理 移动玩家 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.skip(9);

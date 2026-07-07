@@ -15,15 +15,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Spring Security 用户详情服务，按用户名加载账号并构造 UserDetails。
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final AccountsMapper userDao;
 
+    /**
+     * 构造 UserDetailsServiceImpl。
+     *
+     * @param userRepository userRepository
+     */
     @Autowired
     public UserDetailsServiceImpl(AccountsMapper userRepository) {
         this.userDao = userRepository;
     }
 
+    /**
+     * 执行 loadUserByUsername 相关业务逻辑。
+     *
+     * @param username username
+     * @return UserDetails 类型结果
+     */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

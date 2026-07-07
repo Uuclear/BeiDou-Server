@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2001003
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /* 2001003 - Straw Hat Snowman
     @author Ronan
  */

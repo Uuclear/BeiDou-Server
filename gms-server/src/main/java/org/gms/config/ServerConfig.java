@@ -10,8 +10,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 
+/**
+ * 服务器基础设施配置，注册业务过滤器与 OpenAPI/Swagger 文档。
+ * 将 ServerFilter 挂载到全局 URL，并为 Swagger UI 配置 Authorization 安全方案。
+ */
 @Configuration
 public class ServerConfig {
+    /**
+     * 将 ServerFilter 注册到全局 URL 模式。
+     * @return 过滤器注册 Bean
+     */
     @Bean
     public FilterRegistrationBean<ServerFilter> filterRegistrationBean(ServerFilter serverFilter) {
         FilterRegistrationBean<ServerFilter> filterRegistrationBean = new FilterRegistrationBean<>();
@@ -20,6 +28,10 @@ public class ServerConfig {
         return filterRegistrationBean;
     }
 
+    /**
+     * 配置 Swagger OpenAPI 文档及 Authorization 安全方案。
+     * @return OpenAPI 配置对象
+     */
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()

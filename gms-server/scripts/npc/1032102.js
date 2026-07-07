@@ -1,8 +1,12 @@
-/*
-        @author RMZero213 (RaGEZONE)
-	Just keep this header here and don't claim that you made it.
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1032102
+ * 功能描述：NPC脚本，提供物品发放。
+ * 原作者：RMZero213 (RaGEZONE)
+ */
 /*
 	1032102.js
 	Mar the Fairy

@@ -1,11 +1,12 @@
-/* @Author Lerk
- * @Author Ronan
- *
- * Guardian Statue - Sharenian: Fountain of the Wiseman (990000500)
- * 
- * Guild Quest Stage 3
- */
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9040006
+ * 功能描述：NPC脚本，提供地图传送。
+ * 原作者：Lerk
+ */
 function clearStage(stage, eim) {
     eim.setProperty("stage" + stage + "clear", "true");
     eim.showClearEffect(true);

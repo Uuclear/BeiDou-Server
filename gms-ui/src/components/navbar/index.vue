@@ -1,4 +1,5 @@
 <template>
+  <!-- 顶部导航栏：Logo、移动端菜单按钮、顶栏菜单、语言切换、主题切换、消息盒子与用户下拉菜单。 -->
   <div class="navbar">
     <div class="left-side">
       <a-space>
@@ -134,6 +135,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 后台顶栏组件，集成版本号展示、国际化、明暗主题切换及用户登出等操作。
+   */
   import { computed, inject, ref } from 'vue';
   import { useDark, useToggle, useFullscreen } from '@vueuse/core';
   import { useAppStore, useUserStore } from '@/store';
@@ -157,6 +161,7 @@
   const theme = computed(() => {
     return appStore.theme;
   });
+  /** 是否在顶栏展示水平菜单（topMenu 且 menu 均开启时） */
   const topMenu = computed(() => appStore.topMenu && appStore.menu);
   const isDark = useDark({
     selector: 'body',
@@ -170,15 +175,18 @@
     },
   });
   const toggleTheme = useToggle(isDark);
+  /** 切换明暗主题 */
   const handleToggleTheme = () => {
     toggleTheme();
   };
+  /** 触发用户登出并跳转登录页 */
   const handleLogout = () => {
     logout();
   };
   const toggleDrawerMenu = inject('toggleDrawerMenu') as () => void;
 
   const triggerBtn = ref();
+  /** 程序化触发语言下拉菜单的 click 事件 */
   const setDropDownVisible = () => {
     const event = new MouseEvent('click', {
       view: window,
@@ -190,6 +198,7 @@
 
   const version = ref<string>('');
   const { setLoading } = useLoading(false);
+  /** 从服务端拉取 GMS 版本号并展示在顶栏 */
   const loadVersion = async () => {
     setLoading(true);
     try {

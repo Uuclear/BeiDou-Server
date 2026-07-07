@@ -1,3 +1,7 @@
+/**
+ * Vue Router 实例
+ * 创建 history 模式路由，注册业务路由、重定向与 404，并挂载路由守卫。
+ */
 import { createRouter, createWebHistory } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
 import 'nprogress/nprogress.css';

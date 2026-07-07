@@ -28,8 +28,13 @@ import org.gms.client.autoban.AutobanFactory;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 SKILL_MACRO（技能宏） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SKILL_MACRO}</p>
+ */
 public final class SkillMacroHandler extends AbstractPacketHandler {
 
+    /** 处理 技能宏 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

@@ -1,3 +1,7 @@
+/**
+ * 用户相关接口 Mock
+ * 模拟登录、登出、用户信息及服务端菜单等 API 响应（开发环境）。
+ */
 import Mock from 'mockjs';
 import setupMock, {
   successResponseWrap,

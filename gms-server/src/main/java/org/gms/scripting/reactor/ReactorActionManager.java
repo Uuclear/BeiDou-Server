@@ -47,6 +47,12 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 /**
+ * 反应堆脚本 API，向 GraalJS 注入为变量 {@code rm}。
+ * <p>
+ * 提供反应堆受击、掉落喷射、召唤怪物/NPC、地图监视等脚本能力；
+ * 掉落逻辑区分任务物品与普通物品，并支持立即与定时喷射两种模式。
+ * </p>
+ *
  * @author Lerk
  * @author Ronan
  */
@@ -61,10 +67,12 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         this.iv = iv;
     }
 
+/** 触发反应堆受击逻辑 */
     public void hitReactor() {
         reactor.hitReactor(c);
     }
 
+/** 销毁地图上指定 NPC */
     public void destroyNpc(int npcId) {
         reactor.getMap().destroyNPC(npcId);
     }
@@ -117,38 +125,47 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         return items1;
     }
 
+/** 向周围喷射掉落物（立即或延迟） */
     public void sprayItems() {
         sprayItems(false, 0, 0, 0, 0);
     }
 
+/** 向周围喷射掉落物（立即或延迟） */
     public void sprayItems(boolean meso, int mesoChance, int minMeso, int maxMeso) {
         sprayItems(meso, mesoChance, minMeso, maxMeso, 0);
     }
 
+/** 向周围喷射掉落物（立即或延迟） */
     public void sprayItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         sprayItems((int) reactor.getPosition().getX(), (int) reactor.getPosition().getY(), meso, mesoChance, minMeso, maxMeso, minItems);
     }
 
+/** 向周围喷射掉落物（立即或延迟） */
     public void sprayItems(int posX, int posY, boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         dropItems(true, posX, posY, meso, mesoChance, minMeso, maxMeso, minItems);
     }
 
+/** 在反应堆位置掉落物品 */
     public void dropItems() {
         dropItems(false, 0, 0, 0, 0);
     }
 
+/** 在反应堆位置掉落物品 */
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso) {
         dropItems(meso, mesoChance, minMeso, maxMeso, 0);
     }
 
+/** 在反应堆位置掉落物品 */
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         dropItems((int) reactor.getPosition().getX(), (int) reactor.getPosition().getY(), meso, mesoChance, minMeso, maxMeso, minItems);
     }
 
+/** 在反应堆位置掉落物品 */
     public void dropItems(int posX, int posY, boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         dropItems(true, posX, posY, meso, mesoChance, minMeso, maxMeso, minItems);  // all reactors actually drop items sequentially... thanks inhyuk for pointing this out!
     }
 
+/** 在反应堆位置掉落物品 */
     public void dropItems(boolean delayed, int posX, int posY, boolean meso, int mesoChance, final int minMeso, final int maxMeso, int minItems) {
         Character chr = c.getPlayer();
         if (chr == null) {
@@ -246,32 +263,39 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         return items;
     }
 
+/** spawnMonster */
     public void spawnMonster(int id) {
         spawnMonster(id, 1, getPosition());
     }
 
+/** 创建地图监视器 */
     public void createMapMonitor(int mapId, String portal) {
         new MapMonitor(c.getChannelServer().getMapFactory().getMap(mapId), portal);
     }
 
+/** spawnMonster */
     public void spawnMonster(int id, int qty) {
         spawnMonster(id, qty, getPosition());
     }
 
+/** spawnMonster */
     public void spawnMonster(int id, int qty, int x, int y) {
         spawnMonster(id, qty, new Point(x, y));
     }
 
+/** spawnMonster */
     public void spawnMonster(int id, int qty, Point pos) {
         for (int i = 0; i < qty; i++) {
             reactor.getMap().spawnMonsterOnGroundBelow(LifeFactory.getMonster(id), pos);
         }
     }
 
+/** 击杀指定怪物 */
     public void killMonster(int id) {
         killMonster(id, false);
     }
 
+/** 击杀指定怪物 */
     public void killMonster(int id, boolean withDrops) {
         if (withDrops) {
             getMap().killMonsterWithDrops(id);
@@ -280,24 +304,29 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         }
     }
 
+/** 获取反应堆附近生成坐标 */
     public Point getPosition() {
         Point pos = reactor.getPosition();
         pos.y -= 10;
         return pos;
     }
 
+/** 在事件地图生成 NPC */
     public void spawnNpc(int npcId) {
         spawnNpc(npcId, getPosition());
     }
 
+/** 在事件地图生成 NPC */
     public void spawnNpc(int npcId, Point pos) {
         spawnNpc(npcId, pos, reactor.getMap());
     }
 
+/** 获取当前反应堆对象 */
     public Reactor getReactor() {
         return reactor;
     }
 
+/** 生成假怪物（无 AI） */
     public void spawnFakeMonster(int id) {
         reactor.getMap().spawnFakeMonsterOnGroundBelow(LifeFactory.getMonster(id), getPosition());
     }

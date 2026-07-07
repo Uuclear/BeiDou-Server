@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：Puppeteer
+ * 功能描述：游戏事件脚本（Puppeteer），管理实例生命周期与玩家进出。
+ */
 var minPlayers = 1;
 var timeLimit = 1; //10 minutes
 var eventTimer = 1000 * 60 * timeLimit;

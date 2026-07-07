@@ -21,6 +21,9 @@
 */
 package org.gms.net.server.world;
 
+/**
+ * 队伍操作类型枚举，标识加入、离开、踢出、解散等队伍变更事件。
+ */
 public enum PartyOperation {
     JOIN, LEAVE, EXPEL, DISBAND, SILENT_UPDATE, LOG_ONOFF, CHANGE_LEADER
 }

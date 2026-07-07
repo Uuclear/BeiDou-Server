@@ -29,11 +29,19 @@ import org.gms.client.command.Command;
 import org.gms.server.life.Monster;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM1命令：展示当前地图的boss血量
+ */
 public class BossHpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("BossHpCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

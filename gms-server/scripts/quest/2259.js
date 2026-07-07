@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2259
+ * 功能描述：rmation. To reach there, follow #reast#k from here until you reach #rMagatia#k, I will be there. Now go.");（原版描述）。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

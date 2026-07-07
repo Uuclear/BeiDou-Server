@@ -31,9 +31,14 @@ import org.gms.server.life.MonsterInformationProvider;
 import org.gms.server.maps.MapleMap;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 FIELD_DAMAGE_MOB（场景中怪物受到伤害） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#FIELD_DAMAGE_MOB}</p>
+ */
 public class FieldDamageMobHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(FieldDamageMobHandler.class);
 
+    /** 处理 场景中怪物受到伤害 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int mobOid = p.readInt();    // packet structure found thanks to Darter (Rajan)

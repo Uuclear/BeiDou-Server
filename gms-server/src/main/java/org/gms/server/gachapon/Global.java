@@ -3,12 +3,14 @@ package org.gms.server.gachapon;
 import org.gms.constants.id.ItemId;
 
 /**
- * @author Alan (SharpAceX)
- * @author Ronan - added ores and reworked global loots
+ * 全局扭蛋奖池（所有扭蛋机共享的稀有物品）。
  */
-
 public class Global extends GachaponItems {
 
+    /**
+     * 获取Common、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getCommonItems() {
         return new int[]{
@@ -23,6 +25,10 @@ public class Global extends GachaponItems {
         };
     }
 
+    /**
+     * 获取Uncommon、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getUncommonItems() {
         return new int[]{
@@ -34,6 +40,10 @@ public class Global extends GachaponItems {
         };
     }
 
+    /**
+     * 获取Rare、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getRareItems() {
         return new int[]{

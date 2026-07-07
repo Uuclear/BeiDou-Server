@@ -25,11 +25,19 @@ import org.gms.server.TimerManager;
 
 import java.util.concurrent.ScheduledFuture;
 
+/**
+ * 地图监控器，跟踪地图内玩家活动与超时逻辑。
+ */
 public class MapMonitor {
     private ScheduledFuture<?> monitorSchedule;
     private MapleMap map;
     private Portal portal;
 
+    /**
+     * 构造 MapMonitor 实例。
+     * @param map 地图名称
+     * @param portal portal
+     */
     public MapMonitor(final MapleMap map, String portal) {
         this.map = map;
         this.portal = map.getPortal(portal);

@@ -13,16 +13,29 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+/**
+ * 账号管理控制器，暴露账号查询、注册、资料修改与封禁等 GM/用户自助接口。
+ * 位于 REST 控制层，将 HTTP 请求转发至 AccountService，由服务层完成数据库与游戏服账号状态同步。
+ */
 @RestController
 @RequestMapping("/account")
 public class AccountController {
     private final AccountService accountService;
 
+    /**
+     * 构造 AccountController。
+     *
+     * @param accountService accountService
+     */
     @Autowired
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
+    /**
+     * 获取我的信息。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "获取我的信息")
     @GetMapping("/" + ApiConstant.LATEST + "/info")
@@ -30,6 +43,19 @@ public class AccountController {
         return ResultBody.success(accountService.getCurrentUser());
     }
 
+    /**
+     * 获取账号列表。
+     *
+     * @param page page
+     * @param size size
+     * @param id 记录主键 ID
+     * @param name 名称
+     * @param lastLoginStart lastLoginStart
+     * @param lastLoginEnd lastLoginEnd
+     * @param createdAtStart createdAtStart
+     * @param createdAtEnd createdAtEnd
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "获取账号列表")
     @GetMapping("/" + ApiConstant.LATEST)
@@ -44,6 +70,12 @@ public class AccountController {
         return ResultBody.success(accountService.getAccountList(page, size, id, name, lastLoginStart, lastLoginEnd, createdAtStart, createdAtEnd));
     }
 
+    /**
+     * 注册账号。
+     *
+     * @param submitBody 提交数据封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "注册账号")
     @PostMapping("/" + ApiConstant.LATEST)
@@ -52,6 +84,12 @@ public class AccountController {
         return ResultBody.success();
     }
 
+    /**
+     * 更新账号资料[用户](须校验旧密码,新密码留空则不修改)。
+     *
+     * @param submitBody 提交数据封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "更新账号资料[用户](须校验旧密码,新密码留空则不修改)")
     @PutMapping("/" + ApiConstant.LATEST)
@@ -60,6 +98,13 @@ public class AccountController {
         return ResultBody.success();
     }
 
+    /**
+     * 更新账号资料[GM]。
+     *
+     * @param id 记录主键 ID
+     * @param submitBody 提交数据封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "更新账号资料[GM]")
     @PutMapping("/" + ApiConstant.LATEST + "/{id}")
@@ -69,6 +114,12 @@ public class AccountController {
         return ResultBody.success();
     }
 
+    /**
+     * 删除账号。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "删除账号")
     @DeleteMapping("/" + ApiConstant.LATEST + "/{id}")
@@ -77,6 +128,12 @@ public class AccountController {
         return ResultBody.success();
     }
 
+    /**
+     * 重置在线状态。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "重置在线状态")
     @PutMapping("/" + ApiConstant.LATEST + "/{id}/reset/logged")
@@ -85,6 +142,13 @@ public class AccountController {
         return ResultBody.success();
     }
 
+    /**
+     * 封停账号。
+     *
+     * @param id 记录主键 ID
+     * @param submitBody 提交数据封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "封停账号")
     @PutMapping("/" + ApiConstant.LATEST + "/{id}/ban")
@@ -94,6 +158,12 @@ public class AccountController {
         return ResultBody.success();
     }
 
+    /**
+     * 解封账号。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/account/" + ApiConstant.LATEST)
     @Operation(summary = "解封账号")
     @PutMapping("/" + ApiConstant.LATEST + "/{id}/unban")

@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：AreaBossKingSageCat
+ * 功能描述：rest2 = em.getChannelServer().getMapFactory().getMap(250010504);（原版描述）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  King Sage Cat Spawner

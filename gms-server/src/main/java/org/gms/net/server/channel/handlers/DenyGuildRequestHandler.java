@@ -28,10 +28,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.net.server.guild.Guild;
 
 /**
- * @author Xterminator
+ * 处理客户端 DENY_GUILD_REQUEST（拒绝公会请求） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#DENY_GUILD_REQUEST}</p>
  */
 public final class DenyGuildRequestHandler extends AbstractPacketHandler {
 
+    /** 处理 拒绝公会请求 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readByte();

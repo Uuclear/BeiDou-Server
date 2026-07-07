@@ -8,10 +8,12 @@ import org.gms.server.ChatLogger;
 import org.gms.util.PacketCreator;
 
 /**
- * @author kevintjuh93
+ * 处理客户端 ADMIN_CHAT（管理员聊天） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ADMIN_CHAT}</p>
  */
 public class AdminChatHandler extends AbstractPacketHandler {
 
+    /** 处理 管理员聊天 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!c.getPlayer().isGM()) {//if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2 )

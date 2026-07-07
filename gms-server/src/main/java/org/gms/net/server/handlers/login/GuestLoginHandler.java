@@ -29,8 +29,13 @@ import org.gms.util.PacketCreator;
 /*
  * @author David
  */
+/**
+ * 处理客户端 GUEST_LOGIN（游客登录） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#GUEST_LOGIN}</p>
+ */
 public final class GuestLoginHandler extends AbstractPacketHandler {
 
+    /** 处理 游客登录 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         c.sendPacket(PacketCreator.sendGuestTOS());

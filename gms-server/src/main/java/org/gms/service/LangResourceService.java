@@ -13,18 +13,32 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 语言资源业务服务，管理多语言文案资源的加载与维护。
+ */
 @Service
 @AllArgsConstructor
 public class LangResourceService {
     private final ServiceProperty serviceProperty;
     private final LangResourcesMapper langResourcesMapper;
 
+    /**
+     * 执行 getI18n 相关业务逻辑。
+     *
+     * @param langResourcesDO langResourcesDO
+     * @return String 类型结果
+     */
     public String getI18n(LangResourcesDO langResourcesDO) {
         List<LangResourcesDO> langResourcesDOList = langResourcesMapper.selectListByQuery(QueryWrapper.create(langResourcesDO));
         RequireUtil.requireTrue(langResourcesDOList.size() == 1, I18nUtil.getExceptionMessage("LangResourceService.getI18n.exception1"));
         return langResourcesDOList.getFirst().getLangValue();
     }
 
+    /**
+     * 执行 insertOrUpdateI18n 相关业务逻辑。
+     *
+     * @param langResourcesDO langResourcesDO
+     */
     @Transactional(rollbackFor = Exception.class)
     public void insertOrUpdateI18n(LangResourcesDO langResourcesDO) {
         LangResourcesDO queryCondition = new LangResourcesDO();
@@ -49,6 +63,11 @@ public class LangResourceService {
         langResourcesMapper.insert(langResourcesDO);
     }
 
+    /**
+     * 执行 deleteI18n 相关业务逻辑。
+     *
+     * @param langResourcesDO langResourcesDO
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteI18n(LangResourcesDO langResourcesDO) {
         langResourcesMapper.deleteByQuery(QueryWrapper.create(langResourcesDO));

@@ -28,24 +28,39 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 最低等级需求。
  */
 public class MinLevelRequirement extends AbstractQuestRequirement {
     private int minLevel;
 
 
+    /**
+     * 构造 MinLevelRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public MinLevelRequirement(Quest quest, Data data) {
         super(QuestRequirementType.MIN_LEVEL);
         processData(data);
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         minLevel = DataTool.getInt(data);
     }
 
 
+    /**
+     * 检查角色等级是否达到最低要求。
+     * @param chr 角色
+     * @param npcid NPC ID（本需求不使用）
+     * @return 等级满足时返回 true
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return chr.getLevel() >= minLevel;

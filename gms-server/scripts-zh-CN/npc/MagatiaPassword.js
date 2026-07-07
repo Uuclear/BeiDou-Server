@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：MagatiaPassword
+ * 功能描述：密码验证/门禁对话脚本。
+ */
 var status;
 function start() {
     status = -1;

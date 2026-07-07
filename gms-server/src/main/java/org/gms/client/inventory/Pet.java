@@ -18,29 +18,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.inventory;
-
-import org.gms.client.Character;
-import org.gms.util.CashIdGenerator;
-import org.gms.constants.game.ExpTable;
-import org.gms.server.ItemInformationProvider;
-import org.gms.server.movement.AbsoluteLifeMovement;
-import org.gms.server.movement.LifeMovement;
-import org.gms.server.movement.LifeMovementFragment;
-import org.gms.util.DatabaseConnection;
-import org.gms.util.PacketCreator;
-import org.gms.util.Pair;
-
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
 /**
- * @author Matze
+ * 宠物数据模型，管理宠物的名称、等级、亲密度、饥饿度及技能。
  */
 public class Pet extends Item {
     private String name;
@@ -54,6 +33,9 @@ public class Pet extends Item {
     private boolean summoned;
     private int petAttribute = 0;
 
+    /**
+     * PetAttribute枚举，定义相关常量值
+     */
     public enum PetAttribute {
         OWNER_SPEED(0x01);
 
@@ -63,6 +45,10 @@ public class Pet extends Item {
             this.i = i;
         }
 
+        /**
+         * 获取值
+         * @return 返回值
+         */
         public int getValue() {
             return i;
         }
@@ -74,6 +60,13 @@ public class Pet extends Item {
         this.pos = new Point(0, 0);
     }
 
+    /**
+     * 加载从Db
+     * @param itemid itemid
+     * @param position 位置
+     * @param petid petid
+     * @return 返回值
+     */
     public static Pet loadFromDb(int itemid, short position, int petid) {
         Pet ret = new Pet(itemid, position, petid);
         try (Connection con = DatabaseConnection.getConnection();
@@ -96,6 +89,11 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 删除从Db
+     * @param owner 所有者
+     * @param petid petid
+     */
     public static void deleteFromDb(Character owner, int petid) {
         try {
             // 宠物基础数据删除后，petignores 会通过外键级联清理，这里同步移除角色内存中的缓存。
@@ -106,6 +104,9 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 保存到Db
+     */
     public void saveToDb() {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, summoned = ?, flag = ? WHERE petid = ?")) {
@@ -122,6 +123,11 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 创建宠物
+     * @param itemid itemid
+     * @return 返回值
+     */
     public static int createPet(int itemid) {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned, flag) VALUES (?, ?, 1, 0, 100, 0, 0)")) {
@@ -136,6 +142,14 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 创建宠物
+     * @param itemid itemid
+     * @param level 等级
+     * @param tameness tameness
+     * @param fullness fullness
+     * @return 返回值
+     */
     public static int createPet(int itemid, byte level, int tameness, int fullness) {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned, flag) VALUES (?, ?, ?, ?, ?, 0, 0)")) {
@@ -153,38 +167,81 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 获取名称
+     * @return 返回值
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 设置名称
+     * @param name 名称
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 获取UniqueID
+     * @return 返回值
+     */
     public int getUniqueId() {
         return uniqueid;
     }
 
+    /**
+     * 设置UniqueID
+     * @param id ID
+     */
     public void setUniqueId(int id) {
         this.uniqueid = id;
     }
 
+    /**
+     * 获取Tameness
+     * @return 返回值
+     */
     public int getTameness() {
         return tameness;
     }
 
+    /**
+     * 设置Tameness
+     * @param tameness tameness
+     */
     public void setTameness(int tameness) {
         this.tameness = tameness;
     }
 
+    /**
+     * 获取等级
+     * @return 返回值
+     */
     public byte getLevel() {
         return level;
     }
 
+    /**
+     * 获得TamenessFullness
+     * @param owner 所有者
+     * @param incTameness incTameness
+     * @param incFullness incFullness
+     * @param type 类型
+     */
     public void gainTamenessFullness(Character owner, int incTameness, int incFullness, int type) {
         gainTamenessFullness(owner, incTameness, incFullness, type, false);
     }
 
+    /**
+     * 获得TamenessFullness
+     * @param owner 所有者
+     * @param incTameness incTameness
+     * @param incFullness incFullness
+     * @param type 类型
+     * @param forceEnjoy forceEnjoy
+     */
     public void gainTamenessFullness(Character owner, int incTameness, int incFullness, int type, boolean forceEnjoy) {
         byte slot = owner.getPetIndex(this);
         boolean enjoyed;
@@ -236,50 +293,98 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 设置等级
+     * @param level 等级
+     */
     public void setLevel(byte level) {
         this.level = level;
     }
 
+    /**
+     * 获取Fullness
+     * @return 返回值
+     */
     public int getFullness() {
         return fullness;
     }
 
+    /**
+     * 设置Fullness
+     * @param fullness fullness
+     */
     public void setFullness(int fullness) {
         this.fullness = fullness;
     }
 
+    /**
+     * 获取Fh
+     * @return 返回值
+     */
     public int getFh() {
         return Fh;
     }
 
+    /**
+     * 设置Fh
+     * @param Fh Fh
+     */
     public void setFh(int Fh) {
         this.Fh = Fh;
     }
 
+    /**
+     * 获取Pos
+     * @return 返回值
+     */
     public Point getPos() {
         return pos;
     }
 
+    /**
+     * 设置Pos
+     * @param pos pos
+     */
     public void setPos(Point pos) {
         this.pos = pos;
     }
 
+    /**
+     * 获取Stance
+     * @return 返回值
+     */
     public int getStance() {
         return stance;
     }
 
+    /**
+     * 设置Stance
+     * @param stance stance
+     */
     public void setStance(int stance) {
         this.stance = stance;
     }
 
+    /**
+     * 判断是否为Summoned
+     * @return 返回值
+     */
     public boolean isSummoned() {
         return summoned;
     }
 
+    /**
+     * 设置Summoned
+     * @param yes yes
+     */
     public void setSummoned(boolean yes) {
         this.summoned = yes;
     }
 
+    /**
+     * 获取宠物Attribute
+     * @return 返回值
+     */
     public int getPetAttribute() {
         return this.petAttribute;
     }
@@ -288,6 +393,11 @@ public class Pet extends Item {
         this.petAttribute = flag;
     }
 
+    /**
+     * 添加宠物Attribute
+     * @param owner 所有者
+     * @param flag 标记
+     */
     public void addPetAttribute(Character owner, PetAttribute flag) {
         this.petAttribute |= flag.getValue();
         saveToDb();
@@ -298,6 +408,11 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 移除宠物Attribute
+     * @param owner 所有者
+     * @param flag 标记
+     */
     public void removePetAttribute(Character owner, PetAttribute flag) {
         this.petAttribute &= 0xFFFFFFFF ^ flag.getValue();
         saveToDb();
@@ -308,10 +423,19 @@ public class Pet extends Item {
         }
     }
 
+    /**
+     * 判断是否可以Consume
+     * @param itemId 物品ID
+     * @return 返回值
+     */
     public Pair<Integer, Boolean> canConsume(int itemId) {
         return ItemInformationProvider.getInstance().canPetConsume(this.getItemId(), itemId);
     }
 
+    /**
+     * 更新位置
+     * @param movement movement
+     */
     public void updatePosition(List<LifeMovementFragment> movement) {
         for (LifeMovementFragment move : movement) {
             if (move instanceof LifeMovement) {

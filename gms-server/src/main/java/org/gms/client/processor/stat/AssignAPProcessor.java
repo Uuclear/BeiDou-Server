@@ -74,6 +74,9 @@ public class AssignAPProcessor {
     private static int maxAp;
 
     // 重新加载配置方法
+    /**
+     * reload配置
+     */
     public static void reloadConfig() {
         useServerAutoAssigner = GameConfig.getServerBoolean("use_server_auto_assigner");
         useAutoAssignSecondaryCap = GameConfig.getServerBoolean("use_auto_assign_secondary_cap");

@@ -19,9 +19,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	Author: kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：rienTutor2
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ * 原作者：kevintjuh93
+ */
 function enter(pi) {
     if (!pi.isQuestCompleted(21011)) {
         pi.message("你必须完成任务后才能进入下一张地图。");

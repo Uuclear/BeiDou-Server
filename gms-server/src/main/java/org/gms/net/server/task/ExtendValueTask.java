@@ -7,6 +7,9 @@ import org.gms.manager.ServerManager;
 import org.gms.util.I18nUtil;
 
 @Slf4j
+/**
+ * 扩展键值定时清理任务，按配置周期清理各业务类型的过期扩展数据。
+ */
 public class ExtendValueTask implements Runnable {
     @Override
     public void run() {

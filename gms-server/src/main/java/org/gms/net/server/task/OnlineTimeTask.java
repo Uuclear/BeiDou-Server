@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * 在线时长统计定时任务，每 5 分钟累加全服玩家在线时间并在跨日时归零。
+ */
 public class OnlineTimeTask implements Runnable {
     private final AtomicReference<LocalDate> lastUpdated = new AtomicReference<>(LocalDate.now());
     private final AtomicBoolean running = new AtomicBoolean(false);

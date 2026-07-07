@@ -22,8 +22,15 @@
 package org.gms.provider;
 
 /**
+ * WZ 文件条目接口，表示可加载的 {@code .img} 数据文件。
+ *
  * @author Matze
  */
 public interface DataFileEntry extends DataEntry {
+    /**
+     * 设置文件在 WZ 包内的字节偏移。
+     *
+     * @param offset 偏移量
+     */
     void setOffset(int offset);
 }

@@ -28,11 +28,19 @@ import org.gms.client.command.Command;
 import org.gms.constants.id.NpcId;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM0（所有玩家可用）命令：展示服务端参与贡献的人员
+ */
 public class StaffCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("StaffCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         c.getAbstractPlayerInteraction().openNpc(NpcId.HERACLE, "credits");

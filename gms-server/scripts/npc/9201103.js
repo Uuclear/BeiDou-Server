@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201103
+ * 功能描述：about this, go ahead inside the keep at the top-right room there.");（原版描述）。
+ */
 /**
  *9201103 - Sage
  *@author Ronan

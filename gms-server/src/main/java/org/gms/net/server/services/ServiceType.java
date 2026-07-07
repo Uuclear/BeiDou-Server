@@ -20,6 +20,8 @@
 package org.gms.net.server.services;
 
 /**
+ * 服务类型枚举接口，定义服务创建与枚举值访问契约。
+ *
  * @author Ronan
  */
 public interface ServiceType<T extends Enum<?>> {

@@ -79,6 +79,12 @@ import java.util.*;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
+ * NPC 对话脚本 API，向 GraalJS 注入为变量 {@code cm}（或物品脚本 {@code im}）。
+ * <p>
+ * 封装发送对话、选项、商店、组队、远征等 NPC 脚本常用操作，继承
+ * {@link AbstractPlayerInteraction} 提供玩家/地图/任务等基础能力。
+ * </p>
+ *
  * @author Matze
  */
 public class NPCConversationManager extends AbstractPlayerInteraction {
@@ -125,106 +131,128 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         this.itemScript = itemScript;
     }
 
+/** 获取当前对话 NPC ID */
     public int getNpc() {
         return npc;
     }
 
+/** 获取地图对象 NPC OID */
     public int getNpcObjectId() {
         return npcOid;
     }
 
+/** 获取脚本文件名 */
     public String getScriptName() {
         return scriptName;
     }
 
+/** 当前是否为物品脚本对话 */
     public boolean isItemScript() {
         return itemScript;
     }
 
+/** 重置物品脚本标记 */
     public void resetItemScript() {
         this.itemScript = false;
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose() {
         nextLevelContext.clear();
         NPCScriptManager.getInstance().dispose(this);
         getClient().sendPacket(PacketCreator.enableActions());
     }
 
+/** 发送带「下一页」按钮的 NPC 对话 */
     public void sendNext(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "00 01", (byte) 0));
     }
 
+/** 发送带「上一页」按钮的 NPC 对话 */
     public void sendPrev(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "01 00", (byte) 0));
     }
 
+/** 发送带翻页按钮的 NPC 对话 */
     public void sendNextPrev(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "01 01", (byte) 0));
     }
 
+/** 发送带确认按钮的 NPC 对话 */
     public void sendOk(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "00 00", (byte) 0));
     }
 
+/** 发送 NPC 默认台词 */
     public void sendDefault() {
         sendOk(getDefaultTalk(npc));
     }
 
+/** 发送是/否选择对话 */
     public void sendYesNo(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 1, text, "", (byte) 0));
     }
 
+/** 发送接受/拒绝选择对话 */
     public void sendAcceptDecline(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0x0C, text, "", (byte) 0));
     }
 
+/** 发送选项列表对话 */
     public void sendSimple(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 4, text, "", (byte) 0));
     }
 
+/** 发送带「下一页」按钮的 NPC 对话 */
     public void sendNext(String text, byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "00 01", speaker));
     }
 
+/** 发送带「上一页」按钮的 NPC 对话 */
     public void sendPrev(String text, byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "01 00", speaker));
     }
 
+/** 发送带翻页按钮的 NPC 对话 */
     public void sendNextPrev(String text, byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "01 01", speaker));
     }
 
+/** 发送带确认按钮的 NPC 对话 */
     public void sendOk(String text, byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0, text, "00 00", speaker));
     }
 
+/** 发送是/否选择对话 */
     public void sendYesNo(String text, byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 1, text, "", speaker));
     }
 
+/** 发送接受/拒绝选择对话 */
     public void sendAcceptDecline(String text, byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 0x0C, text, "", speaker));
     }
 
+/** 发送选项列表对话 */
     public void sendSimple(String text, byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalk(npc, (byte) 4, text, "", speaker));
     }
 
+/** sendStyle */
     public void sendStyle(String text, int[] styles) {
         if (styles.length > 0) {
             nextLevelContext.clear();
@@ -235,20 +263,24 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** sendGetNumber */
     public void sendGetNumber(String text, int def, int min, int max) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalkNum(npc, text, def, min, max));
     }
 
+/** sendGetText */
     public void sendGetText(String text) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalkText(npc, text, ""));
     }
+/** sendGetNumber */
     public void sendGetNumber(String text, int def, int min, int max,byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalkNum(npc, text, def, min, max,speaker));
     }
 
+/** sendGetText */
     public void sendGetText(String text,byte speaker) {
         nextLevelContext.clear();
         getClient().sendPacket(PacketCreator.getNPCTalkText(npc, text, "",speaker));
@@ -267,96 +299,116 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         getClient().sendPacket(PacketCreator.getDimensionalMirror(text));
     }
 
+/** 设置GetText */
     public void setGetText(String text) {
         this.getText = text;
     }
 
+/** 获取Text */
     public String getText() {
         return this.getText;
     }
 
     @Override
+/** forceStartQuest */
     public boolean forceStartQuest(int id) {
         return forceStartQuest(id, npc);
     }
 
     @Override
+/** forceCompleteQuest */
     public boolean forceCompleteQuest(int id) {
         return forceCompleteQuest(id, npc);
     }
 
     @Override
+/** startQuest */
     public boolean startQuest(short id) {
         return startQuest((int) id);
     }
 
     @Override
+/** completeQuest */
     public boolean completeQuest(short id) {
         return completeQuest((int) id);
     }
 
     @Override
+/** startQuest */
     public boolean startQuest(int id) {
         return startQuest(id, npc);
     }
 
     @Override
+/** completeQuest */
     public boolean completeQuest(int id) {
         return completeQuest(id, npc);
     }
 
+/** 获取Meso */
     public int getMeso() {
         return getPlayer().getMeso();
     }
 
+/** gainMeso */
     public void gainMeso(int gain) {
         getPlayer().gainMeso(gain);
     }
 
+/** gainMeso */
     public void gainMeso(Double gain) {
         getPlayer().gainMeso(gain.intValue());
     }
 
+/** gainExp */
     public void gainExp(int gain) {
         getPlayer().gainExp(gain, true, true);
     }
 
     @Override
+/** showEffect */
     public void showEffect(String effect) {
         getPlayer().getMap().broadcastMessage(PacketCreator.environmentChange(effect, 3));
     }
 
+/** 设置Hair */
     public void setHair(int hair) {
         getPlayer().setHair(hair);
         getPlayer().updateSingleStat(Stat.HAIR, hair);
         getPlayer().equipChanged();
     }
 
+/** 设置Face */
     public void setFace(int face) {
         getPlayer().setFace(face);
         getPlayer().updateSingleStat(Stat.FACE, face);
         getPlayer().equipChanged();
     }
 
+/** 设置Skin */
     public void setSkin(int color) {
         getPlayer().setSkinColor(SkinColor.getById(color));
         getPlayer().updateSingleStat(Stat.SKIN, color);
         getPlayer().equipChanged();
     }
 
+/** itemQuantity */
     public int itemQuantity(int itemid) {
         return getPlayer().getInventory(ItemConstants.getInventoryType(itemid)).countById(itemid);
     }
 
+/** displayGuildRanks */
     public void displayGuildRanks() {
         Guild.displayGuildRanks(getClient(), npc);
     }
 
+/** canSpawnPlayerNpc */
     public boolean canSpawnPlayerNpc(int mapid) {
         Character chr = getPlayer();
         return !GameConfig.getServerBoolean("playernpc_auto_deploy") && chr.getLevel() >= chr.getMaxClassLevel() && !chr.isGM() && PlayerNPC.canSpawnPlayerNpc(chr.getName(), mapid);
     }
 
+/** 获取PlayerNPCByScriptid */
     public PlayerNPC getPlayerNPCByScriptid(int scriptId) {
         for (MapObject pnpcObj : getPlayer().getMap().getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.PLAYER_NPC))) {
             PlayerNPC pn = (PlayerNPC) pnpcObj;
@@ -370,15 +422,18 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     @Override
+/** 获取Party */
     public Party getParty() {
         return getPlayer().getParty();
     }
 
     @Override
+/** resetMap */
     public void resetMap(int mapid) {
         getClient().getChannelServer().getMapFactory().getMap(mapid).resetReactors();
     }
 
+/** gainTameness */
     public void gainTameness(int tameness) {
         for (Pet pet : getPlayer().getPets()) {
             if (pet != null) {
@@ -387,34 +442,42 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** 获取事件实例名称 */
     public String getName() {
         return getPlayer().getName();
     }
 
+/** 获取Gender */
     public int getGender() {
         return getPlayer().getGender();
     }
 
+/** changeJobById */
     public void changeJobById(int a) {
         getPlayer().changeJob(Job.getById(a));
     }
 
+/** changeJob */
     public void changeJob(Job job) {
         getPlayer().changeJob(job);
     }
 
+/** 获取JobName */
     public String getJobName(int id) {
         return GameConstants.getJobName(id);
     }
 
+/** 获取ItemEffect */
     public StatEffect getItemEffect(int itemId) {
         return ItemInformationProvider.getInstance().getItemEffect(itemId);
     }
 
+/** resetStats */
     public void resetStats() {
         getPlayer().resetStats();
     }
 
+/** openShopNPC */
     public void openShopNPC(int id) {
         Shop shop = ShopFactory.getInstance().getShop(id);
 
@@ -426,6 +489,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** maxMastery */
     public void maxMastery() {
         for (Data skill_ : DataProviderFactory.getDataProvider(WZFiles.STRING).getData("Skill.img").getChildren()) {
             try {
@@ -441,6 +505,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** doGachapon */
     public void doGachapon() {
         gachaponService.doGachapon(getPlayer(), npc);
     }
@@ -464,6 +529,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     //     }
     // }
 
+/** upgradeAlliance */
     public void upgradeAlliance() {
         Alliance alliance = Server.getInstance().getAlliance(c.getPlayer().getGuild().getAllianceId());
         alliance.increaseCapacity(1);
@@ -474,26 +540,32 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         c.sendPacket(GuildPackets.updateAllianceInfo(alliance, c.getWorld()));  // thanks Vcoc for finding an alliance update to leader issue
     }
 
+/** disbandAlliance */
     public void disbandAlliance(Client c, int allianceId) {
         Alliance.disbandAlliance(allianceId);
     }
 
+/** canBeUsedAllianceName */
     public boolean canBeUsedAllianceName(String name) {
         return Alliance.canBeUsedAllianceName(name);
     }
 
+/** createAlliance */
     public Alliance createAlliance(String name) {
         return Alliance.createAlliance(getParty(), name);
     }
 
+/** 获取AllianceCapacity */
     public int getAllianceCapacity() {
         return Server.getInstance().getAlliance(getPlayer().getGuild().getAllianceId()).getCapacity();
     }
 
+/** 检查Merchant */
     public boolean hasMerchant() {
         return getPlayer().hasMerchant();
     }
 
+/** 检查MerchantItems */
     public boolean hasMerchantItems() {
         try {
             if (!ItemFactory.MERCHANT.loadItems(getPlayer().getId(), false).isEmpty()) {
@@ -506,10 +578,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return getPlayer().getMerchantMeso() != 0;
     }
 
+/** showFredrick */
     public void showFredrick() {
         c.sendPacket(PacketCreator.getFredrick(getPlayer()));
     }
 
+/** partyMembersInMap */
     public int partyMembersInMap() {
         int inMap = 0;
         for (Character char2 : getPlayer().getMap().getCharacters()) {
@@ -520,21 +594,25 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return inMap;
     }
 
+/** 获取Event */
     public Event getEvent() {
         return c.getChannelServer().getEvent();
     }
 
+/** divideTeams */
     public void divideTeams() {
         if (getEvent() != null) {
             getPlayer().setTeam(getEvent().getLimit() % 2); //muhaha :D
         }
     }
 
+/** 获取MapleCharacter */
     public Character getMapleCharacter(String player) {
         Character target = Server.getInstance().getWorld(c.getWorld()).getChannel(c.getChannel()).getPlayerStorage().getCharacterByName(player);
         return target;
     }
 
+/** logLeaf */
     public void logLeaf(String prize) {
         MapleLeafLogger.log(getPlayer(), true, prize);
     }
@@ -572,10 +650,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return true;
     }
 
+/** itemExists */
     public boolean itemExists(int itemid) {
         return ItemInformationProvider.getInstance().getName(itemid) != null;
     }
 
+/** 获取CosmeticItem */
     public int getCosmeticItem(int itemid) {
         if (itemExists(itemid)) {
             return itemid;
@@ -599,18 +679,22 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** 判断CosmeticEquipped */
     public boolean isCosmeticEquipped(int itemid) {
         return getEquippedCosmeticid(itemid) == itemid;
     }
 
+/** 判断UsingOldPqNpcStyle */
     public boolean isUsingOldPqNpcStyle() {
         return GameConfig.getServerBoolean("use_old_gms_styled_pq_npcs") && this.getPlayer().getParty() != null;
     }
 
+/** 获取AvailableMasteryBooks */
     public Object[] getAvailableMasteryBooks() {
         return ItemInformationProvider.getInstance().usableMasteryBooks(this.getPlayer()).toArray();
     }
 
+/** 获取AvailableSkillBooks */
     public Object[] getAvailableSkillBooks() {
         List<Integer> ret = ItemInformationProvider.getInstance().usableSkillBooks(this.getPlayer());
         ret.addAll(SkillbookInformationProvider.getTeachableSkills(this.getPlayer()));
@@ -618,10 +702,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return ret.toArray();
     }
 
+/** 获取NamesWhoDropsItem */
     public Object[] getNamesWhoDropsItem(Integer itemId) {
         return ItemInformationProvider.getInstance().getWhoDrops(itemId).toArray();
     }
 
+/** 获取SkillBookInfo */
     public String getSkillBookInfo(int itemid) {
         SkillBookEntry sbe = SkillbookInformationProvider.getSkillbookAvailability(itemid);
         switch (sbe) {
@@ -646,6 +732,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     // (CPQ + WED wishlist) by -- Drago (Dragohe4rt)
+/** cpqCalcAvgLvl */
     public int cpqCalcAvgLvl(int map) {
         int num = 0;
         int avg = 0;
@@ -657,6 +744,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return avg;
     }
 
+/** sendCPQMapLists */
     public boolean sendCPQMapLists() {
         String msg = LanguageConstants.getMessage(getPlayer(), LanguageConstants.CPQPickRoom);
         int msgLen = msg.length();
@@ -685,6 +773,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** fieldTaken */
     public boolean fieldTaken(int field) {
         if (!c.getChannelServer().canInitMonsterCarnival(true, field)) {
             return true;
@@ -698,10 +787,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return !c.getChannelServer().getMapFactory().getMap(980000102 + field * 100).getAllPlayer().isEmpty();
     }
 
+/** fieldLobbied */
     public boolean fieldLobbied(int field) {
         return !c.getChannelServer().getMapFactory().getMap(980000100 + field * 100).getAllPlayer().isEmpty();
     }
 
+/** cpqLobby */
     public void cpqLobby(int field) {
         try {
             final MapleMap map, mapExit;
@@ -726,10 +817,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** 获取ChrById */
     public Character getChrById(int id) {
         return c.getChannelServer().getPlayerStorage().getCharacterById(id);
     }
 
+/** cancelCPQLobby */
     public void cancelCPQLobby() {
         for (PartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
             Character mc = mpc.getPlayer();
@@ -788,6 +881,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return 0;
     }
 
+/** startCPQ */
     public void startCPQ(final Character challenger, final int field) {
         try {
             cancelCPQLobby();
@@ -848,6 +942,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** startCPQ2 */
     public void startCPQ2(final Character challenger, final int field) {
         try {
             cancelCPQLobby();
@@ -900,6 +995,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** sendCPQMapLists2 */
     public boolean sendCPQMapLists2() {
         String msg = LanguageConstants.getMessage(getPlayer(), LanguageConstants.CPQPickRoom);
         int msgLen = msg.length();
@@ -928,6 +1024,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** fieldTaken2 */
     public boolean fieldTaken2(int field) {
         if (!c.getChannelServer().canInitMonsterCarnival(false, field)) {
             return true;
@@ -941,10 +1038,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return !c.getChannelServer().getMapFactory().getMap(980031200 + field * 1000).getAllPlayer().isEmpty();
     }
 
+/** fieldLobbied2 */
     public boolean fieldLobbied2(int field) {
         return !c.getChannelServer().getMapFactory().getMap(980031000 + field * 1000).getAllPlayer().isEmpty();
     }
 
+/** cpqLobby2 */
     public void cpqLobby2(int field) {
         try {
             final MapleMap map, mapExit;
@@ -969,6 +1068,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** mapClock */
     public void mapClock(int time) {
         getPlayer().getMap().broadcastMessage(PacketCreator.getClock(time));
     }
@@ -981,10 +1081,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return c.getWorldServer().getMatchCheckerCoordinator().createMatchConfirmation(MatchCheckerType.CPQ_CHALLENGE, c.getWorld(), getPlayer().getId(), cpqLeaders, cpqType);
     }
 
+/** answerCPQChallenge */
     public void answerCPQChallenge(boolean accept) {
         c.getWorldServer().getMatchCheckerCoordinator().answerMatchConfirmation(getPlayer().getId(), accept);
     }
 
+/** challengeParty2 */
     public void challengeParty2(int field) {
         Character leader = null;
         MapleMap map = c.getChannelServer().getMapFactory().getMap(980031000 + 1000 * field);
@@ -1012,6 +1114,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** challengeParty */
     public void challengeParty(int field) {
         Character leader = null;
         MapleMap map = c.getChannelServer().getMapFactory().getMap(980000100 + 100 * field);
@@ -1053,6 +1156,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return true;
     }
 
+/** startAriantBattle */
     public String startAriantBattle(ExpeditionType expedType, int mapid) {
         if (!GameConstants.isAriantColiseumLobby(mapid)) {
             return "You cannot start an Ariant tournament from outside the Battle Arena Entrance.";
@@ -1093,6 +1197,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** sendMarriageWishlist */
     public void sendMarriageWishlist(boolean groom) {
         Character player = this.getPlayer();
         Marriage marriage = player.getMarriageInstance();
@@ -1110,10 +1215,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
+/** sendMarriageGifts */
     public void sendMarriageGifts(List<Item> gifts) {
         this.getPlayer().sendPacket(WeddingPackets.onWeddingGiftResult((byte) 0xA, Collections.singletonList(""), gifts));
     }
 
+/** createMarriageWishlist */
     public boolean createMarriageWishlist() {
         Marriage marriage = this.getPlayer().getMarriageInstance();
         if (marriage != null) {

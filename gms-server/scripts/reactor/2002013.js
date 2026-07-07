@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Ronan
- * 
- * 2002013.js: Drops the Statue piece.
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2002013
+ * 功能描述：反应堆触发后掉落地图物品。
+ * 原作者：Ronan
+ */
 function act() {
     rm.dropItems();
 }

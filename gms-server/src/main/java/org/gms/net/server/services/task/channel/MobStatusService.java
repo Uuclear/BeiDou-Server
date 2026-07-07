@@ -32,6 +32,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 怪物状态效果调度服务，按地图分区定时刷新怪物 Buff/Debuff 状态。
+ *
  * @author Ronan
  */
 public class MobStatusService extends BaseService {

@@ -12,7 +12,8 @@ import org.gms.util.RequireUtil;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 后面如有商城相关，叫cashShop
+ * NPC 游戏币商店管理控制器，维护商店及商品（非点券商城）的查询与 CRUD。
+ * 点券商城相关接口见 CashShopController，本控制器委托 ShopService 操作 shops 数据表。
  */
 @RestController
 @AllArgsConstructor
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.*;
 public class ShopController {
     private final ShopService shopService;
 
+    /**
+     * 分页获取商店列表。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "分页获取商店列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getShopList")
@@ -27,6 +34,12 @@ public class ShopController {
         return ResultBody.success(request, shopService.getShopList(request.getData()));
     }
 
+    /**
+     * 根据商店id分页获取商品列表。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据商店id分页获取商品列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getShopItemList")
@@ -34,6 +47,12 @@ public class ShopController {
         return ResultBody.success(request, shopService.getShopItemList(request.getData()));
     }
 
+    /**
+     * 根据id查询商品信息。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id查询商品信息")
     @GetMapping("/" + ApiConstant.LATEST + "/getShopItem/{id}")
@@ -41,6 +60,12 @@ public class ShopController {
         return ResultBody.success(shopService.getShopItem(id));
     }
 
+    /**
+     * 新增商品信息，返回新增的商品id。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "新增商品信息，返回新增的商品id")
     @PutMapping("/" + ApiConstant.LATEST + "/addShopItem")
@@ -49,6 +74,12 @@ public class ShopController {
         return ResultBody.success(request, shopService.modifyShopItem(request.getData(), false));
     }
 
+    /**
+     * 根据id更新商品信息。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id更新商品信息")
     @PostMapping("/" + ApiConstant.LATEST + "/updateShopItem")
@@ -58,6 +89,12 @@ public class ShopController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 根据id删除商品信息。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id删除商品信息")
     @DeleteMapping("/" + ApiConstant.LATEST + "/deleteShopItem/{id}")

@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 跨频道邀请协调器，管理家族、公会、组队等邀请的待处理状态与结果。
+ *
  * @author Ronan
  */
 public class InviteCoordinator {

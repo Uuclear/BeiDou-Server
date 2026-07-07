@@ -29,6 +29,12 @@ import org.gms.server.quest.actions.ExpAction;
 import org.gms.server.quest.actions.MesoAction;
 
 /**
+ * 任务脚本对话 API，向 GraalJS 注入为变量 {@code qm}。
+ * <p>
+ * 继承 {@link NPCConversationManager}，区分任务开始（{@link #isStart()}）与结束阶段，
+ * 奖励发放走任务系统 {@link ExpAction}/{@link MesoAction} 以正确更新任务状态。
+ * </p>
+ *
  * @author RMZero213
  */
 public class QuestActionManager extends NPCConversationManager {
@@ -41,43 +47,52 @@ public class QuestActionManager extends NPCConversationManager {
         this.start = start;
     }
 
+/** 获取当前任务 ID */
     public int getQuest() {
         return quest;
     }
 
+/** 当前脚本是否为任务开始阶段 */
     public boolean isStart() {
         return start;
     }
 
     @Override
+/** 销毁事件实例并清理资源 */
     public void dispose() {
         QuestScriptManager.getInstance().dispose(this, getClient());
     }
 
+/** forceStartQuest */
     public boolean forceStartQuest() {
         return forceStartQuest(quest);
     }
 
+/** forceCompleteQuest */
     public boolean forceCompleteQuest() {
         return forceCompleteQuest(quest);
     }
 
     // For compatibility with some older scripts...
+/** startQuest */
     public void startQuest() {
         forceStartQuest();
     }
 
     // For compatibility with some older scripts...
+/** completeQuest */
     public void completeQuest() {
         forceCompleteQuest();
     }
 
     @Override
+/** gainExp */
     public void gainExp(int gain) {
         ExpAction.runAction(getPlayer(), gain);
     }
 
     @Override
+/** gainMeso */
     public void gainMeso(int gain) {
         MesoAction.runAction(getPlayer(), gain);
     }

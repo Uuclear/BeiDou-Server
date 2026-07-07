@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Ronan
+ * 客户端-服务端通信操作码（Opcode）相关常量定义。
  */
 public class OpcodeConstants {
     public static Map<Integer, String> sendOpcodeNames = new HashMap<>();

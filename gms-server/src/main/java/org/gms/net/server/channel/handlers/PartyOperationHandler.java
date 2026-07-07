@@ -38,8 +38,13 @@ import org.gms.util.PacketCreator;
 
 import java.util.List;
 
+/**
+ * 处理客户端 PARTY_OPERATION（组队操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PARTY_OPERATION}</p>
+ */
 public final class PartyOperationHandler extends AbstractPacketHandler {
 
+    /** 处理 组队操作 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int operation = p.readByte();

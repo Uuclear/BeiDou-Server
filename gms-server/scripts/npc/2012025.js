@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2012025
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ */
 function start() {
     if (cm.haveItem(4031576)) {
         var em = cm.getEventManager("Genie");

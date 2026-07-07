@@ -21,6 +21,17 @@
 */
 package org.gms.net.opcodes;
 
+/**
+ * 客户端发往服务端的接收操作码（RecvOpcode）枚举，定义 v83 协议中 C→S 封包类型。
+ * <p>
+ * 每个枚举常量的 {@link #getValue()} 对应解密后封包载荷的前 2 字节（小端序 short）。
+ * {@link org.gms.net.PacketProcessor} 以该值为下标将封包分发到对应的 {@link org.gms.net.PacketHandler}。
+ * </p>
+ * <p>
+ * 登录阶段操作码（如 {@link #LOGIN_PASSWORD}、{@link #CHAR_SELECT}）由登录服处理；
+ * 游戏内操作码（如 {@link #MOVE_PLAYER}、{@link #GENERAL_CHAT}）由频道服处理。
+ * </p>
+ */
 public enum RecvOpcode implements Opcode {
     CUSTOM_PACKET(0x3713),//13 37 lol // 自定义封包
 
@@ -214,11 +225,13 @@ public enum RecvOpcode implements Opcode {
         this.code = code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getValue() {
         return code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getName() {
         return this.name();

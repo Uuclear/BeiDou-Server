@@ -1,3 +1,7 @@
+/**
+ * 用户登录信息路由守卫
+ * 已登录则拉取用户信息；未登录则重定向到登录页并携带 redirect 参数。
+ */
 import type { Router, LocationQueryRaw } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
 

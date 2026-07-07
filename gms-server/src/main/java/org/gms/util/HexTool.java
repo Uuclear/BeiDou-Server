@@ -26,41 +26,37 @@ import org.gms.constants.string.CharsetConstants;
 import java.util.HexFormat;
 
 /**
- * Handles converting back and forth from byte arrays to hex strings.
+ * 十六进制与字节数组互转工具，以及按客户端字符集将字节转为可读字符串。
  */
 public class HexTool {
 
     /**
-     * Convert a byte array to its hex string representation (upper case).
-     * Each byte value is converted to two hex characters delimited by a space.
+     * 将字节数组转为大写十六进制字符串，字节间以空格分隔。
+     * <p>示例：{@code {1, 16, 127, -1}} → {@code "01 F0 7F FF"}
      *
-     * @param bytes Byte array to convert to a hex string.
-     *              Example: {1, 16, 127, -1} is converted to "01 F0 7F FF"
-     * @return The hex string
+     * @param bytes 待转换的字节数组
+     * @return 带空格分隔的十六进制字符串
      */
     public static String toHexString(byte[] bytes) {
         return HexFormat.ofDelimiter(" ").withUpperCase().formatHex(bytes);
     }
 
     /**
-     * Convert a byte array to its hex string representation (upper case).
-     * Like {@link #toHexString(byte[]) HexTool.toString}, but with no space delimiter.
+     * 将字节数组转为紧凑的大写十六进制字符串（无空格分隔）。
      *
-     * @return The compact hex string
+     * @param bytes 待转换的字节数组
+     * @return 紧凑十六进制字符串
      */
     public static String toCompactHexString(byte[] bytes) {
         return HexFormat.of().withUpperCase().formatHex(bytes);
     }
 
     /**
-     * Convert a hex string to its byte array representation. Two consecutive hex characters are converted to one byte.
+     * 将十六进制字符串解析为字节数组；每两个十六进制字符对应一个字节。
+     * <p>大小写均可，是否含空格均可。示例：{@code "01 10 7F FF"} → {@code {1, 16, 127, -1}}
      *
-     * @param hexString Hex string to convert to bytes. May be lower or upper case, and hex character pairs may be
-     *                  delimited by a space or not.
-     *                  Example: "01 10 7F FF" is converted to {1, 16, 127, -1}.
-     *                  The following hex strings are considered identical and are converted to the same byte array:
-     *                  "01 10 7F FF", "01107FFF", "01 10 7f ff", "01107fff"
-     * @return The byte array
+     * @param hexString 十六进制字符串
+     * @return 解析后的字节数组
      */
     public static byte[] toBytes(String hexString) {
         return HexFormat.of().parseHex(removeAllSpaces(hexString));
@@ -70,6 +66,12 @@ public class HexTool {
         return input.replaceAll("\\s", "");
     }
 
+    /**
+     * 按当前客户端字符集将字节数组转为可读字符串；控制字符（0–31）显示为 {@code '.'}。
+     *
+     * @param bytes 原始字节数组
+     * @return 可读字符串表示
+     */
     public static String toStringFromCharset(final byte[] bytes) {
         byte[] filteredBytes = new byte[bytes.length];
         for (int i = 0; i < bytes.length; i++) {

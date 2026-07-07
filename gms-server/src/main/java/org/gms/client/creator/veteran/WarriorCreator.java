@@ -16,24 +16,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.creator.veteran;
-
-import org.gms.client.Client;
-import org.gms.client.Job;
-import org.gms.client.Skill;
-import org.gms.client.SkillFactory;
-import org.gms.client.creator.CharacterFactory;
-import org.gms.client.creator.CharacterFactoryRecipe;
-import org.gms.client.inventory.InventoryType;
-import org.gms.client.inventory.Item;
-import org.gms.constants.id.ItemId;
-import org.gms.constants.id.MapId;
-import org.gms.constants.skills.Warrior;
-import org.gms.server.ItemInformationProvider;
-
 /**
- * @author RonanLana
+ * 战士职业角色创建器。
  */
 public class WarriorCreator extends CharacterFactory {
     private static final int[] equips = {ItemId.RED_HWARANG_SHIRT, 0, ItemId.BLACK_MARTIAL_ARTS_PANTS, 0, ItemId.MITHRIL_BATTLE_GRIEVES};
@@ -93,6 +77,17 @@ public class WarriorCreator extends CharacterFactory {
         recipe.addStartingItem(itemid, quantity, itemType);
     }
 
+    /**
+     * 创建角色
+     * @param c 客户端会话
+     * @param name 名称
+     * @param face face
+     * @param hair hair
+     * @param skin skin
+     * @param gender gender
+     * @param improveSp improveSp
+     * @return 返回值
+     */
     public static int createCharacter(Client c, String name, int face, int hair, int skin, int gender, int improveSp) {
         return createNewCharacter(c, name, face, hair, skin, gender, createRecipe(Job.WARRIOR, 30, MapId.PERION, equips[gender], equips[2 + gender], equips[4], weapons[0], gender, improveSp));
     }

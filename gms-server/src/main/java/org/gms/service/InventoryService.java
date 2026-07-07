@@ -32,6 +32,9 @@ import static org.gms.dao.entity.table.InventoryequipmentDOTableDef.INVENTORYEQU
 import static org.gms.dao.entity.table.InventoryitemsDOTableDef.INVENTORYITEMS_D_O;
 import static org.gms.dao.entity.table.PetignoresDOTableDef.PETIGNORES_D_O;
 
+/**
+ * 背包业务服务，按条件查询玩家背包并支持修改、删除物品条目。
+ */
 @Transactional
 @Service
 @AllArgsConstructor
@@ -42,6 +45,10 @@ public class InventoryService {
     private final PetsMapper petsMapper;
     private final PetignoresMapper petignoresMapper;
 
+    /**
+     * 执行 getInventoryTypeList 相关业务逻辑。
+     * @return List<InventoryTypeRtnDTO> 类型结果
+     */
     public List<InventoryTypeRtnDTO> getInventoryTypeList() {
         List<InventoryTypeRtnDTO> list = new ArrayList<>();
         for (InventoryType value : InventoryType.values()) {
@@ -50,6 +57,12 @@ public class InventoryService {
         return list;
     }
 
+    /**
+     * 执行 getCharacterList 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @return Page<InventorySearchReqDTO> 类型结果
+     */
     public Page<InventorySearchReqDTO> getCharacterList(InventorySearchReqDTO data) {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select(distinct(CHARACTERS_D_O.ID, CHARACTERS_D_O.NAME, CHARACTERS_D_O.ACCOUNTID))
@@ -79,6 +92,12 @@ public class InventoryService {
         );
     }
 
+    /**
+     * 执行 getInventoryList 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @return List<InventorySearchRtnDTO> 类型结果
+     */
     public List<InventorySearchRtnDTO> getInventoryList(InventorySearchReqDTO data) {
         RequireUtil.requireNotNull(data.getInventoryType(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "inventoryType"));
         RequireUtil.requireNotNull(data.getCharacterId(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "characterId"));
@@ -112,6 +131,11 @@ public class InventoryService {
         return rtnDTOList;
     }
 
+    /**
+     * 执行 deleteInventoryByCharacterId 相关业务逻辑。
+     *
+     * @param cid cid
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteInventoryByCharacterId(int cid) {
         QueryWrapper itemQueryWrapper = QueryWrapper.create().where(INVENTORYITEMS_D_O.CHARACTERID.eq(cid));
@@ -262,6 +286,11 @@ public class InventoryService {
         }).toList();
     }
 
+    /**
+     * 执行 updateInventory 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     */
     @Transactional(rollbackFor = Exception.class)
     public void updateInventory(InventorySearchRtnDTO data) {
         modifyInventoryCheck(data);
@@ -351,6 +380,11 @@ public class InventoryService {
                 .build());
     }
 
+    /**
+     * 执行 deleteInventory 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteInventory(InventorySearchRtnDTO data) {
         modifyInventoryCheck(data);
@@ -376,6 +410,12 @@ public class InventoryService {
         }
     }
 
+    /**
+     * 执行 getPetIgnoreByPetId 相关业务逻辑。
+     *
+     * @param petId petId
+     * @return List<PetignoresDO> 类型结果
+     */
     public List<PetignoresDO> getPetIgnoreByPetId(Integer petId) {
         return petignoresMapper.selectListByQuery(QueryWrapper.create().where(PETIGNORES_D_O.PETID.eq(petId)));
     }

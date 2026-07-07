@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：130030000
+ * 功能描述：地图脚本（130030000），控制地图内特殊逻辑。
+ */
 function start(ms) {
     ms.setQuestProgress(20010, 20022, 1);
 }

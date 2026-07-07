@@ -1,8 +1,12 @@
-/*
-	@Author Ronan
-        (Neo Tokyo Teleporter)
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2083006
+ * 功能描述：城镇导游NPC，介绍各地图信息并提供付费传送服务。
+ * 原作者：Ronan
+ */
 var quests = [3719, 3724, 3730, 3736, 3742, 3748];
 var array = ["Year 2021 - Average Town Entrance", "Year 2099 - Midnight Harbor Entrance", "Year 2215 - Bombed City Center Retail District", "Year 2216 - Ruined City Intersection", "Year 2230 - Dangerous Tower Lobby", "Year 2503 - Air Battleship Bow"/*, "Year 2227 - Dangerous City Intersection"*/];
 var limit;

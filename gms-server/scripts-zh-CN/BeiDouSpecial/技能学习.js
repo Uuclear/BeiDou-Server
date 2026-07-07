@@ -1,4 +1,9 @@
 /**
+ * 脚本类型：自定义NPC
+ * 对象 ID：技能学习
+ * 功能描述：BeiDou 技能学习中心，为玩家提供技能学习功能。
+ */
+/**
  * @description 学习技能
  */
 var OldTitle = "#eBeiDou技能学习中心#n\r\n";

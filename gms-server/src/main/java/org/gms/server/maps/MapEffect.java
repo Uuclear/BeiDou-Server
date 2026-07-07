@@ -25,24 +25,44 @@ import org.gms.client.Client;
 import org.gms.net.packet.Packet;
 import org.gms.util.PacketCreator;
 
+/**
+ * 地图视觉效果（如屏幕特效、BGM 变化）。
+ */
 public class MapEffect {
     private final String msg;
     private final int itemId;
     private final boolean active = true;
 
+    /**
+     * 构造 MapEffect 实例。
+     * @param msg msg
+     * @param itemId 物品 ID
+     */
     public MapEffect(String msg, int itemId) {
         this.msg = msg;
         this.itemId = itemId;
     }
 
+    /**
+     * 执行 make、Destroy、数据 操作。
+     * @return Packet 类型结果
+     */
     public final Packet makeDestroyData() {
         return PacketCreator.removeMapEffect();
     }
 
+    /**
+     * 执行 make、Start、数据 操作。
+     * @return Packet 类型结果
+     */
     public final Packet makeStartData() {
         return PacketCreator.startMapEffect(msg, itemId, active);
     }
 
+    /**
+     * 执行 send、Start、数据 操作。
+     * @param client client
+     */
     public void sendStartData(Client client) {
         client.sendPacket(makeStartData());
     }

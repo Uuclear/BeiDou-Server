@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：0_EXAMPLE
+ * 功能描述：组队任务（PQ）事件实例，管理队伍、地图与奖励。
+ */
 // 事件实例化变量
 var isPq = true; // 是否为PQ（Party Quest）类型事件。
 var minPlayers, maxPlayers; // 该事件实例允许的队伍成员数量范围。

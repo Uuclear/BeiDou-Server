@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：adviceMap
+ * 功能描述：地图传送门入口脚本。
+ */
 function enter(pi) {
     pi.showInstruction("按#e#b[Up]#k箭头#n进入光圈移动到下一个地图。", 230, 5);
     return true;

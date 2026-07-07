@@ -37,6 +37,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
+ * 脚本管理器抽象基类，封装 GraalJS 引擎的创建、加载与缓存逻辑。
+ * <p>
+ * 子类（NPC、事件、传送门等）通过 {@link #getInvocableScriptEngine(String)} 获取可执行脚本引擎，
+ * 并依赖本类实现脚本目录的国际化回退（{@code scripts-语言/} → {@code scripts/}）。
+ * </p>
+ *
  * @author Matze
  */
 public abstract class AbstractScriptManager {
@@ -44,10 +50,23 @@ public abstract class AbstractScriptManager {
     private static final String SCRIPT_DIRECTORY = "scripts";
     private final ScriptEngineFactory sef;
 
+    /**
+     * 初始化 GraalJS 脚本引擎工厂。
+     */
     protected AbstractScriptManager() {
         sef = new ScriptEngineManager().getEngineByName("graal.js").getFactory();
     }
 
+    /**
+     * 按相对路径加载并执行脚本，返回 GraalJS 引擎实例。
+     * <p>
+     * 优先从语言目录 {@code scripts-语言/} 加载，缺失时回退到默认 {@code scripts/} 目录。
+     * 加载或执行失败时返回 {@code null}。
+     * </p>
+     *
+     * @param path 相对于脚本根目录的路径，例如 {@code "npc/1002000.js"}
+     * @return 已执行脚本的 GraalJS 引擎，脚本不存在或执行失败时为 {@code null}
+     */
     protected ScriptEngine getInvocableScriptEngine(String path) {
         // 读取当前服务端语言配置，用于拼出 scripts-语言 目录名，例如 scripts-zh-CN。
         ServiceProperty serviceProperty = ServerManager.getApplicationContext().getBean(ServiceProperty.class);
@@ -87,6 +106,13 @@ public abstract class AbstractScriptManager {
         return graalScriptEngine;
     }
 
+    /**
+     * 按客户端缓存加载脚本引擎，同一客户端重复请求同一脚本时复用已加载的引擎。
+     *
+     * @param path 相对于脚本根目录的路径
+     * @param c    当前客户端连接，用于读写脚本引擎缓存
+     * @return 已执行脚本的 GraalJS 引擎
+     */
     protected ScriptEngine getInvocableScriptEngine(String path, Client c) {
         // 缓存键统一使用默认脚本前缀加相对路径，避免读取和写入缓存时使用不同 key。
         String scriptKey = SCRIPT_DIRECTORY + "/" + path;
@@ -110,6 +136,12 @@ public abstract class AbstractScriptManager {
         bindings.put("polyglot.js.allowHostClassLookup", true);
     }
 
+    /**
+     * 清除指定脚本在客户端上的引擎缓存，用于脚本结束或重载后释放上下文。
+     *
+     * @param path 相对于脚本根目录的路径
+     * @param c    当前客户端连接
+     */
     protected void resetContext(String path, Client c) {
         // 重置时使用同一个缓存 key，确保能清掉上面 setScriptEngine 写入的脚本引擎。
         c.removeScriptEngine(SCRIPT_DIRECTORY + "/" + path);

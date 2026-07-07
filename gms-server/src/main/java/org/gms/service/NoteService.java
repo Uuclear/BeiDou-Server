@@ -15,6 +15,9 @@ import java.util.Optional;
 
 import static org.gms.dao.entity.table.NotesDOTableDef.NOTES_D_O;
 
+/**
+ * 便签/留言业务服务，管理玩家便签或系统通知相关数据。
+ */
 @Service
 @AllArgsConstructor
 @Slf4j

@@ -7,6 +7,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.sql.Date;
 
+/**
+ * GM 修改账号请求 DTO，可更新密码、NX 点数、角色栏位、封禁状态等账号级字段。
+ */
 @Data
 public class UpdateAccountByGmDTO implements Serializable {
     private String newPwd;

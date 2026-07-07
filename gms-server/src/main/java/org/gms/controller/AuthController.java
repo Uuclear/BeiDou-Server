@@ -11,11 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * 认证控制器，提供 REST 层登录、登出与令牌刷新入口。
+ * 作为 BeiDou-Server 安全链路的对外接口，接收前端凭证请求并委托 AuthService 完成 JWT 签发与续期。
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
 
+    /**
+     * 构造 AuthController。
+     *
+     * @param authService authService
+     */
     @Autowired
     public AuthController(AuthService authService) {
         this.authService = authService;
@@ -28,6 +37,10 @@ public class AuthController {
         return ResultBody.success(authService.getToken(data.getData().get("username"), data.getData().get("password")));
     }
 
+    /**
+     * 登出。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/auth/" + ApiConstant.LATEST)
     @Operation(summary = "登出")
     @DeleteMapping("/" + ApiConstant.LATEST + "/logout")

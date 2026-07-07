@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `queststatus` 的实体类（DO）。
+ * <p>
+ * 任务状态表，记录角色对各任务的接取、完成与放弃状态。
  */
 @Data
 @Builder

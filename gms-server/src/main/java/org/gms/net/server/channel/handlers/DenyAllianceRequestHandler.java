@@ -26,10 +26,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.net.server.guild.Alliance;
 
 /**
- * @author Ronan
+ * 处理客户端 DENY_ALLIANCE_REQUEST（拒绝联盟请求） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#DENY_ALLIANCE_REQUEST}</p>
  */
 public final class DenyAllianceRequestHandler extends AbstractPacketHandler {
 
+    /** 处理 拒绝联盟请求 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readByte();

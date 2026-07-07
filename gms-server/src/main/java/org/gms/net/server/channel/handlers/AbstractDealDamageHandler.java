@@ -67,6 +67,9 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 攻击伤害计算抽象基类，封装近战/远程/魔法攻击的通用伤害逻辑，供具体攻击处理器继承。
+ */
 public abstract class AbstractDealDamageHandler extends AbstractPacketHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ItemPickupHandler.class);

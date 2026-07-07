@@ -84,15 +84,19 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 怪物运行时实例。管理 HP/MP、仇恨控制器、状态异常、技能释放、掉落触发、自爆及与地图/队伍的交互。
+ */
 public class Monster extends AbstractLoadedLife {
     private static final Logger log = LoggerFactory.getLogger(Monster.class);
 
-    private ChangeableStats ostats = null;  //unused, v83 WZs offers no support for changeable stats.
+    private ChangeableStats ostats = null;  //未使用，v83 WZ 不支持可变更属性。
     private MonsterStats stats;
     private final AtomicInteger hp = new AtomicInteger(1);
     private final AtomicLong maxHpPlusHeal = new AtomicLong(1);
     private int mp;
     private WeakReference<Character> controller = new WeakReference<>(null);
+    // 仇恨控制器状态：是否已拉仇恨、客户端是否已知仇恨、是否被傀儡吸引
     private boolean controllerHasAggro, controllerKnowsAboutAggro, controllerHasPuppet;
     private final Collection<MonsterListener> listeners = new LinkedList<>();
     private final EnumMap<MonsterStatus, MonsterStatusEffect> stati = new EnumMap<>(MonsterStatus.class);
@@ -120,20 +124,35 @@ public class Monster extends AbstractLoadedLife {
     private final Lock animationLock = new ReentrantLock();
     private final Lock aggroUpdateLock = new ReentrantLock();
 
+    /**
+     * 构造 Monster 实例。
+     * @param id ID
+     * @param stats stats
+     */
     public Monster(int id, MonsterStats stats) {
         super(id);
         initWithStats(stats);
     }
 
+    /**
+     * 构造 Monster 实例。
+     * @param monster 怪物
+     */
     public Monster(Monster monster) {
         super(monster);
         initWithStats(monster.stats);
     }
 
+    /**
+     * 执行 lock、怪物 操作。
+     */
     public void lockMonster() {
         externalLock.lock();
     }
 
+    /**
+     * 执行 unlock、怪物 操作。
+     */
     public void unlockMonster() {
         externalLock.unlock();
     }
@@ -147,38 +166,74 @@ public class Monster extends AbstractLoadedLife {
         maxHpPlusHeal.set(hp.get());
     }
 
+    /**
+     * 设置刷新效果。
+     * @param effect effect
+     */
     public void setSpawnEffect(int effect) {
         spawnEffect = effect;
     }
 
+    /**
+     * 获取刷新效果。
+     * @return int 类型结果
+     */
     public int getSpawnEffect() {
         return spawnEffect;
     }
 
+    /**
+     * 执行 disable、掉落 操作。
+     */
     public void disableDrops() {
         this.dropsDisabled = true;
     }
 
+    /**
+     * 执行 enable、掉落 操作。
+     */
     public void enableDrops() {
         this.dropsDisabled = false;
     }
 
+    /**
+     * 执行 drops、Disabled 操作。
+     * @return boolean 类型结果
+     */
     public boolean dropsDisabled() {
         return dropsDisabled;
     }
 
+    /**
+     * 设置地图。
+     * @param map 地图名称
+     */
     public void setMap(MapleMap map) {
         this.map = map;
     }
 
+    /**
+     * 获取Parent、怪物、对象 ID。
+     * @return int 类型结果
+     */
     public int getParentMobOid() {
         return parentMobOid;
     }
 
+    /**
+     * 设置Parent、怪物、对象 ID。
+     * @param parentMobId parentMobId
+     */
     public void setParentMobOid(int parentMobId) {
         this.parentMobOid = parentMobId;
     }
 
+    /**
+     * 统计Available、怪物、Summons数量。
+     * @param summonsSize summonsSize
+     * @param skillLimit skillLimit
+     * @return int 类型结果
+     */
     public int countAvailableMobSummons(int summonsSize, int skillLimit) {    // limit prop for summons has another conotation, found thanks to MedicOP
         int summonsCount;
 
@@ -192,6 +247,10 @@ public class Monster extends AbstractLoadedLife {
         return Math.min(summonsSize, skillLimit - summonsCount);
     }
 
+    /**
+     * 添加Summoned、怪物。
+     * @param mob 怪物
+     */
     public void addSummonedMob(Monster mob) {
         Set<Integer> calledOids = this.calledMobOids;
         if (calledOids == null) {
@@ -223,10 +282,18 @@ public class Monster extends AbstractLoadedLife {
         this.calledMobOids = null;
     }
 
+    /**
+     * 执行 push、移除、After、动作 操作。
+     * @param run run
+     */
     public void pushRemoveAfterAction(Runnable run) {
         this.removeAfterAction = run;
     }
 
+    /**
+     * 执行 pop、移除、After、动作 操作。
+     * @return Runnable 类型结果
+     */
     public Runnable popRemoveAfterAction() {
         Runnable r = this.removeAfterAction;
         this.removeAfterAction = null;
@@ -234,10 +301,19 @@ public class Monster extends AbstractLoadedLife {
         return r;
     }
 
+    /**
+     * 获取HP。
+     * @return int 类型结果
+     */
     public int getHp() {
         return hp.get();
     }
 
+    /**
+     * 添加HP。
+     * @param hp hp
+     * @return synchronized void 类型结果
+     */
     public synchronized void addHp(int hp) {
         if (this.hp.get() <= 0) {
             return;
@@ -245,19 +321,36 @@ public class Monster extends AbstractLoadedLife {
         this.hp.addAndGet(hp);
     }
 
+    /**
+     * 设置Starting、HP。
+     * @param hp hp
+     * @return synchronized void 类型结果
+     */
     public synchronized void setStartingHp(int hp) {
         stats.setHp(hp);    // refactored mob stats after non-static HP pool suggestion thanks to twigs
         this.hp.set(hp);
     }
 
+    /**
+     * 获取MaxHP。
+     * @return int 类型结果
+     */
     public int getMaxHp() {
         return stats.getHp();
     }
 
+    /**
+     * 获取MP。
+     * @return int 类型结果
+     */
     public int getMp() {
         return mp;
     }
 
+    /**
+     * 设置MP。
+     * @param mp mp
+     */
     public void setMp(int mp) {
         if (mp < 0) {
             mp = 0;
@@ -265,50 +358,99 @@ public class Monster extends AbstractLoadedLife {
         this.mp = mp;
     }
 
+    /**
+     * 获取MaxMP。
+     * @return int 类型结果
+     */
     public int getMaxMp() {
         return stats.getMp();
     }
 
+    /**
+     * 获取经验。
+     * @return int 类型结果
+     */
     public int getExp() {
         return stats.getExp();
     }
 
+    /**
+     * 获取等级。
+     * @return int 类型结果
+     */
     public int getLevel() {
         return stats.getLevel();
     }
 
+    /**
+     * 获取CP。
+     * @return int 类型结果
+     */
     public int getCP() {
         return stats.getCP();
     }
 
+    /**
+     * 获取队伍。
+     * @return int 类型结果
+     */
     public int getTeam() {
         return team;
     }
 
+    /**
+     * 设置队伍。
+     * @param team team
+     */
     public void setTeam(int team) {
         this.team = team;
     }
 
+    /**
+     * 获取Venom、Multi。
+     * @return int 类型结果
+     */
     public int getVenomMulti() {
         return this.VenomMultiplier;
     }
 
+    /**
+     * 设置Venom、Multi。
+     * @param multiplier multiplier
+     */
     public void setVenomMulti(int multiplier) {
         this.VenomMultiplier = multiplier;
     }
 
+    /**
+     * 获取属性。
+     * @return MonsterStats 类型结果
+     */
     public MonsterStats getStats() {
         return stats;
     }
 
+    /**
+     * 设置属性。
+     * @param stats stats
+     */
     public void setStats(MonsterStats stats) {
         this.stats = stats;
     }
 
+    /**
+     * 判断是否为Boss。
+     * @return boolean 类型结果
+     */
     public boolean isBoss() {
         return stats.isBoss();
     }
 
+    /**
+     * 获取动画时间。
+     * @param name name
+     * @return int 类型结果
+     */
     public int getAnimationTime(String name) {
         return stats.getAnimationTime(name);
     }
@@ -325,6 +467,9 @@ public class Monster extends AbstractLoadedLife {
         return stats.getTagBgColor();
     }
 
+    /**
+     * 设置HP、Zero。
+     */
     public void setHpZero() {     // force HP = 0
         applyAndGetHpDamage(Integer.MAX_VALUE, false);
     }
@@ -354,6 +499,12 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 应用与获取HP伤害。
+     * @param delta delta
+     * @param stayAlive stayAlive
+     * @return synchronized Integer 类型结果
+     */
     public synchronized Integer applyAndGetHpDamage(int delta, boolean stayAlive) {
         int curHp = hp.get();
         if (curHp <= 0) {       // this monster is already dead
@@ -382,10 +533,18 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 销毁/释放地图对象。
+     * @return synchronized void 类型结果
+     */
     public synchronized void disposeMapObject() {     // mob is no longer associated with the map it was in
         hp.set(-1);
     }
 
+    /**
+     * 向地图广播怪物HPBar。
+     * @param from from
+     */
     public void broadcastMobHpBar(Character from) {
         if (hasBossHPBar()) {
             from.setPlayerAggro(this.hashCode());
@@ -406,6 +565,13 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 执行 damage 操作。
+     * @param attacker attacker
+     * @param damage 伤害值
+     * @param stayAlive stayAlive
+     * @return boolean 类型结果
+     */
     public boolean damage(Character attacker, int damage, boolean stayAlive) {
         boolean lastHit = false;
 
@@ -485,10 +651,21 @@ public class Monster extends AbstractLoadedLife {
         broadcastMobHpBar(from);
     }
 
+    /**
+     * 应用Fake、伤害。
+     * @param from from
+     * @param damage 伤害值
+     * @param stayAlive stayAlive
+     */
     public void applyFakeDamage(Character from, int damage, boolean stayAlive) {
         applyDamage(from, damage, stayAlive, true);
     }
 
+    /**
+     * 执行 heal 操作。
+     * @param hp hp
+     * @param mp mp
+     */
     public void heal(int hp, int mp) {
         Integer hpHealed = applyAndGetHpDamage(-hp, false);
         if (hpHealed == null) {
@@ -510,6 +687,11 @@ public class Monster extends AbstractLoadedLife {
         dispatchMonsterHealed(hpHealed);
     }
 
+    /**
+     * 判断是否为Attacked、按。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean isAttackedBy(Character chr) {
         return takenDamage.containsKey(chr.getId());
     }
@@ -776,6 +958,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 检索相关掉落。
+     * @return List<MonsterDropEntry> 类型结果
+     */
     public List<MonsterDropEntry> retrieveRelevantDrops() {
         if (this.getStats().isFriendly()) {     // thanks Conrad for noticing friendly mobs not spawning loots after a recent update
             return MonsterInformationProvider.getInstance().retrieveEffectiveDrop(this.getId());
@@ -794,6 +980,11 @@ public class Monster extends AbstractLoadedLife {
         return LootManager.retrieveRelevantDrops(this.getId(), lootChars);
     }
 
+    /**
+     * 击杀按。
+     * @param killer killer
+     * @return Character 类型结果
+     */
     public Character killBy(final Character killer) {
         distributeExperience(killer != null ? killer.getId() : 0);
 
@@ -869,6 +1060,10 @@ public class Monster extends AbstractLoadedLife {
         return looter != null ? looter : killer;
     }
 
+    /**
+     * 掉落来自友好怪物。
+     * @param delay 延迟（毫秒）
+     */
     public void dropFromFriendlyMonster(long delay) {
         final Monster m = this;
         monsterItemDrop = TimerManager.getInstance().register(() -> {
@@ -913,6 +1108,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 执行 dispatch、怪物、Killed 操作。
+     * @param hasKiller hasKiller
+     */
     public void dispatchMonsterKilled(boolean hasKiller) {
         processMonsterKilled(hasKiller);
 
@@ -994,6 +1193,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 获取Highest、Damager、ID。
+     * @return int 类型结果
+     */
     public int getHighestDamagerId() {
         int curId = 0;
         long curDmg = 0;
@@ -1006,10 +1209,18 @@ public class Monster extends AbstractLoadedLife {
         return curId;
     }
 
+    /**
+     * 判断是否为存活。
+     * @return boolean 类型结果
+     */
     public boolean isAlive() {
         return this.hp.get() > 0;
     }
 
+    /**
+     * 添加监听器。
+     * @param listener listener
+     */
     public void addListener(MonsterListener listener) {
         statiLock.lock();
         try {
@@ -1019,6 +1230,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 获取控制器。
+     * @return Character 类型结果
+     */
     public Character getController() {
         return controller.get();
     }
@@ -1027,6 +1242,10 @@ public class Monster extends AbstractLoadedLife {
         this.controller = new WeakReference<>(controller);
     }
 
+    /**
+     * 判断是否为控制器Has仇恨。
+     * @return boolean 类型结果
+     */
     public boolean isControllerHasAggro() {
         return !fake && controllerHasAggro;
     }
@@ -1037,6 +1256,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 判断是否为控制器、Knows、About、仇恨。
+     * @return boolean 类型结果
+     */
     public boolean isControllerKnowsAboutAggro() {
         return !fake && controllerKnowsAboutAggro;
     }
@@ -1051,14 +1274,26 @@ public class Monster extends AbstractLoadedLife {
         this.controllerHasPuppet = controllerHasPuppet;
     }
 
+    /**
+     * 执行 make、Boss、H、P、Bar、数据包 操作。
+     * @return Packet 类型结果
+     */
     public Packet makeBossHPBarPacket() {
         return PacketCreator.showBossHP(getId(), getHp(), getMaxHp(), getTagColor(), getTagBgColor());
     }
 
+    /**
+     * 判断是否拥有Boss、H、P、Bar。
+     * @return boolean 类型结果
+     */
     public boolean hasBossHPBar() {
         return isBoss() && getTagColor() > 0;
     }
 
+    /**
+     * 执行 send、刷新、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendSpawnData(Client client) {
         if (hp.get() <= 0) { // mustn't monsterLock this function
@@ -1075,21 +1310,37 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendDestroyData(Client client) {
         client.sendPacket(PacketCreator.killMonster(getObjectId(), false));
         client.sendPacket(PacketCreator.killMonster(getObjectId(), true));
     }
 
+    /**
+     * 获取类型。
+     * @return MapObjectType 类型结果
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.MONSTER;
     }
 
+    /**
+     * 判断是否为Mobile。
+     * @return boolean 类型结果
+     */
     public boolean isMobile() {
         return stats.isMobile();
     }
 
+    /**
+     * 判断是否为Facing、剩余。
+     * @return boolean 类型结果
+     */
     @Override
     public boolean isFacingLeft() {
         int fixedStance = stats.getFixedStance();    // thanks DimDiDima for noticing inconsistency on some AOE mobskills
@@ -1100,6 +1351,11 @@ public class Monster extends AbstractLoadedLife {
         return super.isFacingLeft();
     }
 
+    /**
+     * 获取元素克制。
+     * @param e e
+     * @return ElementalEffectiveness 类型结果
+     */
     public ElementalEffectiveness getElementalEffectiveness(Element e) {
         statiLock.lock();
         try {
@@ -1149,10 +1405,27 @@ public class Monster extends AbstractLoadedLife {
         return animationTime;
     }
 
+    /**
+     * 应用状态。
+     * @param from from
+     * @param status status
+     * @param poison poison
+     * @param duration duration
+     * @return boolean 类型结果
+     */
     public boolean applyStatus(Character from, final MonsterStatusEffect status, boolean poison, long duration) {
         return applyStatus(from, status, poison, duration, false);
     }
 
+    /**
+     * 应用状态。
+     * @param from from
+     * @param status status
+     * @param poison poison
+     * @param duration duration
+     * @param venom venom
+     * @return boolean 类型结果
+     */
     public boolean applyStatus(Character from, final MonsterStatusEffect status, boolean poison, long duration, boolean venom) {
         switch (getMonsterEffectiveness(status.getSkill().getElement())) {
             case IMMUNE:
@@ -1314,6 +1587,10 @@ public class Monster extends AbstractLoadedLife {
         return true;
     }
 
+    /**
+     * 执行 dispel、技能 操作。
+     * @param skill skill
+     */
     public final void dispelSkill(final MobSkill skill) {
         List<MonsterStatus> toCancel = new ArrayList<>();
         for (Entry<MonsterStatus, MonsterStatusEffect> effects : stati.entrySet()) {
@@ -1327,6 +1604,14 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 应用怪物、Buff。
+     * @param stats stats（MonsterStatus, Integer 列表/集合）
+     * @param x x
+     * @param duration duration
+     * @param skill skill
+     * @param reflection reflection（Integer 列表/集合）
+     */
     public void applyMonsterBuff(final Map<MonsterStatus, Integer> stats, final int x, long duration, MobSkill skill, final List<Integer> reflection) {
         final Runnable cancelTask = () -> {
             if (isAlive()) {
@@ -1361,10 +1646,17 @@ public class Monster extends AbstractLoadedLife {
         service.registerMobStatus(map.getId(), effect, cancelTask, duration);
     }
 
+    /**
+     * 执行 refresh、怪物、位置 操作。
+     */
     public void refreshMobPosition() {
         resetMobPosition(getPosition());
     }
 
+    /**
+     * 重置怪物位置。
+     * @param newPoint newPoint
+     */
     public void resetMobPosition(Point newPoint) {
         aggroRemoveController();
 
@@ -1390,6 +1682,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 执行 debuff、怪物 操作。
+     * @param skillid skillid
+     */
     public void debuffMob(int skillid) {
         MonsterStatus[] statups = {MonsterStatus.WEAPON_ATTACK_UP, MonsterStatus.WEAPON_DEFENSE_UP, MonsterStatus.MAGIC_ATTACK_UP, MonsterStatus.MAGIC_DEFENSE_UP};
         statiLock.lock();
@@ -1429,6 +1725,11 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 判断是否为Buffed。
+     * @param status status
+     * @return boolean 类型结果
+     */
     public boolean isBuffed(MonsterStatus status) {
         statiLock.lock();
         try {
@@ -1438,6 +1739,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 设置Fake。
+     * @param fake fake
+     */
     public void setFake(boolean fake) {
         monsterLock.lock();
         try {
@@ -1447,6 +1752,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 判断是否为Fake。
+     * @return boolean 类型结果
+     */
     public boolean isFake() {
         monsterLock.lock();
         try {
@@ -1456,22 +1765,46 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 获取地图。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getMap() {
         return map;
     }
 
+    /**
+     * 获取地图、仇恨、Coordinator。
+     * @return MonsterAggroCoordinator 类型结果
+     */
     public MonsterAggroCoordinator getMapAggroCoordinator() {
         return map.getAggroCoordinator();
     }
 
+    /**
+     * 获取Skills。
+     * @return Set<MobSkillId> 类型结果
+     */
     public Set<MobSkillId> getSkills() {
         return stats.getSkills();
     }
 
+    /**
+     * 判断是否拥有技能。
+     * @param skillId skillId
+     * @param level level
+     * @return boolean 类型结果
+     */
     public boolean hasSkill(int skillId, int level) {
         return stats.hasSkill(skillId, level);
     }
 
+    /**
+     * 判断是否可以Use技能。
+     * @param toUse toUse
+     * @param apply apply
+     * @return boolean 类型结果
+     */
     public boolean canUseSkill(MobSkill toUse, boolean apply) {
         if (toUse == null || isBuffed(MonsterStatus.SEAL_SKILL)) {
             return false;
@@ -1545,6 +1878,12 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 判断是否可以Use攻击。
+     * @param attackPos attackPos
+     * @param isSkill isSkill
+     * @return int 类型结果
+     */
     public int canUseAttack(int attackPos, boolean isSkill) {
         monsterLock.lock();
         try {
@@ -1603,10 +1942,18 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 判断是否拥有Any技能。
+     * @return boolean 类型结果
+     */
     public boolean hasAnySkill() {
         return this.stats.getNoSkills() > 0;
     }
 
+    /**
+     * 获取Random、技能。
+     * @return MobSkillId 类型结果
+     */
     public MobSkillId getRandomSkill() {
         Set<MobSkillId> skills = stats.getSkills();
         if (skills.size() == 0) {
@@ -1619,10 +1966,18 @@ public class Monster extends AbstractLoadedLife {
                 .orElse(null);
     }
 
+    /**
+     * 判断是否为First、攻击。
+     * @return boolean 类型结果
+     */
     public boolean isFirstAttack() {
         return this.stats.isFirstAttack();
     }
 
+    /**
+     * 获取Buff、到、Give。
+     * @return int 类型结果
+     */
     public int getBuffToGive() {
         return this.stats.getBuffToGive();
     }
@@ -1643,6 +1998,9 @@ public class Monster extends AbstractLoadedLife {
             this.map = chr.getMap();
         }
 
+        /**
+         * 执行动作逻辑。
+         */
         @Override
         public void run() {
             int curHp = hp.get();
@@ -1679,18 +2037,36 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 获取名称。
+     * @return String 类型结果
+     */
     public String getName() {
         return stats.getName();
     }
 
+    /**
+     * 添加Stolen。
+     * @param itemId 物品 ID
+     */
     public void addStolen(int itemId) {
         stolenItems.add(itemId);
     }
 
+    /**
+     * 获取Stolen。
+     * @return List<Integer> 类型结果
+     */
     public List<Integer> getStolen() {
         return stolenItems;
     }
 
+    /**
+     * 设置Temp、克制。
+     * @param e e
+     * @param ee ee
+     * @param milli milli
+     */
     public void setTempEffectiveness(Element e, ElementalEffectiveness ee, long milli) {
         monsterLock.lock();
         try {
@@ -1718,6 +2094,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 执行 already、Buffed、属性 操作。
+     * @return Collection<MonsterStatus> 类型结果
+     */
     public Collection<MonsterStatus> alreadyBuffedStats() {
         statiLock.lock();
         try {
@@ -1727,22 +2107,42 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 获取Banish。
+     * @return BanishInfo 类型结果
+     */
     public BanishInfo getBanish() {
         return stats.getBanishInfo();
     }
 
+    /**
+     * 设置Boss。
+     * @param boss boss
+     */
     public void setBoss(boolean boss) {
         this.stats.setBoss(boss);
     }
 
+    /**
+     * 获取掉落、Period、时间。
+     * @return int 类型结果
+     */
     public int getDropPeriodTime() {
         return stats.getDropPeriod();
     }
 
+    /**
+     * 获取PA伤害。
+     * @return int 类型结果
+     */
     public int getPADamage() {
         return stats.getPADamage();
     }
 
+    /**
+     * 获取Stati。
+     * @return Map<MonsterStatus, MonsterStatusEffect> 类型结果
+     */
     public Map<MonsterStatus, MonsterStatusEffect> getStati() {
         statiLock.lock();
         try {
@@ -1752,6 +2152,11 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 获取Stati。
+     * @param ms ms
+     * @return MonsterStatusEffect 类型结果
+     */
     public MonsterStatusEffect getStati(MonsterStatus ms) {
         statiLock.lock();
         try {
@@ -1763,10 +2168,18 @@ public class Monster extends AbstractLoadedLife {
 
     // ---- one can always have fun trying these pieces of codes below in-game rofl ----
 
+    /**
+     * 获取Changed、属性。
+     * @return ChangeableStats 类型结果
+     */
     public final ChangeableStats getChangedStats() {
         return ostats;
     }
 
+    /**
+     * 获取怪物MaxHP。
+     * @return int 类型结果
+     */
     public final int getMobMaxHp() {
         if (ostats != null) {
             return ostats.hp;
@@ -1774,16 +2187,29 @@ public class Monster extends AbstractLoadedLife {
         return stats.getHp();
     }
 
+    /**
+     * 设置覆盖属性。
+     * @param ostats ostats
+     */
     public final void setOverrideStats(final OverrideMonsterStats ostats) {
         this.ostats = new ChangeableStats(stats, ostats);
         this.hp.set(ostats.getHp());
         this.mp = ostats.getMp();
     }
 
+    /**
+     * 执行 change、等级 操作。
+     * @param newLevel newLevel
+     */
     public final void changeLevel(final int newLevel) {
         changeLevel(newLevel, true);
     }
 
+    /**
+     * 执行 change、等级 操作。
+     * @param newLevel newLevel
+     * @param pqMob pqMob
+     */
     public final void changeLevel(final int newLevel, boolean pqMob) {
         if (!stats.isChangeable()) {
             return;
@@ -1814,6 +2240,11 @@ public class Monster extends AbstractLoadedLife {
         changeLevel((int) (this.getLevel() * getDifficultyRate(difficulty)), pqMob);
     }
 
+    /**
+     * 执行 change、Difficulty 操作。
+     * @param difficulty difficulty
+     * @param pqMob pqMob
+     */
     public final void changeDifficulty(final int difficulty, boolean pqMob) {
         changeLevelByDifficulty(difficulty, pqMob);
     }
@@ -1824,6 +2255,11 @@ public class Monster extends AbstractLoadedLife {
         return summon.getPosition().distanceSq(this.getPosition()) < 177777;
     }
 
+    /**
+     * 判断是否为角色、Puppet、在、Vicinity。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean isCharacterPuppetInVicinity(Character chr) {
         StatEffect mse = chr.getBuffEffect(BuffStat.PUPPET);
         if (mse != null) {
@@ -1840,6 +2276,10 @@ public class Monster extends AbstractLoadedLife {
         return false;
     }
 
+    /**
+     * 判断是否为Leading、Puppet、在、Vicinity。
+     * @return boolean 类型结果
+     */
     public boolean isLeadingPuppetInVicinity() {
         Character chrController = this.getActiveController();
 
@@ -1890,7 +2330,8 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Removes controllability status from the current controller of this mob.
+     * 执行 aggro、移除、控制器 操作。
+     * @return Pair<Character, Boolean> 类型结果
      */
     public Pair<Character, Boolean> aggroRemoveController() {
         Character chrController;
@@ -1919,8 +2360,9 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Pass over the mob controllability and updates aggro status on the new
-     * player controller.
+     * 执行 aggro、Switch、控制器 操作。
+     * @param newController newController
+     * @param immediateAggro immediateAggro
      */
     public void aggroSwitchController(Character newController, boolean immediateAggro) {
         if (aggroUpdateLock.tryLock()) {
@@ -1949,6 +2391,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 执行 aggro、添加、Puppet 操作。
+     * @param player 玩家
+     */
     public void aggroAddPuppet(Character player) {
         MonsterAggroCoordinator mmac = map.getAggroCoordinator();
         mmac.addPuppetAggro(player);
@@ -1960,6 +2406,10 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 执行 aggro、移除、Puppet 操作。
+     * @param player 玩家
+     */
     public void aggroRemovePuppet(Character player) {
         MonsterAggroCoordinator mmac = map.getAggroCoordinator();
         mmac.removePuppetAggro(player.getId());
@@ -1972,8 +2422,7 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Automagically finds a new controller for the given monster from the chars
-     * on the map it is from...
+     * 执行 aggro、更新、控制器 操作。
      */
     public void aggroUpdateController() {
         Character chrController = this.getActiveController();
@@ -2043,8 +2492,7 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Ensures controllability removal of the current player controller, and
-     * fetches for any player on the map to start controlling in place.
+     * 执行 aggro、Redirect、控制器 操作。
      */
     public void aggroRedirectController() {
         this.aggroRemoveController();   // don't care if new controller not found, at least remove current controller
@@ -2052,8 +2500,9 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Returns the current aggro status on the specified player, or null if the
-     * specified player is currently not this mob's controller.
+     * 执行 aggro、Move、生命体、更新 操作。
+     * @param player 玩家
+     * @return Boolean 类型结果
      */
     public Boolean aggroMoveLifeUpdate(Character player) {
         Character chrController = getController();
@@ -2070,8 +2519,8 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Refreshes auto aggro for the player passed as parameter, does nothing if
-     * there is already an active controller for this mob.
+     * 执行 aggro、Auto、仇恨、更新 操作。
+     * @param player 玩家
      */
     public void aggroAutoAggroUpdate(Character player) {
         Character chrController = this.getActiveController();
@@ -2087,8 +2536,9 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Applied damage input for this mob, enough damage taken implies an aggro
-     * target update for the attacker shortly.
+     * 执行 aggro、怪物、伤害 操作。
+     * @param attacker attacker
+     * @param damage 伤害值
      */
     public void aggroMonsterDamage(Character attacker, int damage) {
         MonsterAggroCoordinator mmac = this.getMapAggroCoordinator();
@@ -2144,6 +2594,9 @@ public class Monster extends AbstractLoadedLife {
         chrController.sendPacket(PacketCreator.spawnSummon(puppet, false));
     }
 
+    /**
+     * 执行 aggro、更新、Puppet、Visibility 操作。
+     */
     public void aggroUpdatePuppetVisibility() {
         if (!availablePuppetUpdate) {
             return;
@@ -2185,15 +2638,14 @@ public class Monster extends AbstractLoadedLife {
     }
 
     /**
-     * Clears all applied damage input for this mob, doesn't refresh target
-     * aggro.
+     * 执行 aggro、Clear、Damages 操作。
      */
     public void aggroClearDamages() {
         this.getMapAggroCoordinator().removeAggroEntries(this);
     }
 
     /**
-     * Clears this mob aggro on the current controller.
+     * 执行 aggro、Reset、仇恨 操作。
      */
     public void aggroResetAggro() {
         aggroUpdateLock.lock();
@@ -2205,10 +2657,17 @@ public class Monster extends AbstractLoadedLife {
         }
     }
 
+    /**
+     * 获取移除、After。
+     * @return int 类型结果
+     */
     public final int getRemoveAfter() {
         return stats.removeAfter();
     }
 
+    /**
+     * 执行 dispose 操作。
+     */
     public void dispose() {
         if (monsterItemDrop != null) {
             monsterItemDrop.cancel(false);

@@ -21,12 +21,19 @@ package org.gms.exception;
 
 
 /**
- * @author Ronan
+ * 事件实例进行中异常，表示同一事件实例已在运行，禁止重复创建。
+ * 源自 HeavenMS 事件系统，用于活动副本并发控制。
  */
 public class EventInstanceInProgressException extends Exception {
 
     public static String EIIP_KEY = "Event instance ";
 
+    /**
+     * 构造 EventInstanceInProgressException。
+     *
+     * @param eventName 事件名称
+     * @param eventInstance 事件管理器标识
+     */
     public EventInstanceInProgressException(String eventName, String eventInstance) {
         super(EIIP_KEY + "already in progress - " + eventName + ", EM: " + eventInstance);
     }

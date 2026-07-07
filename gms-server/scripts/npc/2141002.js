@@ -1,9 +1,11 @@
-/*
-	NPC Name: 		The Forgotten Temple Manager
-	Map(s): 		Deep in the Shrine - Twilight of the gods
-	Description: 		Pink Bean
- */
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2141002
+ * 功能描述：The Forgotten Temple Manager，Pink Bean（原版描述）。
+ */
 var status;
 
 function start() {

@@ -1,4 +1,5 @@
 <template>
+  <!-- 装备属性编辑表单（力量、敏捷、攻击等）。 -->
   <a-modal
     v-model:visible="visible"
     :ok-loading="loading"
@@ -86,6 +87,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 装备详细属性编辑弹窗，提交 updateInventory API。
+   */
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
   import { Message } from '@arco-design/web-vue';

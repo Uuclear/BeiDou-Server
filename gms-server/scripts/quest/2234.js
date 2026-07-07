@@ -1,3 +1,8 @@
+/**
+ * 脚本类型：任务
+ * 对象 ID：2234
+ * 功能描述：享受著名冒险家的特权！体验家族特权，将当前声望消耗至 500 或以下，且总声望达到 2000 以证明名望。
+ */
 /*
  * Quest ID : 2234
  * Quest Name : Enjoy the Privileges of a Famous Adventurer!

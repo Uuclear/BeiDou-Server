@@ -27,6 +27,9 @@ import lombok.Data;
 import org.gms.client.Client;
 
 @Data
+/**
+ * GM/玩家命令抽象基类，定义命令的权限等级、描述及执行入口。
+ */
 public abstract class Command {
 
     protected int rank;

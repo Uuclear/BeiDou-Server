@@ -31,11 +31,19 @@ import org.gms.server.life.LifeFactory;
 import org.gms.server.life.Monster;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM4命令：在当前位置召唤特殊血量的巨型蛋糕BOSS
+ */
 public class CakeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("CakeCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

@@ -1,3 +1,8 @@
+/**
+ * 脚本类型：任务
+ * 对象 ID：2232
+ * 功能描述：注册晚辈！Master Al 的任务：将想要指导的角色注册为晚辈，至少注册一名后向 Master Al 报告。
+ */
 /*
  * Quest ID : 2232
  * Quest Name : Registering a Junior!

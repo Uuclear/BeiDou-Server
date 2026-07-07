@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * 
- * 2401001.js: Leafre Reactor - Egg for Phoenix Quest (4th job Bowmaster)
- * 
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2401001
+ * 功能描述：反应堆触发后召唤怪物。
+ * 原作者：Lerk
+ */
 function act() {
     rm.spawnMonster(9300089);
 }

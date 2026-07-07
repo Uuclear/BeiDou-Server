@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2060009
+ * 功能描述：城镇导游NPC，介绍各地图信息并提供付费传送服务。
+ */
 var status = 0;
 var menu;
 var payment = false;

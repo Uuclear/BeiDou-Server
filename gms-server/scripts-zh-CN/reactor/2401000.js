@@ -20,10 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Aexr, Ronan
- * 2401000.js: Horntail's Cave - Summons Horntail.
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2401000
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Aexr, Ronan
+ */
 function act() {
     rm.changeMusic("Bgm14/HonTale");
     if (rm.getReactor().getMap().getMonsterById(8810026) == null) {

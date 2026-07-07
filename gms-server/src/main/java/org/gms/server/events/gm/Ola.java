@@ -29,7 +29,7 @@ import org.gms.util.PacketCreator;
 import java.util.concurrent.ScheduledFuture;
 
 /**
- * @author kevintjuh93
+ * Ola Ola 层叠活动。
  */
 public class Ola {
     private final Character chr;
@@ -37,6 +37,10 @@ public class Ola {
     private long timeStarted = 0;
     private ScheduledFuture<?> schedule = null;
 
+    /**
+     * 构造 Ola 实例。
+     * @param chr 角色
+     */
     public Ola(final Character chr) {
         this.chr = chr;
         this.schedule = TimerManager.getInstance().schedule(() -> {
@@ -47,6 +51,9 @@ public class Ola {
         }, 360000);
     }
 
+    /**
+     * 执行 start、Ola 操作。
+     */
     public void startOla() { // TODO: Messages
         chr.getMap().startEvent();
         chr.sendPacket(PacketCreator.getClock(360));
@@ -57,20 +64,35 @@ public class Ola {
         chr.sendPacket(PacketCreator.serverNotice(0, "The portal has now opened. Press the up arrow key at the portal to enter."));
     }
 
+    /**
+     * 判断是否为计时器、Started。
+     * @return boolean 类型结果
+     */
     public boolean isTimerStarted() {
         return time > 0 && timeStarted > 0;
     }
 
+    /**
+     * 获取时间。
+     * @return long 类型结果
+     */
     public long getTime() {
         return time;
     }
 
+    /**
+     * 重置Times。
+     */
     public void resetTimes() {
         this.time = 0;
         this.timeStarted = 0;
         schedule.cancel(false);
     }
 
+    /**
+     * 获取时间剩余。
+     * @return long 类型结果
+     */
     public long getTimeLeft() {
         return time - (System.currentTimeMillis() - timeStarted);
     }

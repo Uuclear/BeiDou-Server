@@ -24,6 +24,8 @@ import org.gms.net.server.services.BaseScheduler;
 import org.gms.net.server.services.BaseService;
 
 /**
+ * 频道综合调度服务，统一管理地图对象的全局定时更新任务。
+ *
  * @author Ronan
  */
 public class OverallService extends BaseService {   // thanks Alex for suggesting a refactor over the several channel schedulers unnecessarily populating the Channel class

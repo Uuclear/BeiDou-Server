@@ -1,4 +1,7 @@
 package org.gms.constants.net;
+/**
+ * 服务端运行时常量，涵盖版本号、默认配置、网络参数等。
+ */
 
 public class ServerConstants {
 

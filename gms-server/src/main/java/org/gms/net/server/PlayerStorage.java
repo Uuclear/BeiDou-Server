@@ -33,18 +33,27 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * 频道内在线玩家存储，按角色 ID 与名称维护角色引用，读写锁保证并发安全。
+ */
 public class PlayerStorage {
     private final Map<Integer, Character> storage = new LinkedHashMap<>();
     private final Map<String, Character> nameStorage = new LinkedHashMap<>();
     private final Lock rlock;
     private final Lock wlock;
 
+    /** 初始化玩家存储与读写锁。 */
     public PlayerStorage() {
         ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
         this.rlock = readWriteLock.readLock();
         this.wlock = readWriteLock.writeLock();
     }
 
+    /**
+     * 将角色加入当前频道存储。
+     *
+     * @param chr 在线角色
+     */
     public void addPlayer(Character chr) {
         wlock.lock();
         try {
@@ -55,6 +64,12 @@ public class PlayerStorage {
         }
     }
 
+    /**
+     * 按角色 ID 移除并返回角色。
+     *
+     * @param chr 角色 ID
+     * @return 被移除的角色，不存在时返回 null
+     */
     public Character removePlayer(int chr) {
         wlock.lock();
         try {
@@ -69,6 +84,12 @@ public class PlayerStorage {
         }
     }
 
+    /**
+     * 按角色名（不区分大小写）查询在线角色。
+     *
+     * @param name 角色名
+     * @return 匹配的角色，不存在时返回 null
+     */
     public Character getCharacterByName(String name) {
         rlock.lock();
         try {
@@ -78,6 +99,12 @@ public class PlayerStorage {
         }
     }
 
+    /**
+     * 按角色 ID 查询在线角色。
+     *
+     * @param id 角色 ID
+     * @return 匹配的角色，不存在时返回 null
+     */
     public Character getCharacterById(int id) {
         rlock.lock();
         try {
@@ -87,6 +114,7 @@ public class PlayerStorage {
         }
     }
 
+    /** 返回当前频道所有在线角色的副本集合。 */
     public Collection<Character> getAllCharacters() {
         rlock.lock();
         try {
@@ -96,6 +124,7 @@ public class PlayerStorage {
         }
     }
 
+    /** 强制断开所有在线玩家连接并清空存储。 */
     public final void disconnectAll() {
         List<Character> chrList;
         rlock.lock();
@@ -120,6 +149,7 @@ public class PlayerStorage {
         }
     }
 
+    /** 返回当前在线玩家数量。 */
     public int getSize() {
         rlock.lock();
         try {

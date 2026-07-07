@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：WeddingCathedral
+ * 功能描述：游戏事件脚本（WeddingCathedral），管理实例生命周期与玩家进出。
+ */
 /**
  * @author: Ronan
  * @event: Cathedral Wedding

@@ -32,9 +32,14 @@ import org.slf4j.LoggerFactory;
 import org.gms.server.ChatLogger;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 GENERAL_CHAT（通用聊天） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#GENERAL_CHAT}</p>
+ */
 public final class GeneralChatHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(GeneralChatHandler.class);
 
+    /** 处理 通用聊天 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         String s = p.readString();

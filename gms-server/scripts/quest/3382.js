@@ -19,14 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Ronan
-	NPC Name: 	        Yulete
-	Map(s): 		Magatia
-	Description: 		Quest - Yulete's Reward
-	Quest ID: 		3382
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：3382
+ * 功能描述：Yulete，任务相关对话与奖励。
+ * 原作者：Ronan
+ */
 var status = -1;
 
 function end(mode, type, selection) {

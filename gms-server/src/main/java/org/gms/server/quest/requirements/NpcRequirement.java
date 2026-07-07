@@ -28,27 +28,46 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 与指定 NPC 对话需求。
  */
 public class NpcRequirement extends AbstractQuestRequirement {
     private int reqNPC;
 
+    /**
+     * 构造 NpcRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public NpcRequirement(Quest quest, Data data) {
         super(QuestRequirementType.NPC);
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         reqNPC = DataTool.getInt(data);
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return npcid != null && npcid == reqNPC;
     }
 
+    /**
+     * 执行 get 操作。
+     * @return int 类型结果
+     */
     public int get() {
         return reqNPC;
     }

@@ -29,6 +29,12 @@ import org.gms.scripting.AbstractPlayerInteraction;
 import org.gms.server.quest.Quest;
 import org.gms.util.PacketCreator;
 
+/**
+ * 地图脚本 API，作为 {@code start} 函数参数传入地图 JS 脚本。
+ * <p>
+ * 封装职业引导动画、探索勋章任务进度等地图进入时常用的客户端演出与任务逻辑。
+ * </p>
+ */
 public class MapScriptMethods extends AbstractPlayerInteraction {
 
     private final String rewardstring = " 勋章挑战已完成！请找勋章老人领取你的勋章。";
@@ -37,6 +43,7 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
         super(c);
     }
 
+/** 播放皇家骑士团职业引导 */
     public void displayCygnusIntro() {
         switch (c.getPlayer().getMapId()) {
             case MapId.CYGNUS_INTRO_LEAD -> {
@@ -55,6 +62,7 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
         }
     }
 
+/** 播放战神地图引导动画 */
     public void displayAranIntro() {
         switch (c.getPlayer().getMapId()) {
             case MapId.ARAN_TUTO_1 -> {
@@ -71,6 +79,7 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
         }
     }
 
+/** 播放冒险家职业体验动画 */
     public void startExplorerExperience() {
         switch (c.getPlayer().getMapId()) {
         case 1020100: //Swordman
@@ -91,16 +100,19 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
         }
     }
 
+/** 播放前往冒险岛动画 */
     public void goAdventure() {
         lockUI();
         c.sendPacket(PacketCreator.showIntro("Effect/Direction3.img/goAdventure/Scene" + c.getPlayer().getGender()));
     }
 
+/** 播放前往利弩斯动画 */
     public void goLith() {
         lockUI();
         c.sendPacket(PacketCreator.showIntro("Effect/Direction3.img/goLith/Scene" + c.getPlayer().getGender()));
     }
 
+/** 处理探索者勋章任务进度 */
     public void explorerQuest(short questid, String questName) {
         Quest quest = Quest.getInstance(questid);
         if (isQuestCompleted(questid)) {
@@ -119,8 +131,7 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
         String status = Integer.toString(qs.getMedalProgress());
         String infoex = qs.getInfoEx(0);
 
-        // explorer quests all have an infoex/infonumber requirement that points to another quest
-        // THAT quest's progress needs to be updated for Quest.canComplete() to return true
+        // explorer 勋章任务：infoex 指向另一任务的进度字段，需同步更新才能通过 Quest.canComplete()
         getPlayer().setQuestProgress(quest.getId(), (int)quest.getInfoNumber(qs.getStatus()), status);
 
         StringBuilder smp = new StringBuilder();

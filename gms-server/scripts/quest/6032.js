@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：6032
+ * 功能描述：任务对话脚本，推进任务剧情与分支选择。
+ */
 /* 
 	Quest: Meren's Class on the Actual Practice
  */

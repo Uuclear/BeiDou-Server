@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21100
+ * 功能描述：rmation available is that there were five of them. There is nothing about who they were or what they looked like. Is there anything you remember? Anything at all?", 8);（原版描述）。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

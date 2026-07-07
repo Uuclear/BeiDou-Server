@@ -36,11 +36,19 @@ import org.gms.util.I18nUtil;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * GM3命令：击杀当前地图所有怪物
+ */
 public class KillAllCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("KillAllCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

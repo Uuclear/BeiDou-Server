@@ -18,20 +18,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client;
-
-import org.gms.util.CashIdGenerator;
-import org.gms.util.DatabaseConnection;
-import org.gms.util.Pair;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 /**
- * @author Danny
+ * 戒指数据模型，管理结婚/好友戒指的配对信息。
  */
 public class Ring implements Comparable<Ring> {
     private final int ringId;
@@ -41,6 +29,14 @@ public class Ring implements Comparable<Ring> {
     private final String partnerName;
     private boolean equipped = false;
 
+    /**
+     * 戒指
+     * @param id ID
+     * @param id2 id2
+     * @param partnerId partnerId
+     * @param itemid itemid
+     * @param partnername partnername
+     */
     public Ring(int id, int id2, int partnerId, int itemid, String partnername) {
         this.ringId = id;
         this.ringId2 = id2;
@@ -49,6 +45,11 @@ public class Ring implements Comparable<Ring> {
         this.partnerName = partnername;
     }
 
+    /**
+     * 加载从Db
+     * @param ringId ringId
+     * @return 返回值
+     */
     public static Ring loadFromDb(int ringId) {
         Ring ret = null;
         try (Connection con = DatabaseConnection.getConnection();
@@ -67,6 +68,10 @@ public class Ring implements Comparable<Ring> {
         }
     }
 
+    /**
+     * 移除戒指
+     * @param ring ring
+     */
     public static void removeRing(final Ring ring) {
         try {
             if (ring == null) {
@@ -102,6 +107,13 @@ public class Ring implements Comparable<Ring> {
         }
     }
 
+    /**
+     * 创建戒指
+     * @param itemid itemid
+     * @param partner1 partner1
+     * @param partner2 partner2
+     * @return 返回值
+     */
     public static Pair<Integer, Integer> createRing(int itemid, final Character partner1, final Character partner2) {
         try {
             if (partner1 == null) {
@@ -140,38 +152,77 @@ public class Ring implements Comparable<Ring> {
         }
     }
 
+    /**
+     * 获取戒指ID
+     * @return 返回值
+     */
     public int getRingId() {
         return ringId;
     }
 
+    /**
+     * 获取Partner戒指ID
+     * @return 返回值
+     */
     public int getPartnerRingId() {
         return ringId2;
     }
 
+    /**
+     * 获取PartnerChrID
+     * @return 返回值
+     */
     public int getPartnerChrId() {
         return partnerId;
     }
 
+    /**
+     * 获取物品ID
+     * @return 返回值
+     */
     public int getItemId() {
         return itemId;
     }
 
+    /**
+     * 获取Partner名称
+     * @return 返回值
+     */
     public String getPartnerName() {
         return partnerName;
     }
 
+    /**
+     * equipped
+     * @return 返回值
+     */
+    /**
+     * equipped
+     * @return 返回值
+     */
     public boolean equipped() {
         return equipped;
     }
 
+    /**
+     * 装备
+     */
     public void equip() {
         this.equipped = true;
     }
 
+    /**
+     * 卸下
+     */
     public void unequip() {
         this.equipped = false;
     }
 
+    /**
+     * 判断对象是否相等
+     * @param o o
+     * @return 返回值
+     */
     @Override
     public boolean equals(Object o) {
         if (o instanceof Ring ring) {
@@ -180,6 +231,10 @@ public class Ring implements Comparable<Ring> {
         return false;
     }
 
+    /**
+     * 返回对象的哈希码
+     * @return 返回值
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -187,6 +242,11 @@ public class Ring implements Comparable<Ring> {
         return hash;
     }
 
+    /**
+     * 比较两个对象的顺序
+     * @param other other
+     * @return 返回值
+     */
     @Override
     public int compareTo(Ring other) {
         if (ringId < other.getRingId()) {

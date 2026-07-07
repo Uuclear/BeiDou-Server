@@ -83,6 +83,11 @@ public class Trade {
     private final byte number;
     private boolean fullTrade = false;
 
+    /**
+     * 构造 Trade 实例。
+     * @param number number
+     * @param chr 角色
+     */
     public Trade(byte number, Character chr) {
         this.chr = chr;
         this.number = number;
@@ -194,6 +199,10 @@ public class Trade {
         return meso;
     }
 
+    /**
+     * 设置金币。
+     * @param meso 金币数量
+     */
     public void setMeso(int meso) {
         if (locked.get()) {
             throw new RuntimeException(I18nUtil.getLogMessage("Trade.info.setMeso.msg1"));
@@ -214,6 +223,11 @@ public class Trade {
         }
     }
 
+    /**
+     * 添加物品。
+     * @param item item
+     * @return boolean 类型结果
+     */
     public boolean addItem(Item item) {
         synchronized (items) {
             if (items.size() > 9) {
@@ -231,6 +245,10 @@ public class Trade {
         return true;
     }
 
+    /**
+     * 执行 chat 操作。
+     * @param message message
+     */
     public void chat(String message) {
         chr.sendPacket(PacketCreator.getTradeChat(chr, message, true));
         if (partner != null) {
@@ -238,10 +256,18 @@ public class Trade {
         }
     }
 
+    /**
+     * 获取Partner。
+     * @return Trade 类型结果
+     */
     public Trade getPartner() {
         return partner;
     }
 
+    /**
+     * 设置Partner。
+     * @param partner partner
+     */
     public void setPartner(Trade partner) {
         if (locked.get()) {
             return;
@@ -249,14 +275,26 @@ public class Trade {
         this.partner = partner;
     }
 
+    /**
+     * 获取角色。
+     * @return Character 类型结果
+     */
     public Character getChr() {
         return chr;
     }
 
+    /**
+     * 获取物品。
+     * @return List<Item> 类型结果
+     */
     public List<Item> getItems() {
         return new LinkedList<>(items);
     }
 
+    /**
+     * 获取Exchange、Mesos。
+     * @return int 类型结果
+     */
     public int getExchangeMesos() {
         return exchangeMeso;
     }
@@ -324,6 +362,10 @@ public class Trade {
     }
 
     //完成交易处理
+    /**
+     * 执行 complete、Trade 操作。
+     * @param chr 角色
+     */
     public static void completeTrade(Character chr) {
         Trade local = chr.getTrade();
         Trade partner = local.getPartner();
@@ -462,6 +504,11 @@ public class Trade {
         }
     }
 
+    /**
+     * 取消Trade。
+     * @param chr 角色
+     * @param result result
+     */
     public static void cancelTrade(Character chr, TradeResult result) {
         Trade trade = chr.getTrade();
         if (trade == null) {
@@ -471,6 +518,10 @@ public class Trade {
         trade.cancelHandshake(result.getValue());
     }
 
+    /**
+     * 执行 start、Trade 操作。
+     * @param chr 角色
+     */
     public static void startTrade(Character chr) {
         if (chr.getTrade() == null) {
             chr.setTrade(new Trade((byte) 0, chr));
@@ -489,6 +540,11 @@ public class Trade {
         return false;
     }
 
+    /**
+     * 执行 invite、Trade 操作。
+     * @param c1 c1
+     * @param c2 c2
+     */
     public static void inviteTrade(Character c1, Character c2) {
 
         if ((c1.isGM() && !c2.isGM()) && c1.gmLevel() < GameConfig.getServerInt("minimum_gm_level_to_trade")) {//GM等级低于几级不允许与非GM角色进行交易
@@ -537,6 +593,11 @@ public class Trade {
         }
     }
 
+    /**
+     * 执行 visit、Trade 操作。
+     * @param c1 c1
+     * @param c2 c2
+     */
     public static void visitTrade(Character c1, Character c2) {
         InviteResult inviteRes = InviteCoordinator.answerInvite(InviteType.TRADE, c1.getId(), c2.getId(), true);
 
@@ -556,6 +617,10 @@ public class Trade {
         }
     }
 
+    /**
+     * 执行 decline、Trade 操作。
+     * @param chr 角色
+     */
     public static void declineTrade(Character chr) {
         Trade trade = chr.getTrade();
         if (trade != null) {
@@ -574,10 +639,18 @@ public class Trade {
         }
     }
 
+    /**
+     * 判断是否为Full、Trade。
+     * @return boolean 类型结果
+     */
     public boolean isFullTrade() {
         return fullTrade;
     }
 
+    /**
+     * 设置Full、Trade。
+     * @param fullTrade fullTrade
+     */
     public void setFullTrade(boolean fullTrade) {
         this.fullTrade = fullTrade;
     }

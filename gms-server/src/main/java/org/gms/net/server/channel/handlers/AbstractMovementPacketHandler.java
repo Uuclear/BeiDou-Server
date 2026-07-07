@@ -39,6 +39,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 移动封包解析抽象基类，解析并校验玩家、怪物、宠物等对象的移动轨迹数据，供各移动处理器复用。
+ */
 public abstract class AbstractMovementPacketHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(AbstractMovementPacketHandler.class);
 

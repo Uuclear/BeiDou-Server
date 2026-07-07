@@ -26,7 +26,12 @@ import org.gms.net.PacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理自定义扩展封包（CUSTOM_PACKET），向 GM 回显原始载荷。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CUSTOM_PACKET}</p>
+ */
 public class CustomPacketHandler implements PacketHandler {
+    /** 读取自定义载荷并向高权限 GM 回显。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (p.available() > 0 && c.getGMLevel() >= 4) {//w/e
@@ -34,6 +39,7 @@ public class CustomPacketHandler implements PacketHandler {
         }
     }
 
+    /** 任意连接状态下均可处理该封包。 */
     @Override
     public boolean validateState(Client c) {
         return true;

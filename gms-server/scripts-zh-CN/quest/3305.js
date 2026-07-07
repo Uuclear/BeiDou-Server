@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：3305
+ * 功能描述：任务对话脚本，推进任务剧情与分支选择。
+ */
 /*
 	QUEST: Re-acquiring Zenumist Cape
 	NPC: Carson

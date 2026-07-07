@@ -56,8 +56,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @author XoticStory
- * @author Ronan - concurrency protection
+ * 雇佣商人（离线商店）实例。
  */
 public class HiredMerchant extends AbstractMapObject {
     private static final int VISITOR_HISTORY_LIMIT = 10;
@@ -84,6 +83,13 @@ public class HiredMerchant extends AbstractMapObject {
 
     private record Visitor(Character chr, Instant enteredAt) {}
 
+    /**
+     * 执行 Past、Visitor 操作。
+     * @param chrName chrName
+     * @param desc desc
+     * @param itemId 物品 ID
+     * @return record 类型结果
+     */
     public record PastVisitor(String chrName, Duration visitDuration) {}
 
     public HiredMerchant(final Character owner, String desc, int itemId) {
@@ -98,6 +104,10 @@ public class HiredMerchant extends AbstractMapObject {
         this.map = owner.getMap();
     }
 
+    /**
+     * 向地图广播到、Visitors、Threadsafe。
+     * @param packet 网络数据包
+     */
     public void broadcastToVisitorsThreadsafe(Packet packet) {
         visitorLock.lock();
         try {
@@ -115,6 +125,10 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取商店、Room、信息。
+     * @return byte[] 类型结果
+     */
     public byte[] getShopRoomInfo() {
         visitorLock.lock();
         try {
@@ -135,6 +149,11 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 添加Visitor。
+     * @param visitor visitor
+     * @return boolean 类型结果
+     */
     public boolean addVisitor(Character visitor) {
         visitorLock.lock();
         try {
@@ -153,6 +172,10 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 移除Visitor。
+     * @param chr 角色
+     */
     public void removeVisitor(Character chr) {
         visitorLock.lock();
         try {
@@ -181,6 +204,11 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取Visitor、Slot、Threadsafe。
+     * @param visitor visitor
+     * @return int 类型结果
+     */
     public int getVisitorSlotThreadsafe(Character visitor) {
         visitorLock.lock();
         try {
@@ -229,6 +257,10 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 withdraw、Mesos 操作。
+     * @param chr 角色
+     */
     public void withdrawMesos(Character chr) {
         if (isOwner(chr)) {
             synchronized (items) {
@@ -237,6 +269,11 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 take、物品、Back 操作。
+     * @param slot slot
+     * @param chr 角色
+     */
     public void takeItemBack(int slot, Character chr) {
         synchronized (items) {
             PlayerShopItem shopItem = items.get(slot);
@@ -282,6 +319,12 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 buy 操作。
+     * @param c c
+     * @param item item
+     * @param quantity quantity
+     */
     public void buy(Client c, int item, short quantity) {
         synchronized (items) {
             PlayerShopItem pItem = items.get(item);
@@ -369,6 +412,9 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 force、Close 操作。
+     */
     public void forceClose() {
         //Server.getInstance().getChannel(world, channel).removeHiredMerchant(ownerId);
         map.broadcastMessage(PacketCreator.removeHiredMerchantBox(getOwnerId()));
@@ -415,6 +461,10 @@ public class HiredMerchant extends AbstractMapObject {
         map = null;
     }
 
+    /**
+     * 执行 close、归属者、商人 操作。
+     * @param chr 角色
+     */
     public void closeOwnerMerchant(Character chr) {
         if (this.isOwner(chr)) {
             this.closeShop(chr.getClient(), false);
@@ -480,6 +530,11 @@ public class HiredMerchant extends AbstractMapObject {
         Server.getInstance().getWorld(world).unregisterHiredMerchant(this);
     }
 
+    /**
+     * 执行 visit、商店 操作。
+     * @param chr 角色
+     * @return synchronized void 类型结果
+     */
     public synchronized void visitShop(Character chr) {
         visitorLock.lock();
         try {
@@ -506,24 +561,43 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取归属者。
+     * @return String 类型结果
+     */
     public String getOwner() {
         return ownerName;
     }
 
+    /**
+     * 执行 clear、物品 操作。
+     */
     public void clearItems() {
         synchronized (items) {
             items.clear();
         }
     }
 
+    /**
+     * 获取归属者ID。
+     * @return int 类型结果
+     */
     public int getOwnerId() {
         return ownerId;
     }
 
+    /**
+     * 获取Description。
+     * @return String 类型结果
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * 获取Visitor、Characters。
+     * @return Character[] 类型结果
+     */
     public Character[] getVisitorCharacters() {
         visitorLock.lock();
         try {
@@ -541,12 +615,21 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取物品。
+     * @return List<PlayerShopItem> 类型结果
+     */
     public List<PlayerShopItem> getItems() {
         synchronized (items) {
             return Collections.unmodifiableList(items);
         }
     }
 
+    /**
+     * 判断是否拥有物品。
+     * @param itemid 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean hasItem(int itemid) {
         for (PlayerShopItem mpsi : getItems()) {
             if (mpsi.getItem().getItemId() == itemid && mpsi.isExist() && mpsi.getBundles() > 0) {
@@ -557,6 +640,11 @@ public class HiredMerchant extends AbstractMapObject {
         return false;
     }
 
+    /**
+     * 添加物品。
+     * @param item item
+     * @return boolean 类型结果
+     */
     public boolean addItem(PlayerShopItem item) {
         synchronized (items) {
             if (items.size() >= 16) {
@@ -568,6 +656,9 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 clear、Inexistent、物品 操作。
+     */
     public void clearInexistentItems() {
         synchronized (items) {
             for (int i = items.size() - 1; i >= 0; i--) {
@@ -603,31 +694,61 @@ public class HiredMerchant extends AbstractMapObject {
         return -1;
     }
 
+    /**
+     * 设置Description。
+     * @param description description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * 判断是否为Published。
+     * @return boolean 类型结果
+     */
     public boolean isPublished() {
         return published;
     }
 
+    /**
+     * 判断是否为Open。
+     * @return boolean 类型结果
+     */
     public boolean isOpen() {
         return open.get();
     }
 
+    /**
+     * 设置Open。
+     * @param set set
+     */
     public void setOpen(boolean set) {
         open.getAndSet(set);
         published = true;
     }
 
+    /**
+     * 获取物品ID。
+     * @return int 类型结果
+     */
     public int getItemId() {
         return itemId;
     }
 
+    /**
+     * 判断是否为归属者。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean isOwner(Character chr) {
         return chr.getId() == ownerId;
     }
 
+    /**
+     * 执行 send、Message 操作。
+     * @param chr 角色
+     * @param msg msg
+     */
     public void sendMessage(Character chr, String msg) {
         String message = chr.getName() + " : " + msg;
         byte slot = (byte) (getVisitorSlot(chr) + 1);
@@ -638,6 +759,11 @@ public class HiredMerchant extends AbstractMapObject {
         broadcastToVisitorsThreadsafe(PacketCreator.hiredMerchantChat(message, slot));
     }
 
+    /**
+     * 执行 send、Available、Bundles 操作。
+     * @param itemid 物品 ID
+     * @return List<PlayerShopItem> 类型结果
+     */
     public List<PlayerShopItem> sendAvailableBundles(int itemid) {
         List<PlayerShopItem> list = new LinkedList<>();
         List<PlayerShopItem> all = new ArrayList<>();
@@ -658,6 +784,10 @@ public class HiredMerchant extends AbstractMapObject {
         return list;
     }
 
+    /**
+     * 执行 save、物品 操作。
+     * @param shutdown shutdown
+     */
     public void saveItems(boolean shutdown) throws SQLException {
         List<Pair<Item, InventoryType>> itemsWithType = new ArrayList<>();
         List<Short> bundles = new ArrayList<>();
@@ -696,10 +826,18 @@ public class HiredMerchant extends AbstractMapObject {
         return Inventory.checkSpotsAndOwnership(chr, li);
     }
 
+    /**
+     * 获取频道。
+     * @return int 类型结果
+     */
     public int getChannel() {
         return channel;
     }
 
+    /**
+     * 获取时间、Open。
+     * @return int 类型结果
+     */
     public int getTimeOpen() {
         double openTime = (System.currentTimeMillis() - start) / 60000;
         openTime /= 1440;   // heuristics since engineered method to count time here is unknown
@@ -708,12 +846,19 @@ public class HiredMerchant extends AbstractMapObject {
         return (int) Math.ceil(openTime);
     }
 
+    /**
+     * 执行 clear、Messages 操作。
+     */
     public void clearMessages() {
         synchronized (messages) {
             messages.clear();
         }
     }
 
+    /**
+     * 获取Messages。
+     * @return List<Pair<String, Byte>> 类型结果
+     */
     public List<Pair<String, Byte>> getMessages() {
         synchronized (messages) {
             List<Pair<String, Byte>> msgList = new LinkedList<>();
@@ -723,10 +868,18 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取Visitor、History。
+     * @return List<PastVisitor> 类型结果
+     */
     public List<PastVisitor> getVisitorHistory() {
         return Collections.unmodifiableList(visitorHistory);
     }
 
+    /**
+     * 添加到、Blacklist。
+     * @param chrName chrName
+     */
     public void addToBlacklist(String chrName) {
         visitorLock.lock();
         try {
@@ -739,6 +892,10 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 移除来自、Blacklist。
+     * @param chrName chrName
+     */
     public void removeFromBlacklist(String chrName) {
         visitorLock.lock();
         try {
@@ -748,6 +905,10 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取Blacklist。
+     * @return Set<String> 类型结果
+     */
     public Set<String> getBlacklist() {
         return Collections.unmodifiableSet(blacklist);
     }
@@ -761,29 +922,52 @@ public class HiredMerchant extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取地图ID。
+     * @return int 类型结果
+     */
     public int getMapId() {
         return map.getId();
     }
 
+    /**
+     * 获取地图。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getMap() {
         return map;
     }
 
+    /**
+     * 获取Sold。
+     * @return List<SoldItem> 类型结果
+     */
     public List<SoldItem> getSold() {
         synchronized (sold) {
             return Collections.unmodifiableList(sold);
         }
     }
 
+    /**
+     * 获取Mesos。
+     * @return int 类型结果
+     */
     public int getMesos() {
         return mesos;
     }
 
+    /**
+     * 获取类型。
+     * @return MapObjectType 类型结果
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.HIRED_MERCHANT;
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     */
     @Override
     public void sendDestroyData(Client client) {}
 
@@ -798,6 +982,14 @@ public class HiredMerchant extends AbstractMapObject {
         short quantity;
         String buyer;
 
+        /**
+         * 执行 Sold、物品 操作。
+         * @param buyer buyer
+         * @param itemid 物品 ID
+         * @param quantity quantity
+         * @param mesos mesos
+         * @return SoldItem 类型结果
+         */
         public SoldItem(String buyer, int itemid, short quantity, int mesos) {
             this.buyer = buyer;
             this.itemid = itemid;
@@ -805,18 +997,34 @@ public class HiredMerchant extends AbstractMapObject {
             this.mesos = mesos;
         }
 
+        /**
+         * 获取Buyer。
+         * @return String 类型结果
+         */
         public String getBuyer() {
             return buyer;
         }
 
+        /**
+         * 获取物品ID。
+         * @return int 类型结果
+         */
         public int getItemId() {
             return itemid;
         }
 
+        /**
+         * 获取Quantity。
+         * @return short 类型结果
+         */
         public short getQuantity() {
             return quantity;
         }
 
+        /**
+         * 获取Mesos。
+         * @return int 类型结果
+         */
         public int getMesos() {
             return mesos;
         }

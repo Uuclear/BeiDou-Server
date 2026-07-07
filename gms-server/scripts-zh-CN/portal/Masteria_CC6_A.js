@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：Masteria_CC6_A
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function enter(pi) {
     pi.playPortalSound();
     pi.warp(610020010, "CC1_A");

@@ -1,3 +1,6 @@
+/**
+ * 登录页英文文案。
+ */
 export default {
   'form.login.title': 'Login System',
   'form.login.rememberPassword': 'remember',

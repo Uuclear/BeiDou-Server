@@ -31,9 +31,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.scripting.npc.NPCScriptManager;
 
 /**
- * @author Generic
+ * 处理远程扭蛋机使用（USE_REMOTE）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_REMOTE}</p>
  */
 public final class RemoteGachaponHandler extends AbstractPacketHandler {
+    /** 处理 使用遥控器 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int ticket = p.readInt();

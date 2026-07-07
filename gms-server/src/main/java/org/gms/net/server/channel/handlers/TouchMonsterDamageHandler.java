@@ -26,7 +26,12 @@ import org.gms.client.Character;
 import org.gms.client.Client;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理触碰怪物造成的伤害（TOUCH_MONSTER_ATTACK）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#TOUCH_MONSTER_ATTACK}</p>
+ */
 public final class TouchMonsterDamageHandler extends AbstractDealDamageHandler {
+    /** 处理 触碰怪物攻击 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

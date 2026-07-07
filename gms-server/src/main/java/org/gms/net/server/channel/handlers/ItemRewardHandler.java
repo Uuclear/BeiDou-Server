@@ -38,10 +38,11 @@ import org.gms.util.Randomizer;
 import java.util.List;
 
 /**
- * @author Jay Estrella
- * @author kevintjuh93
+ * 处理客户端 USE_ITEM_REWARD（使用物品奖励） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_ITEM_REWARD}</p>
  */
 public final class ItemRewardHandler extends AbstractPacketHandler {
+    /** 处理 使用物品奖励 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         byte slot = (byte) p.readShort();

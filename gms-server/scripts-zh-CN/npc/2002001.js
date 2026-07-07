@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2002001
+ * 功能描述：NPC脚本，提供打开商店。
+ */
 /*
  * 2002001 - Rudi, Tree Ornament Merchant
  */

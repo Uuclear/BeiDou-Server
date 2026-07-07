@@ -23,29 +23,48 @@
 package org.gms.server.events.gm;
 
 /**
- * @author kevintjuh93
+ * GM 活动事件基类。
  */
 public class Event {
     private final int mapid;
     private int limit;
 
+    /**
+     * 构造 Event 实例。
+     * @param mapid 地图 ID
+     * @param limit limit
+     */
     public Event(int mapid, int limit) {
         this.mapid = mapid;
         this.limit = limit;
     }
 
+    /**
+     * 获取地图ID。
+     * @return int 类型结果
+     */
     public int getMapId() {
         return mapid;
     }
 
+    /**
+     * 获取限制。
+     * @return int 类型结果
+     */
     public int getLimit() {
         return limit;
     }
 
+    /**
+     * 执行 minus、限制 操作。
+     */
     public void minusLimit() {
         this.limit--;
     }
 
+    /**
+     * 添加限制。
+     */
     public void addLimit() {
         this.limit++;
     }

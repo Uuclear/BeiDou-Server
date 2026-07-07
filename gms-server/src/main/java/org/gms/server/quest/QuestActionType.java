@@ -22,7 +22,7 @@
 package org.gms.server.quest;
 
 /**
- * @author Matze
+ * 任务动作类型枚举，对应 WZ 中 quest 的 act 节点类型（经验、金币、物品、Buff 等）。
  */
 public enum QuestActionType {
     UNDEFINED(-1),
@@ -51,6 +51,11 @@ public enum QuestActionType {
         this.type = (byte) type;
     }
 
+    /**
+     * 获取按WZ名称。
+     * @param name name
+     * @return QuestActionType 类型结果
+     */
     public static QuestActionType getByWZName(String name) {
         switch (name) {
         case "exp":

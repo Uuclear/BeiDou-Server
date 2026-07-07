@@ -13,10 +13,9 @@ import java.io.Serial;
 import java.util.Date;
 
 /**
- * 自动封禁配置表 实体类。
- *
- * @author Nap
- * @since 2026-04-22
+ * 数据库表 `autoban_config` 的实体类（DO）。
+ * <p>
+ * 自动封禁规则配置表，定义各类反作弊检测的积分阈值与周期。
  */
 @Data
 @Builder

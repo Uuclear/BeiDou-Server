@@ -45,9 +45,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 SKILL_EFFECT（技能效果） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SKILL_EFFECT}</p>
+ */
 public final class SkillEffectHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(SkillEffectHandler.class);
 
+    /** 处理 技能效果 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         int skillId = p.readInt();

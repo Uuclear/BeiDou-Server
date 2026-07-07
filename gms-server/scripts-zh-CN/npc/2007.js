@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2007
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 function start() {
     status = -1;
     action(1, 0, 0);

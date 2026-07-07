@@ -30,11 +30,19 @@ import org.gms.net.server.Server;
 import org.gms.net.server.channel.Channel;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM3命令：重载活动
+ */
 public class ReloadEventsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ReloadEventsCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

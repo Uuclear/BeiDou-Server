@@ -31,9 +31,11 @@ import org.gms.server.ItemInformationProvider;
 import org.gms.server.ItemInformationProvider.ScriptedItem;
 
 /**
- * @author Jay Estrella
+ * 处理客户端 SCRIPTED_ITEM（脚本物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SCRIPTED_ITEM}</p>
  */
 public final class ScriptedItemHandler extends AbstractPacketHandler {
+    /** 处理 脚本物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readInt(); // trash stamp, thanks RMZero213

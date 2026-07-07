@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1052003
+ * 功能描述：通过输入数字执行管理或兑换操作。
+ */
 /* Chris
         Victoria Road : Kerning City Repair Shop (103000006)
         

@@ -20,26 +20,18 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.processor.stat;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.Skill;
-import org.gms.client.SkillFactory;
-import org.gms.client.autoban.AutobanFactory;
-import org.gms.constants.game.GameConstants;
-import org.gms.constants.skills.Aran;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.util.PacketCreator;
-
 /**
- * @author RonanLana - synchronization of SP transaction modules
+ * 技能点分配处理器，处理客户端发送的 SP（技能点）分配请求。
  */
 public class AssignSPProcessor {
     private static final Logger log = LoggerFactory.getLogger(AssignSPProcessor.class);
 
+    /**
+     * 判断是否可以SPAssign
+     * @param c 客户端会话
+     * @param skillid skillid
+     * @return 返回值
+     */
     public static boolean canSPAssign(Client c, int skillid) {
         if (skillid == Aran.HIDDEN_FULL_DOUBLE || skillid == Aran.HIDDEN_FULL_TRIPLE || skillid == Aran.HIDDEN_OVER_DOUBLE || skillid == Aran.HIDDEN_OVER_TRIPLE) {
             c.sendPacket(PacketCreator.enableActions());
@@ -58,6 +50,11 @@ public class AssignSPProcessor {
         return true;
     }
 
+    /**
+     * SPAssignAction
+     * @param c 客户端会话
+     * @param skillid skillid
+     */
     public static void SPAssignAction(Client c, int skillid) {
         c.lockClient();
         try {

@@ -21,6 +21,9 @@
 */
 package org.gms.client.inventory;
 
+/**
+ * 武器类型枚举，定义剑、斧、杖、弓等武器分类及攻击速度。
+ */
 public enum WeaponType {
     NOT_A_WEAPON(0),
     GENERAL1H_SWING(4.4),
@@ -49,6 +52,10 @@ public enum WeaponType {
         this.damageMultiplier = maxDamageMultiplier;
     }
 
+    /**
+     * 获取最大伤害Multiplier
+     * @return 返回值
+     */
     public double getMaxDamageMultiplier() {
         return damageMultiplier;
     }

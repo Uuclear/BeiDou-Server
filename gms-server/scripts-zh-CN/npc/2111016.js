@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2111016
+ * 功能描述：NPC脚本（ID: 2111016）。
+ */
 var status;
 
 function start() {

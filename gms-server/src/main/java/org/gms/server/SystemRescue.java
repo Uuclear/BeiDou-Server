@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Random;
 
 @Getter
+/**
+ * 系统救援/紧急恢复工具类。
+ */
 public class SystemRescue {
     private static final Logger log = LoggerFactory.getLogger(SystemRescue.class);
     private static final List<Integer> MapIdList = Arrays.asList(100000000, 101000000, 102000000, 103000000, 104000000);   //射手村，魔法密林，勇士部落，废弃都市，明珠港

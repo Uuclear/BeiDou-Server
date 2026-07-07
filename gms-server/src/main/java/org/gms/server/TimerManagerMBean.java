@@ -21,11 +21,34 @@
 */
 package org.gms.server;
 
+/**
+ * TimerManager 的 JMX 管理接口，暴露活动线程数、队列任务数等运行时指标。
+ */
 public interface TimerManagerMBean {
     boolean isTerminated();
+    /**
+     * 调度器是否已关闭。
+     * @return boolean
+     */
     boolean isShutdown();
+    /**
+     * 获取已完成任务数。
+     * @return long
+     */
     long getCompletedTaskCount();
+    /**
+     * 获取当前活动线程数。
+     * @return long
+     */
     long getActiveCount();
+    /**
+     * 获取已提交任务总数。
+     * @return long
+     */
     long getTaskCount();
+    /**
+     * 获取队列中等待的任务数。
+     * @return int
+     */
     int getQueuedTasks();
 }

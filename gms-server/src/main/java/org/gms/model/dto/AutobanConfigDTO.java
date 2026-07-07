@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 自动封禁配置 DTO。
- *
- * @author Nap
- * @since 2026-04-22
+ * 自动封禁配置 DTO，用于管理端查询与修改反作弊封禁规则的请求/响应体。
  */
 @Data
 @Builder

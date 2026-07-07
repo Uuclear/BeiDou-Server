@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * 在线角色列表响应 DTO，返回角色 ID、名称、等级、地图及频道等在线信息。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -18,12 +18,22 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 掉落配置业务服务，维护怪物普通掉落与全局掉落表。
+ */
 @Service
 @AllArgsConstructor
 public class DropService {
     private final DropDataMapper dropDataMapper;
     private final DropDataGlobalMapper dropDataGlobalMapper;
 
+    /**
+     * 执行 getDropList 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @param isGlobal isGlobal
+     * @return Page<DropSearchRtnDTO> 类型结果
+     */
     public Page<DropSearchRtnDTO> getDropList(DropSearchReqDTO data, boolean isGlobal) {
         if (isGlobal) {
             DropDataGlobalDO dropDataGlobalDO = new DropDataGlobalDO();
@@ -123,6 +133,14 @@ public class DropService {
         }
     }
 
+    /**
+     * 执行 modifyDropData 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @param isGlobal isGlobal
+     * @param isDelete isDelete
+     * @return Long 类型结果
+     */
     public Long modifyDropData(DropSearchRtnDTO data, boolean isGlobal, boolean isDelete) {
         Long dropDataId;
         if (isDelete) {

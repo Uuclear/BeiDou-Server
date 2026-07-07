@@ -21,19 +21,35 @@
 */
 package org.gms.server.maps;
 
+/**
+ * 角色保存位置记录（用于回归技能等）。
+ */
 public class SavedLocation {
     private final int mapId;
     private final int portal;
 
+    /**
+     * 构造 SavedLocation 实例。
+     * @param mapId mapId
+     * @param portal portal
+     */
     public SavedLocation(int mapId, int portal) {
         this.mapId = mapId;
         this.portal = portal;
     }
 
+    /**
+     * 获取地图ID。
+     * @return int 类型结果
+     */
     public int getMapId() {
         return mapId;
     }
 
+    /**
+     * 获取传送门。
+     * @return int 类型结果
+     */
     public int getPortal() {
         return portal;
     }

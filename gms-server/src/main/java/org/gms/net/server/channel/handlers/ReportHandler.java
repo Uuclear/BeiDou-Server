@@ -35,11 +35,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-/*
- *
- * @author BubblesDev
+/**
+ * 处理客户端 REPORT（报告） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#REPORT}</p>
  */
 public final class ReportHandler extends AbstractPacketHandler {
+    /** 记录外挂或聊天举报，扣除金币并写入数据库。 */
     public final void handlePacket(InPacket p, Client c) {
         int type = p.readByte(); //00 = Illegal program claim, 01 = Conversation claim
         String victim = p.readString();

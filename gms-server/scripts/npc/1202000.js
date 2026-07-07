@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1202000
+ * 功能描述：(21019, "helper=clear")) {（原版描述）。
+ */
 var status = -1;
 
 function start() {

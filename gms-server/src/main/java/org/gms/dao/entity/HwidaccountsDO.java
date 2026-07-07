@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `hwidaccounts` 的实体类（DO）。
+ * <p>
+ * 账号硬件绑定表，关联游戏账号与登录设备的 HWID 指纹。
  */
 @Data
 @Builder

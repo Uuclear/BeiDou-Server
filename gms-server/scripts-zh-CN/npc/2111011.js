@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2111011
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ */
 // NPC - Wall
 // Location: Magatia - Home of the Missing Alchemist
 // Used to handle quest 3311 - Clue

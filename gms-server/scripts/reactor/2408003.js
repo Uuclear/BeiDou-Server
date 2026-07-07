@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2408003
+ * 功能描述：反应堆触发后召唤怪物。
+ */
 /*
  *2408003.js
  *Horntail Head spawn

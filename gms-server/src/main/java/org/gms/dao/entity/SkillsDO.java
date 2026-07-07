@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `skills` 的实体类（DO）。
+ * <p>
+ * 角色已学技能表，记录技能 ID、当前等级、主技能等级及过期时间。
  */
 @Data
 @Builder

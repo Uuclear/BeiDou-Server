@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author kevintjuh93
+ * 打雪仗活动。
  */
 public class Snowball {
     private final MapleMap map;
@@ -43,6 +43,11 @@ public class Snowball {
     private boolean winner = false;
     List<Character> characters = new LinkedList<>();
 
+    /**
+     * 构造 Snowball 实例。
+     * @param team team
+     * @param map 地图名称
+     */
     public Snowball(int team, MapleMap map) {
         this.map = map;
         this.team = team;
@@ -54,6 +59,9 @@ public class Snowball {
         }
     }
 
+    /**
+     * 执行 start、事件 操作。
+     */
     public void startEvent() {
         if (hittable == true) {
             return;
@@ -87,26 +95,51 @@ public class Snowball {
 
     }
 
+    /**
+     * 判断是否为Hittable。
+     * @return boolean 类型结果
+     */
     public boolean isHittable() {
         return hittable;
     }
 
+    /**
+     * 设置Hittable。
+     * @param hit hit
+     */
     public void setHittable(boolean hit) {
         this.hittable = hit;
     }
 
+    /**
+     * 获取位置。
+     * @return int 类型结果
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * 获取Snowman、H、P。
+     * @return int 类型结果
+     */
     public int getSnowmanHP() {
         return snowmanhp;
     }
 
+    /**
+     * 设置Snowman、H、P。
+     * @param hp hp
+     */
     public void setSnowmanHP(int hp) {
         this.snowmanhp = hp;
     }
 
+    /**
+     * 执行 hit 操作。
+     * @param what what
+     * @param damage 伤害值
+     */
     public void hit(int what, int damage) {
         if (what < 2) {
             if (damage > 0) {
@@ -147,6 +180,10 @@ public class Snowball {
         map.broadcastMessage(PacketCreator.hitSnowBall(what, damage));
     }
 
+    /**
+     * 执行 message 操作。
+     * @param message message
+     */
     public void message(int message) {
         for (Character chr : characters) {
             if (chr != null) {
@@ -155,6 +192,9 @@ public class Snowball {
         }
     }
 
+    /**
+     * 传送Out。
+     */
     public void warpOut() {
         TimerManager.getInstance().schedule(() -> {
             if (winner) {

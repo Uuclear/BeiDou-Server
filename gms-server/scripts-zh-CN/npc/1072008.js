@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1072008
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /**
  Author: xQuasar
  NPC: Kyrin - Pirate Job Advancer

@@ -1,4 +1,5 @@
 <template>
+  <!-- GM 指令管理页：查看/编辑指令权限等级，热重载地图/传送门/事件。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.command')">
@@ -168,6 +169,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * GM 命令配置页，支持命令列表维护与服务器脚本热重载。
+   */
   import { ref } from 'vue';
   import { CommandReq, getCommandList, updateCommand } from '@/api/command';
   import useLoading from '@/hooks/loading';

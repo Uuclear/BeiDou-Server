@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `famelog` 的实体类（DO）。
+ * <p>
+ * 人气变更日志表，追踪角色人气值的增减历史记录。
  */
 @Data
 @Builder

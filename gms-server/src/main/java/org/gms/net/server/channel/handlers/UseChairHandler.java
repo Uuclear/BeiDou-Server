@@ -27,7 +27,12 @@ import org.gms.constants.id.ItemId;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 USE_CHAIR（使用椅子） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_CHAIR}</p>
+ */
 public final class UseChairHandler extends AbstractPacketHandler {
+    /** 处理 使用椅子 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int itemId = p.readInt();

@@ -34,11 +34,19 @@ import org.gms.constants.inventory.ItemConstants;
 import org.gms.server.ItemInformationProvider;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM4命令：生成自定义属性的装备
+ */
 public class ProItemCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ProItemCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

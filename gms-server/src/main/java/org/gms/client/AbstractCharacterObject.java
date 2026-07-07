@@ -16,26 +16,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client;
-
-import lombok.Getter;
-import lombok.Setter;
-import org.gms.config.GameConfig;
-import org.gms.constants.game.GameConstants;
-import org.gms.server.maps.AbstractAnimatedMapObject;
-import org.gms.server.maps.MapleMap;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 /**
- * @author RonanLana
+ * 角色对象抽象基类，封装 HP/MP、属性点、技能点等通用角色属性及锁机制。
  */
 public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject {
     @Setter
@@ -81,6 +63,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         this.listener = listener;
     }
 
+    /**
+     * 获取力量
+     * @return 返回值
+     */
     public int getStr() {
         statRlock.lock();
         try {
@@ -90,6 +76,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取敏捷
+     * @return 返回值
+     */
     public int getDex() {
         statRlock.lock();
         try {
@@ -99,6 +89,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取智力
+     * @return 返回值
+     */
     public int getInt() {
         statRlock.lock();
         try {
@@ -108,6 +102,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取运气
+     * @return 返回值
+     */
     public int getLuk() {
         statRlock.lock();
         try {
@@ -117,6 +115,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取RemainingAp
+     * @return 返回值
+     */
     public int getRemainingAp() {
         statRlock.lock();
         try {
@@ -135,6 +137,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取RemainingSps
+     * @return 返回值
+     */
     public int[] getRemainingSps() {
         statRlock.lock();
         try {
@@ -144,6 +150,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取HPMPApUsed
+     * @return 返回值
+     */
     public int getHpMpApUsed() {
         statRlock.lock();
         try {
@@ -153,6 +163,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 判断是否为Alive
+     * @return 返回值
+     */
     public boolean isAlive() {
         statRlock.lock();
         try {
@@ -162,6 +176,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取HP
+     * @return 返回值
+     */
     public int getHp() {
         statRlock.lock();
         try {
@@ -171,6 +189,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取MP
+     * @return 返回值
+     */
     public int getMp() {
         statRlock.lock();
         try {
@@ -180,6 +202,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取最大HP
+     * @return 返回值
+     */
     public int getMaxHp() {
         statRlock.lock();
         try {
@@ -189,6 +215,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取最大MP
+     * @return 返回值
+     */
     public int getMaxMp() {
         statRlock.lock();
         try {
@@ -198,10 +228,18 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获取当前最大HP
+     * @return 返回值
+     */
     public int getCurrentMaxHp() {
         return localMaxHp;
     }
 
+    /**
+     * 获取当前最大MP
+     * @return 返回值
+     */
     public int getCurrentMaxMp() {
         return localMaxMp;
     }
@@ -254,6 +292,11 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         this.mp = tmp;
     }
 
+    /**
+     * 设置RemainingSp
+     * @param remainingSp remainingSp
+     * @param skillbook skillbook
+     */
     public void setRemainingSp(int remainingSp, int skillbook) {
         this.remainingSp[skillbook] = remainingSp;
     }
@@ -408,18 +451,36 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 治疗HPMP
+     */
     public void healHpMp() {
         updateHpMp(30000);
     }
 
+    /**
+     * 更新HPMP
+     * @param x X坐标
+     */
     public void updateHpMp(int x) {
         updateHpMp(x, x);
     }
 
+    /**
+     * 更新HPMP
+     * @param newhp newhp
+     * @param newmp newmp
+     */
     public void updateHpMp(int newhp, int newmp) {
         changeHpMp(newhp, newmp, false);
     }
 
+    /**
+     * 变更HPMP
+     * @param newhp newhp
+     * @param newmp newmp
+     * @param silent silent
+     */
     public void changeHpMp(int newhp, int newmp, boolean silent) {
         changeHpMpPool(newhp, newmp, null, null, silent);
     }
@@ -429,14 +490,27 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         changeStatPool(hpMpPool, null, null, -1, silent);
     }
 
+    /**
+     * 更新HP
+     * @param hp hp
+     */
     public void updateHp(int hp) {
         updateHpMaxHp(hp, null);
     }
 
+    /**
+     * 更新最大HP
+     * @param maxhp maxhp
+     */
     public void updateMaxHp(int maxhp) {
         updateHpMaxHp(null, maxhp);
     }
 
+    /**
+     * 更新HP最大HP
+     * @param hp hp
+     * @param maxhp maxhp
+     */
     public void updateHpMaxHp(int hp, int maxhp) {
         updateHpMaxHp(Integer.valueOf(hp), Integer.valueOf(maxhp));
     }
@@ -445,14 +519,27 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         changeHpMpPool(hp, null, maxhp, null, false);
     }
 
+    /**
+     * 更新MP
+     * @param mp mp
+     */
     public void updateMp(int mp) {
         updateMpMaxMp(mp, null);
     }
 
+    /**
+     * 更新最大MP
+     * @param maxmp maxmp
+     */
     public void updateMaxMp(int maxmp) {
         updateMpMaxMp(null, maxmp);
     }
 
+    /**
+     * 更新MP最大MP
+     * @param mp mp
+     * @param maxmp maxmp
+     */
     public void updateMpMaxMp(int mp, int maxmp) {
         updateMpMaxMp(Integer.valueOf(mp), Integer.valueOf(maxmp));
     }
@@ -461,6 +548,11 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         changeHpMpPool(null, mp, null, maxmp, false);
     }
 
+    /**
+     * 更新最大HP最大MP
+     * @param maxhp maxhp
+     * @param maxmp maxmp
+     */
     public void updateMaxHpMaxMp(int maxhp, int maxmp) {
         changeHpMpPool(null, null, maxhp, maxmp, false);
     }
@@ -478,6 +570,11 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * safeAddHP
+     * @param delta delta
+     * @return 返回值
+     */
     public int safeAddHP(int delta) {
         effLock.lock();
         statWlock.lock();
@@ -494,6 +591,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 添加HP
+     * @param delta delta
+     */
     public void addHP(int delta) {
         effLock.lock();
         statWlock.lock();
@@ -505,6 +606,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 添加MP
+     * @param delta delta
+     */
     public void addMP(int delta) {
         effLock.lock();
         statWlock.lock();
@@ -516,6 +621,11 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 添加MPHP
+     * @param hpDelta hpDelta
+     * @param mpDelta mpDelta
+     */
     public void addMPHP(int hpDelta, int mpDelta) {
         effLock.lock();
         statWlock.lock();
@@ -538,6 +648,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 添加最大HP
+     * @param delta delta
+     */
     public void addMaxHP(int delta) {
         effLock.lock();
         statWlock.lock();
@@ -549,6 +663,10 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 添加最大MP
+     * @param delta delta
+     */
     public void addMaxMP(int delta) {
         effLock.lock();
         statWlock.lock();
@@ -560,38 +678,80 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 设置力量
+     * @param str str
+     */
     public void setStr(int str) {
         this.attrStr = str;
     }
 
+    /**
+     * 设置敏捷
+     * @param dex dex
+     */
     public void setDex(int dex) {
         this.attrDex = dex;
     }
 
+    /**
+     * 设置智力
+     * @param int_ int_
+     */
     public void setInt(int int_) {
         this.attrInt = int_;
     }
 
+    /**
+     * 设置运气
+     * @param luk luk
+     */
     public void setLuk(int luk) {
         this.attrLuk = luk;
     }
 
+    /**
+     * assign力量
+     * @param x X坐标
+     * @return 返回值
+     */
     public boolean assignStr(int x) {
         return assignStrDexIntLuk(x, null, null, null);
     }
 
+    /**
+     * assign敏捷
+     * @param x X坐标
+     * @return 返回值
+     */
     public boolean assignDex(int x) {
         return assignStrDexIntLuk(null, x, null, null);
     }
 
+    /**
+     * assign智力
+     * @param x X坐标
+     * @return 返回值
+     */
     public boolean assignInt(int x) {
         return assignStrDexIntLuk(null, null, x, null);
     }
 
+    /**
+     * assign运气
+     * @param x X坐标
+     * @return 返回值
+     */
     public boolean assignLuk(int x) {
         return assignStrDexIntLuk(null, null, null, x);
     }
 
+    /**
+     * assignHP
+     * @param deltaHP deltaHP
+     * @param deltaAp deltaAp
+     * @return 返回值
+     */
     public boolean assignHP(int deltaHP, int deltaAp) {
         effLock.lock();
         statWlock.lock();
@@ -612,6 +772,12 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * assignMP
+     * @param deltaMP deltaMP
+     * @param deltaAp deltaAp
+     * @return 返回值
+     */
     public boolean assignMP(int deltaMP, int deltaAp) {
         effLock.lock();
         statWlock.lock();
@@ -636,6 +802,14 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         return x != null ? x : 0;
     }
 
+    /**
+     * assign力量敏捷智力运气
+     * @param deltaStr deltaStr
+     * @param deltaDex deltaDex
+     * @param deltaInt deltaInt
+     * @param deltaLuk deltaLuk
+     * @return 返回值
+     */
     public boolean assignStrDexIntLuk(int deltaStr, int deltaDex, int deltaInt, int deltaLuk) {
         return assignStrDexIntLuk(Integer.valueOf(deltaStr), Integer.valueOf(deltaDex), Integer.valueOf(deltaInt), Integer.valueOf(deltaLuk));
     }
@@ -688,10 +862,19 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 更新力量敏捷智力运气
+     * @param x X坐标
+     */
     public void updateStrDexIntLuk(int x) {
         updateStrDexIntLuk(x, x, x, x, -1);
     }
 
+    /**
+     * 变更RemainingAp
+     * @param x X坐标
+     * @param silent silent
+     */
     public void changeRemainingAp(int x, boolean silent) {
         effLock.lock();
         statWlock.lock();
@@ -703,6 +886,11 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         }
     }
 
+    /**
+     * 获得Ap
+     * @param deltaAp deltaAp
+     * @param silent silent
+     */
     public void gainAp(int deltaAp, boolean silent) {
         effLock.lock();
         statWlock.lock();
@@ -753,6 +941,12 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         changeStatPool(null, null, sp, Short.MIN_VALUE, silent);
     }
 
+    /**
+     * 获得Sp
+     * @param deltaSp deltaSp
+     * @param skillbook skillbook
+     * @param silent silent
+     */
     public void gainSp(int deltaSp, int skillbook, boolean silent) {
         effLock.lock();
         statWlock.lock();

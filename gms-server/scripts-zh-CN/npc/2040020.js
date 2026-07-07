@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040020
+ * 功能描述：NPC脚本，提供物品发放、金币奖励。
+ */
 /* Sarah
     Ludibrium : Tara and Sarah's House (220000303)
 

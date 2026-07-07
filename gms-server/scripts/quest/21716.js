@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21716
+ * 功能描述：rmation you've collected.)#k", 2);（原版描述）。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

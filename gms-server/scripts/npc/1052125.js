@@ -19,15 +19,13 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
-	NPC Name: 		June
-	Map(s): 		Kerning Square : 7th Floor 
-	Description: 	Entrance to Spirit of Rock
-	Depart_topFloorEnter
-	request for a new song (block the portal before the spirit)
-	composition fee (block the portal before the spirit)
-	Say "NO" to Plagiarism (now we can open the portal)
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1052125
+ * 功能描述：June，Entrance to Spirit of Rock（原版描述）。
+ */
 var status = -1;
 
 function start() {

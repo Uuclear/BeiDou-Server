@@ -26,8 +26,13 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.life.LifeFactory.BanishInfo;
 import org.gms.server.life.Monster;
 
+/**
+ * 处理客户端 MOB_BANISH_PLAYER（怪物驱逐玩家） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOB_BANISH_PLAYER}</p>
+ */
 public final class MobBanishPlayerHandler extends AbstractPacketHandler {
 
+    /** 处理 怪物驱逐玩家 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int mobid = p.readInt();     // mob banish handling detected thanks to MedicOP

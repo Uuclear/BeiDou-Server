@@ -288,7 +288,12 @@ class PairedQuicksort {
     }
 }
 
+/**
+ * 处理背包物品排序（ITEM_SORT2）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ITEM_SORT2}</p>
+ */
 public final class InventorySortHandler extends AbstractPacketHandler {
+    /** 处理 整理物品2 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

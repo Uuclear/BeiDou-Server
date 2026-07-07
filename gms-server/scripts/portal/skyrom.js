@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：skyrom
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function enter(pi) {
     if (pi.isQuestStarted(3935) && !pi.haveItem(4031574, 1)) {
         if (pi.getWarpMap(926000010).countPlayers() == 0) {

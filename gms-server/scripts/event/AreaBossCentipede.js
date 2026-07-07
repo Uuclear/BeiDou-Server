@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：AreaBossCentipede
+ * 功能描述：BOSS战事件实例（AreaBossCentipede）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  Centipede Spawner

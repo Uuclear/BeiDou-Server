@@ -99,6 +99,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 客户端网络会话处理器，管理玩家连接、登录认证、封包收发、频道切换及账号相关操作。继承 Netty 的 ChannelInboundHandlerAdapter。
+ */
 public class Client extends ChannelInboundHandlerAdapter {
     private static final Logger log = LoggerFactory.getLogger(Client.class);
 
@@ -152,11 +155,25 @@ public class Client extends ChannelInboundHandlerAdapter {
     @Getter
     private static SystemRescue sysRescue;
 
+    /**
+     * 客户端连接类型枚举。
+     */
     public enum Type {
+        /** 登录服务器连接 */
         LOGIN,
+        /** 频道服务器连接 */
         CHANNEL
     }
 
+    /**
+     * 客户端
+     * @param type 类型
+     * @param sessionId sessionId
+     * @param remoteAddress remoteAddress
+     * @param packetProcessor packetProcessor
+     * @param world 世界
+     * @param channel 频道
+     */
     public Client(Type type, long sessionId, String remoteAddress, PacketProcessor packetProcessor, int world, int channel) {
         this.type = type;
         this.sessionId = sessionId;
@@ -166,20 +183,46 @@ public class Client extends ChannelInboundHandlerAdapter {
         this.channel = channel;
     }
 
+    /**
+     * 创建Login客户端
+     * @param sessionId sessionId
+     * @param remoteAddress remoteAddress
+     * @param packetProcessor packetProcessor
+     * @param world 世界
+     * @param channel 频道
+     * @return 返回值
+     */
     public static Client createLoginClient(long sessionId, String remoteAddress, PacketProcessor packetProcessor,
                                            int world, int channel) {
         return new Client(Type.LOGIN, sessionId, remoteAddress, packetProcessor, world, channel);
     }
 
+    /**
+     * 创建频道客户端
+     * @param sessionId sessionId
+     * @param remoteAddress remoteAddress
+     * @param packetProcessor packetProcessor
+     * @param world 世界
+     * @param channel 频道
+     * @return 返回值
+     */
     public static Client createChannelClient(long sessionId, String remoteAddress, PacketProcessor packetProcessor,
                                              int world, int channel) {
         return new Client(Type.CHANNEL, sessionId, remoteAddress, packetProcessor, world, channel);
     }
 
+    /**
+     * 创建Mock
+     * @return 返回值
+     */
     public static Client createMock() {
         return new Client(null, -1, null, null, -123, -123);
     }
 
+    /**
+     * channel活跃
+     * @param ctx 通道上下文
+     */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         final io.netty.channel.Channel channel = ctx.channel();
@@ -203,6 +246,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         return remoteAddress;
     }
 
+    /**
+     * channelRead
+     * @param ctx 通道上下文
+     * @param msg 消息
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (!(msg instanceof InPacket packet)) {
@@ -235,6 +283,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         updateLastPacket();
     }
 
+    /**
+     * user活动Triggered
+     * @param ctx 通道上下文
+     * @param event 事件
+     */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object event) {
         if (event instanceof IdleStateEvent idleEvent) {
@@ -242,6 +295,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * exceptionCaught
+     * @param ctx 通道上下文
+     * @param cause 异常原因
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         if (player != null && !player.isLoggedInWorld()) {  //判断玩家不为空且不在线才进行救援
@@ -257,6 +315,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * channelInactive
+     * @param ctx 通道上下文
+     */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         closeMapleSession();
@@ -280,42 +342,80 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 更新最近封包
+     */
     public void updateLastPacket() {
         lastPacket = System.currentTimeMillis();
     }
 
+    /**
+     * 获取最近封包
+     * @return 返回值
+     */
     public long getLastPacket() {
         return lastPacket;
     }
 
+    /**
+     * 关闭会话
+     */
     public void closeSession() {
         ioChannel.close();
     }
 
+    /**
+     * 断开连接会话
+     */
     public void disconnectSession() {
         ioChannel.disconnect();
     }
 
+    /**
+     * 获取硬件ID
+     * @return 返回值
+     */
     public Hwid getHwid() {
         return hwid;
     }
 
+    /**
+     * 设置硬件ID
+     * @param hwid 硬件ID
+     */
     public void setHwid(Hwid hwid) {
         this.hwid = hwid;
     }
 
+    /**
+     * 获取远程地址
+     * @return 返回值
+     */
     public String getRemoteAddress() {
         return remoteAddress;
     }
 
+    /**
+     * 判断是否为在过渡
+     * @return 返回值
+     */
     public boolean isInTransition() {
         return inTransition;
     }
 
+    /**
+     * 获取活动管理器
+     * @param event 事件
+     * @return 返回值
+     */
     public EventManager getEventManager(String event) {
         return getChannelServer().getEventSM().getEventManager(event);
     }
 
+    /**
+     * 获取玩家
+     * @return 返回值
+     */
     public Character getPlayer() {
         return player;
     }
@@ -329,14 +429,27 @@ public class Client extends ChannelInboundHandlerAdapter {
         this.sysRescue = new SystemRescue();
     }
 
+    /**
+     * 获取抽象玩家Interaction
+     * @return 返回值
+     */
     public AbstractPlayerInteraction getAbstractPlayerInteraction() {
         return new AbstractPlayerInteraction(this);
     }
 
+    /**
+     * 发送Char列表
+     * @param server server
+     */
     public void sendCharList(int server) {
         this.sendPacket(PacketCreator.getCharList(this, server, 0));
     }
 
+    /**
+     * 加载Characters
+     * @param serverId serverId
+     * @return 返回值
+     */
     public List<Character> loadCharacters(int serverId) {
         List<Character> chars = new ArrayList<>(15);
         try {
@@ -349,6 +462,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         return chars;
     }
 
+    /**
+     * 加载角色Names
+     * @param worldId worldId
+     * @return 返回值
+     */
     public List<String> loadCharacterNames(int worldId) {
         List<String> chars = new ArrayList<>(15);
         for (CharNameAndId cni : loadCharactersInternal(worldId)) {
@@ -375,10 +493,18 @@ public class Client extends ChannelInboundHandlerAdapter {
         return chars;
     }
 
+    /**
+     * 判断是否为Logged在
+     * @return 返回值
+     */
     public boolean isLoggedIn() {
         return loggedIn;
     }
 
+    /**
+     * 判断是否拥有BannedIP
+     * @return 返回值
+     */
     public boolean hasBannedIP() {
         boolean ret = false;
         try (Connection con = DatabaseConnection.getConnection();
@@ -396,6 +522,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         return ret;
     }
 
+    /**
+     * 获取投票Time
+     * @return 返回值
+     */
     public int getVoteTime() {
         if (voteTime != -1) {
             return voteTime;
@@ -417,10 +547,17 @@ public class Client extends ChannelInboundHandlerAdapter {
         return voteTime;
     }
 
+    /**
+     * 重置投票Time
+     */
     public void resetVoteTime() {
         voteTime = -1;
     }
 
+    /**
+     * 判断是否拥有VotedAlready
+     * @return 返回值
+     */
     public boolean hasVotedAlready() {
         Date currentDate = new Date();
         int timeNow = (int) (currentDate.getTime() / 1000);
@@ -428,6 +565,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         return difference < 86400 && difference > 0;
     }
 
+    /**
+     * 判断是否拥有BannedHWID
+     * @return 返回值
+     */
     public boolean hasBannedHWID() {
         if (hwid == null) {
             return false;
@@ -452,6 +593,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         return ret;
     }
 
+    /**
+     * 判断是否拥有BannedMAC地址
+     * @return 返回值
+     */
     public boolean hasBannedMac() {
         if (macs.isEmpty()) {
             return false;
@@ -520,6 +665,9 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 封禁HWID
+     */
     public void banHWID() {
         try {
             loadHWIDIfNescessary();
@@ -534,6 +682,9 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 封禁Macs
+     */
     public void banMacs() {
         try {
             loadMacsIfNescessary();
@@ -569,6 +720,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 完成Login
+     * @return 返回值
+     */
     public int finishLogin() {
         encoderLock.lock();
         try {
@@ -584,6 +739,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         return 0;
     }
 
+    /**
+     * 设置PIN码
+     * @param pin pin
+     */
     public void setPin(String pin) {
         this.pin = pin;
         try (Connection con = DatabaseConnection.getConnection();
@@ -596,10 +755,19 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取PIN码
+     * @return 返回值
+     */
     public String getPin() {
         return pin;
     }
 
+    /**
+     * 检查PIN码
+     * @param other other
+     * @return 返回值
+     */
     public boolean checkPin(String other) {
         if (!(GameConfig.getServerBoolean("enable_pin") && !canBypassPin())) {
             return true;
@@ -617,6 +785,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         return false;
     }
 
+    /**
+     * 设置PIC码
+     * @param pic pic
+     */
     public void setPic(String pic) {
         this.pic = pic;
         try (Connection con = DatabaseConnection.getConnection();
@@ -629,10 +801,19 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取PIC码
+     * @return 返回值
+     */
     public String getPic() {
         return pic;
     }
 
+    /**
+     * 检查PIC码
+     * @param other other
+     * @return 返回值
+     */
     public boolean checkPic(String other) {
         if (!(GameConfig.getServerBoolean("enable_pic") && !canBypassPic())) {
             return true;
@@ -650,6 +831,13 @@ public class Client extends ChannelInboundHandlerAdapter {
         return false;
     }
 
+    /**
+     * 登录
+     * @param login 登录名
+     * @param pwd 密码
+     * @param hwid 硬件ID
+     * @return 返回值
+     */
     public int login(String login, String pwd, Hwid hwid) {
         int loginok = 5;
 
@@ -730,6 +918,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取临时封禁Calendar从DB
+     * @return 返回值
+     */
     public Calendar getTempBanCalendarFromDB() {
         final Calendar lTempban = Calendar.getInstance();
 
@@ -759,14 +951,27 @@ public class Client extends ChannelInboundHandlerAdapter {
         return null;//why oh why!?!
     }
 
+    /**
+     * 获取临时封禁Calendar
+     * @return 返回值
+     */
     public Calendar getTempBanCalendar() {
         return tempBanCalendar;
     }
 
+    /**
+     * 判断是否拥有BeenBanned
+     * @return 返回值
+     */
     public boolean hasBeenBanned() {
         return tempBanCalendar != null;
     }
 
+    /**
+     * dottedQuad到Long
+     * @param dottedQuad dottedQuad
+     * @return 返回值
+     */
     public static long dottedQuadToLong(String dottedQuad) throws RuntimeException {
         String[] quads = dottedQuad.split("\\.");
         if (quads.length != 4) {
@@ -780,6 +985,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         return ipAddress;
     }
 
+    /**
+     * 更新硬件ID
+     * @param hwid 硬件ID
+     */
     public void updateHwid(Hwid hwid) {
         this.hwid = hwid;
 
@@ -793,6 +1002,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 更新Macs
+     * @param macData macData
+     */
     public void updateMacs(String macData) {
         macs.addAll(Arrays.asList(macData.split(", ")));
         StringBuilder newMacData = new StringBuilder();
@@ -815,14 +1028,26 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 设置AccID
+     * @param id ID
+     */
     public void setAccID(int id) {
         this.accId = id;
     }
 
+    /**
+     * 获取AccID
+     * @return 返回值
+     */
     public int getAccID() {
         return accId;
     }
 
+    /**
+     * 更新LoginState
+     * @param newState newState
+     */
     public void updateLoginState(int newState) {
         // rules out possibility of multiple account entries
         if (newState == LOGIN_LOGGEDIN) {
@@ -851,8 +1076,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取LoginState
+     * @return 返回值
+     */
     public int getLoginState() {  // 0 = LOGIN_NOTLOGGEDIN, 1= LOGIN_SERVER_TRANSITION, 2 = LOGIN_LOGGEDIN
-        try (Connection con = DatabaseConnection.getConnection()) {
             int state;
             try (PreparedStatement ps = con.prepareStatement("SELECT loggedin, lastlogin, birthday FROM accounts WHERE id = ?")) {
                 ps.setInt(1, getAccID());
@@ -899,6 +1127,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 检查BirthDate
+     * @param date 日期
+     * @return 返回值
+     */
     public boolean checkBirthDate(Calendar date) {
         return date.get(Calendar.YEAR) == birthday.get(Calendar.YEAR) && date.get(Calendar.MONTH) == birthday.get(Calendar.MONTH) && date.get(Calendar.DAY_OF_MONTH) == birthday.get(Calendar.DAY_OF_MONTH);
     }
@@ -970,18 +1203,41 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 断开连接
+     * @param shutdown 是否关闭
+     * @param cashshop 是否现金商店
+     */
     public final void disconnect(final boolean shutdown, final boolean cashshop) {
         if (canDisconnect()) {
             ThreadManager.getInstance().newTask(() -> disconnectInternal(shutdown, cashshop));
         }
     }
 
+    /**
+     * forceDisconnect
+     */
+    /**
+     * forceDisconnect
+     */
+    /**
+     * 强制断开客户端连接
+     */
     public final void forceDisconnect() {
         if (canDisconnect()) {
             disconnectInternal(true, false);
         }
     }
 
+    /**
+     * timeoutDisconnect
+     */
+    /**
+     * timeoutDisconnect
+     */
+    /**
+     * 因超时而断开客户端连接
+     */
     public void timeoutDisconnect() {
         disconnectInternal(false, true);
     }
@@ -1104,28 +1360,55 @@ public class Client extends ChannelInboundHandlerAdapter {
         this.player = null;
     }
 
+    /**
+     * 设置角色在会话过渡State
+     * @param cid cid
+     */
     public void setCharacterOnSessionTransitionState(int cid) {
         this.updateLoginState(Client.LOGIN_SERVER_TRANSITION);
         this.inTransition = true;
         Server.getInstance().setCharacteridInTransition(this, cid);
     }
 
+    /**
+     * 获取频道
+     * @return 返回值
+     */
     public int getChannel() {
         return channel;
     }
 
+    /**
+     * 获取频道服务器
+     * @return 返回值
+     */
     public Channel getChannelServer() {
         return Server.getInstance().getChannel(world, channel);
     }
 
+    /**
+     * 获取世界服务器
+     * @return 返回值
+     */
     public World getWorldServer() {
         return Server.getInstance().getWorld(world);
     }
 
+    /**
+     * 获取频道服务器
+     * @param channel 频道
+     * @return 返回值
+     */
     public Channel getChannelServer(byte channel) {
         return Server.getInstance().getChannel(world, channel);
     }
 
+    /**
+     * 删除角色
+     * @param cid cid
+     * @param senderAccId senderAccId
+     * @return 返回值
+     */
     public boolean deleteCharacter(int cid, int senderAccId) {
         try {
             Character chr = Character.loadCharFromDB(cid, this, false);
@@ -1149,30 +1432,63 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取账号名称
+     * @return 返回值
+     */
     public String getAccountName() {
         return accountName;
     }
 
+    /**
+     * 设置账号名称
+     * @param a a
+     */
     public void setAccountName(String a) {
         this.accountName = a;
     }
 
+    /**
+     * 设置频道
+     * @param channel 频道
+     */
     public void setChannel(int channel) {
         this.channel = channel;
     }
 
+    /**
+     * 获取世界
+     * @return 返回值
+     */
     public int getWorld() {
         return world;
     }
 
+    /**
+     * 设置世界
+     * @param world 世界
+     */
     public void setWorld(int world) {
         this.world = world;
     }
 
+    /**
+     * pongReceived
+     */
+    /**
+     * pongReceived
+     */
+    /**
+     * 收到客户端心跳响应
+     */
     public void pongReceived() {
         lastPong = System.currentTimeMillis();
     }
 
+    /**
+     * 检查If空闲
+     * @param event 事件
+     */
     public void checkIfIdle(final IdleStateEvent event) {
         final long pingedAt = System.currentTimeMillis();
         sendPacket(PacketCreator.getPing());
@@ -1193,38 +1509,76 @@ public class Client extends ChannelInboundHandlerAdapter {
         }, SECONDS.toMillis(15));
     }
 
+    /**
+     * 获取Macs
+     * @return 返回值
+     */
     public Set<String> getMacs() {
         return Collections.unmodifiableSet(macs);
     }
 
+    /**
+     * 获取GM等级
+     * @return 返回值
+     */
     public int getGMLevel() {
         return gmlevel;
     }
 
+    /**
+     * 设置GM等级
+     * @param level 等级
+     */
     public void setGMLevel(int level) {
         gmlevel = level;
     }
 
+    /**
+     * 设置脚本Engine
+     * @param name 名称
+     * @param e e
+     */
     public void setScriptEngine(String name, ScriptEngine e) {
         engines.put(name, e);
     }
 
+    /**
+     * 获取脚本Engine
+     * @param name 名称
+     * @return 返回值
+     */
     public ScriptEngine getScriptEngine(String name) {
         return engines.get(name);
     }
 
+    /**
+     * 移除脚本Engine
+     * @param name 名称
+     */
     public void removeScriptEngine(String name) {
         engines.remove(name);
     }
 
+    /**
+     * 获取CM
+     * @return 返回值
+     */
     public NPCConversationManager getCM() {
         return NPCScriptManager.getInstance().getCM(this);
     }
 
+    /**
+     * 获取QM
+     * @return 返回值
+     */
     public QuestActionManager getQM() {
         return QuestScriptManager.getInstance().getQM(this);
     }
 
+    /**
+     * accept到S
+     * @return 返回值
+     */
     public boolean acceptToS() {
         if (accountName == null) {
             return true;
@@ -1254,8 +1608,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         return disconnect;
     }
 
+    /**
+     * 检查Char
+     * @param accid accid
+     */
     public void checkChar(int accid) {  /// issue with multiple chars from same account login found by shavit, resinate
-        if (!GameConfig.getServerBoolean("use_character_account_check")) {
             return;
         }
 
@@ -1270,6 +1627,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取投票点数
+     * @return 返回值
+     */
     public int getVotePoints() {
         int points = 0;
         try (Connection con = DatabaseConnection.getConnection();
@@ -1288,11 +1649,19 @@ public class Client extends ChannelInboundHandlerAdapter {
         return votePoints;
     }
 
+    /**
+     * 添加投票点数
+     * @param points 积分
+     */
     public void addVotePoints(int points) {
         votePoints += points;
         saveVotePoints();
     }
 
+    /**
+     * 使用投票点数
+     * @param points 积分
+     */
     public void useVotePoints(int points) {
         if (points > votePoints) {
             //Should not happen, should probably log this
@@ -1314,14 +1683,24 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 加锁客户端
+     */
     public void lockClient() {
         lock.lock();
     }
 
+    /**
+     * 解锁客户端
+     */
     public void unlockClient() {
         lock.unlock();
     }
 
+    /**
+     * tryacquire客户端
+     * @return 返回值
+     */
     public boolean tryacquireClient() {
         if (actionsSemaphore.tryAcquire()) {
             lockClient();
@@ -1331,11 +1710,22 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 释放客户端
+     */
     public void releaseClient() {
         unlockClient();
         actionsSemaphore.release();
     }
 
+    /**
+     * tryacquireEncoder
+     * @return 返回值
+     */
+    /**
+     * tryacquireEncoder
+     * @return 返回值
+     */
     public boolean tryacquireEncoder() {
         if (actionsSemaphore.tryAcquire()) {
             encoderLock.lock();
@@ -1345,6 +1735,9 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 解锁Encoder
+     */
     public void unlockEncoder() {
         encoderLock.unlock();
         actionsSemaphore.release();
@@ -1355,6 +1748,11 @@ public class Client extends ChannelInboundHandlerAdapter {
         public String name;
         public int id;
 
+        /**
+         * Char名称AndID
+         * @param name 名称
+         * @param id ID
+         */
         public CharNameAndId(String name, int id) {
             super();
             this.name = name;
@@ -1372,30 +1770,59 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取可用角色Slots
+     * @return 返回值
+     */
     public short getAvailableCharacterSlots() {
         return (short) Math.max(0, characterSlots - Server.getInstance().getAccountCharacterCount(accId));
     }
 
+    /**
+     * 获取可用角色世界Slots
+     * @return 返回值
+     */
     public short getAvailableCharacterWorldSlots() {
         return (short) Math.max(0, characterSlots - Server.getInstance().getAccountWorldCharacterCount(accId, world));
     }
 
+    /**
+     * 获取可用角色世界Slots
+     * @param world 世界
+     * @return 返回值
+     */
     public short getAvailableCharacterWorldSlots(int world) {
         return (short) Math.max(0, characterSlots - Server.getInstance().getAccountWorldCharacterCount(accId, world));
     }
 
+    /**
+     * 获取角色Slots
+     * @return 返回值
+     */
     public short getCharacterSlots() {
         return characterSlots;
     }
 
+    /**
+     * 设置角色Slots
+     * @param slots slots
+     */
     public void setCharacterSlots(byte slots) {
         characterSlots = slots;
     }
 
+    /**
+     * 判断是否可以Gain角色槽位
+     * @return 返回值
+     */
     public boolean canGainCharacterSlot() {
         return characterSlots < 15;
     }
 
+    /**
+     * 获得角色槽位
+     * @return 返回值
+     */
     public synchronized boolean gainCharacterSlot() {
         if (canGainCharacterSlot()) {
             try (Connection con = DatabaseConnection.getConnection();
@@ -1412,6 +1839,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         return false;
     }
 
+    /**
+     * 获取GReason
+     * @return 返回值
+     */
     public final byte getGReason() {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("SELECT `greason` FROM `accounts` WHERE id = ?")) {
@@ -1428,10 +1859,18 @@ public class Client extends ChannelInboundHandlerAdapter {
         return 0;
     }
 
+    /**
+     * 获取性别
+     * @return 返回值
+     */
     public byte getGender() {
         return gender;
     }
 
+    /**
+     * 设置性别
+     * @param m m
+     */
     public void setGender(byte m) {
         this.gender = m;
 
@@ -1451,10 +1890,19 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 广播服务器Message
+     */
     public void announceServerMessage() {
         sendPacket(PacketCreator.serverMessage(this.getChannelServer().getServerMessage()));
     }
 
+    /**
+     * 广播BossHPBar
+     * @param mm mm
+     * @param mobHash mobHash
+     * @param packet 封包
+     */
     public synchronized void announceBossHpBar(Monster mm, final int mobHash, Packet packet) {
         long timeNow = System.currentTimeMillis();
         int targetHash = player.getTargetHpBarHash();
@@ -1476,6 +1924,10 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 发送封包
+     * @param packet 封包
+     */
     public void sendPacket(Packet packet) {
         announcerLock.lock();
         try {
@@ -1485,11 +1937,20 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 广播Hint
+     * @param msg 消息
+     * @param length length
+     */
     public void announceHint(String msg, int length) {
         sendPacket(PacketCreator.sendHint(msg, length, 10));
         enableActions();
     }
 
+    /**
+     * 变更频道
+     * @param channel 频道
+     */
     public void changeChannel(int channel) {
         Server server = Server.getInstance();
         if (player.isBanned()) {
@@ -1561,41 +2022,82 @@ public class Client extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取会话ID
+     * @return 返回值
+     */
     public long getSessionId() {
         return this.sessionId;
     }
 
+    /**
+     * 判断是否可以请求Charlist
+     * @return 返回值
+     */
     public boolean canRequestCharlist() {
         return lastNpcClick + 877 < Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * 判断是否可以ClickNPC
+     * @return 返回值
+     */
     public boolean canClickNPC() {
         return lastNpcClick + 500 < Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * 设置ClickedNPC
+     */
     public void setClickedNPC() {
         lastNpcClick = Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * 移除ClickedNPC
+     */
     public void removeClickedNPC() {
         lastNpcClick = 0;
     }
 
+    /**
+     * 获取可见Worlds
+     * @return 返回值
+     */
     public int getVisibleWorlds() {
         return visibleWorlds;
     }
 
+    /**
+     * requestedServerlist
+     * @param worlds worlds
+     */
+    /**
+     * requestedServerlist
+     * @param worlds worlds
+     */
+    /**
+     * 处理服务器列表请求
+     * @param worlds 可见世界数
+     */
     public void requestedServerlist(int worlds) {
         visibleWorlds = worlds;
         setClickedNPC();
     }
 
+    /**
+     * 关闭玩家脚本Interactions
+     */
     public void closePlayerScriptInteractions() {
         this.removeClickedNPC();
         NPCScriptManager.getInstance().dispose(this);
         QuestScriptManager.getInstance().dispose(this);
     }
 
+    /**
+     * attemptCs优惠券
+     * @return 返回值
+     */
     public boolean attemptCsCoupon() {
         if (csattempt > 2) {
             resetCsCoupon();
@@ -1606,26 +2108,48 @@ public class Client extends ChannelInboundHandlerAdapter {
         return true;
     }
 
+    /**
+     * 重置Cs优惠券
+     */
     public void resetCsCoupon() {
         csattempt = 0;
     }
 
+    /**
+     * 启用CSActions
+     */
     public void enableCSActions() {
         sendPacket(PacketCreator.enableCSUse(player));
     }
 
+    /**
+     * 判断是否可以BypassPIN码
+     * @return 返回值
+     */
     public boolean canBypassPin() {
         return LoginBypassCoordinator.getInstance().canLoginBypass(hwid, accId, false);
     }
 
+    /**
+     * 判断是否可以BypassPIC码
+     * @return 返回值
+     */
     public boolean canBypassPic() {
         return LoginBypassCoordinator.getInstance().canLoginBypass(hwid, accId, true);
     }
 
+    /**
+     * 获取语言
+     * @return 返回值
+     */
     public int getLanguage() {
         return lang;
     }
 
+    /**
+     * 设置语言
+     * @param lingua lingua
+     */
     public void setLanguage(int lingua) {
         this.lang = lingua;
     }

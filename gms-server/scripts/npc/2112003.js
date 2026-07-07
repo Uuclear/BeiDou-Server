@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2112003
+ * 功能描述：城镇导游NPC，介绍各地图信息并提供付费传送服务。
+ */
 /**
  * @author: Ronan
  * @npc: Juliet

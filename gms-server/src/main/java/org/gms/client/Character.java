@@ -108,6 +108,9 @@ import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.*;
 
+/**
+ * 游戏角色实体类，表示一名在线或离线玩家角色，管理属性、背包、技能、任务、社交、地图交互等全部角色相关逻辑。
+ */
 public class Character extends AbstractCharacterObject {
     private static final Logger log = LoggerFactory.getLogger(Character.class);
 
@@ -547,14 +550,28 @@ public class Character extends AbstractCharacterObject {
         setPosition(new Point(0, 0));
     }
 
+    /**
+     * 获取职业Style
+     * @param opt opt
+     * @return 返回值
+     */
     public Job getJobStyle(byte opt) {
         return Job.getJobStyleInternal(this.getJob().getId(), opt);
     }
 
+    /**
+     * 获取职业Style
+     * @return 返回值
+     */
     public Job getJobStyle() {
         return getJobStyle((byte) ((this.getStr() > this.getDex()) ? 0x80 : 0x40));
     }
 
+    /**
+     * 获取默认
+     * @param c 客户端会话
+     * @return 返回值
+     */
     public static Character getDefault(Client c) {
         Character ret = new Character();
         ret.client = c;
@@ -599,14 +616,25 @@ public class Character extends AbstractCharacterObject {
         return ret;
     }
 
+    /**
+     * 判断是否为Logged在世界
+     * @return 返回值
+     */
     public boolean isLoggedInWorld() {
         return this.isLoggedIn() && !this.isAwayFromWorld();
     }
 
+    /**
+     * 判断是否为Away从世界
+     * @return 返回值
+     */
     public boolean isAwayFromWorld() {
         return awayFromWorld.get();
     }
 
+    /**
+     * 设置Entered频道世界
+     */
     public void setEnteredChannelWorld() {
         awayFromWorld.set(false);
         client.getChannelServer().removePlayerAway(id);
@@ -616,10 +644,16 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置Away从频道世界
+     */
     public void setAwayFromChannelWorld() {
         setAwayFromChannelWorld(false);
     }
 
+    /**
+     * 设置Disconnected从频道世界
+     */
     public void setDisconnectedFromChannelWorld() {
         setAwayFromChannelWorld(true);
     }
@@ -634,6 +668,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 更新队伍SearchAvailability
+     * @param pSearchAvailable pSearchAvailable
+     */
     public void updatePartySearchAvailability(boolean pSearchAvailable) {
         if (pSearchAvailable) {
             if (canRecvPartySearchInvite && getParty() == null) {
@@ -646,6 +684,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 切换Recv队伍SearchInvite
+     * @return 返回值
+     */
     public boolean toggleRecvPartySearchInvite() {
         canRecvPartySearchInvite = !canRecvPartySearchInvite;
 
@@ -658,26 +700,51 @@ public class Character extends AbstractCharacterObject {
         return canRecvPartySearchInvite;
     }
 
+    /**
+     * 判断是否为Recv队伍SearchInviteEnabled
+     * @return 返回值
+     */
     public boolean isRecvPartySearchInviteEnabled() {
         return canRecvPartySearchInvite;
     }
 
+    /**
+     * 设置会话过渡State
+     */
     public void setSessionTransitionState() {
         client.setCharacterOnSessionTransitionState(this.getId());
     }
 
+    /**
+     * 设置CS
+     * @param cs cs
+     */
     public void setCS(boolean cs) {
         useCS = cs;
     }
 
+    /**
+     * 获取NPCCooldown
+     * @return 返回值
+     */
     public long getNpcCooldown() {
         return npcCd;
     }
 
+    /**
+     * 设置NPCCooldown
+     * @param d d
+     */
     public void setNpcCooldown(long d) {
         npcCd = d;
     }
 
+    /**
+     * 添加Cooldown
+     * @param skillId 技能ID
+     * @param startTime startTime
+     * @param length length
+     */
     public void addCooldown(int skillId, long startTime, long length) {
         effLock.lock();
         chrLock.lock();
@@ -689,6 +756,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取戒指按ID
+     * @param id ID
+     * @return 返回值
+     */
     public Ring getRingById(int id) {
         Optional<Ring> ringOptional = getCrushRings().stream().filter(ring -> ring.getRingId() == id).findFirst();
         if (ringOptional.isPresent()) {
@@ -704,14 +776,26 @@ public class Character extends AbstractCharacterObject {
         return null;
     }
 
+    /**
+     * 获取RelationshipID
+     * @return 返回值
+     */
     public int getRelationshipId() {
         return getWorldServer().getRelationshipId(id);
     }
 
+    /**
+     * 判断是否为Married
+     * @return 返回值
+     */
     public boolean isMarried() {
         return marriageRing != null && partnerId > 0;
     }
 
+    /**
+     * 判断是否拥有JustMarried
+     * @return 返回值
+     */
     public boolean hasJustMarried() {
         EventInstanceManager eim = getEventInstance();
         if (eim != null) {
@@ -726,6 +810,11 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 添加Dojo点数按地图
+     * @param mapId 地图ID
+     * @return 返回值
+     */
     public int addDojoPointsByMap(int mapId) {
         int pts = 0;
         if (dojoPoints < 17000) {
@@ -738,10 +827,18 @@ public class Character extends AbstractCharacterObject {
         return pts;
     }
 
+    /**
+     * 添加MesosTraded
+     * @param gain gain
+     */
     public void addMesosTraded(int gain) {
         this.mesosTraded += gain;
     }
 
+    /**
+     * 添加宠物
+     * @param pet pet
+     */
     public void addPet(Pet pet) {
         petLock.lock();
         try {
@@ -756,6 +853,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 添加Summon
+     * @param id ID
+     * @param summon summon
+     */
     public void addSummon(int id, Summon summon) {
         summons.put(id, summon);
 
@@ -764,14 +866,29 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 添加可见地图Object
+     * @param mo mo
+     */
     public void addVisibleMapObject(MapObject mo) {
         visibleMapObjects.add(mo);
     }
 
+    /**
+     * 封禁
+     * @param reason 原因
+     */
     public void ban(String reason) {
         accountService.ban(this, reason);
     }
 
+    /**
+     * 封禁
+     * @param id ID
+     * @param reason 原因
+     * @param accountId accountId
+     * @return 返回值
+     */
     public static boolean ban(String id, String reason, boolean accountId) {
         try {
             accountService.ban(id, reason, accountId);
@@ -782,6 +899,12 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 计算最大Base伤害
+     * @param watk watk
+     * @param weapon weapon
+     * @return 返回值
+     */
     public int calculateMaxBaseDamage(int watk, WeaponType weapon) {
         int mainstat, secondarystat;
         if (getJob().isA(Job.THIEF) && weapon == WeaponType.DAGGER_OTHER) {
@@ -801,6 +924,11 @@ public class Character extends AbstractCharacterObject {
         return (int) Math.ceil(((weapon.getMaxDamageMultiplier() * mainstat + secondarystat) / 100.0) * watk);
     }
 
+    /**
+     * 计算最大Base伤害
+     * @param watk watk
+     * @return 返回值
+     */
     public int calculateMaxBaseDamage(int watk) {
         int maxbasedamage;
         Item weapon_item = getInventory(InventoryType.EQUIPPED).getItem((short) -11);
@@ -822,6 +950,11 @@ public class Character extends AbstractCharacterObject {
         return maxbasedamage;
     }
 
+    /**
+     * 计算最大BaseMagic伤害
+     * @param matk matk
+     * @return 返回值
+     */
     public int calculateMaxBaseMagicDamage(int matk) {
         int maxbasedamage = matk;
         int totalint = getTotalInt();
@@ -842,6 +975,10 @@ public class Character extends AbstractCharacterObject {
         return (maxbasedamage * 107) / 100;
     }
 
+    /**
+     * 设置Combo
+     * @param count count
+     */
     public void setCombo(short count) {
         if (count < combocounter) {
             cancelEffectFromBuffStat(BuffStat.ARAN_COMBO);
@@ -852,22 +989,40 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取Combo
+     * @return 返回值
+     */
     public short getCombo() {
         return combocounter;
     }
 
+    /**
+     * cannotEnter现金商店
+     * @return 返回值
+     */
     public boolean cannotEnterCashShop() {
         return blockCashShop;
     }
 
+    /**
+     * 切换Block现金商店
+     */
     public void toggleBlockCashShop() {
         blockCashShop = !blockCashShop;
     }
 
+    /**
+     * 切换经验Gain
+     */
     public void toggleExpGain() {
         allowExpGain = !allowExpGain;
     }
 
+    /**
+     * new客户端
+     * @param c 客户端会话
+     */
     public void newClient(Client c) {
         this.loggedIn = true;
         c.setAccountName(this.client.getAccountName());//No null's for accountName
@@ -881,6 +1036,10 @@ public class Character extends AbstractCharacterObject {
         this.initialSpawnPoint = portal.getId();
     }
 
+    /**
+     * 获取MedalText
+     * @return 返回值
+     */
     public String getMedalText() {
         String medal = "";
         final Item medalItem = getInventory(InventoryType.EQUIPPED).getItem((short) -49);
@@ -890,6 +1049,11 @@ public class Character extends AbstractCharacterObject {
         return medal;
     }
 
+    /**
+     * hide
+     * @param hide hide
+     * @param login 登录名
+     */
     public void hide(boolean hide, boolean login) {
         if (isGM() && hide != this.hidden) {
             if (!hide) {
@@ -921,14 +1085,33 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * hide
+     * @param hide hide
+     */
+    /**
+     * hide
+     * @param hide hide
+     */
+    /**
+     * 隐藏
+     * @param hide 是否隐藏
+     */
     public void hide(boolean hide) {
         hide(hide, false);
     }
 
+    /**
+     * 切换Hide
+     * @param login 登录名
+     */
     public void toggleHide(boolean login) {
         hide(!hidden, login);
     }
 
+    /**
+     * 取消MagicDoor
+     */
     public void cancelMagicDoor() {
         List<BuffStatValueHolder> mbsvhList = getAllStatups();
         for (BuffStatValueHolder mbsvh : mbsvhList) {
@@ -949,6 +1132,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否可以CreateChar
+     * @param name 名称
+     * @return 返回值
+     */
     public static boolean canCreateChar(String name) {
         String lname = name.toLowerCase();
         for (String nameTest : ServerConstants.BLOCKED_NAMES) {
@@ -959,6 +1147,11 @@ public class Character extends AbstractCharacterObject {
         return !existName(name) && Pattern.compile("[a-zA-Z0-9\u4e00-\u9fa5]{2,12}").matcher(name).matches(); // 加入对中文编码的检测
     }
 
+    /**
+     * exist名称
+     * @param name 名称
+     * @return 返回值
+     */
     public static boolean existName(String name) {
         try {
             if (characterService.findByName(name) != null) {
@@ -973,17 +1166,26 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 判断是否可以Door
+     * @return 返回值
+     */
     public boolean canDoor() {
         Door door = getPlayerDoor();
         return door == null || (door.isActive() && door.getElapsedDeployTime() > 5000);
     }
 
+    /**
+     * 设置HasSandbox物品
+     */
     public void setHasSandboxItem() {
         hasSandboxItem = true;
     }
 
+    /**
+     * 移除SandboxItems
+     */
     public void removeSandboxItems() {  // sandbox idea thanks to Morty
-        if (!hasSandboxItem) {
             return;
         }
 
@@ -1007,10 +1209,18 @@ public class Character extends AbstractCharacterObject {
         hasSandboxItem = false;
     }
 
+    /**
+     * 变更CI
+     * @param type 类型
+     */
     public void changeCI(int type) {
         this.ci = type;
     }
 
+    /**
+     * 设置Masteries
+     * @param jobId jobId
+     */
     public void setMasteries(int jobId) {
         int[] skills = new int[]{0, 0, 0, 0};
         if (jobId == 112) {
@@ -1108,6 +1318,10 @@ public class Character extends AbstractCharacterObject {
         }, 777);
     }
 
+    /**
+     * 变更职业
+     * @param newJob newJob
+     */
     public synchronized void changeJob(Job newJob) {
         if (newJob == null) {
             return;//the fuck you doing idiot!
@@ -1245,10 +1459,19 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 广播Acquaintances
+     * @param type 类型
+     * @param message 消息
+     */
     public void broadcastAcquaintances(int type, String message) {
         broadcastAcquaintances(PacketCreator.serverNotice(type, message));
     }
 
+    /**
+     * 广播Acquaintances
+     * @param packet 封包
+     */
     public void broadcastAcquaintances(Packet packet) {
         buddylist.broadcast(packet, getWorldServer().getPlayerStorage());
         Family family = getFamily();
@@ -1269,6 +1492,11 @@ public class Character extends AbstractCharacterObject {
         sendPacket(packet);
     }
 
+    /**
+     * 变更Keybinding
+     * @param key key
+     * @param keybinding keybinding
+     */
     public void changeKeybinding(int key, KeyBinding keybinding) {
         if (keybinding.getType() != 0) {
             keymap.put(key, keybinding);
@@ -1277,19 +1505,35 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 变更QuickslotKeybinding
+     * @param aQuickslotKeyMapped aQuickslotKeyMapped
+     */
     public void changeQuickslotKeybinding(byte[] aQuickslotKeyMapped) {
         this.quickSlotKeyMapped = new QuickslotBinding(aQuickslotKeyMapped);
     }
 
+    /**
+     * 广播Stance
+     * @param newStance newStance
+     */
     public void broadcastStance(int newStance) {
         setStance(newStance);
         broadcastStance();
     }
 
+    /**
+     * 广播Stance
+     */
     public void broadcastStance() {
         map.broadcastMessage(this, PacketCreator.movePlayer(id, this.getIdleMovement(), AbstractAnimatedMapObject.IDLE_MOVEMENT_PACKET_LENGTH), false);
     }
 
+    /**
+     * 获取Warp地图
+     * @param map map
+     * @return 返回值
+     */
     public MapleMap getWarpMap(int map) {
         MapleMap warpMap;
         EventInstanceManager eim = getEventInstance();
@@ -1304,6 +1548,10 @@ public class Character extends AbstractCharacterObject {
     }
 
     // for use ONLY inside OnUserEnter map scripts that requires a player to change map while still moving between maps.
+    /**
+     * 传送Ahead
+     * @param map map
+     */
     public void warpAhead(int map) {
         newWarpMap = map;
     }
@@ -1322,26 +1570,49 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否可以Recover最近Banish
+     * @return 返回值
+     */
     public boolean canRecoverLastBanish() {
         return System.currentTimeMillis() - this.banishTime < MINUTES.toMillis(5);
     }
 
+    /**
+     * 获取最近Banish数据
+     * @return 返回值
+     */
     public Pair<Integer, Integer> getLastBanishData() {
         return new Pair<>(this.banishMap, this.banishSp);
     }
 
+    /**
+     * 清空Banish玩家数据
+     */
     public void clearBanishPlayerData() {
         this.banishMap = -1;
         this.banishSp = -1;
         this.banishTime = 0;
     }
 
+    /**
+     * 设置Banish玩家数据
+     * @param banishMap banishMap
+     * @param banishSp banishSp
+     * @param banishTime banishTime
+     */
     public void setBanishPlayerData(int banishMap, int banishSp, long banishTime) {
         this.banishMap = banishMap;
         this.banishSp = banishSp;
         this.banishTime = banishTime;
     }
 
+    /**
+     * 变更地图Banish
+     * @param mapid mapid
+     * @param portal portal
+     * @param msg 消息
+     */
     public void changeMapBanish(int mapid, String portal, String msg) {
         if (GameConfig.getServerBoolean("use_spikes_avoid_banish")) {
             for (Item it : this.getInventory(InventoryType.EQUIPPED).list()) {
@@ -1366,6 +1637,10 @@ public class Character extends AbstractCharacterObject {
         setBanishPlayerData(banMap, banSp, banTime);
     }
 
+    /**
+     * 变更地图
+     * @param map map
+     */
     public void changeMap(int map) {
         changeMap(map, null);
     }
@@ -1396,14 +1671,28 @@ public class Character extends AbstractCharacterObject {
         changeMap(warpMap, portal);
     }
 
+    /**
+     * 变更地图
+     * @param to to
+     */
     public void changeMap(MapleMap to) {
         changeMap(to, 0);
     }
 
+    /**
+     * 变更地图
+     * @param to to
+     * @param portal portal
+     */
     public void changeMap(MapleMap to, int portal) {
         changeMap(to, to.getPortal(portal));
     }
 
+    /**
+     * 变更地图
+     * @param target 目标
+     * @param pto pto
+     */
     public void changeMap(final MapleMap target, Portal pto) {
         canWarpCounter++;
 
@@ -1423,6 +1712,11 @@ public class Character extends AbstractCharacterObject {
         eventAfterChangedMap(this.getMapId());
     }
 
+    /**
+     * 变更地图
+     * @param target 目标
+     * @param pos pos
+     */
     public void changeMap(final MapleMap target, final Point pos) {
         canWarpCounter++;
 
@@ -1439,6 +1733,11 @@ public class Character extends AbstractCharacterObject {
         eventAfterChangedMap(this.getMapId());
     }
 
+    /**
+     * forceChange地图
+     * @param target 目标
+     * @param pto pto
+     */
     public void forceChangeMap(final MapleMap target, Portal pto) {
         // will actually enter the map given as parameter, regardless of being an eventmap or whatnot       //将实际输入作为参数给出的映射，无论是事件映射还是其他什么
 
@@ -1509,6 +1808,10 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 获取最近Visited地图Ids
+     * @return 返回值
+     */
     public List<Integer> getLastVisitedMapIds() {
         List<Integer> lastVisited = new ArrayList<>(5);
 
@@ -1528,6 +1831,11 @@ public class Character extends AbstractCharacterObject {
         return lastVisited;
     }
 
+    /**
+     * party操作Update
+     * @param party 队伍
+     * @param exPartyMembers exPartyMembers
+     */
     public void partyOperationUpdate(Party party, List<Character> exPartyMembers) {
         List<WeakReference<MapleMap>> mapIds;
 
@@ -1673,6 +1981,10 @@ public class Character extends AbstractCharacterObject {
         return -1;
     }
 
+    /**
+     * visit地图
+     * @param map map
+     */
     public void visitMap(MapleMap map) {
         petLock.lock();
         try {
@@ -1694,14 +2006,26 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置Owned地图
+     * @param map map
+     */
     public void setOwnedMap(MapleMap map) {
         ownedMap = new WeakReference<>(map);
     }
 
+    /**
+     * 获取Owned地图
+     * @return 返回值
+     */
     public MapleMap getOwnedMap() {
         return ownedMap.get();
     }
 
+    /**
+     * 通知地图Transfer到Partner
+     * @param mapid mapid
+     */
     public void notifyMapTransferToPartner(int mapid) {
         if (partnerId > 0) {
             final Character partner = getWorldServer().getPlayerStorage().getCharacterById(partnerId);
@@ -1711,6 +2035,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 移除IncomingInvites
+     */
     public void removeIncomingInvites() {
         InviteCoordinator.removePlayerIncomingInvites(id);
     }
@@ -1806,10 +2133,21 @@ public class Character extends AbstractCharacterObject {
         this.mapTransitioning.set(false);
     }
 
+    /**
+     * 变更Page
+     * @param page page
+     */
     public void changePage(int page) {
         this.currentPage = page;
     }
 
+    /**
+     * 变更技能等级
+     * @param skill 技能
+     * @param newLevel newLevel
+     * @param newMasterlevel newMasterlevel
+     * @param expiration expiration
+     */
     public void changeSkillLevel(Skill skill, byte newLevel, int newMasterlevel, long expiration) {
         if (newLevel > -1) {
             skills.put(skill, new SkillEntry(newLevel, newMasterlevel, expiration));
@@ -1823,14 +2161,26 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 变更Tab
+     * @param tab tab
+     */
     public void changeTab(int tab) {
         this.currentTab = tab;
     }
 
+    /**
+     * 变更类型
+     * @param type 类型
+     */
     public void changeType(int type) {
         this.currentType = type;
     }
 
+    /**
+     * 检查Berserk
+     * @param isHidden isHidden
+     */
     public void checkBerserk(final boolean isHidden) {
         if (berserkSchedule != null) {
             berserkSchedule.cancel(false);
@@ -1857,6 +2207,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 检查聊天室
+     */
     public void checkMessenger() {
         if (messenger != null && messengerPosition < 4 && messengerPosition > -1) {
             World worldz = getWorldServer();
@@ -1865,6 +2218,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * control怪物
+     * @param monster 怪物
+     */
     public void controlMonster(Monster monster) {
         if (cpnLock.tryLock()) {
             try {
@@ -1875,6 +2232,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 停止Controlling怪物
+     * @param monster 怪物
+     */
     public void stopControllingMonster(Monster monster) {
         if (cpnLock.tryLock()) {
             try {
@@ -1885,6 +2246,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取NumControlledMonsters
+     * @return 返回值
+     */
     public int getNumControlledMonsters() {
         cpnLock.lock();
         try {
@@ -1894,6 +2259,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取ControlledMonsters
+     * @return 返回值
+     */
     public Collection<Monster> getControlledMonsters() {
         cpnLock.lock();
         try {
@@ -1903,6 +2272,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 释放ControlledMonsters
+     */
     public void releaseControlledMonsters() {
         Collection<Monster> controlledMonsters;
 
@@ -1989,13 +2361,20 @@ public class Character extends AbstractCharacterObject {
         return true; // 成功执行消耗操作
     }
 
+    /**
+     * pickup物品
+     * @param ob ob
+     */
     public final void pickupItem(MapObject ob) {
         pickupItem(ob, -1);
     }
 
+    /**
+     * pickup物品
+     * @param ob ob
+     * @param petIndex petIndex
+     */
     public final void pickupItem(MapObject ob, int petIndex) {     // yes, one picks the MapObject, not the MapItem     //是的，选择MapObject，而不是MapItem
-        if (ob == null) {                                               // pet index refers to the one picking up the item      //宠物指数是指捡起物品的人
-            return;
         }
 
         if (ob instanceof MapItem mapitem) {
@@ -2131,18 +2510,39 @@ public class Character extends AbstractCharacterObject {
         enableActions();
     }
 
+    /**
+     * count物品
+     * @param itemid itemid
+     * @return 返回值
+     */
     public int countItem(int itemid) {
         return inventory[ItemConstants.getInventoryType(itemid).ordinal()].countById(itemid);
     }
 
+    /**
+     * 判断是否可以Hold
+     * @param itemid itemid
+     * @return 返回值
+     */
     public boolean canHold(int itemid) {
         return canHold(itemid, 1);
     }
 
+    /**
+     * 判断是否可以Hold
+     * @param itemid itemid
+     * @param quantity 数量
+     * @return 返回值
+     */
     public boolean canHold(int itemid, int quantity) {
         return client.getAbstractPlayerInteraction().canHold(itemid, quantity);
     }
 
+    /**
+     * 判断是否可以HoldUniques
+     * @param itemids itemids
+     * @return 返回值
+     */
     public boolean canHoldUniques(List<Integer> itemids) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         for (Integer itemid : itemids) {
@@ -2154,15 +2554,34 @@ public class Character extends AbstractCharacterObject {
         return true;
     }
 
+    /**
+     * 判断是否为RidingBattleship
+     * @return 返回值
+     */
     public boolean isRidingBattleship() {
         Integer bv = getBuffedValue(BuffStat.MONSTER_RIDING);
         return bv != null && bv.equals(Corsair.BATTLE_SHIP);
     }
 
+    /**
+     * 广播BattleshipHP
+     */
     public void announceBattleshipHp() {
         sendPacket(PacketCreator.skillCooldown(5221999, battleshipHp));
     }
 
+    /**
+     * decreaseBattleshipHP
+     * @param decrease decrease
+     */
+    /**
+     * decreaseBattleshipHP
+     * @param decrease decrease
+     */
+    /**
+     * 减少战舰HP
+     * @param decrease 减少量
+     */
     public void decreaseBattleshipHp(int decrease) {
         this.battleshipHp -= decrease;
         if (battleshipHp <= 0) {
@@ -2178,10 +2597,23 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * decreaseReports
+     */
+    /**
+     * decreaseReports
+     */
+    /**
+     * 减少举报次数
+     */
     public void decreaseReports() {
         this.possibleReports--;
     }
 
+    /**
+     * 删除公会
+     * @param guildId guildId
+     */
     public void deleteGuild(int guildId) {
         characterService.deleteGuild(GuildsDO.builder().guildid((long) guildId).build());
     }
@@ -2200,6 +2632,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 删除好友
+     * @param otherCid otherCid
+     */
     public void deleteBuddy(int otherCid) {
         BuddyList bl = getBuddylist();
 
@@ -2211,6 +2647,12 @@ public class Character extends AbstractCharacterObject {
         nextPendingRequest(client);
     }
 
+    /**
+     * 删除Char从DB
+     * @param player 玩家
+     * @param senderAccId senderAccId
+     * @return 返回值
+     */
     public static boolean deleteCharFromDB(Character player, int senderAccId) {
         try {
             characterService.deleteCharFromDB(player, senderAccId);
@@ -2409,6 +2851,9 @@ public class Character extends AbstractCharacterObject {
         }, healInterval, healInterval);
     }
 
+    /**
+     * disband公会
+     */
     public void disbandGuild() {
         if (guildId < 1 || guildRank != 1) {
             return;
@@ -2420,6 +2865,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * dispel
+     */
+    /**
+     * dispel
+     */
+    /**
+     * 驱散
+     */
     public void dispel() {
         if (!(GameConfig.getServerBoolean("use_undispel_holy_shield") && this.hasActiveBuff(Bishop.HOLY_SHIELD))) {
             List<BuffStatValueHolder> mbsvhList = getAllStatups();
@@ -2433,6 +2887,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否拥有异常状态
+     * @param dis dis
+     * @return 返回值
+     */
     public final boolean hasDisease(final Disease dis) {
         chrLock.lock();
         try {
@@ -2442,6 +2901,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取Diseases大小
+     * @return 返回值
+     */
     public final int getDiseasesSize() {
         chrLock.lock();
         try {
@@ -2451,6 +2914,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取全部异常状态
+     * @return 返回值
+     */
     public Map<Disease, Pair<Long, MobSkill>> getAllDiseases() {
         chrLock.lock();
         try {
@@ -2470,6 +2937,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * silentApplyDiseases
+     * @param diseaseMap diseaseMap
+     */
+    /**
+     * silentApplyDiseases
+     * @param diseaseMap diseaseMap
+     */
+    /**
+     * 静默Apply异常状态
+     * @param diseaseMap 异常状态映射
+     */
     public void silentApplyDiseases(Map<Disease, Pair<Long, MobSkill>> diseaseMap) {
         chrLock.lock();
         try {
@@ -2486,6 +2965,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 广播Diseases
+     */
     public void announceDiseases() {
         Set<Entry<Disease, Pair<DiseaseValueHolder, MobSkill>>> chrDiseases;
 
@@ -2514,6 +2996,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * collectDiseases
+     */
+    /**
+     * collectDiseases
+     */
+    /**
+     * 收集异常状态
+     */
     public void collectDiseases() {
         for (Character chr : map.getAllPlayers()) {
             int cid = chr.getId();
@@ -2532,6 +3023,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * give减益
+     * @param disease disease
+     * @param skill 技能
+     */
     public void giveDebuff(final Disease disease, MobSkill skill) {
         if (!hasDisease(disease) && getDiseasesSize() < 2) {
             if (!(disease == Disease.SEDUCE || disease == Disease.STUN)) {
@@ -2564,6 +3060,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * dispel减益
+     * @param debuff debuff
+     */
     public void dispelDebuff(Disease debuff) {
         if (hasDisease(debuff)) {
             long mask = debuff.getValue();
@@ -2585,6 +3085,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * dispelDebuffs
+     */
+    /**
+     * dispelDebuffs
+     */
+    /**
+     * 驱散减益
+     */
     public void dispelDebuffs() {
         dispelDebuff(Disease.CURSE);
         dispelDebuff(Disease.DARKNESS);
@@ -2594,6 +3103,15 @@ public class Character extends AbstractCharacterObject {
         dispelDebuff(Disease.SLOW);    // thanks Conrad for noticing ZOMBIFY isn't dispellable
     }
 
+    /**
+     * purgeDebuffs
+     */
+    /**
+     * purgeDebuffs
+     */
+    /**
+     * 清除减益
+     */
     public void purgeDebuffs() {
         dispelDebuff(Disease.SEDUCE);
         dispelDebuff(Disease.ZOMBIFY);
@@ -2601,6 +3119,9 @@ public class Character extends AbstractCharacterObject {
         dispelDebuffs();
     }
 
+    /**
+     * 取消全部Debuffs
+     */
     public void cancelAllDebuffs() {
         chrLock.lock();
         try {
@@ -2611,6 +3132,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * dispel技能
+     * @param skillid skillid
+     */
     public void dispelSkill(int skillid) {
         List<BuffStatValueHolder> allBuffs = getAllStatups();
         for (BuffStatValueHolder mbsvh : allBuffs) {
@@ -2632,6 +3157,10 @@ public class Character extends AbstractCharacterObject {
         };
     }
 
+    /**
+     * 变更FaceExpression
+     * @param emote emote
+     */
     public void changeFaceExpression(int emote) {
         long timeNow = Server.getInstance().getCurrentTime();
         // Client allows changing every 2 seconds. Give it a little bit of overhead for packet delays.
@@ -2641,6 +3170,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * doHurtHP
+     */
+    /**
+     * doHurtHP
+     */
+    /**
+     * 执行受伤HP
+     */
     public void doHurtHp() {
         if (!(this.getInventory(InventoryType.EQUIPPED).findById(getMap().getHPDecProtect()) != null || buffMapProtection())) {
             addHP(-getMap().getHPDec());
@@ -2648,6 +3186,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 掉落Message
+     * @param message 消息
+     */
     public void dropMessage(String message) {
         dropMessage(0, message);
     }
@@ -2661,12 +3203,20 @@ public class Character extends AbstractCharacterObject {
         sendPacket(PacketCreator.serverNotice(type, message));
     }
 
+    /**
+     * entered脚本
+     * @param script 脚本
+     * @param mapid mapid
+     */
     public void enteredScript(String script, int mapid) {
         if (!entered.containsKey(mapid)) {
             entered.put(mapid, script);
         }
     }
 
+    /**
+     * 装备Changed
+     */
     public void equipChanged() {
         getMap().broadcastUpdateCharLookMessage(this, this);
         equipchanged = true;
@@ -2676,6 +3226,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消异常状态ExpireTask
+     */
     public void cancelDiseaseExpireTask() {
         if (diseaseExpireTask != null) {
             diseaseExpireTask.cancel(false);
@@ -2683,6 +3236,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * diseaseExpireTask
+     */
+    /**
+     * diseaseExpireTask
+     */
+    /**
+     * disease过期任务
+     */
     public void diseaseExpireTask() {
         if (diseaseExpireTask == null) {
             diseaseExpireTask = TimerManager.getInstance().register(() -> {
@@ -2708,6 +3270,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消增益ExpireTask
+     */
     public void cancelBuffExpireTask() {
         if (buffExpireTask != null) {
             buffExpireTask.cancel(false);
@@ -2715,6 +3280,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * buffExpireTask
+     */
+    /**
+     * buffExpireTask
+     */
+    /**
+     * buff过期任务
+     */
     public void buffExpireTask() {
         if (buffExpireTask == null) {
             buffExpireTask = TimerManager.getInstance().register(() -> {
@@ -2744,6 +3318,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消技能CooldownTask
+     */
     public void cancelSkillCooldownTask() {
         if (skillCooldownTask != null) {
             skillCooldownTask.cancel(false);
@@ -2751,6 +3328,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * skillCooldownTask
+     */
+    /**
+     * skillCooldownTask
+     */
+    /**
+     * skill冷却任务
+     */
     public void skillCooldownTask() {
         if (skillCooldownTask == null) {
             skillCooldownTask = TimerManager.getInstance().register(() -> {
@@ -2777,6 +3363,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消过期时间Task
+     */
     public void cancelExpirationTask() {
         if (itemExpireTask != null) {
             itemExpireTask.cancel(false);
@@ -2784,6 +3373,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * expirationTask
+     */
+    /**
+     * expirationTask
+     */
+    /**
+     * expiration任务
+     */
     public void expirationTask() {
         if (itemExpireTask == null) {
             itemExpireTask = TimerManager.getInstance().register(() -> {
@@ -2869,6 +3467,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * forceUpdate物品
+     * @param item 物品
+     */
     public void forceUpdateItem(Item item) {
         final List<ModifyInventory> mods = new LinkedList<>();
         mods.add(new ModifyInventory(3, item));
@@ -2876,6 +3478,9 @@ public class Character extends AbstractCharacterObject {
         sendPacket(PacketCreator.modifyInventory(true, mods));
     }
 
+    /**
+     * 获得Gacha经验
+     */
     public void gainGachaExp() {
         int expgain = 0;
         long currentgexp = gachaExp.get();
@@ -2897,22 +3502,51 @@ public class Character extends AbstractCharacterObject {
         updateSingleStat(Stat.GACHAEXP, this.gachaExp.get());
     }
 
+    /**
+     * 添加Gacha经验
+     * @param gain gain
+     */
     public void addGachaExp(int gain) {
         updateSingleStat(Stat.GACHAEXP, gachaExp.addAndGet(gain));
     }
 
+    /**
+     * 获得经验
+     * @param gain gain
+     */
     public void gainExp(int gain) {
         gainExp(gain, true, true);
     }
 
+    /**
+     * 获得经验
+     * @param gain gain
+     * @param show show
+     * @param inChat inChat
+     */
     public void gainExp(int gain, boolean show, boolean inChat) {
         gainExp(gain, show, inChat, true);
     }
 
+    /**
+     * 获得经验
+     * @param gain gain
+     * @param show show
+     * @param inChat inChat
+     * @param white white
+     */
     public void gainExp(int gain, boolean show, boolean inChat, boolean white) {
         gainExp(gain, 0, show, inChat, white);
     }
 
+    /**
+     * 获得经验
+     * @param gain gain
+     * @param party 队伍
+     * @param show show
+     * @param inChat inChat
+     * @param white white
+     */
     public void gainExp(int gain, int party, boolean show, boolean inChat, boolean white) {
         if (hasDisease(Disease.CURSE)) {
             gain *= 0.5;
@@ -2932,10 +3566,23 @@ public class Character extends AbstractCharacterObject {
         gainExpInternal(gain, equip, party, show, inChat, white);
     }
 
+    /**
+     * 失去经验
+     * @param loss loss
+     * @param show show
+     * @param inChat inChat
+     */
     public void loseExp(int loss, boolean show, boolean inChat) {
         loseExp(loss, show, inChat, true);
     }
 
+    /**
+     * 失去经验
+     * @param loss loss
+     * @param show show
+     * @param inChat inChat
+     * @param white white
+     */
     public void loseExp(int loss, boolean show, boolean inChat, boolean white) {
         gainExpInternal(-loss, 0, 0, show, inChat, white);
     }
@@ -3032,10 +3679,21 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获得人气
+     * @param delta delta
+     */
     public void gainFame(int delta) {
         gainFame(delta, null, 0);
     }
 
+    /**
+     * 获得人气
+     * @param delta delta
+     * @param fromPlayer fromPlayer
+     * @param mode mode
+     * @return 返回值
+     */
     public boolean gainFame(int delta, Character fromPlayer, int mode) {
         Pair<Integer, Integer> fameRes = applyFame(delta);
         delta = fameRes.getRight();
@@ -3056,19 +3714,39 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否可以Hold金币
+     * @param gain gain
+     * @return 返回值
+     */
     public boolean canHoldMeso(int gain) {  // thanks lucasziron for pointing out a need to check space availability for mesos on player transactions
-        long nextMeso = (long) meso.get() + gain;
         return nextMeso <= Integer.MAX_VALUE;
     }
 
+    /**
+     * 获得金币
+     * @param gain gain
+     */
     public void gainMeso(int gain) {
         gainMeso(gain, true, false, true);
     }
 
+    /**
+     * 获得金币
+     * @param gain gain
+     * @param show show
+     */
     public void gainMeso(int gain, boolean show) {
         gainMeso(gain, show, false, false);
     }
 
+    /**
+     * 获得金币
+     * @param gain gain
+     * @param show show
+     * @param enableActions enableActions
+     * @param inChat inChat
+     */
     public void gainMeso(int gain, boolean show, boolean enableActions, boolean inChat) {
         long nextMeso;
         petLock.lock();
@@ -3094,10 +3772,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * generic公会Message
+     * @param code code
+     */
     public void genericGuildMessage(int code) {
         this.sendPacket(GuildPackets.genericGuildMessage((byte) code));
     }
 
+    /**
+     * 获取全部Cooldowns
+     * @return 返回值
+     */
     public List<PlayerCoolDownValueHolder> getAllCooldowns() {
         List<PlayerCoolDownValueHolder> ret = new ArrayList<>();
 
@@ -3115,10 +3801,17 @@ public class Character extends AbstractCharacterObject {
         return ret;
     }
 
+    /**
+     * 更新AriantScore
+     */
     public void updateAriantScore() {
         updateAriantScore(0);
     }
 
+    /**
+     * 更新AriantScore
+     * @param dropQty dropQty
+     */
     public void updateAriantScore(int dropQty) {
         AriantColiseum arena = this.getAriantColiseum();
         if (arena != null) {
@@ -3130,6 +3823,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取BuffedStarttime
+     * @param effect effect
+     * @return 返回值
+     */
     public Long getBuffedStarttime(BuffStat effect) {
         effLock.lock();
         chrLock.lock();
@@ -3145,6 +3843,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取Buffed值
+     * @param effect effect
+     * @return 返回值
+     */
     public Integer getBuffedValue(BuffStat effect) {
         effLock.lock();
         chrLock.lock();
@@ -3160,6 +3863,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取增益Source
+     * @param stat 属性
+     * @return 返回值
+     */
     public int getBuffSource(BuffStat stat) {
         effLock.lock();
         chrLock.lock();
@@ -3175,6 +3883,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取增益效果
+     * @param stat 属性
+     * @return 返回值
+     */
     public StatEffect getBuffEffect(BuffStat stat) {
         effLock.lock();
         chrLock.lock();
@@ -3206,8 +3919,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取全部Buffs
+     * @return 返回值
+     */
     public List<PlayerBuffValueHolder> getAllBuffs() {  // buff values will be stored in an arbitrary order
-        effLock.lock();
         chrLock.lock();
         try {
             long curtime = Server.getInstance().getCurrentTime();
@@ -3228,6 +3944,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否拥有增益从Sourceid
+     * @param sourceid sourceid
+     * @return 返回值
+     */
     public boolean hasBuffFromSourceid(int sourceid) {
         effLock.lock();
         chrLock.lock();
@@ -3239,6 +3960,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否拥有活跃增益
+     * @param sourceid sourceid
+     * @return 返回值
+     */
     public boolean hasActiveBuff(int sourceid) {
         LinkedList<BuffStatValueHolder> allBuffs;
 
@@ -3359,6 +4085,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * debug列表全部Buffs
+     */
     public void debugListAllBuffs() {
         effLock.lock();
         chrLock.lock();
@@ -3388,6 +4117,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消全部Buffs
+     * @param softcancel softcancel
+     */
     public void cancelAllBuffs(boolean softcancel) {
         if (softcancel) {
             effLock.lock();
@@ -3528,11 +4261,22 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消效果
+     * @param itemId 物品ID
+     */
     public void cancelEffect(int itemId) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         cancelEffect(ii.getItemEffect(itemId), false, -1);
     }
 
+    /**
+     * 取消效果
+     * @param effect effect
+     * @param overwrite overwrite
+     * @param startTime startTime
+     * @return 返回值
+     */
     public boolean cancelEffect(StatEffect effect, boolean overwrite, long startTime) {
         boolean ret;
 
@@ -3583,6 +4327,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 更新活跃Effects
+     */
     public void updateActiveEffects() {
         effLock.lock();     // thanks davidlafriniere, maple006, RedHat for pointing a deadlock occurring here
         try {
@@ -3678,6 +4425,10 @@ public class Character extends AbstractCharacterObject {
         return toCancel;
     }
 
+    /**
+     * 取消效果从增益属性
+     * @param stat 属性
+     */
     public void cancelEffectFromBuffStat(BuffStat stat) {
         BuffStatValueHolder effect;
 
@@ -3694,6 +4445,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消增益Stats
+     * @param stat 属性
+     */
     public void cancelBuffStats(BuffStat stat) {
         effLock.lock();
         try {
@@ -4084,6 +4839,13 @@ public class Character extends AbstractCharacterObject {
         buffEffectsCount.put(stat, val);
     }
 
+    /**
+     * register效果
+     * @param effect effect
+     * @param starttime starttime
+     * @param expirationtime expirationtime
+     * @param isSilent isSilent
+     */
     public void registerEffect(StatEffect effect, long starttime, long expirationtime, boolean isSilent) {
         if (effect.isDragonBlood()) {
             prepareDragonBlood(effect);
@@ -4268,6 +5030,10 @@ public class Character extends AbstractCharacterObject {
         };
     }
 
+    /**
+     * unregisterChair增益
+     * @return 返回值
+     */
     public boolean unregisterChairBuff() {
         if (!GameConfig.getServerBoolean("use_chair_extra_heal")) {
             return false;
@@ -4283,6 +5049,10 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * registerChair增益
+     * @return 返回值
+     */
     public boolean registerChairBuff() {
         if (!GameConfig.getServerBoolean("use_chair_extra_heal")) {
             return false;
@@ -4299,14 +5069,26 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 获取Chair
+     * @return 返回值
+     */
     public int getChair() {
         return chair.get();
     }
 
+    /**
+     * 获取Chalkboard
+     * @return 返回值
+     */
     public String getChalkboard() {
         return this.chalktext;
     }
 
+    /**
+     * 获取抽象玩家Interaction
+     * @return 返回值
+     */
     public AbstractPlayerInteraction getAbstractPlayerInteraction() {
         return client.getAbstractPlayerInteraction();
     }
@@ -4317,6 +5099,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取CompletedQuests
+     * @return 返回值
+     */
     public final List<QuestStatus> getCompletedQuests() {
         List<QuestStatus> ret = new LinkedList<>();
         for (QuestStatus qs : getQuestValues()) {
@@ -4328,11 +5114,19 @@ public class Character extends AbstractCharacterObject {
         return Collections.unmodifiableList(ret);
     }
 
+    /**
+     * 获取CrushRings
+     * @return 返回值
+     */
     public List<Ring> getCrushRings() {
         Collections.sort(crushRings);
         return crushRings;
     }
 
+    /**
+     * 获取Doors
+     * @return 返回值
+     */
     public Collection<Door> getDoors() {
         prtLock.lock();
         try {
@@ -4342,6 +5136,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取玩家Door
+     * @return 返回值
+     */
     public Door getPlayerDoor() {
         prtLock.lock();
         try {
@@ -4351,6 +5149,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取MainTownDoor
+     * @return 返回值
+     */
     public Door getMainTownDoor() {
         for (Door door : getDoors()) {
             if (door.getTownPortal().getId() == 0x80) {
@@ -4361,6 +5163,11 @@ public class Character extends AbstractCharacterObject {
         return null;
     }
 
+    /**
+     * 应用队伍Door
+     * @param door door
+     * @param partyUpdate partyUpdate
+     */
     public void applyPartyDoor(Door door, boolean partyUpdate) {
         Party chrParty;
         prtLock.lock();
@@ -4380,6 +5187,11 @@ public class Character extends AbstractCharacterObject {
         silentPartyUpdateInternal(chrParty);
     }
 
+    /**
+     * 移除队伍Door
+     * @param partyUpdate partyUpdate
+     * @return 返回值
+     */
     public Door removePartyDoor(boolean partyUpdate) {
         Door ret = null;
         Party chrParty;
@@ -4407,6 +5219,10 @@ public class Character extends AbstractCharacterObject {
         formerParty.removeDoor(id);
     }
 
+    /**
+     * 获取活动Instance
+     * @return 返回值
+     */
     public EventInstanceManager getEventInstance() {
         evtLock.lock();
         try {
@@ -4416,10 +5232,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取结婚Instance
+     * @return 返回值
+     */
     public Marriage getMarriageInstance() {
         return (Marriage) getEventInstance();
     }
 
+    /**
+     * 重置Excluded
+     * @param petId petId
+     */
     public void resetExcluded(int petId) {
         chrLock.lock();
         try {
@@ -4435,6 +5259,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 添加Excluded
+     * @param petId petId
+     * @param x X坐标
+     */
     public void addExcluded(int petId, int x) {
         chrLock.lock();
         try {
@@ -4481,6 +5310,11 @@ public class Character extends AbstractCharacterObject {
         removeExcluded(petId);
     }
 
+    /**
+     * 获取Excluded为宠物
+     * @param petId petId
+     * @return 返回值
+     */
     public Set<Integer> getExcludedForPet(int petId) {
         chrLock.lock();
         try {
@@ -4520,6 +5354,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * commitExcludedItems
+     */
+    /**
+     * commitExcludedItems
+     */
+    /**
+     * 提交排除物品
+     */
     public void commitExcludedItems() {
         Map<Integer, Set<Integer>> petExcluded = this.getExcluded();
 
@@ -4550,6 +5393,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * exportExcludedItems
+     * @param c 客户端会话
+     */
     public void exportExcludedItems(Client c) {
         Map<Integer, Set<Integer>> petExcluded = this.getExcluded();
         for (Map.Entry<Integer, Set<Integer>> pe : petExcluded.entrySet()) {
@@ -4565,6 +5412,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取排除
+     * @return 返回值
+     */
     public Map<Integer, Set<Integer>> getExcluded() {
         chrLock.lock();
         try {
@@ -4574,6 +5425,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取ExcludedItems
+     * @return 返回值
+     */
     public Set<Integer> getExcludedItems() {
         chrLock.lock();
         try {
@@ -4583,18 +5438,34 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取经验
+     * @return 返回值
+     */
     public int getExp() {
         return exp.get();
     }
 
+    /**
+     * 获取Gacha经验
+     * @return 返回值
+     */
     public int getGachaExp() {
         return gachaExp.get();
     }
 
+    /**
+     * 判断是否拥有Novice经验Rate
+     * @return 返回值
+     */
     public boolean hasNoviceExpRate() {
         return GameConfig.getServerBoolean("use_enforce_novice_exp_rate") && isBeginnerJob() && level < 11;
     }
 
+    /**
+     * 获取经验Rate
+     * @return 返回值
+     */
     public float getExpRate() {
         if (hasNoviceExpRate()) {   // base exp rate 1x for early levels idea thanks to Vcoc
             return 1;
@@ -4603,12 +5474,20 @@ public class Character extends AbstractCharacterObject {
         return expRate;
     }
 
+    /**
+     * 获取等级经验Rate
+     * @return 返回值
+     */
     public float getLevelExpRate() {
         if (hasNoviceExpRate()) return 1; // 新手经验保护
 
         return 1f + GameConfig.getWorldFloat(getWorld(), "level_exp_rate") * level;
     }
 
+    /**
+     * 获取Quick等级经验Rate
+     * @return 返回值
+     */
     public float getQuickLevelExpRate() {
         if (hasNoviceExpRate()) return 1; // 新手经验保护
 
@@ -4618,44 +5497,83 @@ public class Character extends AbstractCharacterObject {
         return 1f + (quickLv - level) * GameConfig.getWorldFloat(getWorld(), "quick_level_exp_rate");
     }
 
+    /**
+     * 更新Mob经验Rate
+     */
     public void updateMobExpRate() {
         mobExpRate = getLevelExpRate() * getQuickLevelExpRate();
     }
 
+    /**
+     * 获取Mob经验Rate
+     * @return 返回值
+     */
     public float getMobExpRate() {
         if (mobExpRate <= 0) updateMobExpRate();
         return mobExpRate;
     }
 
+    /**
+     * 获取优惠券经验Rate
+     * @return 返回值
+     */
     public int getCouponExpRate() {
         return expCoupon;
     }
 
+    /**
+     * 获取Raw经验Rate
+     * @return 返回值
+     */
     public float getRawExpRate() {
         return expRate / (expCoupon * getWorldServer().getExpRate());
     }
 
+    /**
+     * 获取优惠券DropRate
+     * @return 返回值
+     */
     public int getCouponDropRate() {
         return dropCoupon;
     }
 
+    /**
+     * 获取RawDropRate
+     * @return 返回值
+     */
     public float getRawDropRate() {
         return dropRate / (dropCoupon * getWorldServer().getDropRate());
     }
 
+    /**
+     * 获取BossDropRate
+     * @return 返回值
+     */
     public float getBossDropRate() {
         World w = getWorldServer();
         return (dropRate / w.getDropRate()) * w.getBossDropRate();
     }
 
+    /**
+     * 获取优惠券金币Rate
+     * @return 返回值
+     */
     public int getCouponMesoRate() {
         return mesoCoupon;
     }
 
+    /**
+     * 获取Raw金币Rate
+     * @return 返回值
+     */
     public float getRawMesoRate() {
         return mesoRate / (mesoCoupon * getWorldServer().getMesoRate());
     }
 
+    /**
+     * 获取任务经验Rate
+     * @return 返回值
+     */
     public float getQuestExpRate() {
         if (hasNoviceExpRate()) {
             return 1;
@@ -4665,11 +5583,20 @@ public class Character extends AbstractCharacterObject {
         return w.getExpRate() * w.getQuestRate();
     }
 
+    /**
+     * 获取任务金币Rate
+     * @return 返回值
+     */
     public float getQuestMesoRate() {
         World w = getWorldServer();
         return w.getMesoRate() * w.getQuestRate();
     }
 
+    /**
+     * 获取CardRate
+     * @param itemid itemid
+     * @return 返回值
+     */
     public float getCardRate(int itemid) {
         float rate = 100.0f;
 
@@ -4688,6 +5615,10 @@ public class Character extends AbstractCharacterObject {
         return rate / 100;
     }
 
+    /**
+     * 获取家族
+     * @return 返回值
+     */
     public Family getFamily() {
         if (familyEntry != null) {
             return familyEntry.getFamily();
@@ -4696,6 +5627,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置家族条目
+     * @param entry entry
+     */
     public void setFamilyEntry(FamilyEntry entry) {
         if (entry != null) {
             setFamilyId(entry.getFamily().getID());
@@ -4703,19 +5638,34 @@ public class Character extends AbstractCharacterObject {
         this.familyEntry = entry;
     }
 
+    /**
+     * 设置UsedStorage
+     */
     public void setUsedStorage() {
         usedStorage = true;
     }
 
+    /**
+     * 获取FriendshipRings
+     * @return 返回值
+     */
     public List<Ring> getFriendshipRings() {
         Collections.sort(friendshipRings);
         return friendshipRings;
     }
 
+    /**
+     * 判断是否为Male
+     * @return 返回值
+     */
     public boolean isMale() {
         return getGender() == 0;
     }
 
+    /**
+     * 获取公会
+     * @return 返回值
+     */
     public Guild getGuild() {
         try {
             return Server.getInstance().getGuild(getGuildId(), getWorld(), this);
@@ -4725,6 +5675,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取联盟
+     * @return 返回值
+     */
     public Alliance getAlliance() {
         if (mgc != null) {
             try {
@@ -4738,6 +5692,11 @@ public class Character extends AbstractCharacterObject {
     }
 
 
+    /**
+     * 获取账号ID按名称
+     * @param name 名称
+     * @return 返回值
+     */
     public static int getAccountIdByName(String name) {
         final int id;
         try (Connection con = DatabaseConnection.getConnection();
@@ -4756,6 +5715,11 @@ public class Character extends AbstractCharacterObject {
         return -1;
     }
 
+    /**
+     * 获取ID按名称
+     * @param name 名称
+     * @return 返回值
+     */
     public static int getIdByName(String name) {
         final int id;
         try (Connection con = DatabaseConnection.getConnection();
@@ -4774,6 +5738,11 @@ public class Character extends AbstractCharacterObject {
         return -1;
     }
 
+    /**
+     * 获取名称按ID
+     * @param id ID
+     * @return 返回值
+     */
     public static String getNameById(int id) {
         final String name;
         try (Connection con = DatabaseConnection.getConnection();
@@ -4792,19 +5761,39 @@ public class Character extends AbstractCharacterObject {
         return null;
     }
 
+    /**
+     * 获取背包
+     * @param type 类型
+     * @return 返回值
+     */
     public Inventory getInventory(InventoryType type) {
         return inventory[type.ordinal()];
     }
 
+    /**
+     * have物品与ID
+     * @param itemid itemid
+     * @param checkEquipped checkEquipped
+     * @return 返回值
+     */
     public boolean haveItemWithId(int itemid, boolean checkEquipped) {
         return (inventory[ItemConstants.getInventoryType(itemid).ordinal()].findById(itemid) != null)
                 || (checkEquipped && inventory[InventoryType.EQUIPPED.ordinal()].findById(itemid) != null);
     }
 
+    /**
+     * have物品Equipped
+     * @param itemid itemid
+     * @return 返回值
+     */
     public boolean haveItemEquipped(int itemid) {
         return (inventory[InventoryType.EQUIPPED.ordinal()].findById(itemid) != null);
     }
 
+    /**
+     * haveWedding戒指
+     * @return 返回值
+     */
     public boolean haveWeddingRing() {
         int[] rings = {ItemId.WEDDING_RING_STAR, ItemId.WEDDING_RING_MOONSTONE, ItemId.WEDDING_RING_GOLDEN, ItemId.WEDDING_RING_SILVER};
 
@@ -4817,6 +5806,12 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 获取物品数量
+     * @param itemid itemid
+     * @param checkEquipped checkEquipped
+     * @return 返回值
+     */
     public int getItemQuantity(int itemid, boolean checkEquipped) {
         int count = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countById(itemid);
         if (checkEquipped) {
@@ -4825,6 +5820,12 @@ public class Character extends AbstractCharacterObject {
         return count;
     }
 
+    /**
+     * 获取Clean物品数量
+     * @param itemid itemid
+     * @param checkEquipped checkEquipped
+     * @return 返回值
+     */
     public int getCleanItemQuantity(int itemid, boolean checkEquipped) {
         int count = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countNotOwnedById(itemid);
         if (checkEquipped) {
@@ -4833,10 +5834,18 @@ public class Character extends AbstractCharacterObject {
         return count;
     }
 
+    /**
+     * 获取职业类型
+     * @return 返回值
+     */
     public int getJobType() {
         return job.getId() / 1000;
     }
 
+    /**
+     * 获取Fh
+     * @return 返回值
+     */
     public int getFh() {
         Point pos = this.getPosition();
         pos.y -= 6;
@@ -4848,6 +5857,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取地图ID
+     * @return 返回值
+     */
     public int getMapId() {
         if (map != null) {
             return map.getId();
@@ -4855,10 +5868,19 @@ public class Character extends AbstractCharacterObject {
         return mapId;
     }
 
+    /**
+     * 获取结婚戒指
+     * @return 返回值
+     */
     public Ring getMarriageRing() {
         return partnerId > 0 ? marriageRing : null;
     }
 
+    /**
+     * 获取Master等级
+     * @param skill 技能
+     * @return 返回值
+     */
     public int getMasterLevel(int skill) {
         SkillEntry ret = skills.get(SkillFactory.getSkill(skill));
         if (ret == null) {
@@ -4867,6 +5889,11 @@ public class Character extends AbstractCharacterObject {
         return ret.masterLevel;
     }
 
+    /**
+     * 获取Master等级
+     * @param skill 技能
+     * @return 返回值
+     */
     public int getMasterLevel(Skill skill) {
         if (skills.get(skill) == null) {
             return 0;
@@ -4874,34 +5901,66 @@ public class Character extends AbstractCharacterObject {
         return skills.get(skill).masterLevel;
     }
 
+    /**
+     * 获取Total力量
+     * @return 返回值
+     */
     public int getTotalStr() {
         return localstr;
     }
 
+    /**
+     * 获取Total敏捷
+     * @return 返回值
+     */
     public int getTotalDex() {
         return localdex;
     }
 
+    /**
+     * 获取Total智力
+     * @return 返回值
+     */
     public int getTotalInt() {
         return localint_;
     }
 
+    /**
+     * 获取Total运气
+     * @return 返回值
+     */
     public int getTotalLuk() {
         return localluk;
     }
 
+    /**
+     * 获取TotalMagic
+     * @return 返回值
+     */
     public int getTotalMagic() {
         return localmagic;
     }
 
+    /**
+     * 获取TotalWatk
+     * @return 返回值
+     */
     public int getTotalWatk() {
         return localwatk;
     }
 
+    /**
+     * 获取最大Class等级
+     * @return 返回值
+     */
     public int getMaxClassLevel() {
         return isCygnus() ? 120 : 200;
     }
 
+    /**
+     * 获取最大等级
+     * @return 返回值
+     */
     public int getMaxLevel() {
         if (!GameConfig.getServerBoolean("use_enforce_job_level_range") || isGmJob()) {
             return getMaxClassLevel();
@@ -4910,18 +5969,34 @@ public class Character extends AbstractCharacterObject {
         return GameConstants.getJobMaxLevel(job);
     }
 
+    /**
+     * 获取金币
+     * @return 返回值
+     */
     public int getMeso() {
         return meso.get();
     }
 
+    /**
+     * 设置金币
+     * @param meso meso
+     */
     public void setMeso(int meso) {
         this.meso.set(meso);
     }
 
+    /**
+     * 获取Merchant金币
+     * @return 返回值
+     */
     public int getMerchantMeso() {
         return merchantmeso;
     }
 
+    /**
+     * 获取MerchantNet金币
+     * @return 返回值
+     */
     public int getMerchantNetMeso() {
         int elapsedDays = 0;
 
@@ -4947,14 +6022,26 @@ public class Character extends AbstractCharacterObject {
         return (int) netMeso;
     }
 
+    /**
+     * 获取MGC
+     * @return 返回值
+     */
     public GuildCharacter getMGC() {
         return mgc;
     }
 
+    /**
+     * 设置MGC
+     * @param mgc mgc
+     */
     public void setMGC(GuildCharacter mgc) {
         this.mgc = mgc;
     }
 
+    /**
+     * 获取MPC
+     * @return 返回值
+     */
     public PartyCharacter getMPC() {
         if (mpc == null) {
             mpc = new PartyCharacter(this);
@@ -4962,15 +6049,26 @@ public class Character extends AbstractCharacterObject {
         return mpc;
     }
 
+    /**
+     * 设置MPC
+     * @param mpc mpc
+     */
     public void setMPC(PartyCharacter mpc) {
         this.mpc = mpc;
     }
 
+    /**
+     * 设置玩家Aggro
+     * @param mobHash mobHash
+     */
     public void setPlayerAggro(int mobHash) {
         setTargetHpBarHash(mobHash);
         setTargetHpBarTime(System.currentTimeMillis());
     }
 
+    /**
+     * 重置玩家Aggro
+     */
     public void resetPlayerAggro() {
         if (getWorldServer().unregisterDisabledServerMessage(id)) {
             client.announceServerMessage();
@@ -4980,6 +6078,12 @@ public class Character extends AbstractCharacterObject {
         setTargetHpBarTime(0);
     }
 
+    /**
+     * 获取MiniGame点数
+     * @param type 类型
+     * @param omok omok
+     * @return 返回值
+     */
     public int getMiniGamePoints(MiniGameResult type, boolean omok) {
         if (omok) {
             return switch (type) {
@@ -4996,10 +6100,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取怪物BookCover
+     * @return 返回值
+     */
     public int getMonsterBookCover() {
         return bookCover;
     }
 
+    /**
+     * 获取NoPets
+     * @return 返回值
+     */
     public int getNoPets() {
         petLock.lock();
         try {
@@ -5015,6 +6127,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取队伍
+     * @return 返回值
+     */
     public Party getParty() {
         prtLock.lock();
         try {
@@ -5024,6 +6140,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取队伍ID
+     * @return 返回值
+     */
     public int getPartyId() {
         prtLock.lock();
         try {
@@ -5033,6 +6153,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取队伍Members在线
+     * @return 返回值
+     */
     public List<Character> getPartyMembersOnline() {
         List<Character> list = new LinkedList<>();
 
@@ -5053,6 +6177,10 @@ public class Character extends AbstractCharacterObject {
         return list;
     }
 
+    /**
+     * 获取队伍Members在Same地图
+     * @return 返回值
+     */
     public List<Character> getPartyMembersOnSameMap() {
         List<Character> list = new LinkedList<>();
         int thisMapHash = this.getMap().hashCode();
@@ -5077,10 +6205,20 @@ public class Character extends AbstractCharacterObject {
         return list;
     }
 
+    /**
+     * 判断是否为队伍Member
+     * @param chr 角色
+     * @return 返回值
+     */
     public boolean isPartyMember(Character chr) {
         return isPartyMember(chr.getId());
     }
 
+    /**
+     * 判断是否为队伍Member
+     * @param cid cid
+     * @return 返回值
+     */
     public boolean isPartyMember(int cid) {
         prtLock.lock();
         try {
@@ -5094,11 +6232,18 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 设置GM等级
+     * @param level 等级
+     */
     public void setGMLevel(int level) {
         this.gmLevel = Math.max(Math.min(level, 6), 0);
         whiteChat = gmLevel >= 4;   // thanks ozanrijen for suggesting default white chat
     }
 
+    /**
+     * 关闭队伍SearchInteractions
+     */
     public void closePartySearchInteractions() {
         this.getWorldServer().getPartySearchCoordinator().unregisterPartyLeader(this);
         if (canRecvPartySearchInvite) {
@@ -5106,6 +6251,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 关闭玩家Interactions
+     */
     public void closePlayerInteractions() {
         closeNpcShop();
         closeTrade();
@@ -5119,14 +6267,23 @@ public class Character extends AbstractCharacterObject {
         resetPlayerAggro();
     }
 
+    /**
+     * 关闭NPC商店
+     */
     public void closeNpcShop() {
         setShop(null);
     }
 
+    /**
+     * 关闭Trade
+     */
     public void closeTrade() {
         Trade.cancelTrade(this, Trade.TradeResult.PARTNER_CANCEL);
     }
 
+    /**
+     * 关闭玩家商店
+     */
     public void closePlayerShop() {
         PlayerShop mps = this.getPlayerShop();
         if (mps == null) {
@@ -5153,6 +6310,10 @@ public class Character extends AbstractCharacterObject {
         this.setPlayerShop(null);
     }
 
+    /**
+     * 关闭MiniGame
+     * @param forceClose forceClose
+     */
     public void closeMiniGame(boolean forceClose) {
         MiniGame game = this.getMiniGame();
         if (game == null) {
@@ -5166,6 +6327,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 关闭HiredMerchant
+     * @param closeMerchant closeMerchant
+     */
     public void closeHiredMerchant(boolean closeMerchant) {
         HiredMerchant merchant = this.getHiredMerchant();
         if (merchant == null) {
@@ -5193,6 +6358,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 关闭玩家聊天室
+     */
     public void closePlayerMessenger() {
         Messenger m = this.getMessenger();
         if (m == null) {
@@ -5205,6 +6373,10 @@ public class Character extends AbstractCharacterObject {
         this.setMessengerPosition(4);
     }
 
+    /**
+     * 获取Pets
+     * @return 返回值
+     */
     public Pet[] getPets() {
         petLock.lock();
         try {
@@ -5214,6 +6386,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取宠物
+     * @param index index
+     * @return 返回值
+     */
     public Pet getPet(int index) {
         if (index < 0) {
             return null;
@@ -5227,6 +6404,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取宠物Index
+     * @param petId petId
+     * @return 返回值
+     */
     public byte getPetIndex(int petId) {
         petLock.lock();
         try {
@@ -5243,6 +6425,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取宠物Index
+     * @param pet pet
+     * @return 返回值
+     */
     public byte getPetIndex(Pet pet) {
         petLock.lock();
         try {
@@ -5259,6 +6446,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取宠物Equip物品ID
+     * @param petIndex petIndex
+     * @return 返回值
+     */
     public int getPetEquipItemId(byte petIndex) {
         if (!ItemConstants.isValidPetIndex(petIndex)) {
             return 0;
@@ -5268,6 +6460,11 @@ public class Character extends AbstractCharacterObject {
         return petEqp == null ? 0 : petEqp.getItemId();
     }
 
+    /**
+     * 判断是否拥有宠物名称Tag
+     * @param petIndex petIndex
+     * @return 返回值
+     */
     public boolean hasPetNameTag(byte petIndex) {
         if (!ItemConstants.isValidPetIndex(petIndex)) {
             return false;
@@ -5276,6 +6473,11 @@ public class Character extends AbstractCharacterObject {
         return getInventory(InventoryType.EQUIPPED).getItem(ItemConstants.PET_EQUIP_SLOTS.get(petIndex).nameTag()) != null;
     }
 
+    /**
+     * 判断是否拥有宠物Chatballoon
+     * @param petIndex petIndex
+     * @return 返回值
+     */
     public boolean hasPetChatballoon(byte petIndex) {
         if (!ItemConstants.isValidPetIndex(petIndex)) {
             return false;
@@ -5284,6 +6486,11 @@ public class Character extends AbstractCharacterObject {
         return getInventory(InventoryType.EQUIPPED).getItem(ItemConstants.PET_EQUIP_SLOTS.get(petIndex).chatBalloon()) != null;
     }
 
+    /**
+     * 判断是否为Equipped金币Magnet
+     * @param petIndex petIndex
+     * @return 返回值
+     */
     public boolean isEquippedMesoMagnet(byte petIndex) {
         if (!ItemConstants.isValidPetIndex(petIndex)) {
             return false;
@@ -5292,6 +6499,11 @@ public class Character extends AbstractCharacterObject {
         return getInventory(InventoryType.EQUIPPED).getItem(ItemConstants.PET_EQUIP_SLOTS.get(petIndex).mesoMagnet()) != null;
     }
 
+    /**
+     * 判断是否为Equipped物品Pouch
+     * @param petIndex petIndex
+     * @return 返回值
+     */
     public boolean isEquippedItemPouch(byte petIndex) {
         if (!ItemConstants.isValidPetIndex(petIndex)) {
             return false;
@@ -5300,6 +6512,11 @@ public class Character extends AbstractCharacterObject {
         return getInventory(InventoryType.EQUIPPED).getItem(ItemConstants.PET_EQUIP_SLOTS.get(petIndex).itemPouch()) != null;
     }
 
+    /**
+     * 判断是否为Equipped宠物物品Ignore
+     * @param petIndex petIndex
+     * @return 返回值
+     */
     public boolean isEquippedPetItemIgnore(byte petIndex) {
         if (!ItemConstants.isValidPetIndex(petIndex)) {
             return false;
@@ -5308,6 +6525,11 @@ public class Character extends AbstractCharacterObject {
         return getInventory(InventoryType.EQUIPPED).getItem(ItemConstants.PET_EQUIP_SLOTS.get(petIndex).itemIgnore()) != null;
     }
 
+    /**
+     * 获取任务状态
+     * @param quest 任务
+     * @return 返回值
+     */
     public final byte getQuestStatus(final int quest) {
         synchronized (quests) {
             QuestStatus mqs = quests.get((short) quest);
@@ -5319,10 +6541,20 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取任务
+     * @param quest 任务
+     * @return 返回值
+     */
     public QuestStatus getQuest(final int quest) {
         return getQuest(Quest.getInstance(quest));
     }
 
+    /**
+     * 获取任务
+     * @param quest 任务
+     * @return 返回值
+     */
     public QuestStatus getQuest(Quest quest) {
         synchronized (quests) {
             short questid = quest.getId();
@@ -5335,6 +6567,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取任务NAdd
+     * @param quest 任务
+     * @return 返回值
+     */
     public final QuestStatus getQuestNAdd(final Quest quest) {
         synchronized (quests) {
             if (!quests.containsKey(quest.getId())) {
@@ -5346,12 +6583,23 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取任务NoAdd
+     * @param quest 任务
+     * @return 返回值
+     */
     public final QuestStatus getQuestNoAdd(final Quest quest) {
         synchronized (quests) {
             return quests.get(quest.getId());
         }
     }
 
+    /**
+     * need任务物品
+     * @param questid questid
+     * @param itemid itemid
+     * @return 返回值
+     */
     public boolean needQuestItem(int questid, int itemid) {
         if (questid <= 0) { //For non quest items :3
             return true;
@@ -5375,10 +6623,19 @@ public class Character extends AbstractCharacterObject {
         return getInventory(ItemConstants.getInventoryType(itemid)).countById(itemid) < amountNeeded;
     }
 
+    /**
+     * 清空SavedLocation
+     * @param type 类型
+     */
     public void clearSavedLocation(SavedLocationType type) {
         savedLocations[type.ordinal()] = null;
     }
 
+    /**
+     * peekSavedLocation
+     * @param type 类型
+     * @return 返回值
+     */
     public int peekSavedLocation(String type) {
         SavedLocation sl = savedLocations[SavedLocationType.fromString(type).ordinal()];
         if (sl == null) {
@@ -5387,6 +6644,11 @@ public class Character extends AbstractCharacterObject {
         return sl.getMapId();
     }
 
+    /**
+     * 获取SavedLocation
+     * @param type 类型
+     * @return 返回值
+     */
     public int getSavedLocation(String type) {
         int m = peekSavedLocation(type);
         clearSavedLocation(SavedLocationType.fromString(type));
@@ -5394,14 +6656,27 @@ public class Character extends AbstractCharacterObject {
         return m;
     }
 
+    /**
+     * 获取Skills
+     * @return 返回值
+     */
     public Map<Skill, SkillEntry> getSkills() {
         return Collections.unmodifiableMap(skills);
     }
 
+    /**
+     * 获取EditableSkills
+     * @return 返回值
+     */
     public Map<Skill, SkillEntry> getEditableSkills() {
         return skills;
     }
 
+    /**
+     * 获取技能等级
+     * @param skill 技能
+     * @return 返回值
+     */
     public int getSkillLevel(int skill) {
         SkillEntry ret = skills.get(SkillFactory.getSkill(skill));
         if (ret == null) {
@@ -5410,6 +6685,11 @@ public class Character extends AbstractCharacterObject {
         return ret.skillLevel;
     }
 
+    /**
+     * 获取技能等级
+     * @param skill 技能
+     * @return 返回值
+     */
     public byte getSkillLevel(Skill skill) {
         if (skills.get(skill) == null) {
             return 0;
@@ -5417,6 +6697,11 @@ public class Character extends AbstractCharacterObject {
         return skills.get(skill).skillLevel;
     }
 
+    /**
+     * 获取技能过期时间
+     * @param skill 技能
+     * @return 返回值
+     */
     public long getSkillExpiration(int skill) {
         SkillEntry ret = skills.get(SkillFactory.getSkill(skill));
         if (ret == null) {
@@ -5425,6 +6710,11 @@ public class Character extends AbstractCharacterObject {
         return ret.expiration;
     }
 
+    /**
+     * 获取技能过期时间
+     * @param skill 技能
+     * @return 返回值
+     */
     public long getSkillExpiration(Skill skill) {
         if (skills.get(skill) == null) {
             return -1;
@@ -5432,10 +6722,18 @@ public class Character extends AbstractCharacterObject {
         return skills.get(skill).expiration;
     }
 
+    /**
+     * 获取槽位
+     * @return 返回值
+     */
     public int getSlot() {
         return slots;
     }
 
+    /**
+     * 获取StartedQuests
+     * @return 返回值
+     */
     public final List<QuestStatus> getStartedQuests() {
         List<QuestStatus> ret = new LinkedList<>();
         for (QuestStatus qs : getQuestValues()) {
@@ -5446,6 +6744,11 @@ public class Character extends AbstractCharacterObject {
         return Collections.unmodifiableList(ret);
     }
 
+    /**
+     * 获取属性为增益
+     * @param effect effect
+     * @return 返回值
+     */
     public StatEffect getStatForBuff(BuffStat effect) {
         effLock.lock();
         chrLock.lock();
@@ -5461,34 +6764,81 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取SummonsValues
+     * @return 返回值
+     */
     public Collection<Summon> getSummonsValues() {
         return summons.values();
     }
 
+    /**
+     * 清空Summons
+     */
     public void clearSummons() {
         summons.clear();
     }
 
+    /**
+     * 获取Summon按按键
+     * @param id ID
+     * @return 返回值
+     */
     public Summon getSummonByKey(int id) {
         return summons.get(id);
     }
 
+    /**
+     * 判断是否为SummonsEmpty
+     * @return 返回值
+     */
     public boolean isSummonsEmpty() {
         return summons.isEmpty();
     }
 
+    /**
+     * containsSummon
+     * @param summon summon
+     * @return 返回值
+     */
     public boolean containsSummon(Summon summon) {
         return summons.containsValue(summon);
     }
 
+    /**
+     * 获取可见地图Objects
+     * @return 返回值
+     */
     public MapObject[] getVisibleMapObjects() {
         return visibleMapObjects.toArray(new MapObject[visibleMapObjects.size()]);
     }
 
+    /**
+     * 获取世界服务器
+     * @return 返回值
+     */
     public World getWorldServer() {
         return Server.getInstance().getWorld(world);
     }
 
+    /**
+     * giveCoolDowns
+     * @param skillid skillid
+     * @param starttime starttime
+     * @param length length
+     */
+    /**
+     * giveCoolDowns
+     * @param skillid skillid
+     * @param starttime starttime
+     * @param length length
+     */
+    /**
+     * 给予CoolDowns
+     * @param skillid 技能ID
+     * @param starttime 开始时间
+     * @param length 持续时间
+     */
     public void giveCoolDowns(final int skillid, long starttime, long length) {
         if (skillid == 5221999) {
             this.battleshipHp = (int) length;
@@ -5500,6 +6850,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * gm等级
+     * @return 返回值
+     */
     public int gmLevel() {
         return gmLevel;
     }
@@ -5524,9 +6878,16 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * handleEnergyChargeGain
+     */
+    /**
+     * handleEnergyChargeGain
+     */
+    /**
+     * 处理能量充能Gain
+     */
     public void handleEnergyChargeGain() { // to get here energychargelevel has to be > 0
-        Skill energycharge = isCygnus() ? SkillFactory.getSkill(ThunderBreaker.ENERGY_CHARGE) : SkillFactory.getSkill(Marauder.ENERGY_CHARGE);
-        StatEffect ceffect;
         ceffect = energycharge.getEffect(getSkillLevel(energycharge));
         TimerManager tMan = TimerManager.getInstance();
         if (energyBar < 10000) {
@@ -5555,6 +6916,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * handleOrbconsume
+     */
+    /**
+     * handleOrbconsume
+     */
+    /**
+     * 处理Orbconsume
+     */
     public void handleOrbconsume() {
         int skillid = isCygnus() ? DawnWarrior.COMBO : Crusader.COMBO;
         Skill combo = SkillFactory.getSkill(skillid);
@@ -5564,6 +6934,11 @@ public class Character extends AbstractCharacterObject {
         getMap().broadcastMessage(this, PacketCreator.giveForeignBuff(getId(), stat), false);
     }
 
+    /**
+     * 判断是否拥有Entered
+     * @param script 脚本
+     * @return 返回值
+     */
     public boolean hasEntered(String script) {
         for (int mapId : entered.keySet()) {
             if (entered.get(mapId).equals(script)) {
@@ -5573,11 +6948,21 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 判断是否拥有Entered
+     * @param script 脚本
+     * @param mapId 地图ID
+     * @return 返回值
+     */
     public boolean hasEntered(String script, int mapId) {
         String e = entered.get(mapId);
         return script.equals(e);
     }
 
+    /**
+     * 判断是否拥有Given人气
+     * @param to to
+     */
     public void hasGivenFame(Character to) {
         lastfametime = System.currentTimeMillis();
         lastmonthfameids.add(to.getId());
@@ -5591,26 +6976,53 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否拥有Merchant
+     * @return 返回值
+     */
     public boolean hasMerchant() {
         return hasMerchant;
     }
 
+    /**
+     * have物品
+     * @param itemid itemid
+     * @return 返回值
+     */
     public boolean haveItem(int itemid) {
         return getItemQuantity(itemid, ItemConstants.isEquipment(itemid)) > 0;
     }
 
+    /**
+     * haveClean物品
+     * @param itemid itemid
+     * @return 返回值
+     */
     public boolean haveCleanItem(int itemid) {
         return getCleanItemQuantity(itemid, ItemConstants.isEquipment(itemid)) > 0;
     }
 
+    /**
+     * 判断是否拥有Empty槽位
+     * @param itemId 物品ID
+     * @return 返回值
+     */
     public boolean hasEmptySlot(int itemId) {
         return getInventory(ItemConstants.getInventoryType(itemId)).getNextFreeSlot() > -1;
     }
 
+    /**
+     * 判断是否拥有Empty槽位
+     * @param invType invType
+     * @return 返回值
+     */
     public boolean hasEmptySlot(byte invType) {
         return getInventory(InventoryType.getByType(invType)).getNextFreeSlot() > -1;
     }
 
+    /**
+     * increase公会Capacity
+     */
     public void increaseGuildCapacity() {
         int cost = Guild.getIncreaseGuildCost(getGuild().getCapacity());
 
@@ -5633,6 +7045,12 @@ public class Character extends AbstractCharacterObject {
         return (minutes > 0 ? (String.format("%02d", minutes) + " minutes, ") : "") + String.format("%02d", seconds) + " seconds";
     }
 
+    /**
+     * 判断是否为增益从
+     * @param stat 属性
+     * @param skill 技能
+     * @return 返回值
+     */
     public boolean isBuffFrom(BuffStat stat, Skill skill) {
         effLock.lock();
         chrLock.lock();
@@ -5648,31 +7066,60 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否为GM职业
+     * @return 返回值
+     */
     public boolean isGmJob() {
         int jn = job.getJobNiche();
         return jn >= 8 && jn <= 9;
     }
 
+    /**
+     * 判断是否为Cygnus
+     * @return 返回值
+     */
     public boolean isCygnus() {
         return getJobType() == 1;
     }
 
+    /**
+     * 判断是否为Aran
+     * @return 返回值
+     */
     public boolean isAran() {
         return job.getId() >= 2000 && job.getId() <= 2112;
     }
 
+    /**
+     * 判断是否为Beginner职业
+     * @return 返回值
+     */
     public boolean isBeginnerJob() {
         return (job.getId() == 0 || job.getId() == 1000 || job.getId() == 2000);
     }
 
+    /**
+     * 判断是否为GM
+     * @return 返回值
+     */
     public boolean isGM() {
         return gmLevel > 1;
     }
 
+    /**
+     * 判断是否为地图Object可见
+     * @param mo mo
+     * @return 返回值
+     */
     public boolean isMapObjectVisible(MapObject mo) {
         return visibleMapObjects.contains(mo);
     }
 
+    /**
+     * 判断是否为队伍Leader
+     * @return 返回值
+     */
     public boolean isPartyLeader() {
         prtLock.lock();
         try {
@@ -5683,10 +7130,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否为公会Leader
+     * @return 返回值
+     */
     public boolean isGuildLeader() {    // true on guild master or jr. master
-        return guildId > 0 && guildRank < 3;
     }
 
+    /**
+     * attemptCatchFish
+     * @param baitLevel baitLevel
+     * @return 返回值
+     */
     public boolean attemptCatchFish(int baitLevel) {
         return GameConfig.getServerBoolean("use_fishing_system") && MapId.isFishingArea(mapId) &&
                 this.getPosition().getY() > 0 &&
@@ -5694,6 +7149,9 @@ public class Character extends AbstractCharacterObject {
                 this.getWorldServer().registerFisherPlayer(this, baitLevel);
     }
 
+    /**
+     * leave地图
+     */
     public void leaveMap() {
         releaseControlledMonsters();
         visibleMapObjects.clear();
@@ -5783,6 +7241,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * levelUp
+     * @param takeexp takeexp
+     */
+    /**
+     * levelUp
+     * @param takeexp takeexp
+     */
+    /**
+     * 等级提升
+     * @param takeexp 是否消耗经验
+     */
     public synchronized void levelUp(boolean takeexp) {
         Skill improvingMaxHP = null;
         Skill improvingMaxMP = null;
@@ -5984,6 +7454,10 @@ public class Character extends AbstractCharacterObject {
         updateMobExpRate();
     }
 
+    /**
+     * leave队伍
+     * @return 返回值
+     */
     public boolean leaveParty() {
         Party party;
         boolean partyLeader;
@@ -6008,24 +7482,36 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置玩家Rates
+     */
     public void setPlayerRates() {
         applySavedRateOrElse("expRate", () -> this.expRate *= GameConstants.getPlayerBonusExpRate(this.level / 20));
         applySavedRateOrElse("mesoRate", () -> this.mesoRate *= GameConstants.getPlayerBonusMesoRate(this.level / 20));
         applySavedRateOrElse("dropRate", () -> this.dropRate *= GameConstants.getPlayerBonusDropRate(this.level / 20));
     }
 
+    /**
+     * revert最近玩家Rates
+     */
     public void revertLastPlayerRates() {
         this.expRate /= GameConstants.getPlayerBonusExpRate((this.level - 1) / 20);
         this.mesoRate /= GameConstants.getPlayerBonusMesoRate((this.level - 1) / 20);
         this.dropRate /= GameConstants.getPlayerBonusDropRate((this.level - 1) / 20);
     }
 
+    /**
+     * revert玩家Rates
+     */
     public void revertPlayerRates() {
         this.expRate /= GameConstants.getPlayerBonusExpRate(this.level / 20);
         this.mesoRate /= GameConstants.getPlayerBonusMesoRate(this.level / 20);
         this.dropRate /= GameConstants.getPlayerBonusDropRate(this.level / 20);
     }
 
+    /**
+     * 设置世界Rates
+     */
     public void setWorldRates() {
         World worldz = getWorldServer();
         applySavedRateOrElse("expRate", () -> this.expRate *= worldz.getExpRate());
@@ -6033,6 +7519,9 @@ public class Character extends AbstractCharacterObject {
         applySavedRateOrElse("dropRate", () -> this.dropRate *= worldz.getDropRate());
     }
 
+    /**
+     * revert世界Rates
+     */
     public void revertWorldRates() {
         World worldz = getWorldServer();
         this.expRate /= worldz.getExpRate();
@@ -6055,6 +7544,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置优惠券Rates
+     */
     public void setCouponRates() {
         List<Integer> couponEffects;
 
@@ -6076,6 +7568,9 @@ public class Character extends AbstractCharacterObject {
         revertCouponsEffects();
     }
 
+    /**
+     * 更新优惠券Rates
+     */
     public void updateCouponRates() {
         Inventory cashInv = this.getInventory(InventoryType.CASH);
         if (cashInv == null) {
@@ -6095,6 +7590,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 重置玩家Rates
+     */
     public void resetPlayerRates() {
         expRate = 1;
         mesoRate = 1;
@@ -6218,6 +7716,9 @@ public class Character extends AbstractCharacterObject {
         mse.applyTo(this);
     }
 
+    /**
+     * dispel增益Coupons
+     */
     public void dispelBuffCoupons() {
         List<BuffStatValueHolder> allBuffs = getAllStatups();
 
@@ -6228,6 +7729,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取活跃Coupons
+     * @return 返回值
+     */
     public Set<Integer> getActiveCoupons() {
         chrLock.lock();
         try {
@@ -6237,6 +7742,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 添加玩家戒指
+     * @param ring ring
+     */
     public void addPlayerRing(Ring ring) {
         int ringItemId = ring.getItemId();
         if (ItemId.isWeddingRing(ringItemId)) {
@@ -6248,6 +7757,12 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 加载角色条目从DB
+     * @param rs rs
+     * @param equipped equipped
+     * @return 返回值
+     */
     public static Character loadCharacterEntryFromDB(ResultSet rs, List<Item> equipped) {
         Character ret = new Character();
 
@@ -6299,6 +7814,10 @@ public class Character extends AbstractCharacterObject {
         return ret;
     }
 
+    /**
+     * generate角色条目
+     * @return 返回值
+     */
     public Character generateCharacterEntry() {
         Character ret = new Character();
 
@@ -6351,14 +7870,28 @@ public class Character extends AbstractCharacterObject {
         setRemainingSp(sps);
     }
 
+    /**
+     * 获取RemainingSp
+     * @return 返回值
+     */
     public int getRemainingSp() {
         return getRemainingSp(job.getId()); //default
     }
 
+    /**
+     * 更新RemainingSp
+     * @param remainingSp remainingSp
+     */
     public void updateRemainingSp(int remainingSp) {
         updateRemainingSp(remainingSp, GameConstants.getSkillBook(job.getId()));
     }
 
+    /**
+     * fromCharactersDO
+     * @param charactersDO charactersDO
+     * @param client 客户端会话
+     * @return 返回值
+     */
     public static Character fromCharactersDO(CharactersDO charactersDO, Client client) {
         Character chr = new Character();
         chr.setClient(client);
@@ -6546,6 +8079,11 @@ public class Character extends AbstractCharacterObject {
         return chr;
     }
 
+    /**
+     * toCharactersDO
+     * @param chr 角色
+     * @return 返回值
+     */
     public static CharactersDO toCharactersDO(Character chr) {
         CharactersDO cdo = new CharactersDO();
         cdo.setLevel(chr.getLevel());
@@ -6631,6 +8169,13 @@ public class Character extends AbstractCharacterObject {
         return cdo;
     }
 
+    /**
+     * 加载Char从DB
+     * @param cid cid
+     * @param client 客户端会话
+     * @param channelServer channelServer
+     * @return 返回值
+     */
     public static Character loadCharFromDB(final int cid, Client client, boolean channelServer) {
         try {
             return characterService.loadCharFromDB(cid, client, channelServer);
@@ -6640,6 +8185,9 @@ public class Character extends AbstractCharacterObject {
         return null;
     }
 
+    /**
+     * reload任务Expirations
+     */
     public void reloadQuestExpirations() {
         for (QuestStatus mqs : getStartedQuests()) {
             if (mqs.getExpirationTime() > 0) {
@@ -6648,6 +8196,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * makeMapleReadable
+     * @param in in
+     * @return 返回值
+     */
     public static String makeMapleReadable(String in) {
         return in.replace('I', 'i')
                 .replace('l', 'L')
@@ -6663,6 +8216,12 @@ public class Character extends AbstractCharacterObject {
         public int value;
         public boolean bestApplied;
 
+        /**
+         * 增益属性值持有者
+         * @param effect effect
+         * @param startTime startTime
+         * @param value 值
+         */
         public BuffStatValueHolder(StatEffect effect, long startTime, int value) {
             super();
             this.effect = effect;
@@ -6677,6 +8236,12 @@ public class Character extends AbstractCharacterObject {
         public int skillId;
         public long startTime, length;
 
+        /**
+         * Cooldown值持有者
+         * @param skillId 技能ID
+         * @param startTime startTime
+         * @param length length
+         */
         public CooldownValueHolder(int skillId, long startTime, long length) {
             super();
             this.skillId = skillId;
@@ -6685,14 +8250,42 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * message
+     * @param m m
+     */
+    /**
+     * message
+     * @param m m
+     */
+    /**
+     * 发送消息
+     * @param m 消息内容
+     */
     public void message(String m) {
         dropMessage(5, m);
     }
 
+    /**
+     * yellowMessage
+     * @param m m
+     */
+    /**
+     * yellowMessage
+     * @param m m
+     */
+    /**
+     * 黄色Message
+     * @param m 消息内容
+     */
     public void yellowMessage(String m) {
         sendPacket(PacketCreator.sendYellowTip(m));
     }
 
+    /**
+     * raise任务Mob数量
+     * @param id ID
+     */
     public void raiseQuestMobCount(int id) {
         // It seems nexon uses monsters that don't exist in the WZ (except string) to merge multiple mobs together for these 3 monsters.
         // We also want to run mobKilled for both since there are some quest that don't use the updated ID...
@@ -6726,6 +8319,12 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * mount
+     * @param id ID
+     * @param skillid skillid
+     * @return 返回值
+     */
     public Mount mount(int id, int skillid) {
         Mount mount = mapleMount;
         mount.setItemId(id);
@@ -6819,6 +8418,10 @@ public class Character extends AbstractCharacterObject {
         sendPacket(PacketCreator.cancelChair(-1));
     }
 
+    /**
+     * sitChair
+     * @param itemId 物品ID
+     */
     public void sitChair(int itemId) {
         if (this.isLoggedInWorld()) {
             if (itemId >= 1000000) {    // sit on item chair
@@ -6845,10 +8448,37 @@ public class Character extends AbstractCharacterObject {
         this.chair.set(chair);
     }
 
+    /**
+     * respawn
+     * @param returnMap returnMap
+     */
+    /**
+     * respawn
+     * @param returnMap returnMap
+     */
+    /**
+     * 复活
+     * @param returnMap 返回地图ID
+     */
     public void respawn(int returnMap) {
         respawn(null, returnMap);    // unspecified EIM, don't force EIM unregister in this case
     }
 
+    /**
+     * respawn
+     * @param eim eim
+     * @param returnMap returnMap
+     */
+    /**
+     * respawn
+     * @param eim eim
+     * @param returnMap returnMap
+     */
+    /**
+     * 复活
+     * @param eim 活动实例管理器
+     * @param returnMap 返回地图ID
+     */
     public void respawn(EventInstanceManager eim, int returnMap) {
         if (eim != null) {
             eim.unregisterPlayer(this);    // some event scripts uses this...
@@ -6921,6 +8551,15 @@ public class Character extends AbstractCharacterObject {
         localwatk += equipwatk;
     }
 
+    /**
+     * reapplyLocalStats
+     */
+    /**
+     * reapplyLocalStats
+     */
+    /**
+     * 重新应用Local属性
+     */
     public void reapplyLocalStats() {
         effLock.lock();
         chrLock.lock();
@@ -7050,6 +8689,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 重新计算Local属性
+     * @return 返回值
+     */
     public List<Pair<Stat, Integer>> recalcLocalStats() {
         effLock.lock();
         chrLock.lock();
@@ -7118,6 +8761,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 接收队伍MemberHP
+     */
     public void receivePartyMemberHP() {
         prtLock.lock();
         try {
@@ -7131,6 +8777,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 移除全部CooldownsExcept
+     * @param id ID
+     * @param packet 封包
+     */
     public void removeAllCooldownsExcept(int id, boolean packet) {
         effLock.lock();
         chrLock.lock();
@@ -7150,6 +8801,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 移除Cooldown
+     * @param skillId 技能ID
+     */
     public void removeCooldown(int skillId) {
         effLock.lock();
         chrLock.lock();
@@ -7161,6 +8816,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 移除宠物
+     * @param pet pet
+     * @param shift_left shift_left
+     */
     public void removePet(Pet pet, boolean shift_left) {
         petLock.lock();
         try {
@@ -7190,10 +8850,17 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 移除可见地图Object
+     * @param mo mo
+     */
     public void removeVisibleMapObject(MapObject mo) {
         visibleMapObjects.remove(mo);
     }
 
+    /**
+     * 重置Stats
+     */
     public synchronized void resetStats() {
         if (!GameConfig.getServerBoolean("use_auto_assign_starters_ap")) {
             return;
@@ -7247,19 +8914,33 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 重置BattleshipHP
+     */
     public void resetBattleshipHp() {
         int bshipLevel = Math.max(getLevel() - 120, 0);  // thanks alex12 for noticing battleship HP issues for low-level players
         this.battleshipHp = 400 * getSkillLevel(SkillFactory.getSkill(Corsair.BATTLE_SHIP)) + (bshipLevel * 200);
     }
 
+    /**
+     * 重置Entered脚本
+     */
     public void resetEnteredScript() {
         entered.remove(map.getId());
     }
 
+    /**
+     * 重置Entered脚本
+     * @param mapId 地图ID
+     */
     public void resetEnteredScript(int mapId) {
         entered.remove(mapId);
     }
 
+    /**
+     * 重置Entered脚本
+     * @param script 脚本
+     */
     public void resetEnteredScript(String script) {
         for (int mapId : entered.keySet()) {
             if (entered.get(mapId).equals(script)) {
@@ -7268,6 +8949,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 保存Cooldowns
+     */
     public synchronized void saveCooldowns() {
         List<PlayerCoolDownValueHolder> listcd = getAllCooldowns();
 
@@ -7315,6 +8999,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 保存公会状态
+     */
     public void saveGuildStatus() {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("UPDATE characters SET guildid = ?, guildrank = ?, allianceRank = ? WHERE id = ?")) {
@@ -7328,8 +9015,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 保存Location在Warp
+     */
     public void saveLocationOnWarp() {  // suggestion to remember the map before warp command thanks to Lei
-        Portal closest = map.findClosestPortal(getPosition());
         int curMapid = getMapId();
 
         for (int i = 0; i < savedLocations.length; i++) {
@@ -7339,11 +9028,20 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 保存Location
+     * @param type 类型
+     */
     public void saveLocation(String type) {
         Portal closest = map.findClosestPortal(getPosition());
         savedLocations[SavedLocationType.fromString(type).ordinal()] = new SavedLocation(getMapId(), closest != null ? closest.getId() : 0);
     }
 
+    /**
+     * insertNewChar
+     * @param recipe recipe
+     * @return 返回值
+     */
     public final boolean insertNewChar(CharacterFactoryRecipe recipe) {
         attrStr = recipe.getStr();
         attrDex = recipe.getDex();
@@ -7507,6 +9205,9 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 保存Char到DB
+     */
     public void saveCharToDB() {
         if (GameConfig.getServerBoolean("use_autosave")) {
             Runnable r = () -> saveCharToDB(true);
@@ -7523,6 +9224,10 @@ public class Character extends AbstractCharacterObject {
     }
 
     //ItemFactory saveItems and monsterbook.saveCards are the most time consuming here.
+    /**
+     * 保存Char到DB
+     * @param notAutosave notAutosave
+     */
     public synchronized void saveCharToDB(boolean notAutosave) {
         if (!loggedIn) {
             // 如果已经退出登录，取消自动保存当前角色任务
@@ -7912,12 +9617,22 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 发送Police
+     * @param greason greason
+     * @param reason 原因
+     * @param duration duration
+     */
     public void sendPolice(int greason, String reason, int duration) {
         sendPacket(PacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for %s.#k", "Cosmic", reason)));
         this.banned = true;
         TimerManager.getInstance().schedule(() -> client.disconnect(false, false), duration);
     }
 
+    /**
+     * 发送Police
+     * @param text text
+     */
     public void sendPolice(String text) {
         final String message = getName() + " received this - " + text;
         if (Server.getInstance().isGmOnline(this.getWorld())) { //Alert and log if a GM is online
@@ -7937,10 +9652,16 @@ public class Character extends AbstractCharacterObject {
         //}, 6000);
     }
 
+    /**
+     * 发送Keymap
+     */
     public void sendKeymap() {
         sendPacket(PacketCreator.getKeymap(keymap));
     }
 
+    /**
+     * 发送Quickmap
+     */
     public void sendQuickmap() {
         // send quickslots to user
         QuickslotBinding pQuickslotKeyMapped = this.quickSlotKeyMapped;
@@ -7952,16 +9673,28 @@ public class Character extends AbstractCharacterObject {
         this.sendPacket(PacketCreator.QuickslotMappedInit(pQuickslotKeyMapped));
     }
 
+    /**
+     * 发送Macros
+     */
     public void sendMacros() {
         // Always send the macro packet to fix a client side bug when switching characters.
         sendPacket(PacketCreator.getMacros(skillMacros));
     }
 
+    /**
+     * 设置好友Capacity
+     * @param capacity capacity
+     */
     public void setBuddyCapacity(int capacity) {
         buddylist.setCapacity(capacity);
         sendPacket(PacketCreator.updateBuddyCapacity(capacity));
     }
 
+    /**
+     * 设置Buffed值
+     * @param effect effect
+     * @param value 值
+     */
     public void setBuffedValue(BuffStat effect, int value) {
         effLock.lock();
         chrLock.lock();
@@ -7977,15 +9710,27 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置Chalkboard
+     * @param text text
+     */
     public void setChalkboard(String text) {
         this.chalktext = text;
     }
 
+    /**
+     * 设置DojoEnergy
+     * @param x X坐标
+     */
     public void setDojoEnergy(int x) {
         this.dojoEnergy = Math.min(x, 10000);
     }
 
 
+    /**
+     * 设置活动Instance
+     * @param eventInstance eventInstance
+     */
     public void setEventInstance(EventInstanceManager eventInstance) {
         evtLock.lock();
         try {
@@ -7995,22 +9740,41 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置经验
+     * @param amount 数量
+     */
     public void setExp(int amount) {
         this.exp.set(amount);
     }
 
+    /**
+     * 设置Gacha经验
+     * @param exp exp
+     */
     public void setGachaExp(int exp) {
         this.gachaExp.set(exp);
     }
 
+    /**
+     * 完成DojoTutorial
+     */
     public void finishDojoTutorial() {
         this.finishedDojoTutorial = true;
     }
 
+    /**
+     * 设置GM
+     * @param level 等级
+     */
     public void setGM(int level) {
         this.gmLevel = level;
     }
 
+    /**
+     * 设置HasMerchant
+     * @param set set
+     */
     public void setHasMerchant(boolean set) {
         characterService.update(CharactersDO.builder()
                 .id(id)
@@ -8019,11 +9783,19 @@ public class Character extends AbstractCharacterObject {
         hasMerchant = set;
     }
 
+    /**
+     * 添加MerchantMesos
+     * @param add add
+     */
     public void addMerchantMesos(int add) {
         final int newAmount = (int) Math.min((long) merchantmeso + add, Integer.MAX_VALUE);
         setMerchantMeso(newAmount);
     }
 
+    /**
+     * 设置Merchant金币
+     * @param set set
+     */
     public void setMerchantMeso(int set) {
         characterService.update(CharactersDO.builder()
                 .id(id)
@@ -8032,6 +9804,15 @@ public class Character extends AbstractCharacterObject {
         merchantmeso = set;
     }
 
+    /**
+     * withdrawMerchantMesos
+     */
+    /**
+     * withdrawMerchantMesos
+     */
+    /**
+     * 取出商人金币
+     */
     public synchronized void withdrawMerchantMesos() {
         int merchantMeso = this.getMerchantNetMeso();
         int playerMeso = this.getMeso();
@@ -8061,6 +9842,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * hpChangeAction
+     * @param oldHp oldHp
+     */
+    /**
+     * hpChangeAction
+     * @param oldHp oldHp
+     */
+    /**
+     * hpChange动作
+     * @param oldHp 原HP值
+     */
     public void hpChangeAction(int oldHp) {
         boolean playerDied = false;
         if (hp <= 0) {
@@ -8135,6 +9928,13 @@ public class Character extends AbstractCharacterObject {
         return ret;
     }
 
+    /**
+     * 应用HPMPChange
+     * @param hpCon hpCon
+     * @param hpchange hpchange
+     * @param mpchange mpchange
+     * @return 返回值
+     */
     public boolean applyHpMpChange(int hpCon, int hpchange, int mpchange) {
         boolean zombify = hasDisease(Disease.ZOMBIFY);
 
@@ -8205,10 +10005,20 @@ public class Character extends AbstractCharacterObject {
         return true;
     }
 
+    /**
+     * 设置地图
+     * @param PmapId PmapId
+     */
     public void setMap(int PmapId) {
         this.mapId = PmapId;
     }
 
+    /**
+     * 设置MiniGame点数
+     * @param visitor visitor
+     * @param winnerslot winnerslot
+     * @param omok omok
+     */
     public void setMiniGamePoints(Character visitor, int winnerslot, boolean omok) {
         if (omok) {
             if (winnerslot == 1) {
@@ -8235,10 +10045,17 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置RPS
+     * @param rps rps
+     */
     public void setRPS(RockPaperScissor rps) {
         this.rps = rps;
     }
 
+    /**
+     * 关闭RPS
+     */
     public void closeRPS() {
         RockPaperScissor rps = this.rps;
         if (rps != null) {
@@ -8247,6 +10064,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取Door槽位
+     * @return 返回值
+     */
     public int getDoorSlot() {
         if (doorSlot != -1) {
             return doorSlot;
@@ -8254,6 +10075,10 @@ public class Character extends AbstractCharacterObject {
         return fetchDoorSlot();
     }
 
+    /**
+     * fetchDoor槽位
+     * @return 返回值
+     */
     public int fetchDoorSlot() {
         prtLock.lock();
         try {
@@ -8264,6 +10089,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置队伍
+     * @param p p
+     */
     public void setParty(Party p) {
         prtLock.lock();
         try {
@@ -8280,19 +10109,43 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取Slots
+     * @param type 类型
+     * @return 返回值
+     */
     public byte getSlots(int type) {
         return type == InventoryType.CASH.getType() ? 96 : inventory[type].getSlotLimit();
     }
 
+    /**
+     * 判断是否可以GainSlots
+     * @param type 类型
+     * @param slots slots
+     * @return 返回值
+     */
     public boolean canGainSlots(int type, int slots) {
         slots += inventory[type].getSlotLimit();
         return slots <= 96;
     }
 
+    /**
+     * 获得Slots
+     * @param type 类型
+     * @param slots slots
+     * @return 返回值
+     */
     public boolean gainSlots(int type, int slots) {
         return gainSlots(type, slots, true);
     }
 
+    /**
+     * 获得Slots
+     * @param type 类型
+     * @param slots slots
+     * @param update update
+     * @return 返回值
+     */
     public boolean gainSlots(int type, int slots, boolean update) {
         int newLimit = gainSlotsInternal(type, slots);
         if (newLimit != -1) {
@@ -8321,6 +10174,12 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * sell全部Items从名称
+     * @param invTypeId invTypeId
+     * @param name 名称
+     * @return 返回值
+     */
     public int sellAllItemsFromName(byte invTypeId, String name) {
         //player decides from which inventory items should be sold.
         InventoryType type = InventoryType.getByType(invTypeId);
@@ -8340,6 +10199,13 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * sell全部Items从位置
+     * @param ii ii
+     * @param type 类型
+     * @param pos pos
+     * @return 返回值
+     */
     public int sellAllItemsFromPosition(ItemInformationProvider ii, InventoryType type, short pos) {
         int mesoGain = 0;
 
@@ -8435,6 +10301,11 @@ public class Character extends AbstractCharacterObject {
         return equippedWithStat;
     }
 
+    /**
+     * merge全部Items从名称
+     * @param name 名称
+     * @return 返回值
+     */
     public boolean mergeAllItemsFromName(String name) {
         InventoryType type = InventoryType.EQUIP;
 
@@ -8512,6 +10383,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * merge全部Items从位置
+     * @param statUps statUps
+     * @param pos pos
+     */
     public void mergeAllItemsFromPosition(Map<StatUpgrade, Float> statUps, short pos) {
         Inventory inv = getInventory(InventoryType.EQUIP);
         inv.lockInventory();
@@ -8553,11 +10429,24 @@ public class Character extends AbstractCharacterObject {
         InventoryManipulator.removeFromSlot(c, type, (byte) slot, quantity, false);
     }
 
+    /**
+     * 设置槽位
+     * @param slotid slotid
+     */
     public void setSlot(int slotid) {
         slots = slotid;
     }
 
 
+    /**
+     * shiftPetsRight
+     */
+    /**
+     * shiftPetsRight
+     */
+    /**
+     * 移动宠物右移
+     */
     public void shiftPetsRight() {
         petLock.lock();
         try {
@@ -8575,12 +10464,25 @@ public class Character extends AbstractCharacterObject {
         return client.getChannelServer().getDojoFinishTime(map.getId()) - Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * showDojoClock
+     */
+    /**
+     * showDojoClock
+     */
+    /**
+     * 显示道场时钟
+     */
     public void showDojoClock() {
         if (GameConstants.isDojoBossArea(map.getId())) {
             sendPacket(PacketCreator.getClock((int) (getDojoTimeLeft() / 1000)));
         }
     }
 
+    /**
+     * showUnderLeveled信息
+     * @param mob 怪物
+     */
     public void showUnderLeveledInfo(Monster mob) {
         long curTime = Server.getInstance().getCurrentTime();
         if (nextWarningTime < curTime) {
@@ -8590,6 +10492,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * show地图Ownership信息
+     * @param mapOwner mapOwner
+     */
     public void showMapOwnershipInfo(Character mapOwner) {
         long curTime = Server.getInstance().getCurrentTime();
         if (nextWarningTime < curTime) {
@@ -8611,14 +10517,35 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * showHint
+     * @param msg 消息
+     */
     public void showHint(String msg) {
         showHint(msg, 500);
     }
 
+    /**
+     * showHint
+     * @param msg 消息
+     * @param length length
+     */
     public void showHint(String msg, int length) {
         client.announceHint(msg, length);
     }
 
+    /**
+     * silentGiveBuffs
+     * @param buffs buffs
+     */
+    /**
+     * silentGiveBuffs
+     * @param buffs buffs
+     */
+    /**
+     * 静默Give增益
+     * @param buffs 增益列表
+     */
     public void silentGiveBuffs(List<Pair<Long, PlayerBuffValueHolder>> buffs) {
         for (Pair<Long, PlayerBuffValueHolder> mbsv : buffs) {
             PlayerBuffValueHolder mbsvh = mbsv.getRight();
@@ -8626,6 +10553,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * silent队伍Update
+     */
     public void silentPartyUpdate() {
         silentPartyUpdateInternal(getParty());
     }
@@ -8636,6 +10566,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * skillIsCooling
+     * @param skillId 技能ID
+     * @return 返回值
+     */
     public boolean skillIsCooling(int skillId) {
         effLock.lock();
         chrLock.lock();
@@ -8647,6 +10582,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * runFullnessSchedule
+     * @param petSlot petSlot
+     */
+    /**
+     * runFullnessSchedule
+     * @param petSlot petSlot
+     */
+    /**
+     * 执行宠物饱食度下降定时任务
+     * @param petSlot 宠物槽位
+     */
     public void runFullnessSchedule(int petSlot) {
         Pet pet = getPet(petSlot);
         if (pet == null) {
@@ -8669,6 +10616,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * runTirednessSchedule
+     * @return 返回值
+     */
     public boolean runTirednessSchedule() {
         if (mapleMount != null) {
             int tiredness = mapleMount.incrementAndGetTiredness();
@@ -8685,16 +10636,30 @@ public class Character extends AbstractCharacterObject {
         return true;
     }
 
+    /**
+     * 开始地图效果
+     * @param msg 消息
+     * @param itemId 物品ID
+     */
     public void startMapEffect(String msg, int itemId) {
         startMapEffect(msg, itemId, 30000);
     }
 
+    /**
+     * 开始地图效果
+     * @param msg 消息
+     * @param itemId 物品ID
+     * @param duration duration
+     */
     public void startMapEffect(String msg, int itemId, int duration) {
         final MapEffect mapEffect = new MapEffect(msg, itemId);
         sendPacket(mapEffect.makeStartData());
         TimerManager.getInstance().schedule(() -> sendPacket(mapEffect.makeDestroyData()), duration);
     }
 
+    /**
+     * unEquip全部Pets
+     */
     public void unEquipAllPets() {
         for (int i = 0; i < 3; i++) {
             Pet pet = getPet(i);
@@ -8704,10 +10669,21 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * unEquip宠物
+     * @param pet pet
+     * @param shift_left shift_left
+     */
     public void unEquipPet(Pet pet, boolean shift_left) {
         unEquipPet(pet, shift_left, false);
     }
 
+    /**
+     * unEquip宠物
+     * @param pet pet
+     * @param shift_left shift_left
+     * @param hunger hunger
+     */
     public void unEquipPet(Pet pet, boolean shift_left, boolean hunger) {
         byte petIdx = this.getPetIndex(pet);
         Pet chrPet = this.getPet(petIdx);
@@ -8727,10 +10703,18 @@ public class Character extends AbstractCharacterObject {
         enableActions();
     }
 
+    /**
+     * 更新Macros
+     * @param position 位置
+     * @param updateMacro updateMacro
+     */
     public void updateMacros(int position, SkillMacro updateMacro) {
         skillMacros[position] = updateMacro;
     }
 
+    /**
+     * 更新队伍MemberHP
+     */
     public void updatePartyMemberHP() {
         prtLock.lock();
         try {
@@ -8750,6 +10734,12 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置任务Progress
+     * @param id ID
+     * @param infoNumber infoNumber
+     * @param progress progress
+     */
     public void setQuestProgress(int id, int infoNumber, String progress) {
         Quest q = Quest.getInstance(id);
         QuestStatus qs = getQuest(q);
@@ -8768,6 +10758,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * award任务Point
+     * @param awardedPoints awardedPoints
+     */
     public void awardQuestPoint(int awardedPoints) {
         if (GameConfig.getServerInt("quest_point_requirement") < 1 || awardedPoints < 1) {
             return;
@@ -8809,6 +10803,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 广播Update任务
+     * @param questUpdateType questUpdateType
+     * @param params 命令参数
+     */
     public void announceUpdateQuest(DelayedQuestUpdate questUpdateType, Object... params) {
         Pair<DelayedQuestUpdate, Object[]> p = new Pair<>(questUpdateType, params);
         Client c = this.getClient();
@@ -8821,6 +10820,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * flushDelayedUpdateQuests
+     */
+    /**
+     * flushDelayedUpdateQuests
+     */
+    /**
+     * 刷新延迟Update任务
+     */
     public void flushDelayedUpdateQuests() {
         List<Pair<DelayedQuestUpdate, Object[]>> qmQuestUpdateList;
 
@@ -8834,6 +10842,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 更新任务状态
+     * @param qs qs
+     */
     public void updateQuestStatus(QuestStatus qs) {
         synchronized (quests) {
             quests.put(qs.getQuestID(), qs);
@@ -8863,6 +10875,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 取消任务过期时间Task
+     */
     public void cancelQuestExpirationTask() {
         evtLock.lock();
         try {
@@ -8875,6 +10890,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * forfeitExpirableQuests
+     */
+    /**
+     * forfeitExpirableQuests
+     */
+    /**
+     * 放弃可过期任务
+     */
     public void forfeitExpirableQuests() {
         evtLock.lock();
         try {
@@ -8888,6 +10912,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * quest过期时间Task
+     */
     public void questExpirationTask() {
         evtLock.lock();
         try {
@@ -8942,11 +10969,21 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * questTime上限
+     * @param quest 任务
+     * @param seconds seconds
+     */
     public void questTimeLimit(final Quest quest, int seconds) {
         registerQuestExpire(quest, SECONDS.toMillis(seconds));
         sendPacket(PacketCreator.addQuestTimeLimit(quest.getId(), (int) SECONDS.toMillis(seconds)));
     }
 
+    /**
+     * questTimeLimit2
+     * @param quest 任务
+     * @param expires expires
+     */
     public void questTimeLimit2(final Quest quest, long expires) {
         long timeLeft = expires - System.currentTimeMillis();
 
@@ -8957,6 +10994,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 更新Single属性
+     * @param stat 属性
+     * @param newval newval
+     */
     public void updateSingleStat(Stat stat, int newval) {
         updateSingleStat(stat, newval, false);
     }
@@ -8965,27 +11007,47 @@ public class Character extends AbstractCharacterObject {
         sendPacket(PacketCreator.updatePlayerStats(Collections.singletonList(new Pair<>(stat, Integer.valueOf(newval))), itemReaction, this));
     }
 
+    /**
+     * 发送封包
+     * @param packet 封包
+     */
     public void sendPacket(Packet packet) {
         if (client != null) {
             client.sendPacket(packet);
         }
     }
 
+    /**
+     * 获取ObjectID
+     * @return 返回值
+     */
     @Override
     public int getObjectId() {
         return getId();
     }
 
+    /**
+     * 获取类型
+     * @return 返回值
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.PLAYER;
     }
 
+    /**
+     * 发送Destroy数据
+     * @param client 客户端会话
+     */
     @Override
     public void sendDestroyData(Client client) {
         client.sendPacket(PacketCreator.removePlayerFromMap(this.getObjectId()));
     }
 
+    /**
+     * 发送Spawn数据
+     * @param client 客户端会话
+     */
     @Override
     public void sendSpawnData(Client client) {
         if (!this.isHidden() || client.getPlayer().gmLevel() > 1) {
@@ -9002,19 +11064,35 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置ObjectID
+     * @param id ID
+     */
     @Override
     public void setObjectId(int id) {
     }
 
+    /**
+     * 返回对象的字符串表示
+     * @return 返回值
+     */
     @Override
     public String toString() {
         return name;
     }
 
+    /**
+     * 获取NewYearRecords
+     * @return 返回值
+     */
     public Set<NewYearCardRecord> getNewYearRecords() {
         return newyears;
     }
 
+    /**
+     * 获取ReceivedNewYearRecords
+     * @return 返回值
+     */
     public Set<NewYearCardRecord> getReceivedNewYearRecords() {
         Set<NewYearCardRecord> received = new LinkedHashSet<>();
 
@@ -9027,6 +11105,11 @@ public class Character extends AbstractCharacterObject {
         return received;
     }
 
+    /**
+     * 获取NewYearRecord
+     * @param cardid cardid
+     * @return 返回值
+     */
     public NewYearCardRecord getNewYearRecord(int cardid) {
         for (NewYearCardRecord nyc : newyears) {
             if (nyc.getId() == cardid) {
@@ -9037,18 +11120,46 @@ public class Character extends AbstractCharacterObject {
         return null;
     }
 
+    /**
+     * 添加NewYearRecord
+     * @param newyear newyear
+     */
     public void addNewYearRecord(NewYearCardRecord newyear) {
         newyears.add(newyear);
     }
 
+    /**
+     * 移除NewYearRecord
+     * @param newyear newyear
+     */
     public void removeNewYearRecord(NewYearCardRecord newyear) {
         newyears.remove(newyear);
     }
 
+    /**
+     * portalDelay
+     * @param delay delay
+     */
+    /**
+     * portalDelay
+     * @param delay delay
+     */
+    /**
+     * 传送门延迟
+     * @param delay 延迟时间
+     */
     public void portalDelay(long delay) {
         this.portaldelay = System.currentTimeMillis() + delay;
     }
 
+    /**
+     * portalDelay
+     * @return 返回值
+     */
+    /**
+     * portalDelay
+     * @return 返回值
+     */
     public long portalDelay() {
         return portaldelay;
     }
@@ -9225,6 +11336,18 @@ public class Character extends AbstractCharacterObject {
         return System.nanoTime();
     }
 
+    /**
+     * blockPortal
+     * @param scriptName scriptName
+     */
+    /**
+     * blockPortal
+     * @param scriptName scriptName
+     */
+    /**
+     * 阻止Portal
+     * @param scriptName 脚本名称
+     */
     public void blockPortal(String scriptName) {
         if (!blockedPortals.contains(scriptName) && scriptName != null) {
             blockedPortals.add(scriptName);
@@ -9232,12 +11355,30 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * unblockPortal
+     * @param scriptName scriptName
+     */
+    /**
+     * unblockPortal
+     * @param scriptName scriptName
+     */
+    /**
+     * 解除阻止Portal
+     * @param scriptName 脚本名称
+     */
     public void unblockPortal(String scriptName) {
         if (blockedPortals.contains(scriptName) && scriptName != null) {
             blockedPortals.remove(scriptName);
         }
     }
 
+    /**
+     * containsArea信息
+     * @param area area
+     * @param info info
+     * @return 返回值
+     */
     public boolean containsAreaInfo(int area, String info) {
         short area_ = (short) area;
         if (area_info.containsKey(area_)) {
@@ -9246,15 +11387,28 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 更新Area信息
+     * @param area area
+     * @param info info
+     */
     public void updateAreaInfo(int area, String info) {
         area_info.put((short) area, info);
         sendPacket(PacketCreator.updateAreaInfo(area, info));
     }
 
+    /**
+     * 获取AreaInfos
+     * @return 返回值
+     */
     public Map<Short, String> getAreaInfos() {
         return area_info;
     }
 
+    /**
+     * auto封禁
+     * @param reason 原因
+     */
     public void autoBan(String reason) {
         if (this.isGM() || this.isBanned()) {  // thanks RedHat for noticing GM's being able to get banned
             return;
@@ -9266,6 +11420,12 @@ public class Character extends AbstractCharacterObject {
         Server.getInstance().broadcastGMMessage(this.getWorld(), PacketCreator.serverNotice(6, Character.makeMapleReadable(this.name) + " was autobanned for " + reason));
     }
 
+    /**
+     * block
+     * @param reason 原因
+     * @param days days
+     * @param desc desc
+     */
     public void block(int reason, int days, String desc) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, days);
@@ -9277,14 +11437,26 @@ public class Character extends AbstractCharacterObject {
                 .build());
     }
 
+    /**
+     * 获取TrockMaps
+     * @return 返回值
+     */
     public List<Integer> getTrockMaps() {
         return trockmaps;
     }
 
+    /**
+     * 获取VipTrockMaps
+     * @return 返回值
+     */
     public List<Integer> getVipTrockMaps() {
         return viptrockmaps;
     }
 
+    /**
+     * 获取Trock大小
+     * @return 返回值
+     */
     public int getTrockSize() {
         int ret = trockmaps.indexOf(MapId.NONE);
         if (ret == -1) {
@@ -9294,6 +11466,10 @@ public class Character extends AbstractCharacterObject {
         return ret;
     }
 
+    /**
+     * 删除从Trocks
+     * @param map map
+     */
     public void deleteFromTrocks(int map) {
         trockmaps.remove(Integer.valueOf(map));
         while (trockmaps.size() < 10) {
@@ -9301,6 +11477,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 添加Trock地图
+     */
     public void addTrockMap() {
         int index = trockmaps.indexOf(MapId.NONE);
         if (index != -1) {
@@ -9308,11 +11487,20 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否为Trock地图
+     * @param id ID
+     * @return 返回值
+     */
     public boolean isTrockMap(int id) {
         int index = trockmaps.indexOf(id);
         return index != -1;
     }
 
+    /**
+     * 获取VipTrock大小
+     * @return 返回值
+     */
     public int getVipTrockSize() {
         int ret = viptrockmaps.indexOf(MapId.NONE);
 
@@ -9323,6 +11511,10 @@ public class Character extends AbstractCharacterObject {
         return ret;
     }
 
+    /**
+     * 删除从VipTrocks
+     * @param map map
+     */
     public void deleteFromVipTrocks(int map) {
         viptrockmaps.remove(Integer.valueOf(map));
         while (viptrockmaps.size() < 10) {
@@ -9330,6 +11522,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 添加VipTrock地图
+     */
     public void addVipTrockMap() {
         int index = viptrockmaps.indexOf(MapId.NONE);
         if (index != -1) {
@@ -9337,19 +11532,36 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 判断是否为VipTrock地图
+     * @param id ID
+     * @return 返回值
+     */
     public boolean isVipTrockMap(int id) {
         int index = viptrockmaps.indexOf(id);
         return index != -1;
     }
 
+    /**
+     * 获取Auto封禁管理器
+     * @return 返回值
+     */
     public AutobanManager getAutoBanManager() {
         return autoBan;
     }
 
+    /**
+     * 设置Auto封禁管理器
+     * @param autoBan autoBan
+     */
     public void setAutoBanManager(AutobanManager autoBan) {
         this.autoBan = autoBan;
     }
 
+    /**
+     * equipped物品
+     * @param equip 装备
+     */
     public void equippedItem(Equip equip) {
         int itemid = equip.getItemId();
 
@@ -9358,6 +11570,10 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * unequipped物品
+     * @param equip 装备
+     */
     public void unequippedItem(Equip equip) {
         int itemid = equip.getItemId();
 
@@ -9405,6 +11621,10 @@ public class Character extends AbstractCharacterObject {
         return eqpList;
     }
 
+    /**
+     * increaseEquip经验
+     * @param expGain expGain
+     */
     public void increaseEquipExp(int expGain) {
         if (allowExpGain) {     // thanks Vcoc for suggesting equip EXP gain conditionally
             if (expGain < 0) {
@@ -9424,6 +11644,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * show全部EquipFeatures
+     */
     public void showAllEquipFeatures() {
         StringBuilder showMsg = new StringBuilder();
 
@@ -9443,6 +11666,9 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 广播结婚Message
+     */
     public void broadcastMarriageMessage() {
         Guild guild = this.getGuild();
         if (guild != null) {
@@ -9455,10 +11681,17 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置CpqTimer
+     * @param timer timer
+     */
     public void setCpqTimer(ScheduledFuture<?> timer) {
         this.cpqSchedule = timer;
     }
 
+    /**
+     * 清空CpqTimer
+     */
     public void clearCpqTimer() {
         if (cpqSchedule != null) {
             cpqSchedule.cancel(true);
@@ -9466,6 +11699,18 @@ public class Character extends AbstractCharacterObject {
         cpqSchedule = null;
     }
 
+    /**
+     * empty
+     * @param remove remove
+     */
+    /**
+     * empty
+     * @param remove remove
+     */
+    /**
+     * 清空数据
+     * @param remove 是否移除
+     */
     public final void empty(final boolean remove) {
         if (dragonBloodSchedule != null) {
             dragonBloodSchedule.cancel(true);
@@ -9567,6 +11812,15 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * logOff
+     */
+    /**
+     * logOff
+     */
+    /**
+     * 角色下线处理
+     */
     public void logOff() {
         this.loggedIn = false;
         characterService.update(CharactersDO.builder()
@@ -9576,38 +11830,69 @@ public class Character extends AbstractCharacterObject {
     }
 
 
+    /**
+     * 获取Logged在Time
+     * @return 返回值
+     */
     public long getLoggedInTime() {
         return System.currentTimeMillis() - loginTime;
     }
 
+    /**
+     * 获取WhiteChat
+     * @return 返回值
+     */
     public boolean getWhiteChat() {
         return isGM() && whiteChat;
     }
 
+    /**
+     * 切换WhiteChat
+     */
     public void toggleWhiteChat() {
         whiteChat = !whiteChat;
     }
 
+    /**
+     * got队伍任务物品
+     * @param partyquestchar partyquestchar
+     * @return 返回值
+     */
     public boolean gotPartyQuestItem(String partyquestchar) {
         return dataString.contains(partyquestchar);
     }
 
+    /**
+     * 移除队伍任务物品
+     * @param letter letter
+     */
     public void removePartyQuestItem(String letter) {
         if (gotPartyQuestItem(letter)) {
             dataString = dataString.substring(0, dataString.indexOf(letter)) + dataString.substring(dataString.indexOf(letter) + letter.length());
         }
     }
 
+    /**
+     * 设置队伍任务物品Obtained
+     * @param partyquestchar partyquestchar
+     */
     public void setPartyQuestItemObtained(String partyquestchar) {
         if (!dataString.contains(partyquestchar)) {
             this.dataString += partyquestchar;
         }
     }
 
+    /**
+     * 创建Dragon
+     */
     public void createDragon() {
         dragon = new Dragon(this);
     }
 
+    /**
+     * 获取Jail过期时间TimeLeft
+     * @return 返回值
+     */
     public long getJailExpirationTimeLeft() {
         return jailExpiration - System.currentTimeMillis();
     }
@@ -9616,6 +11901,10 @@ public class Character extends AbstractCharacterObject {
         jailExpiration = System.currentTimeMillis() + time;
     }
 
+    /**
+     * 添加Jail过期时间Time
+     * @param time time
+     */
     public void addJailExpirationTime(long time) {
         long timeLeft = getJailExpirationTimeLeft();
 
@@ -9626,10 +11915,18 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 移除Jail过期时间Time
+     */
     public void removeJailExpirationTime() {
         jailExpiration = 0;
     }
 
+    /**
+     * register名称Change
+     * @param newName newName
+     * @return 返回值
+     */
     public boolean registerNameChange(String newName) {
         try {
             if (nameChangeService.registerNameChange(this, newName)) {
@@ -9642,6 +11939,10 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 取消Pending名称Change
+     * @return 返回值
+     */
     public boolean cancelPendingNameChange() {
         try {
             nameChangeService.cancelPendingNameChange(this, true);
@@ -9652,13 +11953,19 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * doPending名称Change
+     */
     public void doPendingNameChange() { //called on logout
-        if (!pendingNameChange) {
             return;
         }
         nameChangeService.applyNameChange(getId(), getName());
     }
 
+    /**
+     * 检查世界TransferEligibility
+     * @return 返回值
+     */
     public int checkWorldTransferEligibility() {
         if (getLevel() < 20) {
             return 2;
@@ -9675,6 +11982,11 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * register世界Transfer
+     * @param newWorld newWorld
+     * @return 返回值
+     */
     public boolean registerWorldTransfer(int newWorld) {
         try {
             return worldTransferService.registerWorldTransfer(this, newWorld);
@@ -9684,6 +11996,10 @@ public class Character extends AbstractCharacterObject {
         return false;
     }
 
+    /**
+     * 取消Pending世界Transfer
+     * @return 返回值
+     */
     public boolean cancelPendingWorldTransfer() {
         try {
             worldTransferService.cancelPendingWorldTransfer(this, true);
@@ -9694,19 +12010,35 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 获取最近CommandMessage
+     * @return 返回值
+     */
     public String getLastCommandMessage() {
         return this.commandtext;
     }
 
+    /**
+     * 设置最近CommandMessage
+     * @param text text
+     */
     public void setLastCommandMessage(String text) {
         this.commandtext = text;
     }
 
+    /**
+     * 获取Reward点数
+     * @return 返回值
+     */
     public int getRewardPoints() {
         AccountsDO accountsDO = accountService.findById(accountId);
         return accountsDO == null ? -1 : Optional.ofNullable(accountsDO.getRewardpoints()).orElse(-1);
     }
 
+    /**
+     * 设置Reward点数
+     * @param value 值
+     */
     public void setRewardPoints(int value) {
         accountService.update(AccountsDO.builder()
                 .id(accountId)
@@ -9714,6 +12046,10 @@ public class Character extends AbstractCharacterObject {
                 .build());
     }
 
+    /**
+     * 设置Reborns
+     * @param value 值
+     */
     public void setReborns(int value) {
         if (!GameConfig.getServerBoolean("use_rebirth_system")) {
             yellowMessage(I18nUtil.getMessage("Character.USE_REBIRTH_SYSTEM")); //重生系统未启用
@@ -9726,10 +12062,17 @@ public class Character extends AbstractCharacterObject {
                 .build());
     }
 
+    /**
+     * 添加Reborns
+     */
     public void addReborns() {
         setReborns(getReborns() + 1);
     }
 
+    /**
+     * 获取Reborns
+     * @return 返回值
+     */
     public int getReborns() {
         if (!GameConfig.getServerBoolean("use_rebirth_system")) {
             yellowMessage(I18nUtil.getMessage("Character.USE_REBIRTH_SYSTEM")); //重生系统未启用
@@ -9740,10 +12083,34 @@ public class Character extends AbstractCharacterObject {
         return charactersDO == null ? 0 : Optional.ofNullable(charactersDO.getReborns()).orElse(0);
     }
 
+    /**
+     * executeRebornAsID
+     * @param jobId jobId
+     */
+    /**
+     * executeRebornAsID
+     * @param jobId jobId
+     */
+    /**
+     * 执行转生为ID
+     * @param jobId 职业ID
+     */
     public void executeRebornAsId(int jobId) {
         executeRebornAs(Job.getById(jobId));
     }
 
+    /**
+     * executeRebornAs
+     * @param job job
+     */
+    /**
+     * executeRebornAs
+     * @param job job
+     */
+    /**
+     * 执行转生为
+     * @param job 职业
+     */
     public void executeRebornAs(Job job) {
         if (!GameConfig.getServerBoolean("use_rebirth_system")) {
             yellowMessage(I18nUtil.getMessage("Character.USE_REBIRTH_SYSTEM")); //重生系统未启用
@@ -9769,14 +12136,26 @@ public class Character extends AbstractCharacterObject {
     private Ola ola;
     private long snowballattack;
 
+    /**
+     * 设置Team
+     * @param team team
+     */
     public void setTeam(int team) {
         this.team = (byte) team;
     }
 
+    /**
+     * 获取最近Snowball攻击
+     * @return 返回值
+     */
     public long getLastSnowballAttack() {
         return snowballattack;
     }
 
+    /**
+     * 设置最近Snowball攻击
+     * @param time time
+     */
     public void setLastSnowballAttack(long time) {
         this.snowballattack = time;
     }
@@ -9802,14 +12181,26 @@ public class Character extends AbstractCharacterObject {
     @Getter
     private boolean challenged = false;
 
+    /**
+     * 获得Festival点数
+     * @param gain gain
+     */
     public void gainFestivalPoints(int gain) {
         this.FestivalPoints += gain;
     }
 
+    /**
+     * 获取CP
+     * @return 返回值
+     */
     public int getCP() {
         return cp;
     }
 
+    /**
+     * 获得CP
+     * @param gain gain
+     */
     public void gainCP(int gain) {
         if (this.getMonsterCarnival() != null) {
             if (gain > 0) {
@@ -9832,24 +12223,43 @@ public class Character extends AbstractCharacterObject {
         }
     }
 
+    /**
+     * 设置TotalCP
+     * @param a a
+     */
     public void setTotalCP(int a) {
         this.totCP = a;
     }
 
+    /**
+     * 设置CP
+     * @param a a
+     */
     public void setCP(int a) {
         this.cp = a;
     }
 
+    /**
+     * 获取TotalCP
+     * @return 返回值
+     */
     public int getTotalCP() {
         return totCP;
     }
 
+    /**
+     * 重置CP
+     */
     public void resetCP() {
         this.cp = 0;
         this.totCP = 0;
         this.monsterCarnival = null;
     }
 
+    /**
+     * 获得Ariant点数
+     * @param points 积分
+     */
     public void gainAriantPoints(int points) {
         this.ariantPoints += points;
     }
@@ -9914,12 +12324,22 @@ public class Character extends AbstractCharacterObject {
         InventoryManipulator.addFromDrop(getClient(), baseEquip, false);
     }
 
+    /**
+     * 设置家族增益
+     * @param type 类型
+     * @param exp exp
+     * @param drop drop
+     */
     public void setFamilyBuff(boolean type, float exp, float drop) {
         this.familyBuff = type;
         this.familyExp = exp;
         this.familyDrop = drop;
     }
 
+    /**
+     * 开始家族增益Timer
+     * @param delay delay
+     */
     public void startFamilyBuffTimer(int delay) {
         if (FamilyBuffTimer != null && !FamilyBuffTimer.isCancelled()) {
             FamilyBuffTimer.cancel(false);
@@ -9933,6 +12353,9 @@ public class Character extends AbstractCharacterObject {
         }, delay);
     }
 
+    /**
+     * 取消家族增益Timer
+     */
     public void cancelFamilyBuffTimer() {
         if (FamilyBuffTimer != null && !FamilyBuffTimer.isCancelled()) {
             FamilyBuffTimer.cancel(false);
@@ -9945,14 +12368,25 @@ public class Character extends AbstractCharacterObject {
     private int m_iCurrentOnlineTime = -1;//-1用于服务器重启时角色初始变量时间
     private AtomicBoolean timeUpdating = new AtomicBoolean(false);
 
+    /**
+     * 获取当前在线Time
+     * @return 返回值
+     */
     public int getCurrentOnlineTime() {
         return this.m_iCurrentOnlineTime;
     }
 
+    /**
+     * 设置当前在线Time
+     * @param iTime iTime
+     */
     public void setCurrentOnlineTime(final int iTime) {
         this.m_iCurrentOnlineTime = iTime;
     }
 
+    /**
+     * 更新在线Time
+     */
     public void updateOnlineTime() {
         if (m_iCurrentOnlineTime == -1) {
             return;

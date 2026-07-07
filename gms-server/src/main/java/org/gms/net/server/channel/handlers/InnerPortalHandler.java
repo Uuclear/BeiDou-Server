@@ -31,12 +31,14 @@ import org.gms.server.maps.Portal;
 import java.awt.Point;
 
 /**
- * @author BubblesDev
+ * 处理客户端 USE_INNER_PORTAL（使用内部传送门） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_INNER_PORTAL}</p>
  */
 public final class InnerPortalHandler extends AbstractPacketHandler {
     // 玩家需要处在内传送门附近，才认为这是一次有效“树洞/内传送”触发
     private static final double INNER_PORTAL_TRIGGER_DISTANCE_SQ = 90000.0; // 约 300 像素
 
+    /** 处理 使用内部传送门 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character player = c.getPlayer();

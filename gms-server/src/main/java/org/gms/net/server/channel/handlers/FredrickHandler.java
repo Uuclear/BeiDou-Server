@@ -28,7 +28,8 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
 /**
- * @author kevintjuh93
+ * 处理仓库管理员 Fredrick 的存取操作（FREDRICK_ACTION）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#FREDRICK_ACTION}</p>
  */
 public class FredrickHandler extends AbstractPacketHandler {
     private final FredrickProcessor fredrickProcessor;
@@ -37,6 +38,7 @@ public class FredrickHandler extends AbstractPacketHandler {
         this.fredrickProcessor = fredrickProcessor;
     }
 
+    /** 处理 Fredrick操作 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

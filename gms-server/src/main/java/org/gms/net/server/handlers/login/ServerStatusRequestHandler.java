@@ -28,8 +28,13 @@ import org.gms.net.server.Server;
 import org.gms.net.server.world.World;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 SERVERSTATUS_REQUEST（请求服务器状态） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SERVERSTATUS_REQUEST}</p>
+ */
 public final class ServerStatusRequestHandler extends AbstractPacketHandler {
 
+    /** 处理 请求服务器状态 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         byte world = (byte) p.readShort();

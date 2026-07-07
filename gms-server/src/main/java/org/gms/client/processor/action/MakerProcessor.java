@@ -16,40 +16,18 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.processor.action;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.inventory.Equip;
-import org.gms.client.inventory.InventoryType;
-import org.gms.client.inventory.Item;
-import org.gms.client.inventory.manipulator.InventoryManipulator;
-import org.gms.config.GameConfig;
-import org.gms.constants.game.GameConstants;
-import org.gms.constants.id.ItemId;
-import org.gms.constants.inventory.ItemConstants;
-import org.gms.net.packet.InPacket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.server.ItemInformationProvider;
-import org.gms.server.MakerItemFactory;
-import org.gms.server.MakerItemFactory.MakerItemCreateEntry;
-import org.gms.util.PacketCreator;
-import org.gms.util.Pair;
-
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
- * @author Ronan
+ * 制作处理器，处理玩家使用制作技能合成物品的逻辑。
  */
 public class MakerProcessor {
     private static final Logger log = LoggerFactory.getLogger(MakerProcessor.class);
     private static final ItemInformationProvider ii = ItemInformationProvider.getInstance();
 
+    /**
+     * makerAction
+     * @param p p
+     * @param c 客户端会话
+     */
     public static void makerAction(InPacket p, Client c) {
         if (c.tryacquireClient()) {
             try {
@@ -311,6 +289,11 @@ public class MakerProcessor {
         return null;
     }
 
+    /**
+     * 获取Maker技能等级
+     * @param chr 角色
+     * @return 返回值
+     */
     public static int getMakerSkillLevel(Character chr) {
         return chr.getSkillLevel((chr.getJob().getId() / 1000) * 10000000 + 1007);
     }

@@ -30,11 +30,16 @@ import org.gms.server.quest.QuestActionType;
 import org.gms.util.NumberTool;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务奖励金币动作。
  */
 public class MesoAction extends AbstractQuestAction {
     int mesos;
 
+    /**
+     * 构造 MesoAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public MesoAction(Quest quest, Data data) {
         super(QuestActionType.MESO, quest);
         questID = quest.getId();
@@ -42,16 +47,30 @@ public class MesoAction extends AbstractQuestAction {
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         mesos = DataTool.getInt(data);
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         runAction(chr, mesos);
     }
 
+    /**
+     * 执行 run动作 操作。
+     * @param chr 角色
+     * @param gain gain
+     */
     public static void runAction(Character chr, int gain) {
         if (gain < 0) {
             chr.gainMeso(gain, true, false, true);

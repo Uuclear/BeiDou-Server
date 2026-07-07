@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*@author Jvlaple
- *Reactor : LudiPQ Bonus Reactor - 2202004.js
- * Drops all the Bonus Items
- */
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2202004
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Jvlaple
+ */
 function act() {
     rm.sprayItems(true, 1, 30, 60, 15);
 }

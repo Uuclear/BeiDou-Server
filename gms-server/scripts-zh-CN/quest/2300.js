@@ -1,13 +1,11 @@
-/* ===========================================================
-        @author Resonance
-	NPC Name: 		Maple Administrator
-	Description: 	Quest -  Kingdom of Mushroom in Danger
-=============================================================
-Version 1.0 - Script Done.(17/7/2010)
-Version 2.0 - Script Reworked by Ronan - (16/11/2018)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2300
+ * 功能描述：Maple Administrator，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

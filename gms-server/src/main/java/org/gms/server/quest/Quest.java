@@ -84,8 +84,7 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * @author Matze
- * @author Ronan - support for medal quests
+ * 任务定义与加载中心。从 WZ 数据解析任务条件、奖励动作，管理任务实例缓存、勋章任务及可 exploit 任务黑名单。
  */
 public class Quest {
     private static final Logger log = LoggerFactory.getLogger(Quest.class);
@@ -96,7 +95,7 @@ public class Quest {
     private static final Set<Short> exploitableQuests = new HashSet<>();
 
     static {
-        exploitableQuests.add((short) 2338);    // there are a lot more exploitable quests, they need to be nit-picked
+        exploitableQuests.add((short) 2338);    // 存在更多可被利用的任务，需逐一排查
         exploitableQuests.add((short) 3637);
         exploitableQuests.add((short) 3714);
         exploitableQuests.add((short) 21752);
@@ -221,14 +220,27 @@ public class Quest {
         }
     }
 
+    /**
+     * 判断是否为Auto、Complete。
+     * @return boolean 类型结果
+     */
     public boolean isAutoComplete() {
         return autoPreComplete || autoComplete;
     }
 
+    /**
+     * 判断是否为Auto、Start。
+     * @return boolean 类型结果
+     */
     public boolean isAutoStart() {
         return autoStart;
     }
 
+    /**
+     * 获取单例实例。
+     * @param id ID
+     * @return Quest 类型结果
+     */
     public static Quest getInstance(int id) {
         Quest ret = quests.get(id);
         if (ret == null) {
@@ -238,6 +250,11 @@ public class Quest {
         return ret;
     }
 
+    /**
+     * 获取实例来自信息编号。
+     * @param infoNumber infoNumber
+     * @return Quest 类型结果
+     */
     public static Quest getInstanceFromInfoNumber(int infoNumber) {
         Integer id = infoNumberQuests.get(infoNumber);
         if (id == null) {
@@ -247,6 +264,10 @@ public class Quest {
         return getInstance(id);
     }
 
+    /**
+     * 判断是否为Same、Day、Repeatable。
+     * @return boolean 类型结果
+     */
     public boolean isSameDayRepeatable() {
         if (!repeatable) {
             return false;
@@ -256,11 +277,21 @@ public class Quest {
         return ir.getInterval() < HOURS.toMillis(GameConfig.getServerLong("quest_point_repeatable_interval"));
     }
 
+    /**
+     * 判断是否可以Start、任务、按、状态。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean canStartQuestByStatus(Character chr) {
         QuestStatus mqs = chr.getQuest(this);
         return !(!mqs.getStatus().equals(Status.NOT_STARTED) && !(mqs.getStatus().equals(Status.COMPLETED) && repeatable));
     }
 
+    /**
+     * 判断是否可以任务、按、信息、Progress。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean canQuestByInfoProgress(Character chr) {
         QuestStatus mqs = chr.getQuest(this);
         List<String> ix = mqs.getInfoEx();
@@ -285,6 +316,12 @@ public class Quest {
         return true;
     }
 
+    /**
+     * 判断是否可以Start。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     public boolean canStart(Character chr, int npcid) {
         if (!canStartQuestByStatus(chr)) {
             return false;
@@ -299,6 +336,12 @@ public class Quest {
         return canQuestByInfoProgress(chr);
     }
 
+    /**
+     * 判断是否可以Complete。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     public boolean canComplete(Character chr, Integer npcid) {
         QuestStatus mqs = chr.getQuest(this);
         if (!mqs.getStatus().equals(Status.STARTED)) {
@@ -314,6 +357,11 @@ public class Quest {
         return canQuestByInfoProgress(chr);
     }
 
+    /**
+     * 启动服务/调度器。
+     * @param chr 角色
+     * @param npc npc
+     */
     public void start(Character chr, int npc) {
         if (autoStart || canStart(chr, npc)) {
             Collection<AbstractQuestAction> acts = startActs.values();
@@ -329,10 +377,21 @@ public class Quest {
         }
     }
 
+    /**
+     * 执行 complete 操作。
+     * @param chr 角色
+     * @param npc npc
+     */
     public void complete(Character chr, int npc) {
         complete(chr, npc, null);
     }
 
+    /**
+     * 执行 complete 操作。
+     * @param chr 角色
+     * @param npc npc
+     * @param selection selection
+     */
     public void complete(Character chr, int npc, Integer selection) {
         if (autoPreComplete || canComplete(chr, npc)) {
             Collection<AbstractQuestAction> acts = completeActs.values();
@@ -351,11 +410,20 @@ public class Quest {
         }
     }
 
+    /**
+     * 执行 reset 操作。
+     * @param chr 角色
+     */
     public void reset(Character chr) {
         QuestStatus newStatus = new QuestStatus(this, QuestStatus.Status.NOT_STARTED);
         chr.updateQuestStatus(newStatus);
     }
 
+    /**
+     * 执行 forfeit 操作。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean forfeit(Character chr) {
         if (!chr.getQuest(this).getStatus().equals(Status.STARTED)) {
             return false;
@@ -369,6 +437,12 @@ public class Quest {
         return true;
     }
 
+    /**
+     * 执行 force、Start 操作。
+     * @param chr 角色
+     * @param npc npc
+     * @return boolean 类型结果
+     */
     public boolean forceStart(Character chr, int npc) {
         QuestStatus newStatus = new QuestStatus(this, QuestStatus.Status.STARTED, npc);
 
@@ -405,6 +479,12 @@ public class Quest {
         return true;
     }
 
+    /**
+     * 执行 force、Complete 操作。
+     * @param chr 角色
+     * @param npc npc
+     * @return boolean 类型结果
+     */
     public boolean forceComplete(Character chr, int npc) {
         if (timeLimit > 0) {
             chr.sendPacket(PacketCreator.removeQuestTimeLimit(id));
@@ -421,14 +501,27 @@ public class Quest {
         return true;
     }
 
+    /**
+     * 获取ID。
+     * @return short 类型结果
+     */
     public short getId() {
         return id;
     }
 
+    /**
+     * 获取相关、Mobs。
+     * @return List<Integer> 类型结果
+     */
     public List<Integer> getRelevantMobs() {
         return relevantMobs;
     }
 
+    /**
+     * 获取Start、物品、Amount、Needed。
+     * @param itemid 物品 ID
+     * @return int 类型结果
+     */
     public int getStartItemAmountNeeded(int itemid) {
         AbstractQuestRequirement req = startReqs.get(QuestRequirementType.ITEM);
         if (req == null) {
@@ -439,6 +532,11 @@ public class Quest {
         return ireq.getItemAmountNeeded(itemid, false);
     }
 
+    /**
+     * 获取Complete、物品、Amount、Needed。
+     * @param itemid 物品 ID
+     * @return int 类型结果
+     */
     public int getCompleteItemAmountNeeded(int itemid) {
         AbstractQuestRequirement req = completeReqs.get(QuestRequirementType.ITEM);
         if (req == null) {
@@ -449,6 +547,11 @@ public class Quest {
         return ireq.getItemAmountNeeded(itemid, true);
     }
 
+    /**
+     * 获取怪物、Amount、Needed。
+     * @param mid mid
+     * @return int 类型结果
+     */
     public int getMobAmountNeeded(int mid) {
         AbstractQuestRequirement req = completeReqs.get(QuestRequirementType.MOB);
         if (req == null) {
@@ -460,6 +563,11 @@ public class Quest {
         return mreq.getRequiredMobCount(mid);
     }
 
+    /**
+     * 获取信息编号。
+     * @param qs qs
+     * @return short 类型结果
+     */
     public short getInfoNumber(Status qs) {
         boolean checkEnd = qs.equals(Status.STARTED);
         Map<QuestRequirementType, AbstractQuestRequirement> reqs = !checkEnd ? startReqs : completeReqs;
@@ -473,6 +581,12 @@ public class Quest {
         }
     }
 
+    /**
+     * 获取信息扩展。
+     * @param qs qs
+     * @param index index
+     * @return String 类型结果
+     */
     public String getInfoEx(Status qs, int index) {
         boolean checkEnd = qs.equals(Status.STARTED);
         Map<QuestRequirementType, AbstractQuestRequirement> reqs = !checkEnd ? startReqs : completeReqs;
@@ -485,6 +599,11 @@ public class Quest {
         }
     }
 
+    /**
+     * 获取信息扩展。
+     * @param qs qs
+     * @return List<String> 类型结果
+     */
     public List<String> getInfoEx(Status qs) {
         boolean checkEnd = qs.equals(Status.STARTED);
         Map<QuestRequirementType, AbstractQuestRequirement> reqs = !checkEnd ? startReqs : completeReqs;
@@ -497,14 +616,25 @@ public class Quest {
         }
     }
 
+    /**
+     * 获取时间限制。
+     * @return int 类型结果
+     */
     public int getTimeLimit() {
         return timeLimit;
     }
 
+    /**
+     * 执行 clear、Cache 操作。
+     * @param quest 任务
+     */
     public static void clearCache(int quest) {
         quests.remove(quest);
     }
 
+    /**
+     * 执行 clear、Cache 操作。
+     */
     public static void clearCache() {
         quests.clear();
     }
@@ -629,6 +759,12 @@ public class Quest {
         return ret;
     }
 
+    /**
+     * 执行 restore、Lost、物品 操作。
+     * @param chr 角色
+     * @param itemid 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean restoreLostItem(Character chr, int itemid) {
         if (chr.getQuest(this).getStatus().equals(QuestStatus.Status.STARTED)) {
             ItemAction itemAct = (ItemAction) startActs.get(QuestActionType.ITEM);
@@ -640,11 +776,20 @@ public class Quest {
         return false;
     }
 
+    /**
+     * 获取勋章需求。
+     * @return int 类型结果
+     */
     public int getMedalRequirement() {
         Integer medalid = medals.get(id);
         return medalid != null ? medalid : -1;
     }
 
+    /**
+     * 获取NPC需求。
+     * @param checkEnd checkEnd
+     * @return int 类型结果
+     */
     public int getNpcRequirement(boolean checkEnd) {
         Map<QuestRequirementType, AbstractQuestRequirement> reqs = !checkEnd ? startReqs : completeReqs;
         AbstractQuestRequirement mqr = reqs.get(QuestRequirementType.NPC);
@@ -655,6 +800,11 @@ public class Quest {
         }
     }
 
+    /**
+     * 判断是否拥有脚本需求。
+     * @param checkEnd checkEnd
+     * @return boolean 类型结果
+     */
     public boolean hasScriptRequirement(boolean checkEnd) {
         Map<QuestRequirementType, AbstractQuestRequirement> reqs = !checkEnd ? startReqs : completeReqs;
         AbstractQuestRequirement mqr = reqs.get(QuestRequirementType.SCRIPT);
@@ -666,6 +816,10 @@ public class Quest {
         }
     }
 
+    /**
+     * 判断是否拥有下一任务动作。
+     * @return boolean 类型结果
+     */
     public boolean hasNextQuestAction() {
         Map<QuestActionType, AbstractQuestAction> acts = completeActs;
         AbstractQuestAction mqa = acts.get(QuestActionType.NEXTQUEST);
@@ -673,18 +827,36 @@ public class Quest {
         return mqa != null;
     }
 
+    /**
+     * 获取名称。
+     * @return String 类型结果
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 获取Parent、名称。
+     * @return String 类型结果
+     */
     public String getParentName() {
         return parent;
     }
 
+    /**
+     * 判断是否为Exploitable、任务。
+     * @param questid 任务 ID
+     * @return boolean 类型结果
+     */
     public static boolean isExploitableQuest(short questid) {
         return exploitableQuests.contains(questid);
     }
 
+    /**
+     * 获取Matched、Quests。
+     * @param search search
+     * @return List<Quest> 类型结果
+     */
     public static List<Quest> getMatchedQuests(String search) {
         List<Quest> ret = new LinkedList<>();
 
@@ -698,6 +870,9 @@ public class Quest {
         return ret;
     }
 
+    /**
+     * 加载所有、Quests。
+     */
     public static void loadAllQuests() {
         final Map<Integer, Quest> loadedQuests = new HashMap<>();
         final Map<Integer, Integer> loadedInfoNumberQuests = new HashMap<>();
@@ -725,6 +900,10 @@ public class Quest {
         Quest.infoNumberQuests = loadedInfoNumberQuests;
     }
 
+    /**
+     * 执行 expire、任务 操作。
+     * @param chr 角色
+     */
     public void expireQuest(Character chr) {
         if (forfeit(chr)) {
             chr.sendPacket(PacketCreator.questExpire(getId()));

@@ -15,6 +15,9 @@ import org.gms.util.RequireUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 通用游戏信息提供者（单例），缓存各类 WZ 杂项数据。
+ */
 public class CommonInformation {
     private static CommonInformation instance;
     private final DataProvider stringData;
@@ -23,6 +26,10 @@ public class CommonInformation {
         stringData = DataProviderFactory.getDataProvider(WZFiles.STRING);
     }
 
+    /**
+     * 获取单例实例。
+     * @return CommonInformation 类型结果
+     */
     public static CommonInformation getInstance() {
         if (instance == null) {
             instance = new CommonInformation();

@@ -22,9 +22,14 @@
 package org.gms.provider;
 
 /**
+ * WZ 数据实体基接口，表示目录树中的一个命名节点。
+ *
  * @author Matze
  */
 public interface DataEntity {
+    /** @return 节点名称 */
     String getName();
+
+    /** @return 父节点，根节点时为 {@code null} */
     DataEntity getParent();
 }

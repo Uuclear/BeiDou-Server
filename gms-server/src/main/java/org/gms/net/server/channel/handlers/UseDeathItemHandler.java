@@ -26,7 +26,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 USE_DEATHITEM（使用死亡物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_DEATHITEM}</p>
+ */
 public final class UseDeathItemHandler extends AbstractPacketHandler {
+    /** 处理 使用死亡物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int itemId = p.readInt();

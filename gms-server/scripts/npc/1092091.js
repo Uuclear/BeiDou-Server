@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1092091
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 function start() {
     if (cm.getQuestProgressInt(2180, 1) == 2) {
         cm.sendNext("You have taken milk from this cow recently, check another cow.");

@@ -1,4 +1,5 @@
 <template>
+  <!-- 背包管理入口页：选择角色后查看与编辑各栏位物品。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.inventory')">
@@ -85,6 +86,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 背包管理主页面，组合角色选择与背包 UI。
+   */
   import { getInventoryTypeList } from '@/api/inventory';
   import { InventoryTypeState } from '@/store/modules/inventory/type';
   import { ref } from 'vue';

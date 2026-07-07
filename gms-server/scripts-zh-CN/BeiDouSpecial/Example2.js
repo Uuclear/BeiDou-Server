@@ -1,4 +1,9 @@
 /**
+ * 脚本类型：自定义NPC
+ * 对象 ID：Example2
+ * 功能描述：示例脚本2（nextLevel 实现），用金币、点券、枫叶或兑换码兑换北斗指南书；演示 sendSelectLevel、getInputNumberLevel、getInputTextLevel 用法。注意 nextLevel 参数为字符串类型。作者：昨日小睡。
+ */
+/**
  * @description 示例脚本2-nextLevel实现
  * 注意，所有的输入的nextLevel都是字符串类型的，不一定是数字
  * @author 昨日小睡

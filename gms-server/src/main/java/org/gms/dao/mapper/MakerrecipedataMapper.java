@@ -4,10 +4,9 @@ import com.mybatisflex.core.BaseMapper;
 import org.gms.dao.entity.MakerrecipedataDO;
 
 /**
- *  映射层。
- *
- * @author sleep
- * @since 2024-05-24
+ * `makerrecipedata` 表 / {@link org.gms.dao.entity.MakerrecipedataDO} 的 MyBatis Mapper 接口。
+ * <p>
+ * 制作人配方表，描述合成所需材料、催化剂及产出物品。
  */
 public interface MakerrecipedataMapper extends BaseMapper<MakerrecipedataDO> {
 

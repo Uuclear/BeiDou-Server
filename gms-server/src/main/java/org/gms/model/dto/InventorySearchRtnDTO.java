@@ -10,6 +10,9 @@ import org.gms.client.inventory.Item;
 
 import java.util.Optional;
 
+/**
+ * 背包物品搜索响应 DTO，聚合 inventoryitems 与可选的装备子表数据，供管理端展示与编辑。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -84,6 +87,9 @@ public class InventorySearchRtnDTO {
      */
     private String itemName;
 
+    /**
+     * 将当前 DTO 转换为运行时 Item/Equip 对象，供服务端逻辑直接操作背包物品。
+     */
     public Item toItem() {
         Item item;
         if (isEquipment()) {

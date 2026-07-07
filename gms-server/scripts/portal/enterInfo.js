@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：enterInfo
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function enter(pi) {
     var mapobj = pi.getWarpMap(104000004);
     if (pi.isQuestActive(21733) && pi.getQuestProgressInt(21733, 9300345) == 0 && mapobj.countMonsters() == 0) {

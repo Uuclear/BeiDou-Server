@@ -1,6 +1,12 @@
-/* @Author SharpAceX
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201108
+ * 功能描述：NPC脚本，提供物品发放。
+ * 原作者：SharpAceX
+ */
 function start() {
     if (cm.getPlayer().getMapId() == 610030500) {
         cm.sendOk("A legendary creature known as the Master Guardian awaits you. It was a Crimson Guardian that Ridley once experimented on, which resulted in its becoming highly resistant to magic attacks, spears, maces, everything--except arrows fired with exceptional power. Bowmen and women! As undisputed masters of the Bow and Arrow, you must use your most powerful attacks--everything from Strafe to Hurricane to Piercing Arrow to destroy this powerful creature and reach the Bowman Statue to claim The Ancestral Bow! Good luck!");

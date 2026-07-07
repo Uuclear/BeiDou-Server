@@ -42,11 +42,12 @@ import java.util.List;
 
 
 /**
- * @author Drago (Dragohe4rt)
+ * 处理客户端 MONSTER_CARNIVAL（怪物嘉年华） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MONSTER_CARNIVAL}</p>
  */
-
 public final class MonsterCarnivalHandler extends AbstractPacketHandler {
 
+    /** 处理 怪物嘉年华 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (c.tryacquireClient()) {

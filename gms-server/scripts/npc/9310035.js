@@ -1,9 +1,10 @@
-﻿/*
-	NPC Name: 		Liao Fan
-	Map(s): 		Mount Song: Mahavira Hall (702100000)
-	Description: 	Monk NPC, pranks the player by turning them bald
-	Creator : 		[ArthurZhu1992]
-*/
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9310035
+ * 功能描述：Liao Fan，排行榜查询。
+ */
+﻿
 let status = 0;
 let playerHair = 0;
 

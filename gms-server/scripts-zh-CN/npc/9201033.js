@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201033
+ * 功能描述：-----------------------------------------------------------------------------------（原版描述）。
+ */
 /*
 -- HeavenMS 083 Script ----------------------------------------------------------------------------
     NPC - Simon

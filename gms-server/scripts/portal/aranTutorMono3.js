@@ -20,9 +20,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-@author kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：aranTutorMono3
+ * 功能描述：(21002, "mo4=o")) {（原版描述）。
+ * 原作者：kevintjuh93
+ */
 function enter(pi) {
     pi.blockPortal();
     if (pi.containsAreaInfo(21002, "mo4=o")) {

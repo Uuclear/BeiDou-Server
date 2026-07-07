@@ -30,9 +30,11 @@ import org.gms.server.maps.MapObject;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Matze
+ * 处理客户端 USE_DOOR（使用门） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_DOOR}</p>
  */
 public final class DoorHandler extends AbstractPacketHandler {
+    /** 处理 使用门 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int ownerid = p.readInt();

@@ -1,4 +1,5 @@
 <template>
+  <!-- 游戏参数配置页：按类型浏览、编辑、导入/导出 YAML 配置项。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.config')">
@@ -288,6 +289,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 游戏配置管理页，支持 Monaco 编辑与批量删除配置。
+   */
   import { reactive, ref } from 'vue';
   import {
     addConfig,

@@ -29,10 +29,12 @@ import org.gms.net.server.Server;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Matze
+ * 处理客户端 CHANGE_CHANNEL（更改频道） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHANGE_CHANNEL}</p>
  */
 public final class ChangeChannelHandler extends AbstractPacketHandler {
 
+    /** 处理 更改频道 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int channel = p.readByte() + 1;

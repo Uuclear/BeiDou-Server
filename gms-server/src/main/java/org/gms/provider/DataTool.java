@@ -25,11 +25,20 @@ import org.gms.provider.wz.DataType;
 
 import java.awt.*;
 
+/**
+ * WZ {@link Data} 节点的类型安全读取工具类。
+ * <p>
+ * 封装按路径读取 int、string、Point 等常见字段的逻辑，兼容 WZ XML 中
+ * 数值存为字符串或带 {@code %} 后缀的配置写法。
+ * </p>
+ */
 public class DataTool {
+/** 从 Data 节点读取字符串 */
     public static String getString(Data data) {
         return ((String) data.getData());
     }
 
+/** 从 Data 节点读取字符串 */
     public static String getString(Data data, String def) {
         if (data == null || data.getData() == null) {
             return def;
@@ -38,22 +47,27 @@ public class DataTool {
         }
     }
 
+/** 从 Data 节点读取字符串 */
     public static String getString(String path, Data data) {
         return getString(data.getChildByPath(path));
     }
 
+/** 从 Data 节点读取字符串 */
     public static String getString(String path, Data data, String def) {
         return getString(data.getChildByPath(path), def);
     }
 
+/** 从 Data 节点读取 double */
     public static double getDouble(Data data) {
         return (Double) data.getData();
     }
 
+/** 从 Data 节点读取 float */
     public static float getFloat(Data data) {
         return (Float) data.getData();
     }
 
+/** 从 Data 节点读取 int */
     public static int getInt(Data data) {
         if (data == null || data.getData() == null) {
             return 0;// DEF?
@@ -61,10 +75,12 @@ public class DataTool {
         return (Integer) data.getData();
     }
 
+/** 从 Data 节点读取 int */
     public static int getInt(String path, Data data) {
         return getInt(data.getChildByPath(path));
     }
 
+/** 从 Data 节点读取 int（兼容字符串与百分比） */
     public static int getIntConvert(Data data) {
         if (data.getType() == DataType.STRING) {
             return Integer.parseInt(getString(data));
@@ -73,6 +89,7 @@ public class DataTool {
         }
     }
 
+/** 从 Data 节点读取 int（兼容字符串与百分比） */
     public static int getIntConvert(Data data, int def) {
         if (data == null) {
             return def;
@@ -92,6 +109,7 @@ public class DataTool {
         }
     }
 
+/** 从 Data 节点读取 int（兼容字符串与百分比） */
     public static int getIntConvert(String path, Data data) {
         Data d = data.getChildByPath(path);
         if (d.getType() == DataType.STRING) {
@@ -101,6 +119,7 @@ public class DataTool {
         }
     }
 
+/** 从 Data 节点读取 int */
     public static int getInt(Data data, int def) {
         if (data == null || data.getData() == null) {
             return def;
@@ -116,6 +135,7 @@ public class DataTool {
         }
     }
 
+/** 从 Data 节点读取 int */
     public static int getInt(String path, Data data, int def) {
         if (data==null) {
             return def;
@@ -123,6 +143,7 @@ public class DataTool {
         return getInt(data.getChildByPath(path), def);
     }
 
+/** 从 Data 节点读取 int（兼容字符串与百分比） */
     public static int getIntConvert(String path, Data data, int def) {
         Data d = data.getChildByPath(path);
         if (d == null) {
@@ -140,6 +161,7 @@ public class DataTool {
         }
     }
 
+/** 从子路径读取 Integer（可为 null） */
     public static Integer getInteger(String path, Data data) {
         Data child = data.getChildByPath(path);
         if (child == null || child.getData() == null) {
@@ -152,11 +174,13 @@ public class DataTool {
         }
     }
 
+/** 从子路径读取 Integer（可为 null） */
     public static int getInteger(String path, Data data, int def) {
         Integer val = getInteger(path, data);
         return val == null ? def : val;
     }
 
+/** 从子路径读取 Short */
     public static Short getShort(String path, Data data) {
         Data child = data.getChildByPath(path);
         if (child == null || child.getData() == null) {
@@ -169,11 +193,13 @@ public class DataTool {
         }
     }
 
+/** 从子路径读取 Short */
     public static short getShort(String path, Data data, short def) {
         Short val = getShort(path, data);
         return val == null ? def : val;
     }
 
+/** 从子路径读取 Long */
     public static Long getLong(String path, Data data) {
         Data child = data.getChildByPath(path);
         if (child == null || child.getData() == null) {
@@ -186,19 +212,23 @@ public class DataTool {
         }
     }
 
+/** 从子路径读取 Long */
     public static long getLong(String path, Data data, long def) {
         Long val = getLong(path, data);
         return val == null ? def : val;
     }
 
+/** 从 Data 节点读取坐标点 */
     public static Point getPoint(Data data) {
         return ((Point) data.getData());
     }
 
+/** 从 Data 节点读取坐标点 */
     public static Point getPoint(String path, Data data) {
         return getPoint(data.getChildByPath(path));
     }
 
+/** 从 Data 节点读取坐标点 */
     public static Point getPoint(String path, Data data, Point def) {
         final Data pointData = data.getChildByPath(path);
         if (pointData == null) {
@@ -207,6 +237,7 @@ public class DataTool {
         return getPoint(pointData);
     }
 
+/** 获取从根到当前节点的完整路径 */
     public static String getFullDataPath(Data data) {
         String path = "";
         DataEntity myData = data;
@@ -217,13 +248,16 @@ public class DataTool {
         return path.substring(0, path.length() - 1);
     }
 
+/** 获取 XML 节点属性值 */
     public static String getAttributeValue(Data data,String name) {
         return data.getAttributeValue(name);
     }
+/** 获取 XML 节点属性值 */
     public static String getAttributeValue(Data data,String name,String def) {
         String val = getAttributeValue(data,name);
         return val == null ? def : val;
     }
+/** 获取AttributeValueInt */
     public static int getAttributeValueInt(Data data,String name,int def) {
         String val = getAttributeValue(data,name);
         return val == null ? def : Integer.parseInt(val);

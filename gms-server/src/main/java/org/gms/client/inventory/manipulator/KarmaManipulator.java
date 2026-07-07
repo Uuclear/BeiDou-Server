@@ -16,25 +16,28 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.inventory.manipulator;
-
-import org.gms.client.inventory.Item;
-import org.gms.constants.inventory.ItemConstants;
-
 /**
- * @author RonanLana
+ * 剪刀/宿命剪刀操作工具类，处理装备剪刀次数的增减逻辑。
  */
 public class KarmaManipulator {
     private static short getKarmaFlag(Item item) {
         return item.getItemType() == 1 ? ItemConstants.KARMA_EQP : ItemConstants.KARMA_USE;
     }
 
+    /**
+     * 判断是否拥有Karma标记
+     * @param item 物品
+     * @return 返回值
+     */
     public static boolean hasKarmaFlag(Item item) {
         short karmaFlag = getKarmaFlag(item);
         return (item.getFlag() & karmaFlag) == karmaFlag;
     }
 
+    /**
+     * 切换Karma标记到Untradeable
+     * @param item 物品
+     */
     public static void toggleKarmaFlagToUntradeable(Item item) {
         short karmaFlag = getKarmaFlag(item);
         short flag = item.getFlag();
@@ -47,6 +50,10 @@ public class KarmaManipulator {
         }
     }
 
+    /**
+     * 设置Karma标记
+     * @param item 物品
+     */
     public static void setKarmaFlag(Item item) {
         short karmaFlag = getKarmaFlag(item);
         short flag = item.getFlag();

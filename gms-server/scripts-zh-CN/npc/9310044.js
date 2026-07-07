@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9310044
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /**
  * 东方神州系列地图脚本
  * 北斗项目组	https://github.com/BeiDouMS/BeiDou-Server

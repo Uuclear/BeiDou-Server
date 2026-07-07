@@ -1,3 +1,6 @@
+/**
+ * 账户管理模块英文文案。
+ */
 export default {
   'account.list.column.id': 'ID',
   'account.list.column.name': 'account',

@@ -26,25 +26,39 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestActionType;
 
 /**
- * @author Ronan
+ * 任务设置 info 编号动作（用于 UI 展示进度）。
  */
 public class InfoAction extends AbstractQuestAction {
 
     private String info;
     private final int questID;
 
+    /**
+     * 构造 InfoAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public InfoAction(Quest quest, Data data) {
         super(QuestActionType.INFO, quest);
         questID = quest.getId();
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         info = DataTool.getString(data, "");
     }
 
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         chr.getAbstractPlayerInteraction().setQuestProgress(questID, info);

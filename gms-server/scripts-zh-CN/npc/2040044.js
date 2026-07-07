@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040044
+ * 功能描述：Used after the boss is killed to trigger the bonus stage.（原版描述）。
+ */
 /*
 @	Author : Twdtwd
 @       Author : Ronan

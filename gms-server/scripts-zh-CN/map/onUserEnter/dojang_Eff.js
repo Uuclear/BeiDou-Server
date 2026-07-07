@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：dojang_Eff
+ * 功能描述：for the player when entering a dojo map（原版描述）。
+ */
 /*
  *@Author:     Moogra, Traitor, Ronan
  *@Map(s):     All Dojo fighting maps

@@ -19,6 +19,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：mc_out
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function enter(pi) {
     var returnMap = pi.getPlayer().getSavedLocation("MONSTER_CARNIVAL");
     if (returnMap < 0) {

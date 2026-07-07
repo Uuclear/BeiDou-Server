@@ -29,14 +29,21 @@ import org.gms.client.command.Command;
 import org.gms.net.server.Server;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM3命令：开启或关闭飞行模式
+ */
 public class FlyCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("FlyCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) { // fly option will become available for any character of that account
-        Character player = c.getPlayer();
         if (params.length < 1) {
             player.yellowMessage(I18nUtil.getMessage("FlyCommand.message2"));
             return;

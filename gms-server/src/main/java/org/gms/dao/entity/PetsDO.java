@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `pets` 的实体类（DO）。
+ * <p>
+ * 宠物数据表，持久化宠物等级、亲密度、技能、装备及饱食度等信息。
  */
 @Data
 @Builder

@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * 
- * 9201002.js: Guild Quest - Ergoth Reactor
- * 
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：9201002
+ * 功能描述：反应堆触发后召唤怪物。
+ * 原作者：Lerk
+ */
 function act() {
     rm.changeMusic("Bgm10/Eregos");
     rm.spawnMonster(9300028);

@@ -32,11 +32,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * @author BubblesDev
- * @author Ronan
+ * 处理客户端 PET_EXCLUDE_ITEMS（宠物排除物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PET_EXCLUDE_ITEMS}</p>
  */
 public final class PetExcludeItemsHandler extends AbstractPacketHandler {
 
+    /** 处理 宠物排除物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         final int petId = p.readInt();

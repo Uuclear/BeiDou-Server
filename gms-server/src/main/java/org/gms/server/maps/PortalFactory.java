@@ -26,13 +26,25 @@ import org.gms.provider.DataTool;
 
 import java.awt.*;
 
+/**
+ * 传送门工厂，从 WZ 数据创建 Portal 实例。
+ */
 public class PortalFactory {
     private int nextDoorPortal;
 
+    /**
+     * 构造 PortalFactory 实例。
+     */
     public PortalFactory() {
         nextDoorPortal = 0x80;
     }
 
+    /**
+     * 执行 make、传送门 操作。
+     * @param type 类型
+     * @param portal portal
+     * @return Portal 类型结果
+     */
     public Portal makePortal(int type, Data portal) {
         GenericPortal ret = null;
         if (type == Portal.MAP_PORTAL) {

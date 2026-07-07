@@ -36,6 +36,9 @@ import java.util.List;
  * @author kevintjuh93
  */
 //Make them better :)
+/**
+ * 椰子活动（单人）。
+ */
 public class Coconut extends Event {
     private MapleMap map = null;
     private int MapleScore = 0;
@@ -45,11 +48,18 @@ public class Coconut extends Event {
     private int countStopped = 20;
     private final List<Coconuts> coconuts = new LinkedList<>();
 
+    /**
+     * 构造 Coconut 实例。
+     * @param map 地图名称
+     */
     public Coconut(MapleMap map) {
         super(1, 50);
         this.map = map;
     }
 
+    /**
+     * 执行 start、事件 操作。
+     */
     public void startEvent() {
         map.startEvent();
         for (int i = 0; i < 506; i++) {
@@ -90,6 +100,9 @@ public class Coconut extends Event {
         }, 300000);
     }
 
+    /**
+     * 执行 bonus、时间 操作。
+     */
     public void bonusTime() {
         map.broadcastMessage(PacketCreator.getClock(120));
         TimerManager.getInstance().schedule(() -> {
@@ -126,6 +139,9 @@ public class Coconut extends Event {
 
     }
 
+    /**
+     * 传送Out。
+     */
     public void warpOut() {
         setCoconutsHittable(false);
         TimerManager.getInstance().schedule(() -> {
@@ -142,54 +158,102 @@ public class Coconut extends Event {
         }, 12000);
     }
 
+    /**
+     * 获取冒险岛、Score。
+     * @return int 类型结果
+     */
     public int getMapleScore() {
         return MapleScore;
     }
 
+    /**
+     * 获取Story、Score。
+     * @return int 类型结果
+     */
     public int getStoryScore() {
         return StoryScore;
     }
 
+    /**
+     * 添加冒险岛、Score。
+     */
     public void addMapleScore() {
         this.MapleScore += 1;
     }
 
+    /**
+     * 添加Story、Score。
+     */
     public void addStoryScore() {
         this.StoryScore += 1;
     }
 
+    /**
+     * 获取Bombings。
+     * @return int 类型结果
+     */
     public int getBombings() {
         return countBombing;
     }
 
+    /**
+     * 执行 bomb、椰子 操作。
+     */
     public void bombCoconut() {
         countBombing--;
     }
 
+    /**
+     * 获取Falling。
+     * @return int 类型结果
+     */
     public int getFalling() {
         return countFalling;
     }
 
+    /**
+     * 执行 fall、椰子 操作。
+     */
     public void fallCoconut() {
         countFalling--;
     }
 
+    /**
+     * 获取Stopped。
+     * @return int 类型结果
+     */
     public int getStopped() {
         return countStopped;
     }
 
+    /**
+     * 执行 stop、椰子 操作。
+     */
     public void stopCoconut() {
         countStopped--;
     }
 
+    /**
+     * 获取椰子。
+     * @param id ID
+     * @return Coconuts 类型结果
+     */
     public Coconuts getCoconut(int id) {
         return coconuts.get(id);
     }
 
+    /**
+     * 获取所有、Coconuts。
+     * @return List<Coconuts> 类型结果
+     */
     public List<Coconuts> getAllCoconuts() {
         return coconuts;
     }
 
+    /**
+     * 设置Coconuts、Hittable。
+     * @param hittable hittable
+     */
     public void setCoconutsHittable(boolean hittable) {
         for (Coconuts nut : coconuts) {
             nut.setHittable(hittable);

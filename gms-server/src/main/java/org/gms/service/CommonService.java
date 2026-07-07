@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * 通用业务服务，提供装备信息、全服在线人数及多类型资料检索。
+ */
 @Service
 @Slf4j
 public class CommonService {
@@ -87,6 +90,12 @@ public class CommonService {
 
     }
 
+    /**
+     * 执行 getInformation 相关业务逻辑。
+     *
+     * @param condition condition
+     * @return List<InformationResult> 类型结果
+     */
     public List<InformationResult> getInformation(InformationSearch condition) {
         RequireUtil.requireNotEmpty(condition.getFilter(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "filter"));
         if (RequireUtil.isEmpty(condition.getTypes())) {

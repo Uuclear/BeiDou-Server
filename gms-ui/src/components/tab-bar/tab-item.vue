@@ -1,4 +1,5 @@
 <template>
+  <!-- 单个路由标签页项，支持关闭、右键菜单（关闭其他/全部）及固定首页标签。 -->
   <a-dropdown
     trigger="contextMenu"
     :popup-max-height="false"
@@ -57,6 +58,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 标签页单项组件，处理点击跳转、关闭标签及批量关闭标签页逻辑。
+   */
   import { PropType, computed } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
   import { useTabBarStore } from '@/store';

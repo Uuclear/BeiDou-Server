@@ -1,7 +1,12 @@
-/* @Author SharpAceX
-* 5511001.js: Summons Scarlion.
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：5511001
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：SharpAceX
+ */
 function act() {
     const scarlionMobId = 9420547;
     if (rm.getReactor().getMap().getMonsterById(scarlionMobId) == null) {

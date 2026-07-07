@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2041017
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ */
 function start() {
     cm.sendOk("Hey adventurer! Keep it a secret, ok? We are currently manufacturing the so-called #b#t2049100##k, under Just-in-time marketing strategy. You needed? We're here. So, we act in two fronts: talk to me if you want a good bunch of these. It will be a #bQuest#k-esque procediment, however I will need plenty of #bhard-to-get gadgets#k from you. I will require a #r3 days#k break after the completion to start working for you again.\r\nTalk to my partner here, and he will JIT #bsynthetize#k these scrolls for you, requiring a bunch of #blow-cost items#k, #ranytime anywhere#k.");
     cm.dispose();

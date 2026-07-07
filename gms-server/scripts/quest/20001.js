@@ -19,14 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Generic
-	NPC Name: 		Neinheart
-	Map(s): 		Ereve: Empress' Road
-	Description: 		Quest - Neinheart the Tactician
-	Quest ID: 		20001
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20001
+ * 功能描述：Neinheart，任务相关对话与奖励。
+ * 原作者：Generic
+ */
 var status = -1;
 
 function start(mode, type, selection) {

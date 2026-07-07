@@ -21,6 +21,9 @@
 */
 package org.gms.client;
 
+/**
+ * 增益状态枚举，定义角色可获得的各类 Buff 效果类型。
+ */
 public enum BuffStat {
     //SLOW(0x1L),
     MORPH(0x2L),
@@ -134,14 +137,26 @@ public enum BuffStat {
         this.isFirst = false;
     }
 
+    /**
+     * 获取值
+     * @return 返回值
+     */
     public long getValue() {
         return i;
     }
 
+    /**
+     * 判断是否为First
+     * @return 返回值
+     */
     public boolean isFirst() {
         return isFirst;
     }
 
+    /**
+     * 返回对象的字符串表示
+     * @return 返回值
+     */
     @Override
     public String toString() {
         return name();

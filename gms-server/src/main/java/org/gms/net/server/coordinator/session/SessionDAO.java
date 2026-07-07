@@ -13,9 +13,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * HWID 账号关联数据访问对象，负责 hwidaccounts 表的增删改查。
+ */
 public class SessionDAO {
     private static final Logger log = LoggerFactory.getLogger(SessionDAO.class);
 
+    /** 删除数据库中已过期的 HWID 账号关联记录。 */
     public static void deleteExpiredHwidAccounts() {
         final String query = "DELETE FROM hwidaccounts WHERE expiresat < CURRENT_TIMESTAMP";
         try (Connection con = DatabaseConnection.getConnection();
@@ -26,6 +30,14 @@ public class SessionDAO {
         }
     }
 
+    /**
+     * 查询指定账号关联的所有 HWID。
+     *
+     * @param con       数据库连接
+     * @param accountId 账号 ID
+     * @return HWID 列表
+     * @throws SQLException 数据库异常
+     */
     public static List<Hwid> getHwidsForAccount(Connection con, int accountId) throws SQLException {
         final List<Hwid> hwids = new ArrayList<>();
 
@@ -43,6 +55,15 @@ public class SessionDAO {
         return hwids;
     }
 
+    /**
+     * 注册账号与 HWID 的访问关联及过期时间。
+     *
+     * @param con       数据库连接
+     * @param accountId 账号 ID
+     * @param hwid      硬件标识，不可为 null
+     * @param expiry    过期时间
+     * @throws SQLException 数据库异常
+     */
     public static void registerAccountAccess(Connection con, int accountId, Hwid hwid, Instant expiry)
             throws SQLException {
         if (hwid == null) {
@@ -59,6 +80,14 @@ public class SessionDAO {
         }
     }
 
+    /**
+     * 查询指定账号下各 HWID 的相关度记录。
+     *
+     * @param con       数据库连接
+     * @param accountId 账号 ID
+     * @return HWID 相关度列表
+     * @throws SQLException 数据库异常
+     */
     public static List<HwidRelevance> getHwidRelevance(Connection con, int accountId) throws SQLException {
         final List<HwidRelevance> hwidRelevances = new ArrayList<>();
 
@@ -78,6 +107,16 @@ public class SessionDAO {
         return hwidRelevances;
     }
 
+    /**
+     * 更新账号与 HWID 关联的相关度与过期时间。
+     *
+     * @param con            数据库连接
+     * @param hwid           硬件标识
+     * @param accountId      账号 ID
+     * @param expiry         新过期时间
+     * @param loginRelevance 登录相关度
+     * @throws SQLException 数据库异常
+     */
     public static void updateAccountAccess(Connection con, Hwid hwid, int accountId, Instant expiry, int loginRelevance)
             throws SQLException {
         final String query = "UPDATE hwidaccounts SET relevance = ?, expiresat = ? WHERE accountid = ? AND hwid LIKE ?";

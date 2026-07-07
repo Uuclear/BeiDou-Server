@@ -30,9 +30,11 @@ import org.gms.server.maps.MiniDungeonInfo;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Flav
+ * 处理客户端 ENTER_CASHSHOP（进入现金商店） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ENTER_CASHSHOP}</p>
  */
 public class EnterCashShopHandler extends AbstractPacketHandler {
+    /** 处理 进入现金商店 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         try {

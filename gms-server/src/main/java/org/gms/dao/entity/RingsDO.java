@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `rings` 的实体类（DO）。
+ * <p>
+ * 戒指关系表，存储情侣戒指、好友戒指等双人绑定道具的配对信息。
  */
 @Data
 @Builder

@@ -26,9 +26,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author RonanLana
+ * 处理客户端 USE_MAPLELIFE（使用MapleLife） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_MAPLELIFE}</p>
  */
 public class UseMapleLifeHandler extends AbstractPacketHandler {
+    /** 处理 使用MapleLife 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character player = c.getPlayer();

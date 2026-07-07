@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：Cabin
+ * 功能描述：rmation（原版描述）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  Cabin between Orbis and Leafre

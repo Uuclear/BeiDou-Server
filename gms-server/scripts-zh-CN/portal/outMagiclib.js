@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：outMagiclib
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function enter(pi) {
     if (pi.getMap().countMonster(2220100) > 0) {
         pi.getPlayer().message("必须清除所有蓝蘑菇后才能离开副本");

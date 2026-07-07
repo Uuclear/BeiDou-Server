@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `guilds` 的实体类（DO）。
+ * <p>
+ * 公会信息表，存储公会名称、等级、会长、徽章及公告等数据。
  */
 @Data
 @Builder

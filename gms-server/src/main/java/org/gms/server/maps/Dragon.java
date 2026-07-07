@@ -26,9 +26,16 @@ import org.gms.client.Client;
 import org.gms.util.PacketCreator;
 
 
+/**
+ * 龙神职业召唤龙地图对象。
+ */
 public class Dragon extends AbstractAnimatedMapObject {
     private final Character owner;
 
+    /**
+     * 构造 Dragon 实例。
+     * @param chr 角色
+     */
     public Dragon(Character chr) {
         super();
         this.owner = chr;
@@ -37,26 +44,46 @@ public class Dragon extends AbstractAnimatedMapObject {
         this.sendSpawnData(chr.getClient());
     }
 
+    /**
+     * 获取类型。
+     * @return MapObjectType 类型结果
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.DRAGON;
     }
 
+    /**
+     * 执行 send、刷新、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendSpawnData(Client client) {
         client.sendPacket(PacketCreator.spawnDragon(this));
     }
 
+    /**
+     * 获取对象ID。
+     * @return int 类型结果
+     */
     @Override
     public int getObjectId() {
         return owner.getId();
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     * @param c c
+     */
     @Override
     public void sendDestroyData(Client c) {
         c.sendPacket(PacketCreator.removeDragon(owner.getId()));
     }
 
+    /**
+     * 获取归属者。
+     * @return Character 类型结果
+     */
     public Character getOwner() {
         return owner;
     }

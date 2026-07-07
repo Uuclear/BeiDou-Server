@@ -30,11 +30,19 @@ import org.gms.net.server.Server;
 import org.gms.server.ThreadManager;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM6（最高权限）命令：移除最后一个大区
+ */
 public class ServerRemoveWorldCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ServerRemoveWorldCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         final Character player = c.getPlayer();

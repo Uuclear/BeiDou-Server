@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 
 /**
- * 处理业务类的过滤器，到了这里的请求已经经过security的过滤
+ * 业务请求过滤器，在 Spring Security 之后执行 IP 封禁、限流与请求体包装。
+ * 跳过静态资源与 Swagger 路径，是 REST 入站的第二层防护。
  */
 @Slf4j
 @Component
@@ -81,6 +82,11 @@ public class ServerFilter extends HttpFilter {
 
         private byte[] cachedBody;
 
+        /**
+         * 执行 CachedHttpServletRequest 相关业务逻辑。
+         *
+         * @param request 请求体封装对象
+         */
         public CachedHttpServletRequest(HttpServletRequest request) throws IOException {
             super(request);
             cacheRequestBody(request);
@@ -97,11 +103,19 @@ public class ServerFilter extends HttpFilter {
             this.cachedBody = byteArrayOutputStream.toByteArray();
         }
 
+        /**
+         * 执行 getReader 相关业务逻辑。
+         * @return BufferedReader 类型结果
+         */
         @Override
         public BufferedReader getReader() {
             return new BufferedReader(new InputStreamReader(getInputStream()));
         }
 
+        /**
+         * 执行 getInputStream 相关业务逻辑。
+         * @return ServletInputStream 类型结果
+         */
         @Override
         public ServletInputStream getInputStream() {
             return new CachedServletInputStream(this.cachedBody);
@@ -112,25 +126,47 @@ public class ServerFilter extends HttpFilter {
 
         private final ByteArrayInputStream byteArrayInputStream;
 
+        /**
+         * 执行 CachedServletInputStream 相关业务逻辑。
+         *
+         * @param cachedBody cachedBody
+         */
         public CachedServletInputStream(byte[] cachedBody) {
             this.byteArrayInputStream = new ByteArrayInputStream(cachedBody);
         }
 
+        /**
+         * 执行 isFinished 相关业务逻辑。
+         * @return boolean 类型结果
+         */
         @Override
         public boolean isFinished() {
             return byteArrayInputStream.available() == 0;
         }
 
+        /**
+         * 执行 isReady 相关业务逻辑。
+         * @return boolean 类型结果
+         */
         @Override
         public boolean isReady() {
             return true;
         }
 
+        /**
+         * 执行 setReadListener 相关业务逻辑。
+         *
+         * @param listener listener
+         */
         @Override
         public void setReadListener(ReadListener listener) {
             throw new UnsupportedOperationException();
         }
 
+        /**
+         * 执行 read 相关业务逻辑。
+         * @return int 类型结果
+         */
         @Override
         public int read() {
             return byteArrayInputStream.read();

@@ -1,9 +1,12 @@
-/* Author: aaroncsn <MapleSea Like, Incomplete, Needs skin id>
-	NPC Name: 		Laila
-	Map(s): 		The Burning Road: Ariant(2600000000)
-	Description: 	Skin Care Specialist
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2100007
+ * 功能描述：Laila，肤色更换。
+ * 原作者：aaroncsn <MapleSea Like, Incomplete, Needs skin id>
+ */
 var status = 0;
 var skin = Array(0, 1, 2, 3, 4);
 

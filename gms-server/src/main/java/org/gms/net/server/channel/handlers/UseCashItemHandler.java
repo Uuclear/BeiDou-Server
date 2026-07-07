@@ -79,6 +79,10 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 处理客户端 USE_CASH_ITEM（使用现金物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_CASH_ITEM}</p>
+ */
 public final class UseCashItemHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(UseCashItemHandler.class);
 
@@ -88,6 +92,7 @@ public final class UseCashItemHandler extends AbstractPacketHandler {
         this.noteService = noteService;
     }
 
+    /** 处理 使用现金物品 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         final Character player = c.getPlayer();

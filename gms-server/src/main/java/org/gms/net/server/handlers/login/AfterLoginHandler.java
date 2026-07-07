@@ -27,8 +27,13 @@ import org.gms.net.packet.InPacket;
 import org.gms.net.server.coordinator.session.SessionCoordinator;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 AFTER_LOGIN（登录后操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#AFTER_LOGIN}</p>
+ */
 public final class AfterLoginHandler extends AbstractPacketHandler {
 
+    /** 处理 登录后操作 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         byte c2 = p.readByte();

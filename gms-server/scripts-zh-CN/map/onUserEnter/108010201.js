@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：108010201
+ * 功能描述：地图脚本（108010201），控制地图内特殊逻辑。
+ */
 function start(ms) {
     if (ms.getMapId() == 108010101) { // Archer
         spawnMob(188, 20, 9001002, ms.getPlayer().getMap());

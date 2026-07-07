@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 装备详情查询请求 DTO，根据装备实例 ID 获取 inventoryequipment 扩展属性。
+ */
 @Setter
 @Getter
 public class EquipmentInfoReqDTO {

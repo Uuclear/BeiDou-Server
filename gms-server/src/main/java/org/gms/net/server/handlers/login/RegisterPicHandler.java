@@ -15,6 +15,10 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 处理客户端 REGISTER_PIC（注册图片） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#REGISTER_PIC}</p>
+ */
 public final class RegisterPicHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(RegisterPicHandler.class);
 
@@ -28,6 +32,7 @@ public final class RegisterPicHandler extends AbstractPacketHandler {
         };
     }
 
+    /** 处理 注册图片 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readByte();

@@ -31,11 +31,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * @author Jay Estrella, Ronan
+ * 装备制造（Maker）系统工厂，解析制作配方。
  */
 public class MakerItemFactory {
     private static final ItemInformationProvider ii = ItemInformationProvider.getInstance();
 
+    /**
+     * 获取物品、Create、Entry。
+     * @param toCreate toCreate
+     * @param stimulantid stimulantid
+     * @param reagentids reagentids（Integer, Short 列表/集合）
+     * @return MakerItemCreateEntry 类型结果
+     */
     public static MakerItemCreateEntry getItemCreateEntry(int toCreate, int stimulantid, Map<Integer, Short> reagentids) {
         MakerItemCreateEntry makerEntry = ii.getMakerItemEntry(toCreate);
         if (makerEntry.isInvalid()) {
@@ -57,6 +64,12 @@ public class MakerItemFactory {
         return makerEntry;
     }
 
+    /**
+     * 生成Leftover、Crystal、Entry。
+     * @param fromLeftoverid fromLeftoverid
+     * @param crystalId crystalId
+     * @return MakerItemCreateEntry 类型结果
+     */
     public static MakerItemCreateEntry generateLeftoverCrystalEntry(int fromLeftoverid, int crystalId) {
         MakerItemCreateEntry ret = new MakerItemCreateEntry(0, 0, 1);
         ret.addReqItem(fromLeftoverid, 100);
@@ -64,6 +77,12 @@ public class MakerItemFactory {
         return ret;
     }
 
+    /**
+     * 生成Disassembly、Crystal、Entry。
+     * @param fromEquipid fromEquipid
+     * @param cost cost
+     * @return MakerItemCreateEntry 类型结果
+     */
     public static MakerItemCreateEntry generateDisassemblyCrystalEntry(int fromEquipid, int cost, List<Pair<Integer, Integer>> gains) {     // equipment at specific position already taken
         MakerItemCreateEntry ret = new MakerItemCreateEntry(cost, 0, 1);
         ret.addReqItem(fromEquipid, 1);
@@ -151,12 +170,24 @@ public class MakerItemFactory {
         private final List<Pair<Integer, Integer>> reqItems = new ArrayList<>(); // itemId / amount
         private final List<Pair<Integer, Integer>> gainItems = new ArrayList<>(); // itemId / amount
 
+        /**
+         * 执行 Maker、物品、Create、Entry 操作。
+         * @param cost cost
+         * @param reqLevel reqLevel
+         * @param reqMakerLevel reqMakerLevel
+         * @return MakerItemCreateEntry 类型结果
+         */
         public MakerItemCreateEntry(int cost, int reqLevel, int reqMakerLevel) {
             this.cost = cost;
             this.reqLevel = reqLevel;
             this.reqMakerLevel = reqMakerLevel;
         }
 
+        /**
+         * 执行 Maker、物品、Create、Entry 操作。
+         * @param mi mi
+         * @return MakerItemCreateEntry 类型结果
+         */
         public MakerItemCreateEntry(MakerItemCreateEntry mi) {
             this.cost = mi.cost;
             this.reqLevel = mi.reqLevel;
@@ -167,26 +198,50 @@ public class MakerItemFactory {
             gainItems.addAll(mi.gainItems);
         }
 
+        /**
+         * 获取Req物品。
+         * @return List<Pair<Integer, Integer>> 类型结果
+         */
         public List<Pair<Integer, Integer>> getReqItems() {
             return reqItems;
         }
 
+        /**
+         * 获取Gain、物品。
+         * @return List<Pair<Integer, Integer>> 类型结果
+         */
         public List<Pair<Integer, Integer>> getGainItems() {
             return gainItems;
         }
 
+        /**
+         * 获取Req等级。
+         * @return int 类型结果
+         */
         public int getReqLevel() {
             return reqLevel;
         }
 
+        /**
+         * 获取Req技能等级。
+         * @return int 类型结果
+         */
         public int getReqSkillLevel() {
             return reqMakerLevel;
         }
 
+        /**
+         * 获取Cost。
+         * @return int 类型结果
+         */
         public int getCost() {
             return reqCost;
         }
 
+        /**
+         * 添加Cost。
+         * @param amount amount
+         */
         public void addCost(double amount) {
             cost += amount;
         }
@@ -199,11 +254,18 @@ public class MakerItemFactory {
             gainItems.add(new Pair<>(itemId, amount));
         }
 
+        /**
+         * 执行 trim、Cost 操作。
+         */
         public void trimCost() {
             reqCost = (int) (cost / 1000);
             reqCost *= 1000;
         }
 
+        /**
+         * 判断是否为Invalid。
+         * @return boolean 类型结果
+         */
         public boolean isInvalid() {    // thanks Rohenn, Wh1SK3Y for noticing some items not getting checked properly
             return reqLevel < 0;
         }

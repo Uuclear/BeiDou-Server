@@ -30,6 +30,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 物品基类，表示背包中的单个物品实例，包含 ID、数量、位置、所有者等通用属性。
+ */
 public class Item implements Comparable<Item> {
 
     private static final AtomicInteger runningCashId = new AtomicInteger(777000000);  // pets & rings shares cashid values
@@ -47,6 +50,12 @@ public class Item implements Comparable<Item> {
     private long expiration = -1;
     private String giftFrom = "";
 
+    /**
+     * 物品
+     * @param id ID
+     * @param position 位置
+     * @param quantity 数量
+     */
     public Item(int id, short position, short quantity) {
         this.id = id;
         this.position = position;
@@ -55,6 +64,13 @@ public class Item implements Comparable<Item> {
         this.flag = 0;
     }
 
+    /**
+     * 物品
+     * @param id ID
+     * @param position 位置
+     * @param quantity 数量
+     * @param petid petid
+     */
     public Item(int id, short position, short quantity, int petid) {
         this.id = id;
         this.position = position;
@@ -70,6 +86,10 @@ public class Item implements Comparable<Item> {
         this.itemLog = new LinkedList<>();
     }
 
+    /**
+     * 复制
+     * @return 返回值
+     */
     public Item copy() {
         Item ret = new Item(id, position, quantity, petid);
         ret.flag = flag;
@@ -79,6 +99,10 @@ public class Item implements Comparable<Item> {
         return ret;
     }
 
+    /**
+     * 设置位置
+     * @param position 位置
+     */
     public void setPosition(short position) {
         this.position = position;
         if (this.pet != null) {
@@ -86,14 +110,26 @@ public class Item implements Comparable<Item> {
         }
     }
 
+    /**
+     * 设置数量
+     * @param quantity 数量
+     */
     public void setQuantity(short quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     * 获取物品ID
+     * @return 返回值
+     */
     public int getItemId() {
         return id;
     }
 
+    /**
+     * 获取现金ID
+     * @return 返回值
+     */
     public int getCashId() {
         if (cashId == 0) {
             cashId = runningCashId.getAndIncrement();
@@ -101,37 +137,69 @@ public class Item implements Comparable<Item> {
         return cashId;
     }
 
+    /**
+     * 获取位置
+     * @return 返回值
+     */
     public short getPosition() {
         return position;
     }
 
+    /**
+     * 获取数量
+     * @return 返回值
+     */
     public short getQuantity() {
         return quantity;
     }
 
+    /**
+     * 获取背包类型
+     * @return 返回值
+     */
     public InventoryType getInventoryType() {
         return ItemConstants.getInventoryType(id);
     }
 
+    /**
+     * 获取物品类型
+     * @return 返回值
+     */
     public byte getItemType() { // 1: equip, 3: pet, 2: other
-        if (getPetId() > -1) {
             return 3;
         }
         return 2;
     }
 
+    /**
+     * 获取所有者
+     * @return 返回值
+     */
     public String getOwner() {
         return owner;
     }
 
+    /**
+     * 设置所有者
+     * @param owner 所有者
+     */
     public void setOwner(String owner) {
         this.owner = owner;
     }
 
+    /**
+     * 获取宠物ID
+     * @return 返回值
+     */
     public int getPetId() {
         return petid;
     }
 
+    /**
+     * 比较两个对象的顺序
+     * @param other other
+     * @return 返回值
+     */
     @Override
     public int compareTo(Item other) {
         if (this.id < other.getItemId()) {
@@ -142,19 +210,35 @@ public class Item implements Comparable<Item> {
         return 0;
     }
 
+    /**
+     * 返回对象的字符串表示
+     * @return 返回值
+     */
     @Override
     public String toString() {
         return "Item: " + id + " quantity: " + quantity;
     }
 
+    /**
+     * 获取物品日志
+     * @return 返回值
+     */
     public List<String> getItemLog() {
         return Collections.unmodifiableList(itemLog);
     }
 
+    /**
+     * 获取标记
+     * @return 返回值
+     */
     public short getFlag() {
         return flag;
     }
 
+    /**
+     * 设置标记
+     * @param b b
+     */
     public void setFlag(short b) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         if (ii.isAccountRestricted(id)) {
@@ -164,34 +248,66 @@ public class Item implements Comparable<Item> {
         this.flag = b;
     }
 
+    /**
+     * 获取过期时间
+     * @return 返回值
+     */
     public long getExpiration() {
         return expiration;
     }
 
+    /**
+     * 设置过期时间
+     * @param expire expire
+     */
     public void setExpiration(long expire) {
         this.expiration = !ItemConstants.isPermanentItem(id) ? expire : ItemConstants.isPet(id) ? Long.MAX_VALUE : -1;
     }
 
+    /**
+     * 获取SN
+     * @return 返回值
+     */
     public int getSN() {
         return sn;
     }
 
+    /**
+     * 设置SN
+     * @param sn sn
+     */
     public void setSN(int sn) {
         this.sn = sn;
     }
 
+    /**
+     * 获取礼物从
+     * @return 返回值
+     */
     public String getGiftFrom() {
         return giftFrom;
     }
 
+    /**
+     * 设置礼物从
+     * @param giftFrom giftFrom
+     */
     public void setGiftFrom(String giftFrom) {
         this.giftFrom = giftFrom;
     }
 
+    /**
+     * 获取宠物
+     * @return 返回值
+     */
     public Pet getPet() {
         return pet;
     }
 
+    /**
+     * 判断是否为Untradeable
+     * @return 返回值
+     */
     public boolean isUntradeable() {
         return ((this.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE) || (ItemInformationProvider.getInstance().isDropRestricted(this.getItemId()) && !KarmaManipulator.hasKarmaFlag(this));
     }

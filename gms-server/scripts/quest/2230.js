@@ -19,14 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Generic
-	NPC Name: 		Mar the Fairy
-	Map(s): 		Everywhere
-	Description: 		Quest - A Mysterious Small Egg
-	Quest ID: 		2230
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2230
+ * 功能描述：Mar the Fairy，任务相关对话与奖励。
+ * 原作者：Generic
+ */
 var status = -1;
 var canComplete;
 

@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 物品系统通用常量及判定方法，涵盖背包类型、堆叠规则、现金物品、装备标志位等。
+ *
  * @author Jay Estrella
  * @author Ronan
  */
@@ -60,6 +62,9 @@ public final class ItemConstants {
         }
     }
 
+    /**
+     * 将整型标志转换为物品标志位短整型。
+     */
     public static int getFlagByInt(int type) {
         if (type == 128) {
             return PET_COME;
@@ -69,88 +74,151 @@ public final class ItemConstants {
         return 0;
     }
 
+    /**
+     * 判断物品是否为飞镖类消耗品。
+     */
     public static boolean isThrowingStar(int itemId) {
         return itemId / 10000 == 207;
     }
 
+    /**
+     * 判断物品是否为子弹类消耗品。
+     */
     public static boolean isBullet(int itemId) {
         return itemId / 10000 == 233;
     }
 
+    /**
+     * 判断物品是否为药水。
+     */
     public static boolean isPotion(int itemId) {
         return itemId / 1000 == 2000;
     }
 
+    /**
+     * 判断物品是否为食物。
+     */
     public static boolean isFood(int itemId) {
         int useType = itemId / 1000;
         return useType == 2022 || useType == 2010 || useType == 2020;
     }
 
+    /**
+     * 判断Consumable相关条件是否成立。
+     */
     public static boolean isConsumable(int itemId) {
         return isPotion(itemId) || isFood(itemId);
     }
 
+    /**
+     * 判断Rechargeable相关条件是否成立。
+     */
     public static boolean isRechargeable(int itemId) {
         return isThrowingStar(itemId) || isBullet(itemId);
     }
 
+    /**
+     * 判断ArrowForCrossBow相关条件是否成立。
+     */
     public static boolean isArrowForCrossBow(int itemId) {
         return itemId / 1000 == 2061;
     }
 
+    /**
+     * 判断ArrowForBow相关条件是否成立。
+     */
     public static boolean isArrowForBow(int itemId) {
         return itemId / 1000 == 2060;
     }
 
+    /**
+     * 判断Arrow相关条件是否成立。
+     */
     public static boolean isArrow(int itemId) {
         return isArrowForBow(itemId) || isArrowForCrossBow(itemId);
     }
 
+    /**
+     * 判断物品是否为宠物。
+     */
     public static boolean isPet(int itemId) {
         return itemId / 1000 == 5000;
     }
 
+    /**
+     * 判断ExpirablePet相关条件是否成立。
+     */
     public static boolean isExpirablePet(int itemId) {
         return GameConfig.getServerBoolean("use_erase_pet_on_expiration") || itemId == ItemId.PET_SNAIL;
     }
 
+    /**
+     * 判断PermanentItem相关条件是否成立。
+     */
     public static boolean isPermanentItem(int itemId) {
         return permanentItemids.contains(itemId);
     }
 
+    /**
+     * 判断NewYearCardEtc相关条件是否成立。
+     */
     public static boolean isNewYearCardEtc(int itemId) {
         return itemId / 10000 == 430;
     }
 
+    /**
+     * 判断NewYearCardUse相关条件是否成立。
+     */
     public static boolean isNewYearCardUse(int itemId) {
         return itemId / 10000 == 216;
     }
 
+    /**
+     * 判断Accessory相关条件是否成立。
+     */
     public static boolean isAccessory(int itemId) {
         return itemId >= 1110000 && itemId < 1140000;
     }
 
+    /**
+     * 判断Taming相关条件是否成立。
+     */
     public static boolean isTaming(int itemId) {
         int itemType = itemId / 1000;
         return itemType == 1902 || itemType == 1912;
     }
 
+    /**
+     * 判断物品是否为回城卷轴。
+     */
     public static boolean isTownScroll(int itemId) {
         return itemId >= 2030000 && itemId < ItemId.ANTI_BANISH_SCROLL;
     }
 
+    /**
+     * 判断AntibanishScroll相关条件是否成立。
+     */
     public static boolean isAntibanishScroll(int itemId) {
         return itemId == ItemId.ANTI_BANISH_SCROLL;
     }
 
+    /**
+     * 判断物品是否为白衣卷轴。
+     */
     public static boolean isCleanSlate(int scrollId) {
         return scrollId > 2048999 && scrollId < 2049004;
     }
 
+    /**
+     * 判断物品是否为属性卷轴。
+     */
     public static boolean isModifierScroll(int scrollId) {
         return scrollId == ItemId.SPIKES_SCROLL || scrollId == ItemId.COLD_PROTECTION_SCROLl;
     }
 
+    /**
+     * 判断FlagModifier相关条件是否成立。
+     */
     public static boolean isFlagModifier(int scrollId, short flag) {
         if (scrollId == ItemId.COLD_PROTECTION_SCROLl && ((flag & ItemConstants.COLD) == ItemConstants.COLD)) {
             return true;
@@ -158,31 +226,52 @@ public final class ItemConstants {
         return scrollId == ItemId.SPIKES_SCROLL && ((flag & ItemConstants.SPIKES) == ItemConstants.SPIKES);
     }
 
+    /**
+     * 判断物品是否为混沌卷轴。
+     */
     public static boolean isChaosScroll(int scrollId) {
         return scrollId >= 2049100 && scrollId <= 2049103;
     }
 
+    /**
+     * 判断物品 ID 是否为倍率券。
+     */
     public static boolean isRateCoupon(int itemId) {
         int itemType = itemId / 1000;
         return itemType == 5211 || itemType == 5360;
     }
 
+    /**
+     * 判断ExpCoupon相关条件是否成立。
+     */
     public static boolean isExpCoupon(int couponId) {
         return couponId / 1000 == 5211;
     }
 
+    /**
+     * 判断PartyItem相关条件是否成立。
+     */
     public static boolean isPartyItem(int itemId) {
         return itemId >= 2022430 && itemId <= 2022433 || itemId >= 2022160 && itemId <= 2022163;
     }
 
+    /**
+     * 判断HiredMerchant相关条件是否成立。
+     */
     public static boolean isHiredMerchant(int itemId) {
         return itemId / 10000 == 503;
     }
 
+    /**
+     * 判断PlayerShop相关条件是否成立。
+     */
     public static boolean isPlayerShop(int itemId) {
         return itemId / 10000 == 514;
     }
 
+    /**
+     * 根据物品 ID 推断背包类型。
+     */
     public static InventoryType getInventoryType(final int itemId) {
         if (inventoryTypeCache.containsKey(itemId)) {
             return inventoryTypeCache.get(itemId);
@@ -199,50 +288,83 @@ public final class ItemConstants {
         return ret;
     }
 
+    /**
+     * 判断物品是否为 Maker 试剂。
+     */
     public static boolean isMakerReagent(int itemId) {
         return itemId / 10000 == 425;
     }
 
+    /**
+     * 判断物品是否为套服。
+     */
     public static boolean isOverall(int itemId) {
         return itemId / 10000 == 105;
     }
 
+    /**
+     * 判断CashStore相关条件是否成立。
+     */
     public static boolean isCashStore(int itemId) {
         int itemType = itemId / 10000;
         return itemType == 503 || itemType == 514;
     }
 
+    /**
+     * 判断MapleLife相关条件是否成立。
+     */
     public static boolean isMapleLife(int itemId) {
         int itemType = itemId / 10000;
         return itemType == 543 && itemId != 5430000;
     }
 
+    /**
+     * 判断物品是否为武器。
+     */
     public static boolean isWeapon(int itemId) {
         return itemId >= 1302000 && itemId < 1493000;
     }
 
+    /**
+     * 判断Equipment相关条件是否成立。
+     */
     public static boolean isEquipment(int itemId) {
         return itemId < 2000000 && itemId != 0;
     }
 
+    /**
+     * 判断FishingChair相关条件是否成立。
+     */
     public static boolean isFishingChair(int itemId) {
         return itemId == ItemId.FISHING_CHAIR;
     }
 
+    /**
+     * 判断Medal相关条件是否成立。
+     */
     public static boolean isMedal(int itemId) {
         return itemId >= 1140000 && itemId < 1143000;
     }
 
+    /**
+     * 判断Face相关条件是否成立。
+     */
     public static boolean isFace(int itemId) {
         int itemType = itemId / 10000;
         return itemType == 2 || itemType == 5;
     }
 
+    /**
+     * 判断Hair相关条件是否成立。
+     */
     public static boolean isHair(int itemId) {
         int itemType = itemId / 10000;
         return itemType == 3 || itemType == 4 || itemType == 6;
     }
 
+    /**
+     * 判断NewCharDefaultFace相关条件是否成立。
+     */
     public static boolean isNewCharDefaultFace(int job, int gender, int faceId) {
         if (job == 0 || job == 1) {
             return switch (gender) {
@@ -261,6 +383,9 @@ public final class ItemConstants {
         }
     }
 
+    /**
+     * 判断NewCharDefaultHair相关条件是否成立。
+     */
     public static boolean isNewCharDefaultHair(int gender, int hairId) {
         return switch (gender) {
             case 0 -> hairId == 30000 || hairId == 30020 || hairId == 30030;
@@ -269,14 +394,23 @@ public final class ItemConstants {
         };
     }
 
+    /**
+     * 判断NewCharDefaultHairColor相关条件是否成立。
+     */
     public static boolean isNewCharDefaultHairColor(int hairColor) {
         return hairColor == 0 || hairColor == 2 || hairColor == 3 || hairColor == 7;
     }
 
+    /**
+     * 判断NewCharDefaultSkinColor相关条件是否成立。
+     */
     public static boolean isNewCharDefaultSkinColor(int skinColor) {
         return skinColor >= 0 && skinColor < 4;
     }
 
+    /**
+     * 判断NewCharDefaultTop相关条件是否成立。
+     */
     public static boolean isNewCharDefaultTop(int job, int gender, int topId) {
         if (job == 0 || job == 1) {
             return switch (gender) {
@@ -291,6 +425,9 @@ public final class ItemConstants {
         }
     }
 
+    /**
+     * 判断NewCharDefaultBottom相关条件是否成立。
+     */
     public static boolean isNewCharDefaultBottom(int job, int gender, int bottomId) {
         if (job == 0 || job == 1) {
             return switch (gender) {
@@ -305,6 +442,9 @@ public final class ItemConstants {
         }
     }
 
+    /**
+     * 判断NewCharDefaultShoes相关条件是否成立。
+     */
     public static boolean isNewCharDefaultShoes(int job, int shoesId) {
         if (job == 0 || job == 1) {
             return shoesId == 1072001 || shoesId == 1072005 || shoesId == 1072037 || shoesId == 1072038;
@@ -315,6 +455,9 @@ public final class ItemConstants {
         }
     }
 
+    /**
+     * 判断NewCharDefaultWeapon相关条件是否成立。
+     */
     public static boolean isNewCharDefaultWeapon(int job, int weaponId) {
         if (job == 0 || job == 1) {
             return weaponId == 1302000 || weaponId == 1322005 || weaponId == 1312004;
@@ -325,6 +468,9 @@ public final class ItemConstants {
         }
     }
 
+    /**
+     * notValidHairColor 相关查询或判定。
+     */
     public static boolean notValidHairColor(int hairColor) {
         return hairColor > 7 || hairColor < 0;
     }
@@ -365,6 +511,9 @@ public final class ItemConstants {
 
     public static final List<Short> PETS_NAME_TAG = Collections.unmodifiableList(Arrays.asList(Pet0NameTag, Pet1NameTag, Pet2NameTag));
 
+    /**
+     * 判断ValidPetIndex相关条件是否成立。
+     */
     public static boolean isValidPetIndex(byte petIndex) {
         return petIndex >= 0 && petIndex < 3;
     }

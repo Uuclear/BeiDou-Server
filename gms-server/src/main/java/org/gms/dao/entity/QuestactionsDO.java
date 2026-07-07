@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `questactions` 的实体类（DO）。
+ * <p>
+ * 任务动作数据表，保存任务脚本触发的奖励、传送等动作配置。
  */
 @Data
 @Builder

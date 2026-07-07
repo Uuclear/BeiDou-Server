@@ -22,7 +22,7 @@
 package org.gms.server.quest;
 
 /**
- * @author Matze
+ * 任务需求类型枚举，对应 WZ 中 quest 的 req 节点类型（等级、职业、物品、击杀怪物等）。
  */
 public enum QuestRequirementType {
     UNDEFINED(-1),
@@ -57,10 +57,19 @@ public enum QuestRequirementType {
         this.type = (byte) type;
     }
 
+    /**
+     * 获取类型。
+     * @return byte 类型结果
+     */
     public byte getType() {
         return type;
     }
 
+    /**
+     * 获取按WZ名称。
+     * @param name name
+     * @return QuestRequirementType 类型结果
+     */
     public static QuestRequirementType getByWZName(String name) {
         switch (name) {
         case "job":

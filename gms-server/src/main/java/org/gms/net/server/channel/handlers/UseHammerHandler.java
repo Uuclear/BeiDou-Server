@@ -27,9 +27,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Jay Estrella
+ * 处理客户端 USE_HAMMER（使用锤子） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_HAMMER}</p>
  */
 public final class UseHammerHandler extends AbstractPacketHandler {
+    /** 向客户端发送金锤子使用提示消息。 */
     public final void handlePacket(InPacket p, Client c) {
         c.sendPacket(PacketCreator.sendHammerMessage());
     }

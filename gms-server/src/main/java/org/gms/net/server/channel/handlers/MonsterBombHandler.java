@@ -28,7 +28,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.life.Monster;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 MONSTER_BOMB（怪物炸弹） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MONSTER_BOMB}</p>
+ */
 public final class MonsterBombHandler extends AbstractPacketHandler {
+    /** 处理 怪物炸弹 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int oid = p.readInt();

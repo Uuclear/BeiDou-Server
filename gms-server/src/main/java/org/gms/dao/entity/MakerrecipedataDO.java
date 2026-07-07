@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `makerrecipedata` 的实体类（DO）。
+ * <p>
+ * 制作人配方表，描述合成所需材料、催化剂及产出物品。
  */
 @Data
 @Builder

@@ -8,7 +8,8 @@ import org.gms.net.packet.InPacket;
 import org.gms.service.HpMpAlertService;
 
 /**
- * @author lee
+ * 处理客户端 SET_HPMPALERT（设置HP/MP警报） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SET_HPMPALERT}</p>
  */
 public class SetHpMpAlertHandler extends AbstractPacketHandler {
     /**
@@ -16,6 +17,7 @@ public class SetHpMpAlertHandler extends AbstractPacketHandler {
      */
     private static final int MAX_ALERT_STEP = 19;
 
+    /** 处理 设置HP/MP警报 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         HpMpAlertService hpMpAlertService = ServerManager.getApplicationContext().getBean(HpMpAlertService.class);

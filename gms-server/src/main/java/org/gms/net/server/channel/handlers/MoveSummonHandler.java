@@ -31,7 +31,12 @@ import org.gms.exception.EmptyMovementException;
 import java.awt.*;
 import java.util.Collection;
 
+/**
+ * 处理客户端 MOVE_SUMMON（移动召唤兽） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOVE_SUMMON}</p>
+ */
 public final class MoveSummonHandler extends AbstractMovementPacketHandler {
+    /** 处理 移动召唤兽 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int oid = p.readInt();

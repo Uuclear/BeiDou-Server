@@ -30,6 +30,8 @@ import org.gms.net.server.services.task.channel.MobStatusService;
 import org.gms.net.server.services.task.channel.OverallService;
 
 /**
+ * 频道级服务类型枚举，涵盖怪物状态、动画、技能、毒雾、事件等综合调度服务。
+ *
  * @author Ronan
  */
 public enum ChannelServices implements ServiceType {

@@ -26,22 +26,37 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Ronan
+ * 要求拥有指定 Buff。
  */
 public class BuffRequirement extends AbstractQuestRequirement {
     private int buffId = 1;
 
+    /**
+     * 构造 BuffRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public BuffRequirement(Quest quest, Data data) {
         super(QuestRequirementType.BUFF);
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         // item buffs are negative
         buffId = -1 * Integer.parseInt(DataTool.getString(data));
     }
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return chr.hasBuffFromSourceid(buffId);

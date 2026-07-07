@@ -54,11 +54,14 @@ import java.sql.Timestamp;
 import java.util.*;
 
 /**
- * @author RonanLana - synchronization of Duey modules
+ * 杜宜（快递）NPC 处理器，管理玩家间的物品邮寄、领取与过期清理功能。
  */
 public class DueyProcessor {
     private static final Logger log = LoggerFactory.getLogger(DueyProcessor.class);
 
+    /**
+     * 杜宜快递操作码枚举，定义客户端与服务器之间的快递交互动作类型。
+     */
     public enum Actions {
         TOSERVER_RECV_ITEM(0x00),
         TOSERVER_SEND_ITEM(0x02),
@@ -88,6 +91,7 @@ public class DueyProcessor {
             this.code = (byte) code;
         }
 
+        /** @return 操作码字节值 */
         public byte getCode() {
             return code;
         }
@@ -285,6 +289,18 @@ public class DueyProcessor {
         return 0;
     }
 
+    /**
+     * 通过杜宜快递发送物品或金币给指定收件人。
+     *
+     * @param c 发送方客户端
+     * @param invTypeId 背包类型 ID
+     * @param itemPos 物品槽位
+     * @param amount 发送数量
+     * @param sendMesos 附带金币数量
+     * @param sendMessage 附言
+     * @param recipient 收件人角色名
+     * @param quick 是否为快速投递
+     */
     public static void dueySendItem(Client c, byte invTypeId, short itemPos, short amount, int sendMesos, String sendMessage, String recipient, boolean quick) {
         if (c.tryacquireClient()) {
             try {
@@ -386,6 +402,13 @@ public class DueyProcessor {
         }
     }
 
+    /**
+     * 从杜宜快递中移除指定包裹。
+     *
+     * @param c 客户端
+     * @param packageid 包裹 ID
+     * @param playerRemove 是否由玩家主动删除
+     */
     public static void dueyRemovePackage(Client c, int packageid, boolean playerRemove) {
         if (c.tryacquireClient()) {
             try {
@@ -398,6 +421,12 @@ public class DueyProcessor {
     }
 
     // 方法锁，修复复制外挂多人取同一个快递，也使得无法多人同时取快递。更优雅的做法是设置一个packageId锁，考虑快递业务用的不多，暂不如此处理
+    /**
+     * 领取杜宜快递包裹中的物品和金币（同步方法，防止并发领取）。
+     *
+     * @param c 领取方客户端
+     * @param packageId 包裹 ID
+     */
     public static synchronized void dueyClaimPackage(Client c, int packageId) {
         try {
             DueyPackage dp = null;
@@ -460,6 +489,12 @@ public class DueyProcessor {
         }
     }
 
+    /**
+     * 打开杜宜快递对话界面，加载待领取包裹列表。
+     *
+     * @param c 客户端
+     * @param quickDelivery 是否为快速投递模式
+     */
     public static void dueySendTalk(Client c, boolean quickDelivery) {
         if (c.tryacquireClient()) {
             try {
@@ -481,6 +516,14 @@ public class DueyProcessor {
         }
     }
 
+    /**
+     * 创建杜宜快递包裹（系统或脚本调用）。
+     *
+     * @param item 邮寄物品
+     * @param mesos 邮寄金币
+     * @param sender 发送者名称
+     * @param recipientCid 收件人角色 ID
+     */
     public static void dueyCreatePackage(Item item, int mesos, String sender, int recipientCid) {
         int packageId = createPackage(mesos, null, sender, recipientCid, false);
         if (packageId != -1) {
@@ -488,6 +531,9 @@ public class DueyProcessor {
         }
     }
 
+    /**
+     * 执行杜宜快递过期清理定时任务，删除超过 30 天未领取的包裹。
+     */
     public static void runDueyExpireSchedule() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -30);

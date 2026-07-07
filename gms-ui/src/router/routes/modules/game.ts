@@ -1,3 +1,7 @@
+/**
+ * 游戏管理模块路由
+ * 包含配置、商城、NPC 商店、掉落、背包、扭蛋、命令、文件、自动封禁等 GM 功能页面。
+ */
 import { DEFAULT_LAYOUT } from '../base';
 import { AppRouteRecordRaw } from '../types';
 

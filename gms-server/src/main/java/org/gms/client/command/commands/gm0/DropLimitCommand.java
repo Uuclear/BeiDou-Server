@@ -28,11 +28,19 @@ import org.gms.client.command.Command;
 import org.gms.config.GameConfig;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM0（所有玩家可用）命令：查看当前地图最大掉落数
+ */
 public class DropLimitCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("DropLimitCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         int dropCount = c.getPlayer().getMap().getDroppedItemCount();

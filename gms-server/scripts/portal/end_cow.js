@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：end_cow
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 /*
 	By: Kevin
 	Map: Hidden Chamber - The Nautilus - Stable (912000100)

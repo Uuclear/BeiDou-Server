@@ -1,3 +1,6 @@
+/**
+ * 自动封禁配置页中文文案。
+ */
 export default {
   'autoban.column.type': '类型',
   'autoban.column.disabled': '禁用',

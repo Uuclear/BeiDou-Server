@@ -1,14 +1,14 @@
 package org.gms.server.gachapon;
 
 /**
- * @author Alan (SharpAceX) - gachapon source classes stub & pirate equipment
- * @author Ronan - parsed MapleSEA loots
- * <p>
- * MapleSEA-like loots thanks to AyumiLove - src: https://ayumilovemaple.wordpress.com/maplestory-gachapon-guide/
+ * 林中之城扭蛋奖池。
  */
-
 public class Sleepywood extends GachaponItems {
 
+    /**
+     * 获取Common、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getCommonItems() {
         return new int[]{
@@ -45,11 +45,19 @@ public class Sleepywood extends GachaponItems {
         };
     }
 
+    /**
+     * 获取Uncommon、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getUncommonItems() {
         return new int[]{2040804, 2040817, 2040805, 2340000, 1082149, 1442018};
     }
 
+    /**
+     * 获取Rare、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getRareItems() {
         return new int[]{};

@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1063016
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /* Strange Looking Statue
 	Puppeteer's Secret Passage (910510100)
 	Puppeteer JQ.

@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：dojang_1st
+ * 功能描述：地图脚本（dojang_1st），控制地图内特殊逻辑。
+ */
 /*
  *@Author:     Moogra, Traitor, Ronan
  *@Map(s):     All Dojo fighting maps

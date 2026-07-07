@@ -21,15 +21,17 @@
 */
 package org.gms.util;
 
+/**
+ * 字符串处理工具类，提供填充、拼接、枚举名格式化等常用操作。
+ */
 public class StringUtil {
     /**
-     * Gets a string padded from the left to <code>length</code> by
-     * <code>padchar</code>.
+     * 在字符串左侧用指定字符填充至目标长度。
      *
-     * @param in      The input string to be padded.
-     * @param padchar The character to pad with.
-     * @param length  The length to pad to.
-     * @return The padded string.
+     * @param in      待填充的输入字符串
+     * @param padchar 填充字符
+     * @param length  目标长度
+     * @return 左填充后的字符串
      */
     public static String getLeftPaddedStr(String in, char padchar, int length) {
         StringBuilder builder = new StringBuilder(length);
@@ -41,13 +43,12 @@ public class StringUtil {
     }
 
     /**
-     * Gets a string padded from the right to <code>length</code> by
-     * <code>padchar</code>.
+     * 在字符串右侧用指定字符填充至目标长度。
      *
-     * @param in      The input string to be padded.
-     * @param padchar The character to pad with.
-     * @param length  The length to pad to.
-     * @return The padded string.
+     * @param in      待填充的输入字符串
+     * @param padchar 填充字符
+     * @param length  目标长度
+     * @return 右填充后的字符串
      */
     public static String getRightPaddedStr(String in, char padchar, int length) {
         StringBuilder builder = new StringBuilder(in);
@@ -58,24 +59,23 @@ public class StringUtil {
     }
 
     /**
-     * Joins an array of strings starting from string <code>start</code> with
-     * a space.
+     * 从指定下标起，以空格为分隔符拼接字符串数组。
      *
-     * @param arr   The array of strings to join.
-     * @param start Starting from which string.
-     * @return The joined strings.
+     * @param arr   字符串数组
+     * @param start 起始下标
+     * @return 拼接后的字符串
      */
     public static String joinStringFrom(String[] arr, int start) {
         return joinStringFrom(arr, start, " ");
     }
 
     /**
-     * Joins an array of strings starting from string <code>start</code> with
-     * <code>sep</code> as a seperator.
+     * 从指定下标起，以自定义分隔符拼接字符串数组。
      *
-     * @param arr   The array of strings to join.
-     * @param start Starting from which string.
-     * @return The joined strings.
+     * @param arr   字符串数组
+     * @param start 起始下标
+     * @param sep   分隔符
+     * @return 拼接后的字符串
      */
     public static String joinStringFrom(String[] arr, int start, String sep) {
         StringBuilder builder = new StringBuilder();
@@ -89,10 +89,10 @@ public class StringUtil {
     }
 
     /**
-     * Makes an enum name human readable (fixes spaces, capitalization, etc)
+     * 将枚举常量名（下划线分隔）格式化为可读文本。
      *
-     * @param enumName The name of the enum to neaten up.
-     * @return The human-readable enum name.
+     * @param enumName 枚举常量名
+     * @return 格式化后的可读字符串
      */
     public static String makeEnumHumanReadable(String enumName) {
         StringBuilder builder = new StringBuilder(enumName.length() + 1);
@@ -110,11 +110,11 @@ public class StringUtil {
     }
 
     /**
-     * Counts the number of <code>chr</code>'s in <code>str</code>.
+     * 统计字符串中指定字符出现的次数。
      *
-     * @param str The string to check for instances of <code>chr</code>.
-     * @param chr The character to check for.
-     * @return The number of times <code>chr</code> occurs in <code>str</code>.
+     * @param str 待统计的字符串
+     * @param chr 目标字符
+     * @return 出现次数
      */
     public static int countCharacters(String str, char chr) {
         int ret = 0;
@@ -126,6 +126,12 @@ public class StringUtil {
         return ret;
     }
 
+    /**
+     * 判断字符串是否为数值（整数或小数，可带负号）。
+     *
+     * @param str 待判断的字符串
+     * @return 若为合法数值则返回 {@code true}
+     */
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }

@@ -1,3 +1,6 @@
+/**
+ * GM 指令管理页英文文案。
+ */
 export default {
   'command.search.type.label': 'Choose a level',
 

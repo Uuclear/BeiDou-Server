@@ -1,6 +1,11 @@
+/**
+ * 前端运行时错误监控
+ * 将 Vue 组件运行时错误上报到指定后端地址（需配置 baseUrl）。
+ */
 import { App, ComponentPublicInstance } from 'vue';
 import axios from 'axios';
 
+/** 注册 Vue 全局 errorHandler，将错误信息 POST 到监控服务 */
 export default function handleError(Vue: App, baseUrl: string) {
   if (!baseUrl) {
     return;

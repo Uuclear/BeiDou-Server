@@ -16,19 +16,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.creator.novice;
-
-import org.gms.client.Client;
-import org.gms.client.Job;
-import org.gms.client.creator.CharacterFactory;
-import org.gms.client.creator.CharacterFactoryRecipe;
-import org.gms.client.inventory.InventoryType;
-import org.gms.constants.id.ItemId;
-import org.gms.constants.id.MapId;
-
 /**
- * @author RonanLana
+ * 贵族（骑士团）角色创建器。
  */
 public class NoblesseCreator extends CharacterFactory {
 
@@ -42,6 +31,20 @@ public class NoblesseCreator extends CharacterFactory {
         recipe.addStartingItem(itemid, quantity, itemType);
     }
 
+    /**
+     * 创建角色
+     * @param c 客户端会话
+     * @param name 名称
+     * @param face face
+     * @param hair hair
+     * @param skin skin
+     * @param top top
+     * @param bottom bottom
+     * @param shoes shoes
+     * @param weapon weapon
+     * @param gender gender
+     * @return 返回值
+     */
     public static int createCharacter(Client c, String name, int face, int hair, int skin, int top, int bottom, int shoes, int weapon, int gender) {
 
         return createNewCharacter(c, name, face, hair, skin, gender, createRecipe(Job.NOBLESSE, 1, MapId.STARTING_MAP_NOBLESSE, top, bottom, shoes, weapon));

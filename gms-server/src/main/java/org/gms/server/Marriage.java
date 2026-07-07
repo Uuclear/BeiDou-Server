@@ -39,17 +39,32 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Ronan
+ * 结婚系统逻辑（戒指、婚礼、夫妻技能等）。
  */
 public class Marriage extends EventInstanceManager {
+    /**
+     * 构造 Marriage 实例。
+     * @param em em
+     * @param name name
+     */
     public Marriage(EventManager em, String name) {
         super(em, name);
     }
 
+    /**
+     * 执行 gift、物品、到、Spouse 操作。
+     * @param cid cid
+     * @return boolean 类型结果
+     */
     public boolean giftItemToSpouse(int cid) {
         return this.getIntProperty("wishlistSelection") == 0;
     }
 
+    /**
+     * 获取Wishlist、物品。
+     * @param groom groom
+     * @return List<String> 类型结果
+     */
     public List<String> getWishlistItems(boolean groom) {
         String strItems = this.getProperty(groom ? "groomWishlist" : "brideWishlist");
         if (strItems != null) {
@@ -59,6 +74,9 @@ public class Marriage extends EventInstanceManager {
         return new LinkedList<>();
     }
 
+    /**
+     * 执行 initialize、Gift、物品 操作。
+     */
     public void initializeGiftItems() {
         List<Item> groomGifts = new ArrayList<>();
         this.setObjectProperty("groomGiftlist", groomGifts);
@@ -67,6 +85,12 @@ public class Marriage extends EventInstanceManager {
         this.setObjectProperty("brideGiftlist", brideGifts);
     }
 
+    /**
+     * 获取Gift、物品。
+     * @param c c
+     * @param groom groom
+     * @return List<Item> 类型结果
+     */
     public List<Item> getGiftItems(Client c, boolean groom) {
         List<Item> gifts = getGiftItemsList(groom);
         synchronized (gifts) {
@@ -78,6 +102,13 @@ public class Marriage extends EventInstanceManager {
         return (List<Item>) this.getObjectProperty(groom ? "groomGiftlist" : "brideGiftlist");
     }
 
+    /**
+     * 获取Gift、物品。
+     * @param c c
+     * @param groom groom
+     * @param idx idx
+     * @return Item 类型结果
+     */
     public Item getGiftItem(Client c, boolean groom, int idx) {
         try {
             return getGiftItems(c, groom).get(idx);
@@ -86,6 +117,11 @@ public class Marriage extends EventInstanceManager {
         }
     }
 
+    /**
+     * 添加Gift、物品。
+     * @param groom groom
+     * @param item item
+     */
     public void addGiftItem(boolean groom, Item item) {
         List<Item> gifts = getGiftItemsList(groom);
         synchronized (gifts) {
@@ -93,6 +129,11 @@ public class Marriage extends EventInstanceManager {
         }
     }
 
+    /**
+     * 移除Gift、物品。
+     * @param groom groom
+     * @param item item
+     */
     public void removeGiftItem(boolean groom, Item item) {
         List<Item> gifts = getGiftItemsList(groom);
         synchronized (gifts) {
@@ -100,6 +141,11 @@ public class Marriage extends EventInstanceManager {
         }
     }
 
+    /**
+     * 判断是否为Marriage、Groom。
+     * @param chr 角色
+     * @return Boolean 类型结果
+     */
     public Boolean isMarriageGroom(Character chr) {
         Boolean groom = null;
         try {
@@ -115,6 +161,12 @@ public class Marriage extends EventInstanceManager {
         return groom;
     }
 
+    /**
+     * 执行 claim、Gift、物品 操作。
+     * @param c c
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public static boolean claimGiftItems(Client c, Character chr) {
         List<Item> gifts = loadGiftItemsFromDb(c, chr.getId());
         if (Inventory.checkSpot(chr, gifts)) {
@@ -134,6 +186,12 @@ public class Marriage extends EventInstanceManager {
         return false;
     }
 
+    /**
+     * 加载Gift、物品、来自、Db。
+     * @param c c
+     * @param cid cid
+     * @return List<Item> 类型结果
+     */
     public static List<Item> loadGiftItemsFromDb(Client c, int cid) {
         List<Item> items = new LinkedList<>();
 
@@ -148,10 +206,22 @@ public class Marriage extends EventInstanceManager {
         return items;
     }
 
+    /**
+     * 执行 save、Gift、物品、到、Db 操作。
+     * @param c c
+     * @param groom groom
+     * @param cid cid
+     */
     public void saveGiftItemsToDb(Client c, boolean groom, int cid) {
         Marriage.saveGiftItemsToDb(c, getGiftItems(c, groom), cid);
     }
 
+    /**
+     * 执行 save、Gift、物品、到、Db 操作。
+     * @param c c
+     * @param giftItems giftItems（Item 列表/集合）
+     * @param cid cid
+     */
     public static void saveGiftItemsToDb(Client c, List<Item> giftItems, int cid) {
         List<Pair<Item, InventoryType>> items = new LinkedList<>();
         for (Item it : giftItems) {

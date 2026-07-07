@@ -1,6 +1,12 @@
-/* @Author SharpAceX
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201110
+ * 功能描述：NPC脚本，提供物品发放。
+ * 原作者：SharpAceX
+ */
 function start() {
     switch (cm.getPlayer().getMapId()) {
         case 610030500:

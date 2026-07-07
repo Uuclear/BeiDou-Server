@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author lee
- * @since 2024-09-06
+ * 数据库表 `hp_mp_alert` 的实体类（DO）。
+ * <p>
+ * HP/MP 低值提醒配置表，定义角色血量/蓝量告警阈值。
  */
 @Data
 @Builder

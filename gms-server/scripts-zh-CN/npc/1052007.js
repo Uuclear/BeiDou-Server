@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1052007
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ */
 var status = 0;
 var ticketSelection = -1;
 var text = "这是检票口。";

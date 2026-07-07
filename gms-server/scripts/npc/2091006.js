@@ -19,10 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author: Traitor, XxOsirisxX, Moogra
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2091006
+ * 功能描述：NPC脚本，提供地图传送。
+ * 原作者：Traitor, XxOsirisxX, Moogra
+ */
 /**
  * Dojo Entrance NPC
  */

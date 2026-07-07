@@ -18,58 +18,73 @@
 
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-package org.gms.client.inventory.manipulator;
-
-import org.gms.client.BuffStat;
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.inventory.Equip;
-import org.gms.client.inventory.Inventory;
-import org.gms.client.inventory.InventoryType;
-import org.gms.client.inventory.Item;
-import org.gms.client.inventory.ModifyInventory;
-import org.gms.client.inventory.Pet;
-import org.gms.model.pojo.NewYearCardRecord;
-import org.gms.config.GameConfig;
-import org.gms.constants.id.ItemId;
-import org.gms.constants.inventory.ItemConstants;
-import org.gms.util.I18nUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.server.ItemInformationProvider;
-import org.gms.server.maps.MapleMap;
-import org.gms.util.PacketCreator;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 /**
- * @author Matze
- * @author Ronan - improved check space feature and removed redundant object calls
+ * 背包操作工具类，提供物品添加、移除、移动、合并等静态操作方法。
  */
 public class InventoryManipulator {
     private static final Logger log = LoggerFactory.getLogger(InventoryManipulator.class);
 
+    /**
+     * 添加按ID
+     * @param c 客户端会话
+     * @param itemId 物品ID
+     * @param quantity 数量
+     * @return 返回值
+     */
     public static boolean addById(Client c, int itemId, short quantity) {
         return addById(c, itemId, quantity, null, -1, -1);
     }
 
+    /**
+     * 添加按ID
+     * @param c 客户端会话
+     * @param itemId 物品ID
+     * @param quantity 数量
+     * @param expiration expiration
+     * @return 返回值
+     */
     public static boolean addById(Client c, int itemId, short quantity, long expiration) {
         return addById(c, itemId, quantity, null, -1, (byte) 0, expiration);
     }
 
+    /**
+     * 添加按ID
+     * @param c 客户端会话
+     * @param itemId 物品ID
+     * @param quantity 数量
+     * @param owner 所有者
+     * @param petid petid
+     * @return 返回值
+     */
     public static boolean addById(Client c, int itemId, short quantity, String owner, int petid) {
         return addById(c, itemId, quantity, owner, petid, -1);
     }
 
+    /**
+     * 添加按ID
+     * @param c 客户端会话
+     * @param itemId 物品ID
+     * @param quantity 数量
+     * @param owner 所有者
+     * @param petid petid
+     * @param expiration expiration
+     * @return 返回值
+     */
     public static boolean addById(Client c, int itemId, short quantity, String owner, int petid, long expiration) {
         return addById(c, itemId, quantity, owner, petid, (byte) 0, expiration);
     }
 
+    /**
+     * 添加按ID
+     * @param c 客户端会话
+     * @param itemId 物品ID
+     * @param quantity 数量
+     * @param owner 所有者
+     * @param petid petid
+     * @param flag 标记
+     * @param expiration expiration
+     * @return 返回值
+     */
     public static boolean addById(Client c, int itemId, short quantity, String owner, int petid, short flag, long expiration) {
         Character chr = c.getPlayer();
         InventoryType type = ItemConstants.getInventoryType(itemId);
@@ -171,14 +186,35 @@ public class InventoryManipulator {
         return true;
     }
 
+    /**
+     * 添加从Drop
+     * @param c 客户端会话
+     * @param item 物品
+     * @return 返回值
+     */
     public static boolean addFromDrop(Client c, Item item) {
         return addFromDrop(c, item, true);
     }
 
+    /**
+     * 添加从Drop
+     * @param c 客户端会话
+     * @param item 物品
+     * @param show show
+     * @return 返回值
+     */
     public static boolean addFromDrop(Client c, Item item, boolean show) {
         return addFromDrop(c, item, show, item.getPetId());
     }
 
+    /**
+     * 添加从Drop
+     * @param c 客户端会话
+     * @param item 物品
+     * @param show show
+     * @param petId petId
+     * @return 返回值
+     */
     public static boolean addFromDrop(Client c, Item item, boolean show, int petId) {
         Character chr = c.getPlayer();
         InventoryType type = item.getInventoryType();
@@ -292,6 +328,14 @@ public class InventoryManipulator {
         return inv.findById(itemid) != null;
     }
 
+    /**
+     * 检查Space
+     * @param c 客户端会话
+     * @param itemid itemid
+     * @param quantity 数量
+     * @param owner 所有者
+     * @return 返回值
+     */
     public static boolean checkSpace(Client c, int itemid, int quantity, String owner) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         InventoryType type = ItemConstants.getInventoryType(itemid);
@@ -341,6 +385,16 @@ public class InventoryManipulator {
         }
     }
 
+    /**
+     * 检查SpaceProgressively
+     * @param c 客户端会话
+     * @param itemid itemid
+     * @param quantity 数量
+     * @param owner 所有者
+     * @param usedSlots usedSlots
+     * @param useProofInv useProofInv
+     * @return 返回值
+     */
     public static int checkSpaceProgressively(Client c, int itemid, int quantity, String owner, int usedSlots, boolean useProofInv) {
         // return value --> bit0: if has space for this one;
         //                  value after: new slots filled;
@@ -403,10 +457,27 @@ public class InventoryManipulator {
         return returnValue;
     }
 
+    /**
+     * 移除从槽位
+     * @param c 客户端会话
+     * @param type 类型
+     * @param slot 槽位
+     * @param quantity 数量
+     * @param fromDrop fromDrop
+     */
     public static void removeFromSlot(Client c, InventoryType type, short slot, short quantity, boolean fromDrop) {
         removeFromSlot(c, type, slot, quantity, fromDrop, false);
     }
 
+    /**
+     * 移除从槽位
+     * @param c 客户端会话
+     * @param type 类型
+     * @param slot 槽位
+     * @param quantity 数量
+     * @param fromDrop fromDrop
+     * @param consume consume
+     */
     public static void removeFromSlot(Client c, InventoryType type, short slot, short quantity, boolean fromDrop, boolean consume) {
         Character chr = c.getPlayer();
         Inventory inv = chr.getInventory(type);
@@ -455,6 +526,15 @@ public class InventoryManipulator {
         }
     }
 
+    /**
+     * 移除按ID
+     * @param c 客户端会话
+     * @param type 类型
+     * @param itemId 物品ID
+     * @param quantity 数量
+     * @param fromDrop fromDrop
+     * @param consume consume
+     */
     public static void removeById(Client c, InventoryType type, int itemId, int quantity, boolean fromDrop, boolean consume) {
         int removeQuantity = quantity;
         Inventory inv = c.getPlayer().getInventory(type);
@@ -484,6 +564,13 @@ public class InventoryManipulator {
         return source.getOwner().equals(target.getOwner());
     }
 
+    /**
+     * 移动
+     * @param c 客户端会话
+     * @param type 类型
+     * @param src src
+     * @param dst dst
+     */
     public static void move(Client c, InventoryType type, short src, short dst) {
         Inventory inv = c.getPlayer().getInventory(type);
 
@@ -675,6 +762,12 @@ public class InventoryManipulator {
         chr.equipChanged();
     }
 
+    /**
+     * 卸下
+     * @param c 客户端会话
+     * @param src src
+     * @param dst dst
+     */
     public static void unequip(Client c, short src, short dst) {
         Character chr = c.getPlayer();
         Inventory eqpInv = chr.getInventory(InventoryType.EQUIP);
@@ -743,6 +836,13 @@ public class InventoryManipulator {
         }
     }
 
+    /**
+     * 掉落
+     * @param c 客户端会话
+     * @param type 类型
+     * @param src src
+     * @param quantity 数量
+     */
     public static void drop(Client c, InventoryType type, short src, short quantity) {
         if (src < 0) {
             type = InventoryType.EQUIPPED;
@@ -851,6 +951,11 @@ public class InventoryManipulator {
         return GameConfig.getServerBoolean("use_erase_untradeable_drop") && it.isUntradeable();
     }
 
+    /**
+     * 判断是否为Sandbox物品
+     * @param it it
+     * @return 返回值
+     */
     public static boolean isSandboxItem(Item it) {
         return (it.getFlag() & ItemConstants.SANDBOX) == ItemConstants.SANDBOX;
     }

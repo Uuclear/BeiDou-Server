@@ -15,6 +15,10 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 处理客户端 CHAR_SELECT_WITH_PIC（带图片的角色选择） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHAR_SELECT_WITH_PIC}</p>
+ */
 public class CharSelectedWithPicHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CharSelectedWithPicHandler.class);
 
@@ -28,6 +32,7 @@ public class CharSelectedWithPicHandler extends AbstractPacketHandler {
         };
     }
 
+    /** 处理 带图片的角色选择 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         String pic = p.readString();

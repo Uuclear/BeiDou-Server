@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 自动封禁配置控制器。
- *
- * @author Nap
- * @since 2026-04-22
+ * 自动封禁配置控制器，提供反作弊自动封禁规则的查询与更新接口。
+ * 作为 GM 后台与 AutobanConfigService 之间的 REST 适配层。
  */
 @RestController
 @AllArgsConstructor
@@ -24,6 +22,10 @@ import java.util.List;
 public class AutobanConfigController {
     private final AutobanConfigService autobanConfigService;
 
+    /**
+     * 获取全部自动封禁配置列表。
+     * @return 配置 DTO 列表
+     */
     @Tag(name = "/autoban/" + ApiConstant.LATEST)
     @Operation(summary = "获取自动封禁配置列表")
     @GetMapping("/" + ApiConstant.LATEST + "/getConfigList")
@@ -31,6 +33,12 @@ public class AutobanConfigController {
         return ResultBody.success(autobanConfigService.getConfigList());
     }
 
+    /**
+     * 更新自动封禁配置。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/autoban/" + ApiConstant.LATEST)
     @Operation(summary = "更新自动封禁配置")
     @PostMapping("/" + ApiConstant.LATEST + "/updateConfig")

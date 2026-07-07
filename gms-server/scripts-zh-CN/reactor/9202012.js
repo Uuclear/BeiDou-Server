@@ -19,12 +19,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* @Author Lerk
- * 
- * 9202012.js: Guild Quest - Bonus Box
- * 
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：9202012
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Lerk
+ */
 function act() {
     rm.sprayItems(true, 1, 30, 60, 10);
 }

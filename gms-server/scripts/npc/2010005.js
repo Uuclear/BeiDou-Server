@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2010005
+ * 功能描述：rmation & Xterminator（原版描述）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  Shuri the Tour Guide - Orbis (200000000)

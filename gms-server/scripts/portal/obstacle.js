@@ -1,9 +1,12 @@
-/*
- 	Author: Ronan
- 	Map: Mushroom Castle - Deep Inside Mushroom Forest (106020300)
- 	Right Portal
- */
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：obstacle
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ * 原作者：Ronan
+ */
 function enter(pi) {
     if (pi.isQuestStarted(100202)) {
         pi.playPortalSound();

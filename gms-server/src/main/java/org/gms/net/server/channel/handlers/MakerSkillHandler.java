@@ -27,10 +27,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
 /**
- * @author Jay Estrella, Ronan
+ * 处理客户端 MAKER_SKILL（制作器技能） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MAKER_SKILL}</p>
  */
 public final class MakerSkillHandler extends AbstractPacketHandler {
 
+    /** 处理 制作器技能 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         MakerProcessor.makerAction(p, c);

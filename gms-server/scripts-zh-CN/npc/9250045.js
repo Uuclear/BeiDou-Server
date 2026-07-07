@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9250045
+ * 功能描述：NPC脚本（ID: 9250045）。
+ */
 //Perion Maple TV
 
 function start() {

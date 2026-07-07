@@ -23,6 +23,8 @@ import org.gms.net.server.services.BaseScheduler;
 import org.gms.net.server.services.BaseService;
 
 /**
+ * 角色存档调度服务，在世界级定时器中批量保存玩家数据。
+ *
  * @author Ronan
  */
 public class CharacterSaveService extends BaseService {

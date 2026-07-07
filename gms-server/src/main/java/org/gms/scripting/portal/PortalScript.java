@@ -21,6 +21,19 @@
 */
 package org.gms.scripting.portal;
 
+/**
+ * 传送门脚本接口，由 GraalJS 脚本通过 {@code getInterface(PortalScript.class)} 实现。
+ * <p>
+ * {@link PortalScriptManager} 加载 {@code scripts/portal/*.js} 后获取本接口代理，
+ * 玩家触碰传送门时调用 {@link #enter(PortalPlayerInteraction)} 决定是否允许传送。
+ * </p>
+ */
 public interface PortalScript {
+    /**
+     * 传送门脚本入口。
+     *
+     * @param ppi 传送门玩家交互对象，可执行传送、封锁门户等操作
+     * @return {@code true} 表示脚本已处理传送（阻止默认逻辑），{@code false} 使用默认传送
+     */
     boolean enter(PortalPlayerInteraction ppi);
 }

@@ -11,6 +11,9 @@ import org.gms.provider.DataTool;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 创建角色信息数据类，存储角色名、脸型、发型、肤色等创建参数。
+ */
 public class MakeCharInfo {
     private static final Logger log = LoggerFactory.getLogger(MakeCharInfo.class);
     private static final String FACE_ID = "0";
@@ -31,6 +34,10 @@ public class MakeCharInfo {
     private final Set<Integer> charShoes = new HashSet<>();
     private final Set<Integer> charWeapons = new HashSet<>();
 
+    /**
+     * MakeChar信息
+     * @param charInfoData charInfoData
+     */
     public MakeCharInfo(Data charInfoData) {
         for (Data data : charInfoData.getChildren()) {
             switch (data.getName()) {
@@ -79,10 +86,20 @@ public class MakeCharInfo {
         }
     }
 
+    /**
+     * verifyFaceID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifyFaceId(int id) {
         return this.charFaces.contains(id);
     }
 
+    /**
+     * verifyHairID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifyHairId(int id) {
         if (id % 10 != 0) {
             return this.charHairs.contains(id - (id % 10));
@@ -90,30 +107,65 @@ public class MakeCharInfo {
         return this.charHairs.contains(id);
     }
 
+    /**
+     * verifyHairColorID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifyHairColorId(int id) {
         return this.charHairColors.contains(id % 10);
     }
 
+    /**
+     * verifySkinID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifySkinId(int id) {
         return this.charSkins.contains(id);
     }
 
+    /**
+     * verifyTopID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifyTopId(int id) {
         return this.charTops.contains(id);
     }
 
+    /**
+     * verifyBottomID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifyBottomId(int id) {
         return this.charBottoms.contains(id);
     }
 
+    /**
+     * verifyShoeID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifyShoeId(int id) {
         return this.charShoes.contains(id);
     }
 
+    /**
+     * verifyWeaponID
+     * @param id ID
+     * @return 返回值
+     */
     public boolean verifyWeaponId(int id) {
         return this.charWeapons.contains(id);
     }
 
+    /**
+     * verify角色
+     * @param character character
+     * @return 返回值
+     */
     public boolean verifyCharacter(Character character) {
         if (!verifyFaceId(character.getFace())) return false;
         if (!verifyHairId(character.getHair())) return false;

@@ -10,12 +10,14 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * 扩展字段表 映射层。
- *
- * @author CN
- * @since 2024-07-08
+ * `extend_value` 表 / {@link org.gms.dao.entity.ExtendValueDO} 的 MyBatis Mapper 接口。
+ * <p>
+ * 扩展键值存储表，以类型+键的方式保存各类业务的附加字段。
  */
 public interface ExtendValueMapper extends BaseMapper<ExtendValueDO> {
+    /**
+     * 按扩展类型清理指定创建时间之前的过期扩展键值记录。
+     */
     @Delete("delete from extend_value where extend_type = #{extendType} and create_time < #{createTime}")
     void clean(@Param("extendType") String extendType, @Param("createTime") Date createTime);
 }

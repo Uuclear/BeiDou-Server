@@ -30,27 +30,46 @@ import org.gms.server.quest.QuestActionType;
 import org.gms.util.NumberTool;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务奖励经验动作。
  */
 public class ExpAction extends AbstractQuestAction {
     int exp;
 
+    /**
+     * 构造 ExpAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public ExpAction(Quest quest, Data data) {
         super(QuestActionType.EXP, quest);
         processData(data);
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         exp = DataTool.getInt(data);
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         runAction(chr, exp);
     }
 
+    /**
+     * 执行 run动作 操作。
+     * @param chr 角色
+     * @param gain gain
+     */
     public static void runAction(Character chr, int gain) {
         if (!GameConfig.getServerBoolean("use_quest_rate")) {
             chr.gainExp(NumberTool.floatToInt(gain * chr.getExpRate()), true, true);

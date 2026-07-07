@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `worldtransfers` 的实体类（DO）。
+ * <p>
+ * 跨世界/频道角色转移记录，跟踪角色在不同世界间的迁移申请与状态。
  */
 @Data
 @Builder

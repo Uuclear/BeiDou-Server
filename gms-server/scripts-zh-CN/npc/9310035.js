@@ -1,9 +1,10 @@
-﻿/*
-	NPC Name: 		了凡
-	Map(s): 		东方神州：大雄宝殿 (702100000)
-	Description: 	和尚NPC，戏弄玩家并将其变成光头
-	Creator : 		[ArthurZhu1992]
-*/
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9310035
+ * 功能描述：了凡，和尚NPC，戏弄玩家并将其变成光头
+ */
+﻿
 let status = 0;
 let playerHair = 0;
 

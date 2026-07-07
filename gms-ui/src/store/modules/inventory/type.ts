@@ -1,8 +1,15 @@
+/**
+ * 背包（库存）相关类型定义
+ * 描述背包类型、装备属性及背包物品数据结构。
+ */
+
+/** 背包类型（装备栏、消耗栏等） */
 export interface InventoryTypeState {
   inventoryType: number;
   name: string;
 }
 
+/** 装备物品的详细属性 */
 export interface InventoryEquipmentState {
   id: number;
   inventoryItemId: number;
@@ -30,6 +37,7 @@ export interface InventoryEquipmentState {
   ringId: number;
 }
 
+/** 背包中的单个物品记录 */
 export interface InventoryState {
   id?: number;
   characterId?: number;

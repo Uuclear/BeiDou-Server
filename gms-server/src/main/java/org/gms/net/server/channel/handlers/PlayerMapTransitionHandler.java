@@ -34,11 +34,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Ronan
- * 玩家完成切换地图触发
+ * 处理客户端 PLAYER_MAP_TRANSFER（玩家地图转换） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PLAYER_MAP_TRANSFER}</p>
  */
 public final class PlayerMapTransitionHandler extends AbstractPacketHandler {
 
+    /** 处理 玩家地图转换 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
 

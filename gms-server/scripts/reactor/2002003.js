@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2002003
+ * 功能描述：反应堆触发后掉落地图物品。
+ */
 /*2002003.js - Pot of life
  *@author Jvlaple
  */

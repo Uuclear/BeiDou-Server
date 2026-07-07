@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 装备扩展属性响应 DTO，对应 inventoryequipment 表的攻防、潜能等字段。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

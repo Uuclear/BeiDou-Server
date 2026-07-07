@@ -26,7 +26,12 @@ import org.gms.client.processor.stat.AssignSPProcessor;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 DISTRIBUTE_SP（分配技能点） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#DISTRIBUTE_SP}</p>
+ */
 public final class DistributeSPHandler extends AbstractPacketHandler {
+    /** 处理 分配技能点 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readInt();

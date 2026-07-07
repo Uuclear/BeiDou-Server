@@ -29,11 +29,19 @@ import org.gms.client.command.Command;
 import org.gms.config.GameConfig;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM2命令：设置技能点
+ */
 public class SpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SpCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

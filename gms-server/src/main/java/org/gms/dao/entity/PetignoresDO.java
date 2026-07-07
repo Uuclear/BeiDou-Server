@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `petignores` 的实体类（DO）。
+ * <p>
+ * 宠物忽略列表，记录宠物不拾取特定掉落物或道具的配置。
  */
 @Data
 @Builder

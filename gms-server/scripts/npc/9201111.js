@@ -1,6 +1,12 @@
-/* @Author SharpAceX
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201111
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ * 原作者：SharpAceX
+ */
 function start() {
     if (cm.getPlayer().getMap().getId() == 610030500) {
         cm.sendOk("You're about to get wet and do what a Pirate does best--dig for booty! Be careful--that water beneath is known as Heavy Water, and it's so dense that I doubt you could swim through it! You'll have to make your way around....The relic you seek is known as the Forbidden Gun, which is an ancient weapon of the finest Pirate to grace the shores of Masteria--Steel Fist Jack! It's been buried in one of the many treasure chests you'll find below the sea. It won't be easy...Pirates were known for burying things in the most unlikely places, so dig deep and keep your guard up. There are sharks and much worse in those waters!");

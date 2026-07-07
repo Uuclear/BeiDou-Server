@@ -34,11 +34,19 @@ import org.gms.util.I18nUtil;
 
 import java.util.HashSet;
 
+/**
+ * GM2命令：展示当前地图信息
+ */
 public class WhereaMiCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WhereaMiCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

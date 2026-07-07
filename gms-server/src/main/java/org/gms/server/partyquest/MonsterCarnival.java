@@ -18,7 +18,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * @author Drago (Dragohe4rt)
+ * 怪物嘉年华（CPQ）主逻辑，管理双方阵营、CP 值、技能与胜利判定。
  */
 public class MonsterCarnival {
 
@@ -36,6 +36,14 @@ public class MonsterCarnival {
     private int redCP, blueCP, redTotalCP, blueTotalCP, redTimeupCP, blueTimeupCP;
     private boolean cpq1;
 
+    /**
+     * 构造 MonsterCarnival 实例。
+     * @param p1 p1
+     * @param p2 p2
+     * @param mapid 地图 ID
+     * @param cpq1 cpq1
+     * @param room room
+     */
     public MonsterCarnival(Party p1, Party p2, int mapid, boolean cpq1, int room) {
         try {
             this.cpq1 = cpq1;
@@ -113,6 +121,10 @@ public class MonsterCarnival {
         map.respawn();
     }
 
+    /**
+     * 执行 player、Disconnected 操作。
+     * @param charid 角色 ID
+     */
     public void playerDisconnected(int charid) {
         int team = -1;
         for (PartyCharacter mpc : leader1.getParty().getMembers()) {
@@ -147,6 +159,10 @@ public class MonsterCarnival {
         dispose(true);
     }
 
+    /**
+     * 执行 left、队伍 操作。
+     * @param charid 角色 ID
+     */
     public void leftParty(int charid) {
         playerDisconnected(charid);
     }
@@ -155,22 +171,40 @@ public class MonsterCarnival {
         dispose(false);
     }
 
+    /**
+     * 判断是否可以召唤兽R。
+     * @return boolean 类型结果
+     */
     public boolean canSummonR() {
         return summonsR < map.getMaxMobs();
     }
 
+    /**
+     * 执行 summon、R 操作。
+     */
     public void summonR() {
         summonsR++;
     }
 
+    /**
+     * 判断是否可以召唤兽B。
+     * @return boolean 类型结果
+     */
     public boolean canSummonB() {
         return summonsB < map.getMaxMobs();
     }
 
+    /**
+     * 执行 summon、B 操作。
+     */
     public void summonB() {
         summonsB++;
     }
 
+    /**
+     * 判断是否可以守护者R。
+     * @return boolean 类型结果
+     */
     public boolean canGuardianR() {
         int teamReactors = 0;
         for (Reactor react : map.getAllReactors()) {
@@ -182,6 +216,10 @@ public class MonsterCarnival {
         return teamReactors < map.getMaxReactors();
     }
 
+    /**
+     * 判断是否可以守护者B。
+     * @return boolean 类型结果
+     */
     public boolean canGuardianB() {
         int teamReactors = 0;
         for (Reactor react : map.getAllReactors()) {
@@ -245,10 +283,17 @@ public class MonsterCarnival {
         cs.finishMonsterCarnival(cpq1, room);
     }
 
+    /**
+     * 执行 exit 操作。
+     */
     public void exit() {
         dispose();
     }
 
+    /**
+     * 获取计时器。
+     * @return ScheduledFuture<?> 类型结果
+     */
     public ScheduledFuture<?> getTimer() {
         return this.timer;
     }
@@ -335,10 +380,18 @@ public class MonsterCarnival {
         }
     }
 
+    /**
+     * 获取时间剩余。
+     * @return long 类型结果
+     */
     public long getTimeLeft() {
         return (startTime - System.currentTimeMillis());
     }
 
+    /**
+     * 获取时间、剩余、Seconds。
+     * @return int 类型结果
+     */
     public int getTimeLeftSeconds() {
         return (int) (getTimeLeft() / 1000);
     }
@@ -355,6 +408,9 @@ public class MonsterCarnival {
         effectTimer = TimerManager.getInstance().schedule(() -> complete(), SECONDS.toMillis(map.getTimeExpand() - 10)); // thanks Vcoc for noticing a time set issue here
     }
 
+    /**
+     * 执行 complete 操作。
+     */
     public void complete() {
         int cp1 = this.redTotalCP;
         int cp2 = this.blueTotalCP;
@@ -403,38 +459,75 @@ public class MonsterCarnival {
         }
     }
 
+    /**
+     * 获取Red。
+     * @return Party 类型结果
+     */
     public Party getRed() {
         return p1;
     }
 
+    /**
+     * 设置Red。
+     * @param p1 p1
+     */
     public void setRed(Party p1) {
         this.p1 = p1;
     }
 
+    /**
+     * 获取Blue。
+     * @return Party 类型结果
+     */
     public Party getBlue() {
         return p2;
     }
 
+    /**
+     * 设置Blue。
+     * @param p2 p2
+     */
     public void setBlue(Party p2) {
         this.p2 = p2;
     }
 
+    /**
+     * 获取Leader1。
+     * @return Character 类型结果
+     */
     public Character getLeader1() {
         return leader1;
     }
 
+    /**
+     * 设置Leader1。
+     * @param leader1 leader1
+     */
     public void setLeader1(Character leader1) {
         this.leader1 = leader1;
     }
 
+    /**
+     * 获取Leader2。
+     * @return Character 类型结果
+     */
     public Character getLeader2() {
         return leader2;
     }
 
+    /**
+     * 设置Leader2。
+     * @param leader2 leader2
+     */
     public void setLeader2(Character leader2) {
         this.leader2 = leader2;
     }
 
+    /**
+     * 获取Enemy、队长。
+     * @param team team
+     * @return Character 类型结果
+     */
     public Character getEnemyLeader(int team) {
         switch (team) {
             case 0:
@@ -445,38 +538,75 @@ public class MonsterCarnival {
         return null;
     }
 
+    /**
+     * 获取Blue、C、P。
+     * @return int 类型结果
+     */
     public int getBlueCP() {
         return blueCP;
     }
 
+    /**
+     * 设置Blue、C、P。
+     * @param blueCP blueCP
+     */
     public void setBlueCP(int blueCP) {
         this.blueCP = blueCP;
     }
 
+    /**
+     * 获取Blue、Total、C、P。
+     * @return int 类型结果
+     */
     public int getBlueTotalCP() {
         return blueTotalCP;
     }
 
+    /**
+     * 设置Blue、Total、C、P。
+     * @param blueTotalCP blueTotalCP
+     */
     public void setBlueTotalCP(int blueTotalCP) {
         this.blueTotalCP = blueTotalCP;
     }
 
+    /**
+     * 获取RedCP。
+     * @return int 类型结果
+     */
     public int getRedCP() {
         return redCP;
     }
 
+    /**
+     * 设置RedCP。
+     * @param redCP redCP
+     */
     public void setRedCP(int redCP) {
         this.redCP = redCP;
     }
 
+    /**
+     * 获取Red、Total、C、P。
+     * @return int 类型结果
+     */
     public int getRedTotalCP() {
         return redTotalCP;
     }
 
+    /**
+     * 设置Red、Total、C、P。
+     * @param redTotalCP redTotalCP
+     */
     public void setRedTotalCP(int redTotalCP) {
         this.redTotalCP = redTotalCP;
     }
 
+    /**
+     * 获取Total、C、P。
+     * @param team team
+     * @return int 类型结果
+     */
     public int getTotalCP(int team) {
         if (team == 0) {
             return redTotalCP;
@@ -487,6 +617,11 @@ public class MonsterCarnival {
         }
     }
 
+    /**
+     * 设置Total、C、P。
+     * @param totalCP totalCP
+     * @param team team
+     */
     public void setTotalCP(int totalCP, int team) {
         if (team == 0) {
             this.redTotalCP = totalCP;
@@ -495,6 +630,11 @@ public class MonsterCarnival {
         }
     }
 
+    /**
+     * 获取CP。
+     * @param team team
+     * @return int 类型结果
+     */
     public int getCP(int team) {
         if (team == 0) {
             return redCP;
@@ -505,6 +645,11 @@ public class MonsterCarnival {
         }
     }
 
+    /**
+     * 设置CP。
+     * @param CP CP
+     * @param team team
+     */
     public void setCP(int CP, int team) {
         if (team == 0) {
             this.redCP = CP;
@@ -513,10 +658,18 @@ public class MonsterCarnival {
         }
     }
 
+    /**
+     * 获取Room。
+     * @return int 类型结果
+     */
     public int getRoom() {
         return this.room;
     }
 
+    /**
+     * 获取事件地图。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getEventMap() {
         return this.map;
     }

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `ipbans` 的实体类（DO）。
+ * <p>
+ * IP 封禁表，记录被封禁的 IP 地址及封禁原因与有效期。
  */
 @Data
 @Builder

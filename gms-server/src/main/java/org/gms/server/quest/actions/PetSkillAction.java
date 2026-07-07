@@ -30,11 +30,16 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestActionType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务奖励宠物技能动作。
  */
 public class PetSkillAction extends AbstractQuestAction {
     int flag;
 
+    /**
+     * 构造 PetSkillAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public PetSkillAction(Quest quest, Data data) {
         super(QuestActionType.PETSKILL, quest);
         questID = quest.getId();
@@ -42,11 +47,21 @@ public class PetSkillAction extends AbstractQuestAction {
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         flag = DataTool.getInt("petskill", data);
     }
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer extSelection) {
         QuestStatus status = chr.getQuest(Quest.getInstance(questID));
@@ -57,6 +72,11 @@ public class PetSkillAction extends AbstractQuestAction {
         return chr.getPet(0) != null;
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         chr.getPet(0).setFlag((byte) ItemConstants.getFlagByInt(flag));

@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：evantalk50
+ * 功能描述：(22014, "mo50=o")) {（原版描述）。
+ */
 //Author: kevintjuh93
 
 function enter(pi) {

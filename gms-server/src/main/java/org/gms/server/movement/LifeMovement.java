@@ -23,9 +23,28 @@ package org.gms.server.movement;
 
 import java.awt.*;
 
+/**
+ * 生命体移动接口，描述单次移动的坐标、状态与时长。
+ */
 public interface LifeMovement extends LifeMovementFragment {
+    /**
+     * 获取移动后的目标坐标。
+     * @return Point 类型结果
+     */
     Point getPosition();
+    /**
+     * 获取移动后的姿态/状态编号。
+     * @return int 类型结果
+     */
     int getNewstate();
+    /**
+     * 获取移动动画持续时间（毫秒）。
+     * @return int 类型结果
+     */
     int getDuration();
+    /**
+     * 获取移动类型编号。
+     * @return int 类型结果
+     */
     int getType();
 }

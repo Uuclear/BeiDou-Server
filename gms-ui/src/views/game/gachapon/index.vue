@@ -1,4 +1,5 @@
 <template>
+  <!-- 百宝箱（扭蛋）管理页：奖池列表与奖品配置。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.gachapon')">
@@ -222,6 +223,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 扭蛋奖池管理主页，组合奖池表格与奖品子面板。
+   */
   import useLoading from '@/hooks/loading';
   import {
     deletePool,

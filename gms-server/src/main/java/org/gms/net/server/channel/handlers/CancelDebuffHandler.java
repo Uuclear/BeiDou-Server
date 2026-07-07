@@ -25,8 +25,13 @@ import org.gms.client.Client;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 CANCEL_DEBUFF（取消减益效果） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CANCEL_DEBUFF}</p>
+ */
 public final class CancelDebuffHandler extends AbstractPacketHandler {//TIP: BAD STUFF LOL!
 
+    /** 处理 取消减益效果 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         /*List<Disease> diseases = c.getPlayer().getDiseases();

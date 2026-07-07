@@ -33,6 +33,9 @@ import org.slf4j.LoggerFactory;
 import org.gms.util.PacketCreator;
 import org.gms.util.Randomizer;
 
+/**
+ * GM0（所有玩家可用）命令：给gm发送消息
+ */
 public class GmCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("GmCommand.message1"));
@@ -40,6 +43,11 @@ public class GmCommand extends Command {
 
     private static final Logger log = LoggerFactory.getLogger(GmCommand.class);
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         String[] tips = {

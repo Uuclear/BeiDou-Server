@@ -1,5 +1,9 @@
 <script lang="tsx">
   // @ts-nocheck
+  /**
+   * 导航菜单组件（TSX render 无 template）
+   * 订阅路由变化更新选中项与展开项，处理站内跳转与外链打开。
+   */
   import { defineComponent, ref, h, compile, computed } from 'vue';
   import { useRoute, useRouter, RouteRecordRaw } from 'vue-router';
   import type { RouteMeta } from 'vue-router';
@@ -31,6 +35,7 @@
       const openKeys = ref<string[]>([]);
       const selectedKey = ref<string[]>([]);
 
+      /** 菜单项点击：外链新窗口打开，站内路由 push */
       const goto = (item: RouteRecordRaw) => {
         // Open external link
         if (regexUrl.test(item.path)) {
@@ -49,6 +54,7 @@
           name: item.name,
         });
       };
+      /** 回溯路由树，查找目标路由对应的父级 openKeys */
       const findMenuOpenKeys = (target: string) => {
         const result: string[] = [];
         let isFind = false;
@@ -90,6 +96,7 @@
           appStore.updateSettings({ menuCollapse: val });
       };
 
+      /** 递归将路由树渲染为 a-sub-menu / a-menu-item 节点 */
       const renderSubMenu = () => {
         function travel(_route: RouteRecordRaw[], nodes = []) {
           if (_route) {

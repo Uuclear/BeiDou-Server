@@ -24,6 +24,8 @@ import org.gms.net.server.services.BaseScheduler;
 import org.gms.net.server.services.BaseService;
 
 /**
+ * 怪物毒雾（Mist）调度服务，按地图分区定时更新毒雾区域效果。
+ *
  * @author Ronan
  */
 public class MobMistService extends BaseService {

@@ -19,9 +19,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	Author: kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：rienTutor8
+ * 功能描述：Text("You must exit to the right in order to find Murupas.");（原版描述）。
+ * 原作者：kevintjuh93
+ */
 function enter(pi) {
     if (pi.getPlayer().getJob().getId() == 2000) {
         if (pi.isQuestStarted(21015)) {

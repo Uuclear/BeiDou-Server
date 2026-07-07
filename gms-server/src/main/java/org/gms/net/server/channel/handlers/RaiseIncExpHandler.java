@@ -16,11 +16,12 @@ import org.gms.util.PacketCreator;
 import java.util.Map;
 
 /**
- * @author Xari
- * @author Ronan - added concurrency protection and quest progress limit
+ * 处理使用物品培养界面提升经验（USE_ITEMUI）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_ITEMUI}</p>
  */
 public class RaiseIncExpHandler extends AbstractPacketHandler {
 
+    /** 处理 使用物品界面 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         byte inventorytype = p.readByte();//nItemIT

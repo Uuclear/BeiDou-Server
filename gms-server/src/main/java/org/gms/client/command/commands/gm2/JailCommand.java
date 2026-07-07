@@ -34,11 +34,19 @@ import org.gms.util.StringUtil;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
+/**
+ * GM2命令：把某人关进监狱
+ */
 public class JailCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("JailCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

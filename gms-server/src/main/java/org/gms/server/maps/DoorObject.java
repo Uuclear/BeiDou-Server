@@ -31,7 +31,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * @author Ronan
+ * 传送门对象的数据封装。
  */
 public class DoorObject extends AbstractMapObject {
     private final int ownerId;
@@ -45,6 +45,15 @@ public class DoorObject extends AbstractMapObject {
     private final Lock rlock;
     private final Lock wlock;
 
+    /**
+     * 构造 DoorObject 实例。
+     * @param owner 归属角色
+     * @param destination destination
+     * @param origin origin
+     * @param townPortalId townPortalId
+     * @param targetPosition targetPosition
+     * @param toPosition toPosition
+     */
     public DoorObject(int owner, MapleMap destination, MapleMap origin, int townPortalId, Point targetPosition, Point toPosition) {
         super();
         setPosition(targetPosition);
@@ -60,6 +69,11 @@ public class DoorObject extends AbstractMapObject {
         this.wlock = lock.writeLock();
     }
 
+    /**
+     * 执行 update 操作。
+     * @param townPortalId townPortalId
+     * @param toPosition toPosition
+     */
     public void update(int townPortalId, Point toPosition) {
         wlock.lock();
         try {
@@ -88,6 +102,10 @@ public class DoorObject extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 warp 操作。
+     * @param chr 角色
+     */
     public void warp(final Character chr) {
         Party party = chr.getParty();
         if (chr.getId() == ownerId || (party != null && party.getMemberById(ownerId) != null)) {
@@ -104,11 +122,20 @@ public class DoorObject extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 send、刷新、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendSpawnData(Client client) {
         sendSpawnData(client, true);
     }
 
+    /**
+     * 执行 send、刷新、数据 操作。
+     * @param client client
+     * @param launched launched
+     */
     public void sendSpawnData(Client client, boolean launched) {
         Character chr = client.getPlayer();
         if (this.getFrom().getId() == chr.getMapId()) {
@@ -123,6 +150,10 @@ public class DoorObject extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendDestroyData(Client client) {
         Character chr = client.getPlayer();
@@ -135,6 +166,11 @@ public class DoorObject extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     * @param client client
+     * @param partyUpdate partyUpdate
+     */
     public void sendDestroyData(Client client, boolean partyUpdate) {
         if (client != null && from.getId() == client.getPlayer().getMapId()) {
             client.sendPacket(PacketCreator.partyPortal(MapId.NONE, MapId.NONE, new Point(-1, -1)));
@@ -142,46 +178,90 @@ public class DoorObject extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取归属者ID。
+     * @return int 类型结果
+     */
     public int getOwnerId() {
         return ownerId;
     }
 
+    /**
+     * 设置Pair、对象 ID。
+     * @param oid 对象 ID
+     */
     public void setPairOid(int oid) {
         this.pairOid = oid;
     }
 
+    /**
+     * 获取Pair、对象 ID。
+     * @return int 类型结果
+     */
     public int getPairOid() {
         return pairOid;
     }
 
+    /**
+     * 执行 in、Town 操作。
+     * @return boolean 类型结果
+     */
     public boolean inTown() {
         return getLinkedPortalId() == -1;
     }
 
+    /**
+     * 获取来自。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getFrom() {
         return from;
     }
 
+    /**
+     * 获取到。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getTo() {
         return to;
     }
 
+    /**
+     * 获取Town。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getTown() {
         return inTown() ? from : to;
     }
 
+    /**
+     * 获取区域。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getArea() {
         return !inTown() ? from : to;
     }
 
+    /**
+     * 获取区域位置。
+     * @return Point 类型结果
+     */
     public Point getAreaPosition() {
         return !inTown() ? getPosition() : getLinkedPortalPosition();
     }
 
+    /**
+     * 执行 to位置 操作。
+     * @return Point 类型结果
+     */
     public Point toPosition() {
         return getLinkedPortalPosition();
     }
 
+    /**
+     * 获取类型。
+     * @return MapObjectType 类型结果
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.DOOR;

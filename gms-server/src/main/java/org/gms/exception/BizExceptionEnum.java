@@ -2,6 +2,9 @@ package org.gms.exception;
 
 import org.gms.util.I18nUtil;
 
+/**
+ * 业务错误码枚举，实现 BaseErrorInfoInterface，定义 REST 层标准响应码与文案。
+ */
 public enum BizExceptionEnum implements BaseErrorInfoInterface {
 
     SUCCESS(20000, I18nUtil.getExceptionMessage("SUCCESS")),

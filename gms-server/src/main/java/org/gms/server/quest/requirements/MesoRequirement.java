@@ -26,22 +26,37 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Ronan
+ * 持有金币需求。
  */
 public class MesoRequirement extends AbstractQuestRequirement {
     private int meso = 0;
 
+    /**
+     * 构造 MesoRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public MesoRequirement(Quest quest, Data data) {
         super(QuestRequirementType.MESO);
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         meso = DataTool.getInt(data);
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         if (chr.getMeso() >= meso) {

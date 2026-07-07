@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040042
+ * 功能描述：You need a ranged person here. The ranged person must kill the three Ratz, and they'll trigger something. What's next is for you to find out! Get me 3 passes!（原版描述）。
+ */
 /*
 @	Author : Raz
 @       Author : Ronan

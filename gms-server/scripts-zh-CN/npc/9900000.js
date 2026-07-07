@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9900000
+ * 功能描述：NPC脚本，提供美容（发型/脸型/肤色）、金币奖励。
+ */
 /*
  * @Name         NimaKIN
  * @Author:      Signalize

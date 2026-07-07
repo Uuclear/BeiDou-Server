@@ -22,7 +22,7 @@
 package org.gms.server.life;
 
 /**
- * @author Danny (Leifde)
+ * 怪物攻击信息（攻击位置、MP 消耗、冷却、动画时长）。
  */
 public class MobAttackInfo {
     private boolean isDeadlyAttack;
@@ -31,45 +31,90 @@ public class MobAttackInfo {
     private int diseaseLevel;
     private int mpCon;
 
+    /**
+     * 构造 MobAttackInfo 实例。
+     * @param mobId mobId
+     * @param attackId attackId
+     */
     public MobAttackInfo(int mobId, int attackId) {
     }
 
+    /**
+     * 设置Deadly、攻击。
+     * @param isDeadlyAttack isDeadlyAttack
+     */
     public void setDeadlyAttack(boolean isDeadlyAttack) {
         this.isDeadlyAttack = isDeadlyAttack;
     }
 
+    /**
+     * 判断是否为Deadly、攻击。
+     * @return boolean 类型结果
+     */
     public boolean isDeadlyAttack() {
         return isDeadlyAttack;
     }
 
+    /**
+     * 设置MP、Burn。
+     * @param mpBurn mpBurn
+     */
     public void setMpBurn(int mpBurn) {
         this.mpBurn = mpBurn;
     }
 
+    /**
+     * 获取MP、Burn。
+     * @return int 类型结果
+     */
     public int getMpBurn() {
         return mpBurn;
     }
 
+    /**
+     * 设置Disease、技能。
+     * @param diseaseSkill diseaseSkill
+     */
     public void setDiseaseSkill(int diseaseSkill) {
         this.diseaseSkill = diseaseSkill;
     }
 
+    /**
+     * 获取Disease、技能。
+     * @return int 类型结果
+     */
     public int getDiseaseSkill() {
         return diseaseSkill;
     }
 
+    /**
+     * 设置Disease、等级。
+     * @param diseaseLevel diseaseLevel
+     */
     public void setDiseaseLevel(int diseaseLevel) {
         this.diseaseLevel = diseaseLevel;
     }
 
+    /**
+     * 获取Disease、等级。
+     * @return int 类型结果
+     */
     public int getDiseaseLevel() {
         return diseaseLevel;
     }
 
+    /**
+     * 设置MPCon。
+     * @param mpCon mpCon
+     */
     public void setMpCon(int mpCon) {
         this.mpCon = mpCon;
     }
 
+    /**
+     * 获取MPCon。
+     * @return int 类型结果
+     */
     public int getMpCon() {
         return mpCon;
     }

@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9040011
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ */
 function start() {
     cm.sendOk("<通知> \r\n 你是属于一个拥有足够勇气和信任的公会吗？那就接受公会任务的挑战吧！\r\n\r\n#b参与条件：#k\r\n1. 公会必须至少有6名成员！\r\n2. 公会任务的领导必须是公会的会长或副会长！\r\n3. 如果参与公会任务的成员数量少于6人，或者领导决定提前结束任务，公会任务可能会提前结束！");
     cm.dispose();

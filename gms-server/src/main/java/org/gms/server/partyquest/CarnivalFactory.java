@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Drago (Dragohe4rt)
+ * 嘉年华工厂，加载 CPQ 技能与怪物数据。
  */
 public class CarnivalFactory {
 
@@ -28,11 +28,18 @@ public class CarnivalFactory {
     private final List<Integer> singleTargetedSkills = new ArrayList<>();
     private final List<Integer> multiTargetedSkills = new ArrayList<>();
 
+    /**
+     * 构造 CarnivalFactory 实例。
+     */
     public CarnivalFactory() {
         //whoosh
         initialize();
     }
 
+    /**
+     * 获取单例实例。
+     * @return CarnivalFactory 类型结果
+     */
     public static final CarnivalFactory getInstance() {
         return instance;
     }
@@ -77,6 +84,11 @@ public class CarnivalFactory {
         }
     }
 
+    /**
+     * 获取技能。
+     * @param id ID
+     * @return MCSkill 类型结果
+     */
     public MCSkill getSkill(final int id) {
         MCSkill skill = skills.get(id);
         if (skill != null && skill.mobSkillType == null) {
@@ -86,15 +98,36 @@ public class CarnivalFactory {
         }
     }
 
+    /**
+     * 获取守护者。
+     * @param id ID
+     * @return MCSkill 类型结果
+     */
     public MCSkill getGuardian(final int id) {
         return guardians.get(id);
     }
 
+    /**
+     * 执行 MC技能 操作。
+     * @param cpLoss cpLoss
+     * @param mobSkillType mobSkillType
+     * @param level level
+     * @param targetsAll targetsAll
+     * @return record 类型结果
+     */
     public record MCSkill(int cpLoss, MobSkillType mobSkillType, int level, boolean targetsAll) {
+        /**
+         * 获取技能。
+         * @return MobSkill 类型结果
+         */
         public MobSkill getSkill() {
             return MobSkillFactory.getMobSkillOrThrow(mobSkillType, level);
         }
 
+        /**
+         * 获取Disease。
+         * @return Disease 类型结果
+         */
         public Disease getDisease() {
             return Disease.getBySkill(mobSkillType);
         }

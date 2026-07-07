@@ -37,12 +37,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * @author Ronan
- * <p>
- * Header layout thanks to Eric
+ * 处理客户端 NEW_YEAR_CARD_REQUEST（新年贺卡请求） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#NEW_YEAR_CARD_REQUEST}</p>
  */
 public final class NewYearCardHandler extends AbstractPacketHandler {
 
+    /** 处理 新年贺卡请求 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         final Character player = c.getPlayer();

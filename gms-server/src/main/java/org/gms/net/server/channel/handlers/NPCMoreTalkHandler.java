@@ -28,9 +28,11 @@ import org.gms.scripting.npc.NPCScriptManager;
 import org.gms.scripting.quest.QuestScriptManager;
 
 /**
- * @author Matze
+ * 处理客户端 NPC_TALK_MORE（继续NPC对话） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#NPC_TALK_MORE}</p>
  */
 public final class NPCMoreTalkHandler extends AbstractPacketHandler {
+    /** 处理 继续NPC对话 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         byte lastMsg = p.readByte(); // 00 (last msg type I think)

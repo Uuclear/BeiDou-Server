@@ -19,12 +19,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* @Author Lerk
- * 
- * 9208000.js: Guild Quest - Gatekeeper Puzzle Reactor
- * 
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：9208000
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Lerk
+ */
 function padWithZeroes(n, width) {
     while (n.length < width) {
         n = '0' + n;

@@ -4,10 +4,9 @@ import com.mybatisflex.core.BaseMapper;
 import org.gms.dao.entity.LangResourcesDO;
 
 /**
- * 数据库i18n表 映射层。
- *
- * @author CN
- * @since 2024-11-22
+ * `lang_resources` 表 / {@link org.gms.dao.entity.LangResourcesDO} 的 MyBatis Mapper 接口。
+ * <p>
+ * 多语言资源表，存储界面与提示文本的国际化键值对。
  */
 public interface LangResourcesMapper extends BaseMapper<LangResourcesDO> {
 

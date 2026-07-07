@@ -20,10 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*@Author Jvlaple
- *2201001.js - 3 Blocktopus
- */
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2201001
+ * 功能描述：反应堆触发后召唤怪物。
+ * 原作者：Jvlaple
+ */
 function act() {
     for (var i = 0; i < 3; i++) {
         rm.spawnMonster(9300007);

@@ -17,15 +17,17 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client;
-
 /**
- * @author anybody can do this
+ * 异常状态值持有者，记录减益效果的技能 ID、等级及持续时间。
  */
 public class DiseaseValueHolder {
     public long startTime, length;
 
+    /**
+     * 异常状态值持有者
+     * @param start start
+     * @param length length
+     */
     public DiseaseValueHolder(long start, long length) {
         this.startTime = start;
         this.length = length;

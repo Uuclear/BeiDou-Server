@@ -1,3 +1,7 @@
+/**
+ * vue-router RouteMeta 类型扩展
+ * 为路由 meta 补充角色、菜单、缓存等业务字段的类型声明。
+ */
 import 'vue-router';
 
 declare module 'vue-router' {

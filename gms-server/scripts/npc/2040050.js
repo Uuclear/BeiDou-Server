@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040050
+ * 功能描述：rmation（原版描述）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  Eurek the Alchemist - Multiple Place

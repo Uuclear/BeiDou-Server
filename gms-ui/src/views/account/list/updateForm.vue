@@ -1,4 +1,5 @@
 <template>
+  <!-- GM 编辑账户信息表单弹窗（密码、点券、角色槽等）。 -->
   <a-modal
     v-model:visible="visible"
     :title="title"
@@ -149,6 +150,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 账户编辑表单组件，提交 updateAccountByGM API。
+   */
   import { reactive, ref } from 'vue';
   import useLoading from '@/hooks/loading';
   import { AccountState } from '@/store/modules/account/types';

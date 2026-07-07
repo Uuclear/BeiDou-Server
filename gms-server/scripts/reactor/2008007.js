@@ -18,11 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Ronan
- * 
- * 2008007.js: OrbisPQ jail obstacle trigger
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2008007
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Ronan
+ */
 function hit() {
     var map = rm.getMap();
     map.moveEnvironment("trap" + rm.getReactor().getName()[5], 1);

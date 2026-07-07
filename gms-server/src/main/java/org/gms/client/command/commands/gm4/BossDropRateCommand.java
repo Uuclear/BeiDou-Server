@@ -16,23 +16,19 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.command.commands.gm4;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.command.Command;
-import org.gms.util.I18nUtil;
-import org.gms.util.PacketCreator;
-
 /**
- * @author Ronan
+ * GM4命令：设置大区Boss掉落倍率
  */
 public class BossDropRateCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("BossDropRateCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

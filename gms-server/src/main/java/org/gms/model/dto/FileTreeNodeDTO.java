@@ -8,6 +8,9 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 文件树节点 DTO，表示配置目录中的单个文件或文件夹节点及其子节点。
+ */
 @Data
 public class FileTreeNodeDTO {
     private String title;

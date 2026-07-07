@@ -114,16 +114,32 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 /**
+ * 服务端出站数据包（Packet）构造工厂，将游戏状态编码为客户端可解析的二进制协议。
+ * <p>
+ * 本类集中提供登录、角色、地图、战斗、社交、商城等各系统的 {@link org.gms.net.packet.Packet} 构建方法，
+ * 每个 {@code public static} 方法通常对应一个 {@link org.gms.net.opcodes.SendOpcode} 出站操作码。
+ * 还包含 FILETIME 时间戳转换等协议层辅助常量与方法。
+ *
  * @author Frz
  */
 public class PacketCreator {
 
+    /** 空的角色属性更新列表，用于无需变更属性时的占位。 */
     public static final List<Pair<Stat, Integer>> EMPTY_STATUPDATE = Collections.emptyList();
     private final static long FT_UT_OFFSET = 116444736010800000L + (10000L * TimeZone.getDefault().getOffset(System.currentTimeMillis())); // normalize with timezone offset suggested by Ari
     private final static long DEFAULT_TIME = 150842304000000000L;//00 80 05 BB 46 E6 17 02
+    /** 协议 FILETIME 中的“零时间”常量。 */
     public final static long ZERO_TIME = 94354848000000000L;//00 40 E0 FD 3B 37 4F 01
     private final static long PERMANENT = 150841440000000000L; // 00 C0 9B 90 7D E5 17 02
 
+    /**
+     * 将 UTC 毫秒时间戳转换为 MapleStory 协议使用的 FILETIME 格式。
+     * <p>
+     * 特殊负值：{@code -1} 默认时间、{@code -2} 零时间、{@code -3} 永久时间。
+     *
+     * @param utcTimestamp UTC 毫秒时间戳或特殊负值常量
+     * @return FILETIME 编码值
+     */
     public static long getTime(long utcTimestamp) {
         if (utcTimestamp < 0 && utcTimestamp >= -3) {
             if (utcTimestamp == -1) {
@@ -143,6 +159,9 @@ public class PacketCreator {
         packet.writeShort(msId.level());
     }
 
+    /**
+     * 构造显示HpHealed相关的出站数据包。
+     */
     public static Packet showHpHealed(int cid, int amount) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(cid);
@@ -326,6 +345,9 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造设置ExtraPendantSlot相关的出站数据包。
+     */
     public static Packet setExtraPendantSlot(boolean toggleExtraSlot) {
         final OutPacket p = OutPacket.create(SendOpcode.SET_EXTRA_PENDANT_SLOT);
         p.writeBool(toggleExtraSlot);
@@ -566,6 +588,9 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造发送GuestTOS相关的出站数据包。
+     */
     public static Packet sendGuestTOS() {
         final OutPacket p = OutPacket.create(SendOpcode.GUEST_ID_LOGIN);
         p.writeShort(0x100);
@@ -659,18 +684,27 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送Police相关的出站数据包。
+     */
     public static Packet sendPolice() {
         final OutPacket p = OutPacket.create(SendOpcode.FAKE_GM_NOTICE);
         p.writeByte(0);//doesn't even matter what value
         return p;
     }
 
+    /**
+     * 构造发送Police相关的出站数据包。
+     */
     public static Packet sendPolice(String text) {
         final OutPacket p = OutPacket.create(SendOpcode.DATA_CRC_CHECK_FAILED);
         p.writeString(text);
         return p;
     }
 
+    /**
+     * 构造获取PermBan相关的出站数据包。
+     */
     public static Packet getPermBan(byte reason) {
         final OutPacket p = OutPacket.create(SendOpcode.LOGIN_STATUS);
         p.writeByte(2); // Account is banned
@@ -681,6 +715,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取TempBan相关的出站数据包。
+     */
     public static Packet getTempBan(long timestampTill, byte reason) {
         OutPacket p = OutPacket.create(SendOpcode.LOGIN_STATUS);
         p.writeByte(2);
@@ -743,28 +780,46 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 pinRegistered 相关的出站数据包。
+     */
     public static Packet pinRegistered() {
         OutPacket p = OutPacket.create(SendOpcode.UPDATE_PINCODE);
         p.writeByte(0);
         return p;
     }
 
+    /**
+     * 构造请求Pin相关的出站数据包。
+     */
     public static Packet requestPin() {
         return pinOperation((byte) 4);
     }
 
+    /**
+     * 构造请求PinAfterFailure相关的出站数据包。
+     */
     public static Packet requestPinAfterFailure() {
         return pinOperation((byte) 2);
     }
 
+    /**
+     * 构造注册Pin相关的出站数据包。
+     */
     public static Packet registerPin() {
         return pinOperation((byte) 1);
     }
 
+    /**
+     * 构造 pinAccepted 相关的出站数据包。
+     */
     public static Packet pinAccepted() {
         return pinOperation((byte) 0);
     }
 
+    /**
+     * 构造 wrongPic 相关的出站数据包。
+     */
     public static Packet wrongPic() {
         OutPacket p = OutPacket.create(SendOpcode.CHECK_SPW_RESULT);
         p.writeByte(0);
@@ -904,6 +959,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造启用TV相关的出站数据包。
+     */
     public static Packet enableTV() {
         OutPacket p = OutPacket.create(SendOpcode.ENABLE_TV);
         p.writeInt(0);
@@ -1059,6 +1117,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取WarpToMap相关的出站数据包。
+     */
     public static Packet getWarpToMap(MapleMap to, int spawnPoint, Point spawnPosition, Character chr) {
         final OutPacket p = OutPacket.create(SendOpcode.SET_FIELD);
         p.writeInt(chr.getClient().getChannel() - 1);
@@ -1165,6 +1226,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造生成Kite相关的出站数据包。
+     */
     public static Packet spawnKite(int objId, int itemId, String name, String msg, Point pos, int ft) {
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_KITE);
         p.writeInt(objId);
@@ -1176,6 +1240,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除Kite相关的出站数据包。
+     */
     public static Packet removeKite(int objId, int animationType) {    // thanks to Arnah (Vertisy)
         OutPacket p = OutPacket.create(SendOpcode.REMOVE_KITE);
         p.writeByte(animationType); // 0 is 10/10, 1 just vanishes
@@ -1183,6 +1250,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送CannotSpawnKite相关的出站数据包。
+     */
     public static Packet sendCannotSpawnKite() {
         return OutPacket.create(SendOpcode.CANNOT_SPAWN_KITE);
     }
@@ -1238,10 +1308,16 @@ public class PacketCreator {
         return serverMessage(type, 0, message, false, false, npc);
     }
 
+    /**
+     * 构造服务端Notice相关的出站数据包。
+     */
     public static Packet serverNotice(int type, int channel, String message) {
         return serverMessage(type, channel, message, false, false, 0);
     }
 
+    /**
+     * 构造服务端Notice相关的出站数据包。
+     */
     public static Packet serverNotice(int type, int channel, String message, boolean smegaEar) {
         return serverMessage(type, channel, message, false, smegaEar, 0);
     }
@@ -1329,6 +1405,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造生成NPC相关的出站数据包。
+     */
     public static Packet spawnNPC(NPC life) {
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_NPC);
         p.writeInt(life.getObjectId());
@@ -1343,6 +1422,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造生成NPCRequestController相关的出站数据包。
+     */
     public static Packet spawnNPCRequestController(NPC life, boolean miniMap) {
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_NPC_REQUEST_CONTROLLER);
         p.writeByte(1);
@@ -1765,6 +1847,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造击杀Monster相关的出站数据包。
+     */
     public static Packet killMonster(int objId, boolean animation) {
         return killMonster(objId, animation ? 1 : 0);
     }
@@ -1784,6 +1869,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新MapItemObject相关的出站数据包。
+     */
     public static Packet updateMapItemObject(MapItem drop, boolean giveOwnership) {
         OutPacket p = OutPacket.create(SendOpcode.DROP_ITEM_FROM_MAPOBJECT);
         p.writeByte(2);
@@ -1802,6 +1890,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造掉落ItemFromMapObject相关的出站数据包。
+     */
     public static Packet dropItemFromMapObject(Character player, MapItem drop, Point dropfrom, Point dropto, byte mod) {
         int dropType = drop.getDropType();
         if (drop.hasClientsideOwnership(player) && dropType < 3) {
@@ -2040,11 +2131,17 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造触发NewYearCardRes相关的出站数据包。
+     */
     public static Packet onNewYearCardRes(Character user, int cardId, int mode, int msg) {
         NewYearCardRecord newyear = user.getNewYearRecord(cardId);
         return onNewYearCardRes(user, newyear, mode, msg);
     }
 
+    /**
+     * 构造触发NewYearCardRes相关的出站数据包。
+     */
     public static Packet onNewYearCardRes(Character user, NewYearCardRecord newyear, int mode, int msg) {
         OutPacket p = OutPacket.create(SendOpcode.NEW_YEAR_CARD_RES);
         p.writeByte(mode);
@@ -2202,6 +2299,9 @@ public class PacketCreator {
         p.writeBytes(roomInfo);    // visitor capacity here, thanks GabrielSin
     }
 
+    /**
+     * 构造更新HiredMerchantBox相关的出站数据包。
+     */
     public static Packet updateHiredMerchantBox(HiredMerchant hm) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_HIRED_MERCHANT);
         p.writeInt(hm.getOwnerId());
@@ -2222,6 +2322,9 @@ public class PacketCreator {
         p.writeByte(0);
     }
 
+    /**
+     * 构造更新PlayerShopBox相关的出站数据包。
+     */
     public static Packet updatePlayerShopBox(PlayerShop shop) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_CHAR_BOX);
         p.writeInt(shop.getOwner().getId());
@@ -2229,6 +2332,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除PlayerShopBox相关的出站数据包。
+     */
     public static Packet removePlayerShopBox(PlayerShop shop) {
         OutPacket p = OutPacket.create(SendOpcode.UPDATE_CHAR_BOX);
         p.writeInt(shop.getOwner().getId());
@@ -2236,6 +2342,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 facialExpression 相关的出站数据包。
+     */
     public static Packet facialExpression(Character from, int expression) {
         OutPacket p = OutPacket.create(SendOpcode.FACIAL_EXPRESSION);
         p.writeInt(from.getId());
@@ -2258,6 +2367,9 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造移动Player相关的出站数据包。
+     */
     public static Packet movePlayer(int chrId, InPacket movementPacket, long movementDataLength) {
         OutPacket p = OutPacket.create(SendOpcode.MOVE_PLAYER);
         p.writeInt(chrId);
@@ -2266,6 +2378,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移动Summon相关的出站数据包。
+     */
     public static Packet moveSummon(int cid, int oid, Point startPos, InPacket movementPacket, long movementDataLength) {
         final OutPacket p = OutPacket.create(SendOpcode.MOVE_SUMMON);
         p.writeInt(cid);
@@ -2275,6 +2390,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移动Monster相关的出站数据包。
+     */
     public static Packet moveMonster(int oid, boolean skillPossible, int skill, int skillId, int skillLevel, int pOption,
                                      Point startPos, InPacket movementPacket, long movementDataLength) {
         final OutPacket p = OutPacket.create(SendOpcode.MOVE_MONSTER);
@@ -2290,6 +2408,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造召唤Attack相关的出站数据包。
+     */
     public static Packet summonAttack(int cid, int summonOid, byte direction, List<SummonAttackEntry> allDamage) {
         OutPacket p = OutPacket.create(SendOpcode.SUMMON_ATTACK);
         //b2 00 29 f7 00 00 9a a3 04 00 c8 04 01 94 a3 04 00 06 ff 2b 00
@@ -2308,6 +2429,9 @@ public class PacketCreator {
     }
 
         /*
+        /**
+         * 构造召唤Attack相关的出站数据包。
+         */
         public static Packet summonAttack(int cid, int summonSkillId, byte direction, List<SummonAttackEntry> allDamage) {
                 OutPacket p = OutPacket.create(SendOpcode);
                 //b2 00 29 f7 00 00 9a a3 04 00 c8 04 01 94 a3 04 00 06 ff 2b 00
@@ -2332,6 +2456,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 rangedAttack 相关的出站数据包。
+     */
     public static Packet rangedAttack(Character chr, int skill, int skilllevel, int stance, int numAttackedAndDamage, int projectile, Map<Integer, List<Integer>> damage, int speed, int direction, int display) {
         final OutPacket p = OutPacket.create(SendOpcode.RANGED_ATTACK);
         addAttackBody(p, chr, skill, skilllevel, stance, numAttackedAndDamage, projectile, damage, speed, direction, display);
@@ -2339,6 +2466,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 magicAttack 相关的出站数据包。
+     */
     public static Packet magicAttack(Character chr, int skill, int skilllevel, int stance, int numAttackedAndDamage, Map<Integer, List<Integer>> damage, int charge, int speed, int direction, int display) {
         final OutPacket p = OutPacket.create(SendOpcode.MAGIC_ATTACK);
         addAttackBody(p, chr, skill, skilllevel, stance, numAttackedAndDamage, 0, damage, speed, direction, display);
@@ -2377,6 +2507,9 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造 throwGrenade 相关的出站数据包。
+     */
     public static Packet throwGrenade(int cid, Point pos, int keyDown, int skillId, int skillLevel) { // packets found thanks to GabrielSin
         OutPacket p = OutPacket.create(SendOpcode.THROW_GRENADE);
         p.writeInt(cid);
@@ -2393,6 +2526,9 @@ public class PacketCreator {
         return (int) (Double.doubleToLongBits(d) >> 48);
     }
 
+    /**
+     * 构造获取NPCShop相关的出站数据包。
+     */
     public static Packet getNPCShop(Client c, int sid, List<ShopItem> items) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         final OutPacket p = OutPacket.create(SendOpcode.OPEN_NPC_SHOP);
@@ -2434,6 +2570,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新InventorySlotLimit相关的出站数据包。
+     */
     public static Packet updateInventorySlotLimit(int type, int newLimit) {
         final OutPacket p = OutPacket.create(SendOpcode.INVENTORY_GROW);
         p.writeByte(type);
@@ -2441,6 +2580,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造修改Inventory相关的出站数据包。
+     */
     public static Packet modifyInventory(boolean updateTick, final List<ModifyInventory> mods) {
         OutPacket p = OutPacket.create(SendOpcode.INVENTORY_OPERATION);
         p.writeBool(updateTick);
@@ -2482,6 +2624,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取ScrollEffect相关的出站数据包。
+     */
     public static Packet getScrollEffect(int chr, ScrollResult scrollSuccess, boolean legendarySpirit, boolean whiteScroll) {   // thanks to Rien dev team
         OutPacket p = OutPacket.create(SendOpcode.SHOW_SCROLL_EFFECT);
         p.writeInt(chr);
@@ -2492,12 +2637,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除PlayerFromMap相关的出站数据包。
+     */
     public static Packet removePlayerFromMap(int chrId) {
         OutPacket p = OutPacket.create(SendOpcode.REMOVE_PLAYER_FROM_MAP);
         p.writeInt(chrId);
         return p;
     }
 
+    /**
+     * 构造 catchMessage 相关的出站数据包。
+     */
     public static Packet catchMessage(int message) { // not done, I guess
         final OutPacket p = OutPacket.create(SendOpcode.BRIDLE_MOB_CATCH_FAIL);
         p.writeByte(message); // 1 = too strong, 2 = Elemental Rock
@@ -2506,6 +2657,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示AllCharacter相关的出站数据包。
+     */
     public static Packet showAllCharacter(int totalWorlds, int totalChrs) {
         OutPacket p = OutPacket.create(SendOpcode.VIEW_ALL_CHAR);
         p.writeByte(totalChrs > 0 ? 1 : 5); // 2: already connected to server, 3 : unk error (view-all-characters), 5 : cannot find any
@@ -2514,16 +2668,25 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示AriantScoreBoard相关的出站数据包。
+     */
     public static Packet showAriantScoreBoard() {   // thanks lrenex for pointing match's end scoreboard packet
         return OutPacket.create(SendOpcode.ARIANT_ARENA_SHOW_RESULT);
     }
 
+    /**
+     * 构造更新AriantPQRanking相关的出站数据包。
+     */
     public static Packet updateAriantPQRanking(final Character chr, final int score) {
         return updateAriantPQRanking(new LinkedHashMap<Character, Integer>() {{
             put(chr, score);
         }});
     }
 
+    /**
+     * 构造更新AriantPQRanking相关的出站数据包。
+     */
     public static Packet updateAriantPQRanking(Map<Character, Integer> playerScore) {
         OutPacket p = OutPacket.create(SendOpcode.ARIANT_ARENA_USER_SCORE);
         p.writeByte(playerScore.size());
@@ -2534,12 +2697,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新WitchTowerScore相关的出站数据包。
+     */
     public static Packet updateWitchTowerScore(int score) {
         OutPacket p = OutPacket.create(SendOpcode.WITCH_TOWER_SCORE_UPDATE);
         p.writeByte(score);
         return p;
     }
 
+    /**
+     * 构造 silentRemoveItemFromMap 相关的出站数据包。
+     */
     public static Packet silentRemoveItemFromMap(int objId) {
         return removeItemFromMap(objId, 1, 0);
     }
@@ -2582,6 +2751,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新CharLook相关的出站数据包。
+     */
     public static Packet updateCharLook(Client target, Character chr) {
         OutPacket p = OutPacket.create(SendOpcode.UPDATE_CHAR_LOOK);
         p.writeInt(chr.getId());
@@ -2594,6 +2766,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造伤害Player相关的出站数据包。
+     */
     public static Packet damagePlayer(int skill, int monsteridfrom, int cid, int damage, int fake, int direction, boolean pgmr, int pgmr_1, boolean is_pg, int oid, int pos_x, int pos_y) {
         final OutPacket p = OutPacket.create(SendOpcode.DAMAGE_PLAYER);
         p.writeInt(cid);
@@ -2627,12 +2802,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送MapleLifeCharacterInfo相关的出站数据包。
+     */
     public static Packet sendMapleLifeCharacterInfo() {
         final OutPacket p = OutPacket.create(SendOpcode.MAPLELIFE_RESULT);
         p.writeInt(0);
         return p;
     }
 
+    /**
+     * 构造发送MapleLifeNameError相关的出站数据包。
+     */
     public static Packet sendMapleLifeNameError() {
         OutPacket p = OutPacket.create(SendOpcode.MAPLELIFE_RESULT);
         p.writeInt(2);
@@ -2641,6 +2822,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送MapleLifeError相关的出站数据包。
+     */
     public static Packet sendMapleLifeError(int code) {
         OutPacket p = OutPacket.create(SendOpcode.MAPLELIFE_ERROR);
         p.writeByte(0);
@@ -2648,6 +2832,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 charNameResponse 相关的出站数据包。
+     */
     public static Packet charNameResponse(String charname, boolean nameUsed) {
         final OutPacket p = OutPacket.create(SendOpcode.CHAR_NAME_RESPONSE);
         p.writeString(charname);
@@ -2655,6 +2842,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造添加NewCharEntry相关的出站数据包。
+     */
     public static Packet addNewCharEntry(Character chr) {
         final OutPacket p = OutPacket.create(SendOpcode.ADD_NEW_CHAR_ENTRY);
         p.writeByte(0);
@@ -2686,12 +2876,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 selectWorld 相关的出站数据包。
+     */
     public static Packet selectWorld(int world) {
         final OutPacket p = OutPacket.create(SendOpcode.LAST_CONNECTED_WORLD);
         p.writeInt(world);//According to GMS, it should be the world that contains the most characters (most active)
         return p;
     }
 
+    /**
+     * 构造发送Recommended相关的出站数据包。
+     */
     public static Packet sendRecommended(List<Pair<Integer, String>> worlds) {
         final OutPacket p = OutPacket.create(SendOpcode.RECOMMENDED_WORLD_MESSAGE);
         p.writeByte(worlds.size());//size
@@ -2799,6 +2995,9 @@ public class PacketCreator {
      * @return
      */
     //1F 00 00 00 00 00 03 00 00 40 00 00 00 E0 00 00 00 00 00 00 00 00 E0 01 8E AA 4F 00 00 C2 EB 0B E0 01 8E AA 4F 00 00 C2 EB 0B 0C 00 8E AA 4F 00 00 C2 EB 0B 44 02 8E AA 4F 00 00 C2 EB 0B 44 02 8E AA 4F 00 00 C2 EB 0B 00 00 E0 7A 1D 00 8E AA 4F 00 00 00 00 00 00 00 00 03
+    /**
+     * 构造给予Buff相关的出站数据包。
+     */
     public static Packet giveBuff(int buffid, int bufflength, List<Pair<BuffStat, Integer>> statups) {
         final OutPacket p = OutPacket.create(SendOpcode.GIVE_BUFF);
         boolean special = false;
@@ -2891,12 +3090,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造触发NotifyHPDecByField相关的出站数据包。
+     */
     public static Packet onNotifyHPDecByField(int change) {
         final OutPacket p = OutPacket.create(SendOpcode.ON_NOTIFY_HP_DEC_BY_FIELD);
         p.writeInt(change);
         return p;
     }
 
+    /**
+     * 构造添加QuestTimeLimit相关的出站数据包。
+     */
     public static Packet addQuestTimeLimit(final short quest, final int time) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_QUEST_INFO);
         p.writeByte(6);
@@ -2906,6 +3111,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除QuestTimeLimit相关的出站数据包。
+     */
     public static Packet removeQuestTimeLimit(final short quest) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_QUEST_INFO);
         p.writeByte(7);
@@ -2914,6 +3122,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新Quest相关的出站数据包。
+     */
     public static Packet updateQuest(Character chr, QuestStatus qs, boolean infoUpdate) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(1);
@@ -2945,6 +3156,9 @@ public class PacketCreator {
         p.writeLong(secondmask);
     }
 
+    /**
+     * 构造给予Debuff相关的出站数据包。
+     */
     public static Packet giveDebuff(List<Pair<Disease, Integer>> statups, MobSkill skill) {
         final OutPacket p = OutPacket.create(SendOpcode.GIVE_BUFF);
         writeLongMaskD(p, statups);
@@ -2959,6 +3173,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造给予ForeignDebuff相关的出站数据包。
+     */
     public static Packet giveForeignDebuff(int chrId, List<Pair<Disease, Integer>> statups, MobSkill skill) {
         // Poison damage visibility and missing diseases status visibility, extended through map transitions thanks to Ronan
         OutPacket p = OutPacket.create(SendOpcode.GIVE_FOREIGN_BUFF);
@@ -2975,6 +3192,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消ForeignFirstDebuff相关的出站数据包。
+     */
     public static Packet cancelForeignFirstDebuff(int cid, long mask) {
         final OutPacket p = OutPacket.create(SendOpcode.CANCEL_FOREIGN_BUFF);
         p.writeInt(cid);
@@ -2983,6 +3203,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消ForeignDebuff相关的出站数据包。
+     */
     public static Packet cancelForeignDebuff(int cid, long mask) {
         final OutPacket p = OutPacket.create(SendOpcode.CANCEL_FOREIGN_BUFF);
         p.writeInt(cid);
@@ -2991,6 +3214,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造给予ForeignBuff相关的出站数据包。
+     */
     public static Packet giveForeignBuff(int chrId, List<Pair<BuffStat, Integer>> statups) {
         OutPacket p = OutPacket.create(SendOpcode.GIVE_FOREIGN_BUFF);
         p.writeInt(chrId);
@@ -3003,6 +3229,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消ForeignBuff相关的出站数据包。
+     */
     public static Packet cancelForeignBuff(int chrId, List<BuffStat> statups) {
         OutPacket p = OutPacket.create(SendOpcode.CANCEL_FOREIGN_BUFF);
         p.writeInt(chrId);
@@ -3010,6 +3239,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消Buff相关的出站数据包。
+     */
     public static Packet cancelBuff(List<BuffStat> statups) {
         OutPacket p = OutPacket.create(SendOpcode.CANCEL_BUFF);
         writeLongMaskFromList(p, statups);
@@ -3060,6 +3292,9 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造取消Debuff相关的出站数据包。
+     */
     public static Packet cancelDebuff(long mask) {
         OutPacket p = OutPacket.create(SendOpcode.CANCEL_BUFF);
         p.writeLong(0);
@@ -3074,6 +3309,9 @@ public class PacketCreator {
         p.writeLong(0);
     }
 
+    /**
+     * 构造给予ForeignSlowDebuff相关的出站数据包。
+     */
     public static Packet giveForeignSlowDebuff(int chrId, List<Pair<Disease, Integer>> statups, MobSkill skill) {
         OutPacket p = OutPacket.create(SendOpcode.GIVE_FOREIGN_BUFF);
         p.writeInt(chrId);
@@ -3089,6 +3327,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消ForeignSlowDebuff相关的出站数据包。
+     */
     public static Packet cancelForeignSlowDebuff(int chrId) {
         final OutPacket p = OutPacket.create(SendOpcode.CANCEL_FOREIGN_BUFF);
         p.writeInt(chrId);
@@ -3102,6 +3343,9 @@ public class PacketCreator {
         p.writeLong(0);
     }
 
+    /**
+     * 构造给予ForeignChairSkillEffect相关的出站数据包。
+     */
     public static Packet giveForeignChairSkillEffect(int cid) {
         final OutPacket p = OutPacket.create(SendOpcode.GIVE_FOREIGN_BUFF);
         p.writeInt(cid);
@@ -3121,6 +3365,9 @@ public class PacketCreator {
     }
 
     // packet found thanks to Ronan
+    /**
+     * 构造给予ForeignWKChargeEffect相关的出站数据包。
+     */
     public static Packet giveForeignWKChargeEffect(int cid, int buffid, List<Pair<BuffStat, Integer>> statups) {
         OutPacket p = OutPacket.create(SendOpcode.GIVE_FOREIGN_BUFF);
         p.writeInt(cid);
@@ -3132,6 +3379,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消ForeignChairSkillEffect相关的出站数据包。
+     */
     public static Packet cancelForeignChairSkillEffect(int chrId) {
         OutPacket p = OutPacket.create(SendOpcode.CANCEL_FOREIGN_BUFF);
         p.writeInt(chrId);
@@ -3139,6 +3389,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取PlayerShopChat相关的出站数据包。
+     */
     public static Packet getPlayerShopChat(Character chr, String chat, boolean owner) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.CHAT.getCode());
@@ -3148,6 +3401,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取PlayerShopNewVisitor相关的出站数据包。
+     */
     public static Packet getPlayerShopNewVisitor(Character chr, int slot) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.VISIT.getCode());
@@ -3157,6 +3413,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取PlayerShopRemoveVisitor相关的出站数据包。
+     */
     public static Packet getPlayerShopRemoveVisitor(int slot) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.EXIT.getCode());
@@ -3166,6 +3425,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取TradePartnerAdd相关的出站数据包。
+     */
     public static Packet getTradePartnerAdd(Character chr) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.VISIT.getCode());
@@ -3175,6 +3437,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造交易Invite相关的出站数据包。
+     */
     public static Packet tradeInvite(Character chr) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.INVITE.getCode());
@@ -3184,6 +3449,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取TradeMesoSet相关的出站数据包。
+     */
     public static Packet getTradeMesoSet(byte number, int meso) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.SET_MESO.getCode());
@@ -3192,6 +3460,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取TradeItemAdd相关的出站数据包。
+     */
     public static Packet getTradeItemAdd(byte number, Item item) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.SET_ITEMS.getCode());
@@ -3201,6 +3472,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取PlayerShopItemUpdate相关的出站数据包。
+     */
     public static Packet getPlayerShopItemUpdate(PlayerShop shop) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.UPDATE_MERCHANT.getCode());
@@ -3214,6 +3488,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取PlayerShopOwnerUpdate相关的出站数据包。
+     */
     public static Packet getPlayerShopOwnerUpdate(PlayerShop.SoldItem item, int position) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.UPDATE_PLAYERSHOP.getCode());
@@ -3275,6 +3552,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取TradeStart相关的出站数据包。
+     */
     public static Packet getTradeStart(Client c, Trade trade, byte number) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.ROOM.getCode());
@@ -3293,6 +3573,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取TradeConfirmation相关的出站数据包。
+     */
     public static Packet getTradeConfirmation() {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.CONFIRM.getCode());
@@ -3340,6 +3623,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取DimensionalMirror相关的出站数据包。
+     */
     public static Packet getDimensionalMirror(String talk) {
         final OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(4); // ?
@@ -3351,6 +3637,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取NPCTalkStyle相关的出站数据包。
+     */
     public static Packet getNPCTalkStyle(int npc, String talk, int[] styles) {
         final OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(4); // ?
@@ -3365,6 +3654,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取NPCTalkNum相关的出站数据包。
+     */
     public static Packet getNPCTalkNum(int npc, String talk, int def, int min, int max) {
         final OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(4); // ?
@@ -3379,6 +3671,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取NPCTalkText相关的出站数据包。
+     */
     public static Packet getNPCTalkText(int npc, String talk, String def) {
         final OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(4); // Doesn't matter
@@ -3390,6 +3685,9 @@ public class PacketCreator {
         p.writeInt(0);
         return p;
     }
+    /**
+     * 构造获取NPCTalkNum相关的出站数据包。
+     */
     public static Packet getNPCTalkNum(int npc, String talk, int def, int min, int max,byte speaker) {
         final OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(4); // ?
@@ -3404,6 +3702,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取NPCTalkText相关的出站数据包。
+     */
     public static Packet getNPCTalkText(int npc, String talk, String def,byte speaker) {
         final OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(4); // Doesn't matter
@@ -3416,6 +3717,9 @@ public class PacketCreator {
         return p;
     }
     // NPC Quiz packets thanks to Eric
+    /**
+     * 构造触发AskQuiz相关的出站数据包。
+     */
     public static Packet OnAskQuiz(int nSpeakerTypeID, int nSpeakerTemplateID, int nResCode, String sTitle, String sProblemText, String sHintText, int nMinInput, int nMaxInput, int tRemainInitialQuiz) {
         OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(nSpeakerTypeID);
@@ -3434,6 +3738,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造触发AskSpeedQuiz相关的出站数据包。
+     */
     public static Packet OnAskSpeedQuiz(int nSpeakerTypeID, int nSpeakerTemplateID, int nResCode, int nType, int dwAnswer, int nCorrect, int nRemain, int tRemainInitialQuiz) {
         OutPacket p = OutPacket.create(SendOpcode.NPC_TALK);
         p.writeByte(nSpeakerTypeID);
@@ -3451,10 +3758,16 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BuffEffect相关的出站数据包。
+     */
     public static Packet showBuffEffect(int chrId, int skillId, int effectId) {
         return showBuffEffect(chrId, skillId, effectId, (byte) 3);
     }
 
+    /**
+     * 构造显示BuffEffect相关的出站数据包。
+     */
     public static Packet showBuffEffect(int chrId, int skillId, int effectId, byte direction) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(chrId);
@@ -3466,6 +3779,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BuffEffect相关的出站数据包。
+     */
     public static Packet showBuffEffect(int chrId, int skillId, int skillLv, int effectId, byte direction) {   // updated packet structure found thanks to Rien dev team
         OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(chrId);
@@ -3477,6 +3793,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示OwnBuffEffect相关的出站数据包。
+     */
     public static Packet showOwnBuffEffect(int skillId, int effectId) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(effectId);
@@ -3486,6 +3805,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示OwnBerserk相关的出站数据包。
+     */
     public static Packet showOwnBerserk(int skilllevel, boolean Berserk) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(1);
@@ -3496,6 +3818,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Berserk相关的出站数据包。
+     */
     public static Packet showBerserk(int chrId, int skillLv, boolean berserk) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(chrId);
@@ -3507,6 +3832,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新Skill相关的出站数据包。
+     */
     public static Packet updateSkill(int skillId, int level, int masterlevel, long expiration) {
         OutPacket p = OutPacket.create(SendOpcode.UPDATE_SKILLS);
         p.writeByte(1);
@@ -3519,12 +3847,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取ShowQuestCompletion相关的出站数据包。
+     */
     public static Packet getShowQuestCompletion(int id) {
         final OutPacket p = OutPacket.create(SendOpcode.QUEST_CLEAR);
         p.writeShort(id);
         return p;
     }
 
+    /**
+     * 构造获取Keymap相关的出站数据包。
+     */
     public static Packet getKeymap(Map<Integer, KeyBinding> keybindings) {
         final OutPacket p = OutPacket.create(SendOpcode.KEYMAP);
         p.writeByte(0);
@@ -3541,24 +3875,39 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 QuickslotMappedInit 相关的出站数据包。
+     */
     public static Packet QuickslotMappedInit(QuickslotBinding pQuickslot) {
         OutPacket p = OutPacket.create(SendOpcode.QUICKSLOT_INIT);
         pQuickslot.encode(p);
         return p;
     }
 
+    /**
+     * 构造获取InventoryFull相关的出站数据包。
+     */
     public static Packet getInventoryFull() {
         return modifyInventory(true, Collections.emptyList());
     }
 
+    /**
+     * 构造获取ShowInventoryFull相关的出站数据包。
+     */
     public static Packet getShowInventoryFull() {
         return getShowInventoryStatus(0xff);
     }
 
+    /**
+     * 构造显示ItemUnavailable相关的出站数据包。
+     */
     public static Packet showItemUnavailable() {
         return getShowInventoryStatus(0xfe);
     }
 
+    /**
+     * 构造获取ShowInventoryStatus相关的出站数据包。
+     */
     public static Packet getShowInventoryStatus(int mode) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(0);
@@ -3568,6 +3917,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取Storage相关的出站数据包。
+     */
     public static Packet getStorage(int npcId, byte slots, Collection<Item> items, int meso) {
         final OutPacket p = OutPacket.create(SendOpcode.STORAGE);
         p.writeByte(0x16);
@@ -3598,6 +3950,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造金币Storage相关的出站数据包。
+     */
     public static Packet mesoStorage(byte slots, int meso) {
         final OutPacket p = OutPacket.create(SendOpcode.STORAGE);
         p.writeByte(0x13);
@@ -3609,6 +3964,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 storeStorage 相关的出站数据包。
+     */
     public static Packet storeStorage(byte slots, InventoryType type, Collection<Item> items) {
         final OutPacket p = OutPacket.create(SendOpcode.STORAGE);
         p.writeByte(0xD);
@@ -3623,6 +3981,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 takeOutStorage 相关的出站数据包。
+     */
     public static Packet takeOutStorage(byte slots, InventoryType type, Collection<Item> items) {
         final OutPacket p = OutPacket.create(SendOpcode.STORAGE);
         p.writeByte(0x9);
@@ -3637,6 +3998,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 arrangeStorage 相关的出站数据包。
+     */
     public static Packet arrangeStorage(byte slots, Collection<Item> items) {
         OutPacket p = OutPacket.create(SendOpcode.STORAGE);
         p.writeByte(0xF);
@@ -3663,6 +4027,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BossHP相关的出站数据包。
+     */
     public static Packet showBossHP(int oid, int currHP, int maxHP, byte tagColor, byte tagBgColor) {
         final OutPacket p = OutPacket.create(SendOpcode.FIELD_EFFECT);
         p.writeByte(5);
@@ -3690,6 +4057,9 @@ public class PacketCreator {
         return new Pair<>(sendHP, sendMaxHP);
     }
 
+    /**
+     * 构造 customShowBossHP 相关的出站数据包。
+     */
     public static Packet customShowBossHP(byte call, int oid, long currHP, long maxHP, byte tagColor, byte tagBgColor) {
         Pair<Integer, Integer> customHP = normalizedCustomMaxHP(currHP, maxHP);
 
@@ -3703,6 +4073,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造给予FameResponse相关的出站数据包。
+     */
     public static Packet giveFameResponse(int mode, String charname, int newfame) {
         final OutPacket p = OutPacket.create(SendOpcode.FAME_RESPONSE);
         p.writeByte(0);
@@ -3730,6 +4103,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 receiveFame 相关的出站数据包。
+     */
     public static Packet receiveFame(int mode, String charnameFrom) {
         final OutPacket p = OutPacket.create(SendOpcode.FAME_RESPONSE);
         p.writeByte(5);
@@ -3738,6 +4114,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造组队Created相关的出站数据包。
+     */
     public static Packet partyCreated(Party party, int partycharid) {
         final OutPacket p = OutPacket.create(SendOpcode.PARTY_OPERATION);
         p.writeByte(8);
@@ -3768,6 +4147,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造组队Invite相关的出站数据包。
+     */
     public static Packet partyInvite(Character from) {
         final OutPacket p = OutPacket.create(SendOpcode.PARTY_OPERATION);
         p.writeByte(4);
@@ -3777,6 +4159,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造组队SearchInvite相关的出站数据包。
+     */
     public static Packet partySearchInvite(Character from) {
         final OutPacket p = OutPacket.create(SendOpcode.PARTY_OPERATION);
         p.writeByte(4);
@@ -3885,6 +4270,9 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造更新Party相关的出站数据包。
+     */
     public static Packet updateParty(int forChannel, Party party, PartyOperation op, PartyCharacter target) {
         final OutPacket p = OutPacket.create(SendOpcode.PARTY_OPERATION);
         switch (op) {
@@ -3929,6 +4317,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造组队Portal相关的出站数据包。
+     */
     public static Packet partyPortal(int townId, int targetId, Point position) {
         final OutPacket p = OutPacket.create(SendOpcode.PARTY_OPERATION);
         p.writeShort(0x23);
@@ -3938,6 +4329,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新PartyMemberHP相关的出站数据包。
+     */
     public static Packet updatePartyMemberHP(int cid, int curhp, int maxhp) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_PARTYMEMBER_HP);
         p.writeInt(cid);
@@ -3976,6 +4370,9 @@ public class PacketCreator {
         p.writeInt(secondmask);
     }
 
+    /**
+     * 构造应用MonsterStatus相关的出站数据包。
+     */
     public static Packet applyMonsterStatus(final int oid, final MonsterStatusEffect mse, final List<Integer> reflection) {
         Map<MonsterStatus, Integer> stati = mse.getStati();
         final OutPacket p = OutPacket.create(SendOpcode.APPLY_MONSTER_STATUS);
@@ -4005,6 +4402,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消MonsterStatus相关的出站数据包。
+     */
     public static Packet cancelMonsterStatus(int oid, Map<MonsterStatus, Integer> stats) {
         final OutPacket p = OutPacket.create(SendOpcode.CANCEL_MONSTER_STATUS);
         p.writeInt(oid);
@@ -4015,6 +4415,9 @@ public class PacketCreator {
     }
 
     // 修复如果使用旅行倍率会出现小数的情况
+    /**
+     * 构造获取Clock相关的出站数据包。
+     */
     public static Packet getClock(Number time) { // time in seconds
         OutPacket p = OutPacket.create(SendOpcode.CLOCK);
         p.writeByte(2); // clock type. if you send 3 here you have to send another byte (which does not matter at all) before the timestamp
@@ -4022,6 +4425,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取ClockTime相关的出站数据包。
+     */
     public static Packet getClockTime(int hour, int min, int sec) { // Current Time
         OutPacket p = OutPacket.create(SendOpcode.CLOCK);
         p.writeByte(1); //Clock-Type
@@ -4031,16 +4437,25 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除Clock相关的出站数据包。
+     */
     public static Packet removeClock() {
         final OutPacket p = OutPacket.create(SendOpcode.STOP_CLOCK);
         p.writeByte(0);
         return p;
     }
 
+    /**
+     * 构造生成MobMist相关的出站数据包。
+     */
     public static Packet spawnMobMist(int objId, int ownerMobId, MobSkillId msId, Mist mist) {
         return spawnMist(objId, ownerMobId, msId.type().getId(), msId.level(), mist);
     }
 
+    /**
+     * 构造生成Mist相关的出站数据包。
+     */
     public static Packet spawnMist(int objId, int ownerId, int skill, int level, Mist mist) {
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_MIST);
         p.writeInt(objId);
@@ -4057,12 +4472,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除Mist相关的出站数据包。
+     */
     public static Packet removeMist(int objId) {
         OutPacket p = OutPacket.create(SendOpcode.REMOVE_MIST);
         p.writeInt(objId);
         return p;
     }
 
+    /**
+     * 构造伤害Summon相关的出站数据包。
+     */
     public static Packet damageSummon(int cid, int oid, int damage, int monsterIdFrom) {
         final OutPacket p = OutPacket.create(SendOpcode.DAMAGE_SUMMON);
         p.writeInt(cid);
@@ -4074,10 +4495,16 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造伤害Monster相关的出站数据包。
+     */
     public static Packet damageMonster(int oid, int damage) {
         return damageMonster(oid, damage, 0, 0);
     }
 
+    /**
+     * 构造治疗Monster相关的出站数据包。
+     */
     public static Packet healMonster(int oid, int heal, int curhp, int maxhp) {
         return damageMonster(oid, -heal, curhp, maxhp);
     }
@@ -4092,6 +4519,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新Buddylist相关的出站数据包。
+     */
     public static Packet updateBuddylist(Collection<BuddylistEntry> buddylist) {
         OutPacket p = OutPacket.create(SendOpcode.BUDDYLIST);
         p.writeByte(7);
@@ -4112,12 +4542,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造好友listMessage相关的出站数据包。
+     */
     public static Packet buddylistMessage(byte message) {
         final OutPacket p = OutPacket.create(SendOpcode.BUDDYLIST);
         p.writeByte(message);
         return p;
     }
 
+    /**
+     * 构造请求BuddylistAdd相关的出站数据包。
+     */
     public static Packet requestBuddylistAdd(int chrIdFrom, int chrId, String nameFrom) {
         OutPacket p = OutPacket.create(SendOpcode.BUDDYLIST);
         p.writeByte(9);
@@ -4135,6 +4571,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新BuddyChannel相关的出站数据包。
+     */
     public static Packet updateBuddyChannel(int characterid, int channel) {
         final OutPacket p = OutPacket.create(SendOpcode.BUDDYLIST);
         p.writeByte(0x14);
@@ -4144,6 +4583,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造物品Effect相关的出站数据包。
+     */
     public static Packet itemEffect(int characterid, int itemid) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_EFFECT);
         p.writeInt(characterid);
@@ -4151,6 +4593,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新BuddyCapacity相关的出站数据包。
+     */
     public static Packet updateBuddyCapacity(int capacity) {
         final OutPacket p = OutPacket.create(SendOpcode.BUDDYLIST);
         p.writeByte(0x15);
@@ -4158,6 +4603,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Chair相关的出站数据包。
+     */
     public static Packet showChair(int characterid, int itemid) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_CHAIR);
         p.writeInt(characterid);
@@ -4165,6 +4613,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造取消Chair相关的出站数据包。
+     */
     public static Packet cancelChair(int id) {
         final OutPacket p = OutPacket.create(SendOpcode.CANCEL_CHAIR);
         if (id < 0) {
@@ -4177,6 +4628,9 @@ public class PacketCreator {
     }
 
     // is there a way to spawn reactors non-animated?
+    /**
+     * 构造生成Reactor相关的出站数据包。
+     */
     public static Packet spawnReactor(Reactor reactor) {
         OutPacket p = OutPacket.create(SendOpcode.REACTOR_SPAWN);
         p.writeInt(reactor.getObjectId());
@@ -4189,6 +4643,9 @@ public class PacketCreator {
     }
 
     // is there a way to trigger reactors without performing the hit animation?
+    /**
+     * 构造 triggerReactor 相关的出站数据包。
+     */
     public static Packet triggerReactor(Reactor reactor, int stance) {
         OutPacket p = OutPacket.create(SendOpcode.REACTOR_HIT);
         p.writeInt(reactor.getObjectId());
@@ -4200,6 +4657,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造销毁Reactor相关的出站数据包。
+     */
     public static Packet destroyReactor(Reactor reactor) {
         OutPacket p = OutPacket.create(SendOpcode.REACTOR_DESTROY);
         p.writeInt(reactor.getObjectId());
@@ -4208,18 +4668,30 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造音乐Change相关的出站数据包。
+     */
     public static Packet musicChange(String song) {
         return environmentChange(song, 6);
     }
 
+    /**
+     * 构造显示Effect相关的出站数据包。
+     */
     public static Packet showEffect(String effect) {
         return environmentChange(effect, 3);
     }
 
+    /**
+     * 构造 playSound 相关的出站数据包。
+     */
     public static Packet playSound(String sound) {
         return environmentChange(sound, 4);
     }
 
+    /**
+     * 构造 environmentChange 相关的出站数据包。
+     */
     public static Packet environmentChange(String env, int mode) {
         OutPacket p = OutPacket.create(SendOpcode.FIELD_EFFECT);
         p.writeByte(mode);
@@ -4227,6 +4699,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 environmentMove 相关的出站数据包。
+     */
     public static Packet environmentMove(String env, int mode) {
         OutPacket p = OutPacket.create(SendOpcode.FIELD_OBSTACLE_ONOFF);
         p.writeString(env);
@@ -4234,6 +4709,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 environmentMoveList 相关的出站数据包。
+     */
     public static Packet environmentMoveList(Set<Entry<String, Integer>> envList) {
         OutPacket p = OutPacket.create(SendOpcode.FIELD_OBSTACLE_ONOFF_LIST);
         p.writeInt(envList.size());
@@ -4246,10 +4724,16 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 environmentMoveReset 相关的出站数据包。
+     */
     public static Packet environmentMoveReset() {
         return OutPacket.create(SendOpcode.FIELD_OBSTACLE_ALL_RESET);
     }
 
+    /**
+     * 构造开始MapEffect相关的出站数据包。
+     */
     public static Packet startMapEffect(String msg, int itemId, boolean active) {
         OutPacket p = OutPacket.create(SendOpcode.BLOW_WEATHER);
         p.writeBool(!active);
@@ -4260,6 +4744,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除MapEffect相关的出站数据包。
+     */
     public static Packet removeMapEffect() {
         OutPacket p = OutPacket.create(SendOpcode.BLOW_WEATHER);
         p.writeByte(0);
@@ -4267,6 +4754,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造地图Effect相关的出站数据包。
+     */
     public static Packet mapEffect(String path) {
         final OutPacket p = OutPacket.create(SendOpcode.FIELD_EFFECT);
         p.writeByte(3);
@@ -4274,6 +4764,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造地图Sound相关的出站数据包。
+     */
     public static Packet mapSound(String path) {
         final OutPacket p = OutPacket.create(SendOpcode.FIELD_EFFECT);
         p.writeByte(4);
@@ -4281,6 +4774,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造技能Effect相关的出站数据包。
+     */
     public static Packet skillEffect(Character from, int skillId, int level, byte flags, int speed, byte direction) {
         final OutPacket p = OutPacket.create(SendOpcode.SKILL_EFFECT);
         p.writeInt(from.getId());
@@ -4292,6 +4788,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造技能Cancel相关的出站数据包。
+     */
     public static Packet skillCancel(Character from, int skillId) {
         final OutPacket p = OutPacket.create(SendOpcode.CANCEL_SKILL_EFFECT);
         p.writeInt(from.getId());
@@ -4299,6 +4798,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 catchMonster 相关的出站数据包。
+     */
     public static Packet catchMonster(int mobOid, byte success) {   // updated packet structure found thanks to Rien dev team
         final OutPacket p = OutPacket.create(SendOpcode.CATCH_MONSTER);
         p.writeInt(mobOid);
@@ -4306,6 +4808,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 catchMonster 相关的出站数据包。
+     */
     public static Packet catchMonster(int mobOid, int itemid, byte success) {
         final OutPacket p = OutPacket.create(SendOpcode.CATCH_MONSTER_WITH_ITEM);
         p.writeInt(mobOid);
@@ -4340,6 +4845,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 messengerInvite 相关的出站数据包。
+     */
     public static Packet messengerInvite(String from, int messengerid) {
         final OutPacket p = OutPacket.create(SendOpcode.MESSENGER);
         p.writeByte(0x03);
@@ -4351,6 +4859,9 @@ public class PacketCreator {
     }
 
         /*
+        /**
+         * 构造发送SpouseChat相关的出站数据包。
+         */
         public static Packet sendSpouseChat(Character partner, String msg) {
                 OutPacket p = OutPacket.create(SendOpcode);
                 SPOUSE_CHAT);
@@ -4371,6 +4882,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造添加MessengerPlayer相关的出站数据包。
+     */
     public static Packet addMessengerPlayer(String from, Character chr, int position, int channel) {
         final OutPacket p = OutPacket.create(SendOpcode.MESSENGER);
         p.writeByte(0x00);
@@ -4382,6 +4896,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除MessengerPlayer相关的出站数据包。
+     */
     public static Packet removeMessengerPlayer(int position) {
         final OutPacket p = OutPacket.create(SendOpcode.MESSENGER);
         p.writeByte(0x02);
@@ -4389,6 +4906,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新MessengerPlayer相关的出站数据包。
+     */
     public static Packet updateMessengerPlayer(String from, Character chr, int position, int channel) {
         final OutPacket p = OutPacket.create(SendOpcode.MESSENGER);
         p.writeByte(0x07);
@@ -4400,6 +4920,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 joinMessenger 相关的出站数据包。
+     */
     public static Packet joinMessenger(int position) {
         final OutPacket p = OutPacket.create(SendOpcode.MESSENGER);
         p.writeByte(0x01);
@@ -4407,6 +4930,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 messengerChat 相关的出站数据包。
+     */
     public static Packet messengerChat(String text) {
         final OutPacket p = OutPacket.create(SendOpcode.MESSENGER);
         p.writeByte(0x06);
@@ -4414,6 +4940,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 messengerNote 相关的出站数据包。
+     */
     public static Packet messengerNote(String text, int mode, int mode2) {
         final OutPacket p = OutPacket.create(SendOpcode.MESSENGER);
         p.writeByte(mode);
@@ -4438,6 +4967,9 @@ public class PacketCreator {
         p.writeBool(hasChatBalloon);
     }
 
+    /**
+     * 构造显示Pet相关的出站数据包。
+     */
     public static Packet showPet(Character chr, Pet pet, boolean remove, boolean hunger) {
         byte petIndex = chr.getPetIndex(pet);
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_PET);
@@ -4452,6 +4984,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移动Pet相关的出站数据包。
+     */
     public static Packet movePet(int cid, int pid, byte slot, List<LifeMovementFragment> moves) {
         final OutPacket p = OutPacket.create(SendOpcode.MOVE_PET);
         p.writeInt(cid);
@@ -4461,6 +4996,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造宠物Chat相关的出站数据包。
+     */
     public static Packet petChat(int cid, byte index, int act, String text, boolean hasChatBalloon) {
         final OutPacket p = OutPacket.create(SendOpcode.PET_CHAT);
         p.writeInt(cid);
@@ -4472,6 +5010,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造宠物FoodResponse相关的出站数据包。
+     */
     public static Packet petFoodResponse(int cid, byte index, boolean success, boolean hasChatBalloon) {
         final OutPacket p = OutPacket.create(SendOpcode.PET_COMMAND);
         p.writeInt(cid);
@@ -4482,6 +5023,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造宠物EatCashFoodFail相关的出站数据包。
+     */
     public static Packet petEatCashFoodFail() {
         // CWvsContext::OnCashPetFoodResult
         OutPacket p = OutPacket.create(SendOpcode.CASH_PET_FOOD_RESULT);
@@ -4490,6 +5034,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 commandResponse 相关的出站数据包。
+     */
     public static Packet commandResponse(int cid, byte index, boolean talk, int animation, boolean balloonType) {
         final OutPacket p = OutPacket.create(SendOpcode.PET_COMMAND);
         p.writeInt(cid);
@@ -4501,6 +5048,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示OwnPetLevelUp相关的出站数据包。
+     */
     public static Packet showOwnPetLevelUp(byte index) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(4);
@@ -4509,6 +5059,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示PetLevelUp相关的出站数据包。
+     */
     public static Packet showPetLevelUp(Character chr, byte index) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(chr.getId());
@@ -4518,6 +5071,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造变更PetName相关的出站数据包。
+     */
     public static Packet changePetName(Character chr, String newname, byte slot) {
         OutPacket p = OutPacket.create(SendOpcode.PET_NAMECHANGE);
         p.writeInt(chr.getId());
@@ -4527,6 +5083,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造加载ExceptionList相关的出站数据包。
+     */
     public static Packet loadExceptionList(final int cid, final int petId, final byte petIdx, final List<Integer> data) {
         final OutPacket p = OutPacket.create(SendOpcode.PET_EXCEPTION_LIST);
         p.writeInt(cid);
@@ -4539,6 +5098,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造宠物StatUpdate相关的出站数据包。
+     */
     public static Packet petStatUpdate(Character chr) {
         // this actually does nothing... packet structure and stats needs to be uncovered
 
@@ -4559,6 +5121,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示ForcedEquip相关的出站数据包。
+     */
     public static Packet showForcedEquip(int team) {
         OutPacket p = OutPacket.create(SendOpcode.FORCED_MAP_EQUIP);
         if (team > -1) {
@@ -4567,6 +5132,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造召唤Skill相关的出站数据包。
+     */
     public static Packet summonSkill(int cid, int summonSkillId, int newStance) {
         final OutPacket p = OutPacket.create(SendOpcode.SUMMON_SKILL);
         p.writeInt(cid);
@@ -4575,6 +5143,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造技能Cooldown相关的出站数据包。
+     */
     public static Packet skillCooldown(int sid, int time) {
         final OutPacket p = OutPacket.create(SendOpcode.COOLDOWN);
         p.writeInt(sid);
@@ -4582,6 +5153,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造技能BookResult相关的出站数据包。
+     */
     public static Packet skillBookResult(Character chr, int skillid, int maxlevel, boolean canuse, boolean success) {
         final OutPacket p = OutPacket.create(SendOpcode.SKILL_LEARN_ITEM_RESULT);
         p.writeInt(chr.getId());
@@ -4593,6 +5167,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取Macros相关的出站数据包。
+     */
     public static Packet getMacros(SkillMacro[] macros) {
         final OutPacket p = OutPacket.create(SendOpcode.MACRO_SYS_DATA_INIT);
         int count = 0;
@@ -4615,6 +5192,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示AllCharacterInfo相关的出站数据包。
+     */
     public static Packet showAllCharacterInfo(int worldid, List<Character> chars, boolean usePic) {
         final OutPacket p = OutPacket.create(SendOpcode.VIEW_ALL_CHAR);
         p.writeByte(0);
@@ -4627,6 +5207,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新Mount相关的出站数据包。
+     */
     public static Packet updateMount(int charid, Mount mount, boolean levelup) {
         final OutPacket p = OutPacket.create(SendOpcode.SET_TAMING_MOB_INFO);
         p.writeInt(charid);
@@ -4637,6 +5220,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 crogBoatPacket 相关的出站数据包。
+     */
     public static Packet crogBoatPacket(boolean type) {
         OutPacket p = OutPacket.create(SendOpcode.CONTI_MOVE);
         p.writeByte(10);
@@ -4644,6 +5230,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 boatPacket 相关的出站数据包。
+     */
     public static Packet boatPacket(boolean type) {
         OutPacket p = OutPacket.create(SendOpcode.CONTI_STATE);
         p.writeByte(type ? 1 : 2);
@@ -4651,6 +5240,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGame相关的出站数据包。
+     */
     public static Packet getMiniGame(Client c, MiniGame minigame, boolean owner, int piece) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.ROOM.getCode());
@@ -4689,18 +5281,27 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGameReady相关的出站数据包。
+     */
     public static Packet getMiniGameReady(MiniGame game) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.READY.getCode());
         return p;
     }
 
+    /**
+     * 构造获取MiniGameUnReady相关的出站数据包。
+     */
     public static Packet getMiniGameUnReady(MiniGame game) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.UN_READY.getCode());
         return p;
     }
 
+    /**
+     * 构造获取MiniGameStart相关的出站数据包。
+     */
     public static Packet getMiniGameStart(MiniGame game, int loser) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.START.getCode());
@@ -4708,6 +5309,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGameSkipOwner相关的出站数据包。
+     */
     public static Packet getMiniGameSkipOwner(MiniGame game) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.SKIP.getCode());
@@ -4715,12 +5319,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGameRequestTie相关的出站数据包。
+     */
     public static Packet getMiniGameRequestTie(MiniGame game) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.REQUEST_TIE.getCode());
         return p;
     }
 
+    /**
+     * 构造获取MiniGameDenyTie相关的出站数据包。
+     */
     public static Packet getMiniGameDenyTie(MiniGame game) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.ANSWER_TIE.getCode());
@@ -4747,12 +5357,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGameSkipVisitor相关的出站数据包。
+     */
     public static Packet getMiniGameSkipVisitor(MiniGame game) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeShort(PlayerInteractionHandler.Action.SKIP.getCode());
         return p;
     }
 
+    /**
+     * 构造获取MiniGameMoveOmok相关的出站数据包。
+     */
     public static Packet getMiniGameMoveOmok(MiniGame game, int move1, int move2, int move3) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.MOVE_OMOK.getCode());
@@ -4762,6 +5378,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGameNewVisitor相关的出站数据包。
+     */
     public static Packet getMiniGameNewVisitor(MiniGame minigame, Character chr, int slot) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.VISIT.getCode());
@@ -4776,6 +5395,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGameRemoveVisitor相关的出站数据包。
+     */
     public static Packet getMiniGameRemoveVisitor() {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.EXIT.getCode());
@@ -4830,18 +5452,30 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MiniGameOwnerWin相关的出站数据包。
+     */
     public static Packet getMiniGameOwnerWin(MiniGame game, boolean forfeit) {
         return getMiniGameResult(game, 0, 1, forfeit ? 1 : 0);
     }
 
+    /**
+     * 构造获取MiniGameVisitorWin相关的出站数据包。
+     */
     public static Packet getMiniGameVisitorWin(MiniGame game, boolean forfeit) {
         return getMiniGameResult(game, 0, 2, forfeit ? 1 : 0);
     }
 
+    /**
+     * 构造获取MiniGameTie相关的出站数据包。
+     */
     public static Packet getMiniGameTie(MiniGame game) {
         return getMiniGameResult(game, 1, 3, 0);
     }
 
+    /**
+     * 构造获取MiniGameClose相关的出站数据包。
+     */
     public static Packet getMiniGameClose(boolean visitor, int type) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.EXIT.getCode());
@@ -4850,6 +5484,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MatchCard相关的出站数据包。
+     */
     public static Packet getMatchCard(Client c, MiniGame minigame, boolean owner, int piece) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.ROOM.getCode());
@@ -4890,6 +5527,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MatchCardStart相关的出站数据包。
+     */
     public static Packet getMatchCardStart(MiniGame game, int loser) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.START.getCode());
@@ -4911,6 +5551,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MatchCardNewVisitor相关的出站数据包。
+     */
     public static Packet getMatchCardNewVisitor(MiniGame minigame, Character chr, int slot) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.VISIT.getCode());
@@ -4925,6 +5568,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MatchCardSelect相关的出站数据包。
+     */
     public static Packet getMatchCardSelect(MiniGame game, int turn, int slot, int firstslot, int type) {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.SELECT_CARD.getCode());
@@ -4940,6 +5586,9 @@ public class PacketCreator {
     }
 
     // RPS_GAME packets thanks to Arnah (Vertisy)
+    /**
+     * 构造打开RPSNPC相关的出站数据包。
+     */
     public static Packet openRPSNPC() {
         OutPacket p = OutPacket.create(SendOpcode.RPS_GAME);
         p.writeByte(8);// open npc
@@ -4947,6 +5596,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 rpsMesoError 相关的出站数据包。
+     */
     public static Packet rpsMesoError(int mesos) {
         OutPacket p = OutPacket.create(SendOpcode.RPS_GAME);
         p.writeByte(0x06);
@@ -4956,6 +5608,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 rpsSelection 相关的出站数据包。
+     */
     public static Packet rpsSelection(byte selection, byte answer) {
         OutPacket p = OutPacket.create(SendOpcode.RPS_GAME);
         p.writeByte(0x0B);// 11l
@@ -4964,18 +5619,27 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 rpsMode 相关的出站数据包。
+     */
     public static Packet rpsMode(byte mode) {
         OutPacket p = OutPacket.create(SendOpcode.RPS_GAME);
         p.writeByte(mode);
         return p;
     }
 
+    /**
+     * 构造 fredrickMessage 相关的出站数据包。
+     */
     public static Packet fredrickMessage(byte operation) {
         final OutPacket p = OutPacket.create(SendOpcode.FREDRICK_MESSAGE);
         p.writeByte(operation);
         return p;
     }
 
+    /**
+     * 构造获取Fredrick相关的出站数据包。
+     */
     public static Packet getFredrick(byte op) {
         final OutPacket p = OutPacket.create(SendOpcode.FREDRICK);
         p.writeByte(op);
@@ -4992,6 +5656,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取Fredrick相关的出站数据包。
+     */
     public static Packet getFredrick(Character chr) {
         final OutPacket p = OutPacket.create(SendOpcode.FREDRICK);
         p.writeByte(0x23);
@@ -5014,6 +5681,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造添加OmokBox相关的出站数据包。
+     */
     public static Packet addOmokBox(Character chr, int amount, int type) {
         OutPacket p = OutPacket.create(SendOpcode.UPDATE_CHAR_BOX);
         p.writeInt(chr.getId());
@@ -5021,6 +5691,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造添加MatchCardBox相关的出站数据包。
+     */
     public static Packet addMatchCardBox(Character chr, int amount, int type) {
         OutPacket p = OutPacket.create(SendOpcode.UPDATE_CHAR_BOX);
         p.writeInt(chr.getId());
@@ -5028,6 +5701,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除MinigameBox相关的出站数据包。
+     */
     public static Packet removeMinigameBox(Character chr) {
         OutPacket p = OutPacket.create(SendOpcode.UPDATE_CHAR_BOX);
         p.writeInt(chr.getId());
@@ -5035,6 +5711,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取PlayerShopChat相关的出站数据包。
+     */
     public static Packet getPlayerShopChat(Character chr, String chat, byte slot) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.CHAT.getCode());
@@ -5044,6 +5723,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取TradeChat相关的出站数据包。
+     */
     public static Packet getTradeChat(Character chr, String chat, boolean owner) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.CHAT.getCode());
@@ -5053,6 +5735,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hiredMerchantBox 相关的出站数据包。
+     */
     public static Packet hiredMerchantBox() {
         final OutPacket p = OutPacket.create(SendOpcode.ENTRUSTED_SHOP_CHECK_RESULT); // header.
         p.writeByte(0x07);
@@ -5069,12 +5754,18 @@ public class PacketCreator {
     // 18: The owner of the store is currently undergoing store maintenance. Please try again in a bit.
     // 23: This can only be used inside the Free Market.
     // default: This character is unable to do it.
+    /**
+     * 构造获取OwlMessage相关的出站数据包。
+     */
     public static Packet getOwlMessage(int msg) {
         OutPacket p = OutPacket.create(SendOpcode.SHOP_LINK_RESULT);
         p.writeByte(msg); // depending on the byte sent, a different message is sent.
         return p;
     }
 
+    /**
+     * 构造 owlOfMinerva 相关的出站数据包。
+     */
     public static Packet owlOfMinerva(Client c, int itemId, List<Pair<PlayerShopItem, AbstractMapObject>> hmsAvailable) {
         byte itemType = ItemConstants.getInventoryType(itemId).getType();
 
@@ -5119,6 +5810,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取OwlOpen相关的出站数据包。
+     */
     public static Packet getOwlOpen(List<Integer> owlLeaderboards) {
         OutPacket p = OutPacket.create(SendOpcode.SHOP_SCANNER_RESULT);
         p.writeByte(7);
@@ -5130,12 +5824,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 retrieveFirstMessage 相关的出站数据包。
+     */
     public static Packet retrieveFirstMessage() {
         final OutPacket p = OutPacket.create(SendOpcode.ENTRUSTED_SHOP_CHECK_RESULT); // header.
         p.writeByte(0x09);
         return p;
     }
 
+    /**
+     * 构造 remoteChannelChange 相关的出站数据包。
+     */
     public static Packet remoteChannelChange(byte ch) {
         final OutPacket p = OutPacket.create(SendOpcode.ENTRUSTED_SHOP_CHECK_RESULT); // header.
         p.writeByte(0x10);
@@ -5212,6 +5912,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新HiredMerchant相关的出站数据包。
+     */
     public static Packet updateHiredMerchant(HiredMerchant hm, Character chr) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.UPDATE_MERCHANT.getCode());
@@ -5226,6 +5929,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hiredMerchantChat 相关的出站数据包。
+     */
     public static Packet hiredMerchantChat(String message, byte slot) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.CHAT.getCode());
@@ -5235,6 +5941,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hiredMerchantVisitorLeave 相关的出站数据包。
+     */
     public static Packet hiredMerchantVisitorLeave(int slot) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.EXIT.getCode());
@@ -5244,6 +5953,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hiredMerchantOwnerLeave 相关的出站数据包。
+     */
     public static Packet hiredMerchantOwnerLeave() {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.REAL_CLOSE_MERCHANT.getCode());
@@ -5251,6 +5963,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hiredMerchantOwnerMaintenanceLeave 相关的出站数据包。
+     */
     public static Packet hiredMerchantOwnerMaintenanceLeave() {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.REAL_CLOSE_MERCHANT.getCode());
@@ -5258,6 +5973,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hiredMerchantMaintenanceMessage 相关的出站数据包。
+     */
     public static Packet hiredMerchantMaintenanceMessage() {
         OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.ROOM.getCode());
@@ -5266,6 +5984,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 leaveHiredMerchant 相关的出站数据包。
+     */
     public static Packet leaveHiredMerchant(int slot, int status2) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.EXIT.getCode());
@@ -5302,6 +6023,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hiredMerchantVisitorAdd 相关的出站数据包。
+     */
     public static Packet hiredMerchantVisitorAdd(Character chr, int slot) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(PlayerInteractionHandler.Action.VISIT.getCode());
@@ -5311,6 +6035,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造生成HiredMerchantBox相关的出站数据包。
+     */
     public static Packet spawnHiredMerchantBox(HiredMerchant hm) {
         final OutPacket p = OutPacket.create(SendOpcode.SPAWN_HIRED_MERCHANT);
         p.writeInt(hm.getOwnerId());
@@ -5327,12 +6054,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除HiredMerchantBox相关的出站数据包。
+     */
     public static Packet removeHiredMerchantBox(int id) {
         final OutPacket p = OutPacket.create(SendOpcode.DESTROY_HIRED_MERCHANT);
         p.writeInt(id);
         return p;
     }
 
+    /**
+     * 构造生成PlayerNPC相关的出站数据包。
+     */
     public static Packet spawnPlayerNPC(PlayerNPC npc) {
         final OutPacket p = OutPacket.create(SendOpcode.SPAWN_NPC_REQUEST_CONTROLLER);
         p.writeByte(1);
@@ -5348,6 +6081,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取PlayerNPC相关的出站数据包。
+     */
     public static Packet getPlayerNPC(PlayerNPC npc) {     // thanks to Arnah
         final OutPacket p = OutPacket.create(SendOpcode.IMITATED_NPC_DATA);
         p.writeByte(0x01);
@@ -5397,6 +6133,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除PlayerNPC相关的出站数据包。
+     */
     public static Packet removePlayerNPC(int oid) {
         final OutPacket p = OutPacket.create(SendOpcode.IMITATED_NPC_DATA);
         p.writeByte(0x00);
@@ -5404,6 +6143,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送YellowTip相关的出站数据包。
+     */
     public static Packet sendYellowTip(String tip) {
         final OutPacket p = OutPacket.create(SendOpcode.SET_WEEK_EVENT_MESSAGE);
         p.writeByte(0xFF);
@@ -5412,6 +6154,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造给予PirateBuff相关的出站数据包。
+     */
     public static Packet givePirateBuff(List<Pair<BuffStat, Integer>> statups, int buffid, int duration) {
         OutPacket p = OutPacket.create(SendOpcode.GIVE_BUFF);
         boolean infusion = buffid == Buccaneer.SPEED_INFUSION || buffid == ThunderBreaker.SPEED_INFUSION || buffid == Corsair.SPEED_INFUSION;
@@ -5427,6 +6172,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造给予ForeignPirateBuff相关的出站数据包。
+     */
     public static Packet giveForeignPirateBuff(int cid, int buffid, int time, List<Pair<BuffStat, Integer>> statups) {
         OutPacket p = OutPacket.create(SendOpcode.GIVE_FOREIGN_BUFF);
         boolean infusion = buffid == Buccaneer.SPEED_INFUSION || buffid == ThunderBreaker.SPEED_INFUSION || buffid == Corsair.SPEED_INFUSION;
@@ -5444,6 +6192,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送MTS相关的出站数据包。
+     */
     public static Packet sendMTS(List<MTSItemInfo> items, int tab, int type, int page, int pages) {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x15); //operation
@@ -5483,6 +6234,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造使用Chalkboard相关的出站数据包。
+     */
     public static Packet useChalkboard(Character chr, boolean close) {
         OutPacket p = OutPacket.create(SendOpcode.CHALKBOARD);
         p.writeInt(chr.getId());
@@ -5495,6 +6249,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 trockRefreshMapList 相关的出站数据包。
+     */
     public static Packet trockRefreshMapList(Character chr, boolean delete, boolean vip) {
         final OutPacket p = OutPacket.create(SendOpcode.MAP_TRANSFER_RESULT);
         p.writeByte(delete ? 2 : 3);
@@ -5540,6 +6297,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示WorldTransferSuccess相关的出站数据包。
+     */
     public static Packet showWorldTransferSuccess(Item item, int accountId) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         p.writeByte(0xA0);
@@ -5575,6 +6335,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示NameChangeSuccess相关的出站数据包。
+     */
     public static Packet showNameChangeSuccess(Item item, int accountId) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         p.writeByte(0x9E);
@@ -5582,6 +6345,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示NameChangeCancel相关的出站数据包。
+     */
     public static Packet showNameChangeCancel(boolean success) {
         OutPacket p = OutPacket.create(SendOpcode.CANCEL_NAME_CHANGE_RESULT);
         p.writeBool(success);
@@ -5592,6 +6358,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示WorldTransferCancel相关的出站数据包。
+     */
     public static Packet showWorldTransferCancel(boolean success) {
         OutPacket p = OutPacket.create(SendOpcode.CANCEL_TRANSFER_WORLD_RESULT);
         p.writeBool(success);
@@ -5602,6 +6371,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示MTSCash相关的出站数据包。
+     */
     public static Packet showMTSCash(Character chr) {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION2);
         p.writeInt(chr.getCashShop().getCash(CashShop.NX_PREPAID));
@@ -5609,6 +6381,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 MTSWantedListingOver 相关的出站数据包。
+     */
     public static Packet MTSWantedListingOver(int nx, int items) {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x3D);
@@ -5617,18 +6392,27 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 MTSConfirmSell 相关的出站数据包。
+     */
     public static Packet MTSConfirmSell() {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x1D);
         return p;
     }
 
+    /**
+     * 构造 MTSConfirmBuy 相关的出站数据包。
+     */
     public static Packet MTSConfirmBuy() {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x33);
         return p;
     }
 
+    /**
+     * 构造 MTSFailBuy 相关的出站数据包。
+     */
     public static Packet MTSFailBuy() {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x34);
@@ -5636,6 +6420,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 MTSConfirmTransfer 相关的出站数据包。
+     */
     public static Packet MTSConfirmTransfer(int quantity, int pos) {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x27);
@@ -5644,6 +6431,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 notYetSoldInv 相关的出站数据包。
+     */
     public static Packet notYetSoldInv(List<MTSItemInfo> items) {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x23);
@@ -5668,6 +6458,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 transferInventory 相关的出站数据包。
+     */
     public static Packet transferInventory(List<MTSItemInfo> items) {
         final OutPacket p = OutPacket.create(SendOpcode.MTS_OPERATION);
         p.writeByte(0x21);
@@ -5692,6 +6485,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示CouponRedeemedItems相关的出站数据包。
+     */
     public static Packet showCouponRedeemedItems(int accountId, int maplePoints, int mesos, List<Item> cashItems, List<Pair<Integer, Integer>> items) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         p.writeByte(0x59);
@@ -5711,6 +6507,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Cash相关的出站数据包。
+     */
     public static Packet showCash(Character mc) {
         final OutPacket p = OutPacket.create(SendOpcode.QUERY_CASH_RESULT);
         p.writeInt(mc.getCashShop().getCash(CashShop.NX_CREDIT));
@@ -5719,6 +6518,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造启用CSUse相关的出站数据包。
+     */
     public static Packet enableCSUse(Character mc) {
         return showCash(mc);
     }
@@ -5759,6 +6561,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取WhisperResult相关的出站数据包。
+     */
     public static Packet getWhisperResult(String target, boolean success) {
         OutPacket p = OutPacket.create(SendOpcode.WHISPER);
         p.writeByte(WhisperFlag.WHISPER | WhisperFlag.RESULT);
@@ -5767,6 +6572,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取WhisperReceive相关的出站数据包。
+     */
     public static Packet getWhisperReceive(String sender, int channel, boolean fromAdmin, String message) {
         OutPacket p = OutPacket.create(SendOpcode.WHISPER);
         p.writeByte(WhisperFlag.WHISPER | WhisperFlag.RECEIVE);
@@ -5777,18 +6585,27 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送AutoHpPot相关的出站数据包。
+     */
     public static Packet sendAutoHpPot(int itemId) {
         final OutPacket p = OutPacket.create(SendOpcode.AUTO_HP_POT);
         p.writeInt(itemId);
         return p;
     }
 
+    /**
+     * 构造发送AutoMpPot相关的出站数据包。
+     */
     public static Packet sendAutoMpPot(int itemId) {
         OutPacket p = OutPacket.create(SendOpcode.AUTO_MP_POT);
         p.writeInt(itemId);
         return p;
     }
 
+    /**
+     * 构造显示OXQuiz相关的出站数据包。
+     */
     public static Packet showOXQuiz(int questionSet, int questionId, boolean askQuestion) {
         OutPacket p = OutPacket.create(SendOpcode.OX_QUIZ);
         p.writeByte(askQuestion ? 1 : 0);
@@ -5797,18 +6614,27 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新Gender相关的出站数据包。
+     */
     public static Packet updateGender(Character chr) {
         OutPacket p = OutPacket.create(SendOpcode.SET_GENDER);
         p.writeByte(chr.getGender());
         return p;
     }
 
+    /**
+     * 构造启用Report相关的出站数据包。
+     */
     public static Packet enableReport() { // thanks to snow
         OutPacket p = OutPacket.create(SendOpcode.CLAIM_STATUS_CHANGED);
         p.writeByte(1);
         return p;
     }
 
+    /**
+     * 构造给予FinalAttack相关的出站数据包。
+     */
     public static Packet giveFinalAttack(int skillid, int time) { // packets found thanks to lailainoob
         final OutPacket p = OutPacket.create(SendOpcode.GIVE_BUFF);
         p.writeLong(0);
@@ -5823,6 +6649,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造加载Family相关的出站数据包。
+     */
     public static Packet loadFamily(Character player) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_PRIVILEGE_LIST);
         p.writeInt(FamilyEntitlement.values().length);
@@ -5879,6 +6708,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取FamilyInfo相关的出站数据包。
+     */
     public static Packet getFamilyInfo(FamilyEntry f) {
         if (f == null) {
             return getEmptyFamilyInfo();
@@ -5917,6 +6749,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Pedigree相关的出站数据包。
+     */
     public static Packet showPedigree(FamilyEntry entry) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_CHART_RESULT);
         p.writeInt(entry.getChrId()); //ID of viewed player's pedigree, can't be leader?
@@ -6012,6 +6847,9 @@ public class PacketCreator {
         p.writeString(entry.getName()); //name
     }
 
+    /**
+     * 构造更新AreaInfo相关的出站数据包。
+     */
     public static Packet updateAreaInfo(int area, String info) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(0x0A); //0x0B in v95
@@ -6020,6 +6858,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取GPMessage相关的出站数据包。
+     */
     public static Packet getGPMessage(int gpChange) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(6);
@@ -6027,6 +6868,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取ItemMessage相关的出站数据包。
+     */
     public static Packet getItemMessage(int itemid) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(7);
@@ -6034,6 +6878,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造添加Card相关的出站数据包。
+     */
     public static Packet addCard(boolean full, int cardid, int level) {
         OutPacket p = OutPacket.create(SendOpcode.MONSTER_BOOK_SET_CARD);
         p.writeByte(full ? 0 : 1);
@@ -6042,12 +6889,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示GainCard相关的出站数据包。
+     */
     public static Packet showGainCard() {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(0x0D);
         return p;
     }
 
+    /**
+     * 构造显示ForeignCardEffect相关的出站数据包。
+     */
     public static Packet showForeignCardEffect(int id) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(id);
@@ -6055,12 +6908,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造变更Cover相关的出站数据包。
+     */
     public static Packet changeCover(int cardid) {
         OutPacket p = OutPacket.create(SendOpcode.MONSTER_BOOK_SET_COVER);
         p.writeInt(cardid);
         return p;
     }
 
+    /**
+     * 构造战神GodlyStats相关的出站数据包。
+     */
     public static Packet aranGodlyStats() {
         OutPacket p = OutPacket.create(SendOpcode.FORCED_STAT_SET);
         p.writeBytes(new byte[]{
@@ -6072,6 +6931,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Intro相关的出站数据包。
+     */
     public static Packet showIntro(String path) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(0x12);
@@ -6079,6 +6941,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Info相关的出站数据包。
+     */
     public static Packet showInfo(String path) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(0x17);
@@ -6087,6 +6952,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示ForeignInfo相关的出站数据包。
+     */
     public static Packet showForeignInfo(int cid, String path) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(cid);
@@ -6115,18 +6983,27 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 lockUI 相关的出站数据包。
+     */
     public static Packet lockUI(boolean enable) {
         OutPacket p = OutPacket.create(SendOpcode.LOCK_UI);
         p.writeByte(enable ? 1 : 0);
         return p;
     }
 
+    /**
+     * 构造禁用UI相关的出站数据包。
+     */
     public static Packet disableUI(boolean enable) {
         final OutPacket p = OutPacket.create(SendOpcode.DISABLE_UI);
         p.writeByte(enable ? 1 : 0);
         return p;
     }
 
+    /**
+     * 构造物品Megaphone相关的出站数据包。
+     */
     public static Packet itemMegaphone(String msg, boolean whisper, int channel, Item item) {
         final OutPacket p = OutPacket.create(SendOpcode.SERVERMESSAGE);
         p.writeByte(8);
@@ -6142,12 +7019,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移除NPC相关的出站数据包。
+     */
     public static Packet removeNPC(int objId) {
         OutPacket p = OutPacket.create(SendOpcode.REMOVE_NPC);
         p.writeInt(objId);
         return p;
     }
 
+    /**
+     * 构造移除NPCController相关的出站数据包。
+     */
     public static Packet removeNPCController(int objId) {
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_NPC_REQUEST_CONTROLLER);
         p.writeByte(0);
@@ -6173,6 +7056,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送HammerData相关的出站数据包。
+     */
     public static Packet sendHammerData(int hammerUsed) {
         OutPacket p = OutPacket.create(SendOpcode.VICIOUS_HAMMER);
         p.writeByte(0x39);
@@ -6181,6 +7067,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送HammerMessage相关的出站数据包。
+     */
     public static Packet sendHammerMessage() {
         final OutPacket p = OutPacket.create(SendOpcode.VICIOUS_HAMMER);
         p.writeByte(0x3D);
@@ -6188,18 +7077,30 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 playPortalSound 相关的出站数据包。
+     */
     public static Packet playPortalSound() {
         return showSpecialEffect(7);
     }
 
+    /**
+     * 构造显示MonsterBookPickup相关的出站数据包。
+     */
     public static Packet showMonsterBookPickup() {
         return showSpecialEffect(14);
     }
 
+    /**
+     * 构造显示EquipmentLevelUp相关的出站数据包。
+     */
     public static Packet showEquipmentLevelUp() {
         return showSpecialEffect(15);
     }
 
+    /**
+     * 构造显示ItemLevelup相关的出站数据包。
+     */
     public static Packet showItemLevelup() {
         return showSpecialEffect(15);
     }
@@ -6220,6 +7121,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示MakerEffect相关的出站数据包。
+     */
     public static Packet showMakerEffect(boolean makerSucceeded) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(16);
@@ -6227,6 +7131,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示ForeignMakerEffect相关的出站数据包。
+     */
     public static Packet showForeignMakerEffect(int cid, boolean makerSucceeded) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(cid);
@@ -6235,10 +7142,16 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示ForeignEffect相关的出站数据包。
+     */
     public static Packet showForeignEffect(int effect) {
         return showForeignEffect(-1, effect);
     }
 
+    /**
+     * 构造显示ForeignEffect相关的出站数据包。
+     */
     public static Packet showForeignEffect(int chrId, int effect) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(chrId);
@@ -6246,6 +7159,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示OwnRecovery相关的出站数据包。
+     */
     public static Packet showOwnRecovery(byte heal) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(0x0A);
@@ -6253,6 +7169,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Recovery相关的出站数据包。
+     */
     public static Packet showRecovery(int chrId, byte amount) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_FOREIGN_EFFECT);
         p.writeInt(chrId);
@@ -6261,6 +7180,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示WheelsLeft相关的出站数据包。
+     */
     public static Packet showWheelsLeft(int left) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_ITEM_GAIN_INCHAT);
         p.writeByte(0x15);
@@ -6268,6 +7190,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新QuestFinish相关的出站数据包。
+     */
     public static Packet updateQuestFinish(short quest, int npc, short nextquest) { //Check
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_QUEST_INFO); //0xF2 in v95
         p.writeByte(8);//0x0A in v95
@@ -6277,6 +7202,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示InfoText相关的出站数据包。
+     */
     public static Packet showInfoText(String text) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(9);
@@ -6284,6 +7212,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造任务Error相关的出站数据包。
+     */
     public static Packet questError(short quest) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_QUEST_INFO);
         p.writeByte(0x0A);
@@ -6291,12 +7222,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造任务Failure相关的出站数据包。
+     */
     public static Packet questFailure(byte type) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_QUEST_INFO);
         p.writeByte(type);//0x0B = No meso, 0x0D = Worn by character, 0x0E = Not having the item ?
         return p;
     }
 
+    /**
+     * 构造任务Expire相关的出站数据包。
+     */
     public static Packet questExpire(short quest) {
         final OutPacket p = OutPacket.create(SendOpcode.UPDATE_QUEST_INFO);
         p.writeByte(0x0F);
@@ -6305,6 +7242,9 @@ public class PacketCreator {
     }
 
     // MAKER_RESULT packets thanks to Arnah (Vertisy)
+    /**
+     * 构造 makerResult 相关的出站数据包。
+     */
     public static Packet makerResult(boolean success, int itemMade, int itemCount, int mesos, List<Pair<Integer, Integer>> itemsLost, int catalystID, List<Integer> INCBuffGems) {
         final OutPacket p = OutPacket.create(SendOpcode.MAKER_RESULT);
         p.writeInt(success ? 0 : 1); // 0 = success, 1 = fail
@@ -6334,6 +7274,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 makerResultCrystal 相关的出站数据包。
+     */
     public static Packet makerResultCrystal(int itemIdGained, int itemIdLost) {
         final OutPacket p = OutPacket.create(SendOpcode.MAKER_RESULT);
         p.writeInt(0); // Always successful!
@@ -6343,6 +7286,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 makerResultDesynth 相关的出站数据包。
+     */
     public static Packet makerResultDesynth(int itemId, int mesos, List<Pair<Integer, Integer>> itemsGained) {
         final OutPacket p = OutPacket.create(SendOpcode.MAKER_RESULT);
         p.writeInt(0); // Always successful!
@@ -6357,6 +7303,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 makerEnableActions 相关的出站数据包。
+     */
     public static Packet makerEnableActions() {
         final OutPacket p = OutPacket.create(SendOpcode.MAKER_RESULT);
         p.writeInt(0); // Always successful!
@@ -6366,6 +7315,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取MultiMegaphone相关的出站数据包。
+     */
     public static Packet getMultiMegaphone(String[] messages, int channel, boolean showEar) {
         final OutPacket p = OutPacket.create(SendOpcode.SERVERMESSAGE);
         p.writeByte(0x0A);
@@ -6409,6 +7361,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 findMerchantResponse 相关的出站数据包。
+     */
     public static Packet findMerchantResponse(boolean map, int extra) {
         final OutPacket p = OutPacket.create(SendOpcode.ADMIN_RESULT);
         p.writeByte(0x13);
@@ -6422,12 +7377,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造禁用Minimap相关的出站数据包。
+     */
     public static Packet disableMinimap() {
         final OutPacket p = OutPacket.create(SendOpcode.ADMIN_RESULT);
         p.writeShort(0x1C);
         return p;
     }
 
+    /**
+     * 构造发送FamilyInvite相关的出站数据包。
+     */
     public static Packet sendFamilyInvite(int playerId, String inviter) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_JOIN_REQUEST);
         p.writeInt(playerId);
@@ -6435,6 +7396,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送FamilySummonRequest相关的出站数据包。
+     */
     public static Packet sendFamilySummonRequest(String familyName, String from) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_SUMMON_REQUEST);
         p.writeString(from);
@@ -6442,6 +7406,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送FamilyLoginNotice相关的出站数据包。
+     */
     public static Packet sendFamilyLoginNotice(String name, boolean loggedIn) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_NOTIFY_LOGIN_OR_LOGOUT);
         p.writeBool(loggedIn);
@@ -6449,6 +7416,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送FamilyJoinResponse相关的出站数据包。
+     */
     public static Packet sendFamilyJoinResponse(boolean accepted, String added) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_JOIN_REQUEST_RESULT);
         p.writeByte(accepted ? 1 : 0);
@@ -6456,6 +7426,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取SeniorMessage相关的出站数据包。
+     */
     public static Packet getSeniorMessage(String name) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_JOIN_ACCEPTED);
         p.writeString(name);
@@ -6463,6 +7436,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送GainRep相关的出站数据包。
+     */
     public static Packet sendGainRep(int gain, String from) {
         final OutPacket p = OutPacket.create(SendOpcode.FAMILY_REP_GAIN);
         p.writeInt(gain);
@@ -6470,6 +7446,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BoughtCashPackage相关的出站数据包。
+     */
     public static Packet showBoughtCashPackage(List<Item> cashPackage, int accountId) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -6485,6 +7464,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BoughtQuestItem相关的出站数据包。
+     */
     public static Packet showBoughtQuestItem(int itemId) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         p.writeByte(0x8D);
@@ -6497,12 +7479,18 @@ public class PacketCreator {
     }
 
     // Cash Shop Surprise packets found thanks to Arnah (Vertisy)
+    /**
+     * 构造触发CashItemGachaponOpenFailed相关的出站数据包。
+     */
     public static Packet onCashItemGachaponOpenFailed() {
         OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_CASH_ITEM_GACHAPON_RESULT);
         p.writeByte(0xE4);
         return p;
     }
 
+    /**
+     * 构造触发CashGachaponOpenSuccess相关的出站数据包。
+     */
     public static Packet onCashGachaponOpenSuccess(int accountid, long boxCashId, int remainingBoxes, Item reward,
                                                    int rewardItemId, int rewardQuantity, boolean bJackpot) {
         OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_CASH_ITEM_GACHAPON_RESULT);
@@ -6516,11 +7504,17 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送MesoLimit相关的出站数据包。
+     */
     public static Packet sendMesoLimit() {
         final OutPacket p = OutPacket.create(SendOpcode.TRADE_MONEY_LIMIT); //Players under level 15 can only trade 1m per day
         return p;
     }
 
+    /**
+     * 构造移除ItemFromDuey相关的出站数据包。
+     */
     public static Packet removeItemFromDuey(boolean remove, int Package) {
         final OutPacket p = OutPacket.create(SendOpcode.PARCEL);
         p.writeByte(0x17);
@@ -6529,6 +7523,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送DueyParcelReceived相关的出站数据包。
+     */
     public static Packet sendDueyParcelReceived(String from, boolean quick) {    // thanks inhyuk
         OutPacket p = OutPacket.create(SendOpcode.PARCEL);
         p.writeByte(0x19);
@@ -6537,6 +7534,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送DueyParcelNotification相关的出站数据包。
+     */
     public static Packet sendDueyParcelNotification(boolean quick) {
         final OutPacket p = OutPacket.create(SendOpcode.PARCEL);
         p.writeByte(0x1B);
@@ -6544,10 +7544,16 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送DueyMSG相关的出站数据包。
+     */
     public static Packet sendDueyMSG(byte operation) {
         return sendDuey(operation, null);
     }
 
+    /**
+     * 构造发送Duey相关的出站数据包。
+     */
     public static Packet sendDuey(int operation, List<DueyPackage> packages) {
         final OutPacket p = OutPacket.create(SendOpcode.PARCEL);
         p.writeByte(operation);
@@ -6583,6 +7589,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造发送DojoAnimation相关的出站数据包。
+     */
     public static Packet sendDojoAnimation(byte firstByte, String animation) {
         final OutPacket p = OutPacket.create(SendOpcode.FIELD_EFFECT);
         p.writeByte(firstByte);
@@ -6590,6 +7599,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取DojoInfo相关的出站数据包。
+     */
     public static Packet getDojoInfo(String info) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(10);
@@ -6598,6 +7610,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取DojoInfoMessage相关的出站数据包。
+     */
     public static Packet getDojoInfoMessage(String message) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(9);
@@ -6643,6 +7658,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造更新DojoStats相关的出站数据包。
+     */
     public static Packet updateDojoStats(Character chr, int belt) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(10);
@@ -6718,6 +7736,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造获取Energy相关的出站数据包。
+     */
     public static Packet getEnergy(String info, int amount) {
         final OutPacket p = OutPacket.create(SendOpcode.SESSION_VALUE);
         p.writeString(info);
@@ -6725,6 +7746,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造武陵道场WarpUp相关的出站数据包。
+     */
     public static Packet dojoWarpUp() {
         final OutPacket p = OutPacket.create(SendOpcode.DOJO_WARP_UP);
         p.writeByte(0);
@@ -6732,6 +7756,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造物品Expired相关的出站数据包。
+     */
     public static Packet itemExpired(int itemid) {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(2);
@@ -6747,6 +7774,9 @@ public class PacketCreator {
         return builder.toString();
     }
 
+    /**
+     * 构造怪物DamageMobFriendly相关的出站数据包。
+     */
     public static Packet MobDamageMobFriendly(Monster mob, int damage, int remainingHp) {
         final OutPacket p = OutPacket.create(SendOpcode.DAMAGE_MONSTER);
         p.writeInt(mob.getObjectId());
@@ -6757,6 +7787,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造商店ErrorMessage相关的出站数据包。
+     */
     public static Packet shopErrorMessage(int error, int type) {
         final OutPacket p = OutPacket.create(SendOpcode.PLAYER_INTERACTION);
         p.writeByte(0x0A);
@@ -6808,6 +7841,9 @@ public class PacketCreator {
         }
     }
 
+    /**
+     * 构造 finishedSort 相关的出站数据包。
+     */
     public static Packet finishedSort(int inv) {
         OutPacket p = OutPacket.create(SendOpcode.GATHER_ITEM_RESULT);
         p.writeByte(0);
@@ -6815,6 +7851,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 finishedSort2 相关的出站数据包。
+     */
     public static Packet finishedSort2(int inv) {
         OutPacket p = OutPacket.create(SendOpcode.SORT_ITEM_RESULT);
         p.writeByte(0);
@@ -6822,6 +7861,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 bunnyPacket 相关的出站数据包。
+     */
     public static Packet bunnyPacket() {
         final OutPacket p = OutPacket.create(SendOpcode.SHOW_STATUS_INFO);
         p.writeByte(9);
@@ -6829,6 +7871,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hpqMessage 相关的出站数据包。
+     */
     public static Packet hpqMessage(String text) {
         final OutPacket p = OutPacket.create(SendOpcode.BLOW_WEATHER); // not 100% sure
         p.writeByte(0);
@@ -6837,16 +7882,25 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示EventInstructions相关的出站数据包。
+     */
     public static Packet showEventInstructions() {
         final OutPacket p = OutPacket.create(SendOpcode.GMEVENT_INSTRUCTIONS);
         p.writeByte(0);
         return p;
     }
 
+    /**
+     * 构造 leftKnockBack 相关的出站数据包。
+     */
     public static Packet leftKnockBack() {
         return OutPacket.create(SendOpcode.LEFT_KNOCK_BACK);
     }
 
+    /**
+     * 构造 rollSnowBall 相关的出站数据包。
+     */
     public static Packet rollSnowBall(boolean entermap, int state, Snowball ball0, Snowball ball1) {
         OutPacket p = OutPacket.create(SendOpcode.SNOWBALL_STATE);
         if (entermap) {
@@ -6863,6 +7917,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hitSnowBall 相关的出站数据包。
+     */
     public static Packet hitSnowBall(int what, int damage) {
         OutPacket p = OutPacket.create(SendOpcode.HIT_SNOWBALL);
         p.writeByte(what);
@@ -6888,6 +7945,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 coconutScore 相关的出站数据包。
+     */
     public static Packet coconutScore(int team1, int team2) {
         OutPacket p = OutPacket.create(SendOpcode.COCONUT_SCORE);
         p.writeShort(team1);
@@ -6895,6 +7955,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 hitCoconut 相关的出站数据包。
+     */
     public static Packet hitCoconut(boolean spawn, int id, int type) {
         OutPacket p = OutPacket.create(SendOpcode.COCONUT_HIT);
         if (spawn) {
@@ -6909,24 +7972,36 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 customPacket 相关的出站数据包。
+     */
     public static Packet customPacket(String packet) {
         OutPacket p = new ByteBufOutPacket();
         p.writeBytes(HexTool.toBytes(packet));
         return p;
     }
 
+    /**
+     * 构造 customPacket 相关的出站数据包。
+     */
     public static Packet customPacket(byte[] packet) {
         OutPacket p = new ByteBufOutPacket();
         p.writeBytes(packet);
         return p;
     }
 
+    /**
+     * 构造生成Guide相关的出站数据包。
+     */
     public static Packet spawnGuide(boolean spawn) {
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_GUIDE);
         p.writeBool(spawn);
         return p;
     }
 
+    /**
+     * 构造 talkGuide 相关的出站数据包。
+     */
     public static Packet talkGuide(String talk) {
         final OutPacket p = OutPacket.create(SendOpcode.TALK_GUIDE);
         p.writeByte(0);
@@ -6935,6 +8010,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 guideHint 相关的出站数据包。
+     */
     public static Packet guideHint(int hint) {
         OutPacket p = OutPacket.create(SendOpcode.TALK_GUIDE);
         p.writeByte(1);
@@ -6943,10 +8021,16 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造添加CashItemInformation相关的出站数据包。
+     */
     public static void addCashItemInformation(OutPacket p, Item item, int accountId) {
         addCashItemInformation(p, item, accountId, null);
     }
 
+    /**
+     * 构造添加CashItemInformation相关的出站数据包。
+     */
     public static void addCashItemInformation(OutPacket p, Item item, int accountId, String giftMessage) {
         boolean isGift = giftMessage != null;
         boolean isRing = false;
@@ -6974,6 +8058,9 @@ public class PacketCreator {
         p.writeLong(0);
     }
 
+    /**
+     * 构造显示WishList相关的出站数据包。
+     */
     public static Packet showWishList(Character mc, boolean update) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -6994,6 +8081,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BoughtCashItem相关的出站数据包。
+     */
     public static Packet showBoughtCashItem(Item item, int accountId) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7003,6 +8093,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BoughtCashRing相关的出站数据包。
+     */
     public static Packet showBoughtCashRing(Item ring, String recipient, int accountId) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         p.writeByte(0x87);
@@ -7072,6 +8165,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示CashInventory相关的出站数据包。
+     */
     public static Packet showCashInventory(Client c) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         List<Item> inventory = c.getPlayer().getCashShop().getInventory();
@@ -7091,6 +8187,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示Gifts相关的出站数据包。
+     */
     public static Packet showGifts(List<Pair<Item, String>> gifts) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7104,6 +8203,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示GiftSucceed相关的出站数据包。
+     */
     public static Packet showGiftSucceed(String to, ModifiedCashItemDO item) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7116,6 +8218,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BoughtInventorySlots相关的出站数据包。
+     */
     public static Packet showBoughtInventorySlots(int type, short slots) {
         OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7126,6 +8231,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BoughtStorageSlots相关的出站数据包。
+     */
     public static Packet showBoughtStorageSlots(short slots) {
         OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7135,6 +8243,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造显示BoughtCharacterSlot相关的出站数据包。
+     */
     public static Packet showBoughtCharacterSlot(short slots) {
         OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7144,6 +8255,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 takeFromCashInventory 相关的出站数据包。
+     */
     public static Packet takeFromCashInventory(Item item) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7154,6 +8268,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造删除CashItem相关的出站数据包。
+     */
     public static Packet deleteCashItem(Item item) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         p.writeByte(0x6C);
@@ -7161,6 +8278,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 refundCashItem 相关的出站数据包。
+     */
     public static Packet refundCashItem(Item item, int maplePoints) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
         p.writeByte(0x85);
@@ -7169,6 +8289,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 putIntoCashInventory 相关的出站数据包。
+     */
     public static Packet putIntoCashInventory(Item item, int accountId) {
         final OutPacket p = OutPacket.create(SendOpcode.CASHSHOP_OPERATION);
 
@@ -7178,6 +8301,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造打开CashShop相关的出站数据包。
+     */
     public static Packet openCashShop(Client c, boolean mts) throws Exception {
         final OutPacket p = OutPacket.create(mts ? SendOpcode.SET_ITC : SendOpcode.SET_CASH_SHOP);
 
@@ -7266,28 +8392,43 @@ public class PacketCreator {
         });
     }
 
+    /**
+     * 构造发送VegaScroll相关的出站数据包。
+     */
     public static Packet sendVegaScroll(int op) {
         OutPacket p = OutPacket.create(SendOpcode.VEGA_SCROLL);
         p.writeByte(op);
         return p;
     }
 
+    /**
+     * 构造重置ForcedStats相关的出站数据包。
+     */
     public static Packet resetForcedStats() {
         return OutPacket.create(SendOpcode.FORCED_STAT_RESET);
     }
 
+    /**
+     * 构造显示Combo相关的出站数据包。
+     */
     public static Packet showCombo(int count) {
         OutPacket p = OutPacket.create(SendOpcode.SHOW_COMBO);
         p.writeInt(count);
         return p;
     }
 
+    /**
+     * 构造 earnTitleMessage 相关的出站数据包。
+     */
     public static Packet earnTitleMessage(String msg) {
         final OutPacket p = OutPacket.create(SendOpcode.SCRIPT_PROGRESS_MESSAGE);
         p.writeString(msg);
         return p;
     }
 
+    /**
+     * 构造 CPUpdate 相关的出站数据包。
+     */
     public static Packet CPUpdate(boolean party, int curCP, int totalCP, int team) { // CPQ
         final OutPacket p;
         if (!party) {
@@ -7301,12 +8442,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 CPQMessage 相关的出站数据包。
+     */
     public static Packet CPQMessage(byte message) {
         OutPacket p = OutPacket.create(SendOpcode.MONSTER_CARNIVAL_MESSAGE);
         p.writeByte(message); // Message
         return p;
     }
 
+    /**
+     * 构造玩家Summoned相关的出站数据包。
+     */
     public static Packet playerSummoned(String name, int tab, int number) {
         OutPacket p = OutPacket.create(SendOpcode.MONSTER_CARNIVAL_SUMMON);
         p.writeByte(tab);
@@ -7315,6 +8462,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造玩家DiedMessage相关的出站数据包。
+     */
     public static Packet playerDiedMessage(String name, int lostCP, int team) { // CPQ
         OutPacket p = OutPacket.create(SendOpcode.MONSTER_CARNIVAL_DIED);
         p.writeByte(team); // team
@@ -7323,6 +8473,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造开始MonsterCarnival相关的出站数据包。
+     */
     public static Packet startMonsterCarnival(Character chr, int team, int opposition) {
         OutPacket p = OutPacket.create(SendOpcode.MONSTER_CARNIVAL_START);
         p.writeByte(team); // team
@@ -7337,6 +8490,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 sheepRanchInfo 相关的出站数据包。
+     */
     public static Packet sheepRanchInfo(byte wolf, byte sheep) {
         final OutPacket p = OutPacket.create(SendOpcode.SHEEP_RANCH_INFO);
         p.writeByte(wolf);
@@ -7345,6 +8501,9 @@ public class PacketCreator {
     }
     //Know what this is? ?? >=)
 
+    /**
+     * 构造 sheepRanchClothes 相关的出站数据包。
+     */
     public static Packet sheepRanchClothes(int id, byte clothes) {
         final OutPacket p = OutPacket.create(SendOpcode.SHEEP_RANCH_CLOTHES);
         p.writeInt(id); //Character id
@@ -7352,12 +8511,18 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造 incubatorResult 相关的出站数据包。
+     */
     public static Packet incubatorResult() {//lol
         OutPacket p = OutPacket.create(SendOpcode.INCUBATOR_RESULT);
         p.skip(6);
         return p;
     }
 
+    /**
+     * 构造 pyramidGauge 相关的出站数据包。
+     */
     public static Packet pyramidGauge(int gauge) {
         OutPacket p = OutPacket.create(SendOpcode.PYRAMID_GAUGE);
         p.writeInt(gauge);
@@ -7365,6 +8530,9 @@ public class PacketCreator {
     }
     // f2
 
+    /**
+     * 构造 pyramidScore 相关的出站数据包。
+     */
     public static Packet pyramidScore(byte score, int exp) {//Type cannot be higher than 4 (Rank D), otherwise you'll crash
         OutPacket p = OutPacket.create(SendOpcode.PYRAMID_SCORE);
         p.writeByte(score);
@@ -7372,6 +8540,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造生成Dragon相关的出站数据包。
+     */
     public static Packet spawnDragon(Dragon dragon) {
         OutPacket p = OutPacket.create(SendOpcode.SPAWN_DRAGON);
         p.writeInt(dragon.getOwner().getId());//objectid = owner id
@@ -7385,6 +8556,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造移动Dragon相关的出站数据包。
+     */
     public static Packet moveDragon(Dragon dragon, Point startPos, InPacket movementPacket, long movementDataLength) {
         final OutPacket p = OutPacket.create(SendOpcode.MOVE_DRAGON);
         p.writeInt(dragon.getOwner().getId());
@@ -7494,6 +8668,9 @@ public class PacketCreator {
         return p;
     }
 
+    /**
+     * 构造家族Buff相关的出站数据包。
+     */
     public static Packet familyBuff(int type, int buffnr, int amount, int time) {
         OutPacket p = OutPacket.create(SendOpcode.FAMILY_SET_PRIVILEGE);
         p.writeByte(type);
@@ -7509,10 +8686,16 @@ public class PacketCreator {
 
 
 
+    /**
+     * 构造取消FamilyBuff相关的出站数据包。
+     */
     public static Packet cancelFamilyBuff() {
         return familyBuff(0, 0, 0, 0);
     }
 
+    /**
+     * 构造使用TreasureBox相关的出站数据包。
+     */
     public static Packet UseTreasureBox(int type){
         OutPacket p = OutPacket.create(SendOpcode.SUCCESS_IN_USE_GACHAPON_BOX);
         p.writeInt(type);

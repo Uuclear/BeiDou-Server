@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040052
+ * 功能描述：rmation（原版描述）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  Wiz the Librarian - Helios Tower <Library>(222020000)

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `drop_data` 的实体类（DO）。
+ * <p>
+ * 怪物掉落配置表，定义各怪物死亡后掉落物品的概率与数量。
  */
 @Data
 @Builder

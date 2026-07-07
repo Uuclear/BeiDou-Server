@@ -186,6 +186,10 @@ public class Reactor extends AbstractMapObject {
         return delay;  // 返回延迟时间
     }
 
+    /**
+     * 获取类型。
+     * @return MapObjectType 类型结果
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.REACTOR;  // 返回对象类型为反应器
@@ -256,6 +260,10 @@ public class Reactor extends AbstractMapObject {
         this.alive = alive;  // 设置存活状态
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendDestroyData(Client client) {
         client.sendPacket(makeDestroyData());  // 发送销毁数据包
@@ -269,6 +277,10 @@ public class Reactor extends AbstractMapObject {
         return PacketCreator.destroyReactor(this);  // 生成反应器销毁包
     }
 
+    /**
+     * 执行 send、刷新、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendSpawnData(Client client) {
         if (this.isAlive()) {

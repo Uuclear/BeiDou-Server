@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*@author Jvlaple
- * Spawns Eak When 20 Clouds are Dropped.
-  *2006000.js
-  */
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2006000
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Jvlaple
+ */
 function act() {
     rm.mapMessage(5, "光影闪烁间，有人自光芒中现身！");
     rm.spawnNpc(2013001);

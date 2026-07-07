@@ -3,6 +3,9 @@ package org.gms.constants.api;
 import lombok.Getter;
 
 @Getter
+/**
+ * 信息查询 API 的请求类型枚举常量。
+ */
 public enum InformationType {
     CASH("cash"),
     CONSUME("consume"),

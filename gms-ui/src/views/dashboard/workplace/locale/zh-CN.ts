@@ -1,3 +1,6 @@
+/**
+ * 工作台页面中文文案。
+ */
 export default {
   'workplace.gameServer.status': '服务器状态',
   'workplace.gameServer.currently': '服务目前',

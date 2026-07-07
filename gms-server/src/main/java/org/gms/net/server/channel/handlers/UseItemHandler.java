@@ -38,9 +38,11 @@ import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Matze
+ * 处理使用消耗品（USE_ITEM）与返回卷轴（USE_RETURN_SCROLL）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_ITEM}, {@link org.gms.net.opcodes.RecvOpcode#USE_RETURN_SCROLL}</p>
  */
 public final class UseItemHandler extends AbstractPacketHandler {
+    /** 处理 使用物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

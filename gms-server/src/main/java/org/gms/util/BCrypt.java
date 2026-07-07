@@ -20,6 +20,8 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 
 /**
+ * OpenBSD 风格 Blowfish 密码哈希实现（BCrypt），用于安全存储与校验用户密码。
+ * <p>
  * BCrypt implements OpenBSD-style Blowfish password hashing using
  * the scheme described in "A Future-Adaptable Password Scheme" by
  * Niels Provos and David Mazieres.
@@ -971,6 +973,13 @@ public class BCrypt {
         return ret == 0;
     }
 
+    /**
+     * 使用 SHA-512 对密码求摘要，返回小写紧凑十六进制字符串（非 BCrypt 哈希）。
+     *
+     * @param pwd 明文密码
+     * @return SHA-512 十六进制摘要
+     * @throws NoSuchAlgorithmException 算法不可用时抛出
+     */
     public static String hashpwSHA512(String pwd) throws NoSuchAlgorithmException {
         MessageDigest digester = MessageDigest.getInstance("SHA-512");
         digester.update(pwd.getBytes(StandardCharsets.UTF_8), 0, pwd.length());

@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator
-	NPC Name: 		Peter
-	Map(s): 		Maple Road: Entrance - Mushroom Town Training Camp (3)
-	Description: 	Takes you out of Entrace of Mushroom Town Training Camp
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9101001
+ * 功能描述：Peter，Takes you out of Entrace of Mushroom Town Training Camp（原版描述）。
+ * 原作者：Xterminator
+ */
 var status = 0;
 
 function start() {

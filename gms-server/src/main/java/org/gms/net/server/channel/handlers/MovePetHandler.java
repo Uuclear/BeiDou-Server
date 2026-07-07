@@ -30,7 +30,12 @@ import org.gms.exception.EmptyMovementException;
 
 import java.util.List;
 
+/**
+ * 处理客户端 MOVE_PET（移动宠物） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOVE_PET}</p>
+ */
 public final class MovePetHandler extends AbstractMovementPacketHandler {
+    /** 处理 移动宠物 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int petId = p.readInt();

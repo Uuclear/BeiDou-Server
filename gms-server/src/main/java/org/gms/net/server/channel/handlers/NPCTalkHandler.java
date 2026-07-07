@@ -37,9 +37,14 @@ import org.gms.server.life.PlayerNPC;
 import org.gms.server.maps.MapObject;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 NPC_TALK（NPC对话） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#NPC_TALK}</p>
+ */
 public final class NPCTalkHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(NPCTalkHandler.class);
 
+    /** 处理 NPC对话 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (c.getPlayer().getMapId() == MapId.JAIL) {   //监狱地图不可使用脚本

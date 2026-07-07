@@ -31,10 +31,11 @@ import org.gms.net.server.coordinator.world.InviteCoordinator.InviteType;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Jay Estrella
- * @author Ubaware
+ * 处理客户端 ADD_FAMILY（添加家族） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ADD_FAMILY}</p>
  */
 public final class FamilyAddHandler extends AbstractPacketHandler {
+    /** 处理 添加家族 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_family_system")) {

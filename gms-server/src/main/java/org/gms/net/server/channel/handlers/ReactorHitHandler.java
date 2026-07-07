@@ -27,9 +27,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.maps.Reactor;
 
 /**
- * @author Lerk
+ * 处理玩家攻击反应堆（DAMAGE_REACTOR）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#DAMAGE_REACTOR}</p>
  */
 public final class ReactorHitHandler extends AbstractPacketHandler {
+    /** 处理 反应堆受到伤害 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         //System.out.println(slea); //To see if there are any differences with packets

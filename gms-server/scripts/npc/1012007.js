@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Author: Xterminator
-	NPC Name: 		Trainer Frod
-	Map(s): 		Victoria Road : Pet-Walking Road (100000202)
-	Description: 		Pet Trainer
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1012007
+ * 功能描述：Trainer Frod，技能训练师。
+ * 原作者：Xterminator
+ */
 function start() {
     if (cm.haveItem(4031035)) {
         cm.sendNext("Eh, that's my brother's letter! Probably scolding me for thinking I'm not working and stuff...Eh? Ahhh...you followed my brother's advice and trained your pet and got up here, huh? Nice!! Since you worked hard to get here, I'll boost your intimacy level with your pet.");

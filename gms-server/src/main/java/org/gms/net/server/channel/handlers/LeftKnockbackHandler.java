@@ -28,9 +28,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author kevintjuh93
+ * 处理客户端 LEFT_KNOCKBACK（左侧击退） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#LEFT_KNOCKBACK}</p>
  */
 public class LeftKnockbackHandler extends AbstractPacketHandler {
+    /** 向客户端发送左侧击退效果并恢复可操作状态。 */
     public void handlePacket(InPacket p, final Client c) {
         c.sendPacket(PacketCreator.leftKnockBack());
         c.sendPacket(PacketCreator.enableActions());

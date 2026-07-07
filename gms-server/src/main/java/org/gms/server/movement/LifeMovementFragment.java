@@ -25,6 +25,9 @@ import org.gms.net.packet.OutPacket;
 
 import java.awt.*;
 
+/**
+ * 移动片段标记接口。
+ */
 public interface LifeMovementFragment {
     void serialize(OutPacket p);
     Point getPosition();

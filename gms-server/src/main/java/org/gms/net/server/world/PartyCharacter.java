@@ -24,6 +24,9 @@ package org.gms.net.server.world;
 import org.gms.client.Character;
 import org.gms.client.Job;
 
+/**
+ * 队伍成员快照，记录角色等级、职业、地图、频道及在线状态。
+ */
 public class PartyCharacter {
     private final String name;
     private int id;

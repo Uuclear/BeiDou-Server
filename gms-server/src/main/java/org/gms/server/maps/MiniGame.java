@@ -34,8 +34,7 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * @author Matze
- * @author Ronan (HeavenMS)
+ * 地图小游戏对象（如 Omni 剪刀石头布）。
  */
 public class MiniGame extends AbstractMapObject {
     private Character owner;
@@ -65,6 +64,10 @@ public class MiniGame extends AbstractMapObject {
             this.value = value;
         }
 
+        /**
+         * 获取Value。
+         * @return int 类型结果
+         */
         public int getValue() {
             return value;
         }
@@ -74,28 +77,56 @@ public class MiniGame extends AbstractMapObject {
         WIN, LOSS, TIE
     }
 
+    /**
+     * 构造 MiniGame 实例。
+     * @param owner 归属角色
+     * @param description description
+     * @param password password
+     */
     public MiniGame(Character owner, String description, String password) {
         this.owner = owner;
         this.description = description;
         this.password = password;
     }
 
+    /**
+     * 获取Password。
+     * @return String 类型结果
+     */
     public String getPassword() {
         return this.password;
     }
 
+    /**
+     * 检查Password。
+     * @param sentPw sentPw
+     * @return boolean 类型结果
+     */
     public boolean checkPassword(String sentPw) {
         return this.password.length() == 0 || sentPw.toLowerCase().contentEquals(this.password.toLowerCase());
     }
 
+    /**
+     * 判断是否拥有Free、Slot。
+     * @return boolean 类型结果
+     */
     public boolean hasFreeSlot() {
         return visitor == null;
     }
 
+    /**
+     * 判断是否为归属者。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean isOwner(Character chr) {
         return owner.equals(chr);
     }
 
+    /**
+     * 添加Visitor。
+     * @param challenger challenger
+     */
     public void addVisitor(Character challenger) {
         visitor = challenger;
         if (lastvisitor != challenger.getId()) {
@@ -117,6 +148,10 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 close、Room 操作。
+     * @param forceClose forceClose
+     */
     public void closeRoom(boolean forceClose) {
         owner.getMap().broadcastMessage(PacketCreator.removeMinigameBox(owner));
 
@@ -134,6 +169,11 @@ public class MiniGame extends AbstractMapObject {
         owner = null;
     }
 
+    /**
+     * 移除Visitor。
+     * @param forceClose forceClose
+     * @param challenger challenger
+     */
     public void removeVisitor(boolean forceClose, Character challenger) {
         if (visitor == challenger) {
             if (isMatchInProgress()) { // owner is winner if visitor leave in progress
@@ -155,10 +195,19 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 判断是否为Visitor。
+     * @param challenger challenger
+     * @return boolean 类型结果
+     */
     public boolean isVisitor(Character challenger) {
         return visitor == challenger;
     }
 
+    /**
+     * 向地图广播到归属者。
+     * @param packet 网络数据包
+     */
     public void broadcastToOwner(Packet packet) {
         Client c = owner.getClient();
         if (c != null) {
@@ -166,16 +215,28 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 向地图广播到、Visitor。
+     * @param packet 网络数据包
+     */
     public void broadcastToVisitor(Packet packet) {
         if (visitor != null) {
             visitor.sendPacket(packet);
         }
     }
 
+    /**
+     * 设置First、Slot。
+     * @param type 类型
+     */
     public void setFirstSlot(int type) {
         firstslot = type;
     }
 
+    /**
+     * 获取First、Slot。
+     * @return int 类型结果
+     */
     public int getFirstSlot() {
         return firstslot;
     }
@@ -203,12 +264,20 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 minigame、Match、Started 操作。
+     */
     public void minigameMatchStarted() {
         inprogress = 1;
         ownerquit = false;
         visitorquit = false;
     }
 
+    /**
+     * 设置Quit、After、游戏。
+     * @param player 玩家
+     * @param quit quit
+     */
     public void setQuitAfterGame(Character player, boolean quit) {
         if (isOwner(player)) {
             ownerquit = quit;
@@ -217,10 +286,18 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 判断是否为Match、在、Progress。
+     * @return boolean 类型结果
+     */
     public boolean isMatchInProgress() {
         return inprogress != 0;
     }
 
+    /**
+     * 执行 deny、Tie 操作。
+     * @param chr 角色
+     */
     public void denyTie(Character chr) {
         if (this.isOwner(chr)) {
             inprogress |= (1 << 1);
@@ -229,6 +306,11 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 判断是否为Tie、Denied。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean isTieDenied(Character chr) {
         if (this.isOwner(chr)) {
             return ((inprogress >> 2) % 2) == 1;
@@ -237,6 +319,10 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 minigame、Match、归属者、Wins 操作。
+     * @param forfeit forfeit
+     */
     public void minigameMatchOwnerWins(boolean forfeit) {
         if (!minigameMatchFinish()) {
             return;
@@ -257,6 +343,10 @@ public class MiniGame extends AbstractMapObject {
         minigameMatchFinished();
     }
 
+    /**
+     * 执行 minigame、Match、Visitor、Wins 操作。
+     * @param forfeit forfeit
+     */
     public void minigameMatchVisitorWins(boolean forfeit) {
         if (!minigameMatchFinish()) {
             return;
@@ -277,6 +367,9 @@ public class MiniGame extends AbstractMapObject {
         minigameMatchFinished();
     }
 
+    /**
+     * 执行 minigame、Match、Draw 操作。
+     */
     public void minigameMatchDraw() {
         if (!minigameMatchFinish()) {
             return;
@@ -297,6 +390,9 @@ public class MiniGame extends AbstractMapObject {
         minigameMatchFinished();
     }
 
+    /**
+     * 设置归属者、Points。
+     */
     public void setOwnerPoints() {
         ownerpoints++;
         if (ownerpoints + visitorpoints == matchestowin) {
@@ -312,6 +408,9 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 设置Visitor、Points。
+     */
     public void setVisitorPoints() {
         visitorpoints++;
         if (ownerpoints + visitorpoints == matchestowin) {
@@ -327,18 +426,34 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 设置Matches、到、Win。
+     * @param type 类型
+     */
     public void setMatchesToWin(int type) {
         matchestowin = type;
     }
 
+    /**
+     * 设置Piece、类型。
+     * @param type 类型
+     */
     public void setPieceType(int type) {
         piecetype = type;
     }
 
+    /**
+     * 获取Piece、类型。
+     * @return int 类型结果
+     */
     public int getPieceType() {
         return piecetype;
     }
 
+    /**
+     * 设置游戏类型。
+     * @param game game
+     */
     public void setGameType(MiniGameType game) {
         GameType = game;
         if (GameType == MiniGameType.MATCH_CARD) {
@@ -361,14 +476,25 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取游戏类型。
+     * @return MiniGameType 类型结果
+     */
     public MiniGameType getGameType() {
         return GameType;
     }
 
+    /**
+     * 判断是否为Omok。
+     * @return boolean 类型结果
+     */
     public boolean isOmok() {
         return GameType.equals(MiniGameType.OMOK);
     }
 
+    /**
+     * 执行 shuffle、List 操作。
+     */
     public void shuffleList() {
         if (matchestowin == 6) {
             Collections.shuffle(list4x3);
@@ -379,6 +505,11 @@ public class MiniGame extends AbstractMapObject {
         }
     }
 
+    /**
+     * 获取Card、ID。
+     * @param slot slot
+     * @return int 类型结果
+     */
     public int getCardId(int slot) {
         int cardid;
         if (matchestowin == 6) {
@@ -391,43 +522,89 @@ public class MiniGame extends AbstractMapObject {
         return cardid;
     }
 
+    /**
+     * 获取Matches、到、Win。
+     * @return int 类型结果
+     */
     public int getMatchesToWin() {
         return matchestowin;
     }
 
+    /**
+     * 设置Loser。
+     * @param type 类型
+     */
     public void setLoser(int type) {
         loser = type;
     }
 
+    /**
+     * 获取Loser。
+     * @return int 类型结果
+     */
     public int getLoser() {
         return loser;
     }
 
+    /**
+     * 执行 broadcast 操作。
+     * @param packet 网络数据包
+     */
     public void broadcast(Packet packet) {
         broadcastToOwner(packet);
         broadcastToVisitor(packet);
     }
 
+    /**
+     * 执行 chat 操作。
+     * @param c c
+     * @param chat chat
+     */
     public void chat(Client c, String chat) {
         broadcast(PacketCreator.getPlayerShopChat(c.getPlayer(), chat, isOwner(c.getPlayer())));
     }
 
+    /**
+     * 执行 send、Omok 操作。
+     * @param c c
+     * @param type 类型
+     */
     public void sendOmok(Client c, int type) {
         c.sendPacket(PacketCreator.getMiniGame(c, this, isOwner(c.getPlayer()), type));
     }
 
+    /**
+     * 执行 send、Match、Card 操作。
+     * @param c c
+     * @param type 类型
+     */
     public void sendMatchCard(Client c, int type) {
         c.sendPacket(PacketCreator.getMatchCard(c, this, isOwner(c.getPlayer()), type));
     }
 
+    /**
+     * 获取归属者。
+     * @return Character 类型结果
+     */
     public Character getOwner() {
         return owner;
     }
 
+    /**
+     * 获取Visitor。
+     * @return Character 类型结果
+     */
     public Character getVisitor() {
         return visitor;
     }
 
+    /**
+     * 设置Piece。
+     * @param move1 move1
+     * @param move2 move2
+     * @param type 类型
+     * @param chr 角色
+     */
     public void setPiece(int move1, int move2, int type, Character chr) {
         int slot = move2 * 15 + move1 + 1;
         if (piece[slot] == 0) {
@@ -515,18 +692,33 @@ public class MiniGame extends AbstractMapObject {
         return false;
     }
 
+    /**
+     * 获取Description。
+     * @return String 类型结果
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * 获取归属者、Score。
+     * @return int 类型结果
+     */
     public int getOwnerScore() {
         return ownerscore;
     }
 
+    /**
+     * 获取Visitor、Score。
+     * @return int 类型结果
+     */
     public int getVisitorScore() {
         return visitorscore;
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     */
     @Override
     public void sendDestroyData(Client client) {}
 

@@ -1,8 +1,11 @@
-/* Author: aaroncsn <MapleSea Like>
-	NPC Name: 		Karcasa
-	Map(s): 		The Burning Sands: Tents of the Entertainers(260010600)
-	Description: 		Warps to Victoria Island
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2101013
+ * 功能描述：Karcasa，地图传送。
+ * 原作者：aaroncsn <MapleSea Like>
+ */
 var towns = [100000000, 101000000, 102000000, 103000000, 104000000];
 
 function start() {

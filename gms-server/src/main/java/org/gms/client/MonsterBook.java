@@ -36,6 +36,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 怪物收藏册，管理玩家击杀怪物后的卡片收集进度与特殊卡片统计。
+ */
 public final class MonsterBook {
     private int specialCard = 0;
     private int normalCard = 0;
@@ -44,10 +47,18 @@ public final class MonsterBook {
     private final Lock lock = new ReentrantLock();
     private static final MonsterBookService monsterBookService = ServerManager.getApplicationContext().getBean(MonsterBookService.class);
 
+    /**
+     * 怪物Book
+     * @param cid cid
+     */
     public MonsterBook(int cid) {
         loadCards(cid);
     }
 
+    /**
+     * 获取卡片集合
+     * @return 返回值
+     */
     public Set<Entry<Integer, Integer>> getCardSet() {
         lock.lock();
         try {
@@ -57,6 +68,11 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 添加Card
+     * @param c 客户端会话
+     * @param cardid cardid
+     */
     public void addCard(final Client c, final int cardid) {
         c.getPlayer().getMap().broadcastMessage(c.getPlayer(), PacketCreator.showForeignCardEffect(c.getPlayer().getId()), false);
 
@@ -112,6 +128,10 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 获取Book等级
+     * @return 返回值
+     */
     public int getBookLevel() {
         lock.lock();
         try {
@@ -121,6 +141,10 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 获取Cards
+     * @return 返回值
+     */
     public Map<Integer, Integer> getCards() {
         lock.lock();
         try {
@@ -130,6 +154,10 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 获取TotalCards
+     * @return 返回值
+     */
     public int getTotalCards() {
         lock.lock();
         try {
@@ -139,6 +167,10 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 获取NormalCard
+     * @return 返回值
+     */
     public int getNormalCard() {
         lock.lock();
         try {
@@ -148,6 +180,10 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 获取SpecialCard
+     * @return 返回值
+     */
     public int getSpecialCard() {
         lock.lock();
         try {
@@ -157,6 +193,10 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 加载Cards
+     * @param chrId chrId
+     */
     public void loadCards(final int chrId) {
         lock.lock();
 
@@ -177,6 +217,11 @@ public final class MonsterBook {
         calculateLevel();
     }
 
+    /**
+     * 保存Cards
+     * @param con con
+     * @param chrId chrId
+     */
     public void saveCards(Connection con, int chrId) throws SQLException {
         final String query = """
                 INSERT INTO monsterbook (charid, cardid, level)
@@ -201,6 +246,10 @@ public final class MonsterBook {
         }
     }
 
+    /**
+     * 获取CardTier大小
+     * @return 返回值
+     */
     public static int[] getCardTierSize() {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM monstercarddata GROUP BY floor(cardid / 1000);", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

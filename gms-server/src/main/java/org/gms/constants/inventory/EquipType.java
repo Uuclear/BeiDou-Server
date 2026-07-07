@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author RonanLana
+ * 装备部位/类型常量，用于判定装备可穿戴槽位与装备分类。
  */
 public enum EquipType {
     UNDEFINED(-1),

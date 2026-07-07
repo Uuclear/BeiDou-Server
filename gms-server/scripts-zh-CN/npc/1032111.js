@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1032111
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /*
 	NPC: Small Tree Stump
 	MAP: Victoria Road - Top of the Tree That Grew (101010103)

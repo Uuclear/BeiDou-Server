@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21101
+ * 功能描述：任务脚本，完成任务后发放物品奖励。
+ */
 status = -1;
 
 function start(mode, type, selection) {

@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `eventstats` 的实体类（DO）。
+ * <p>
+ * 活动统计表，记录限时活动的参与次数、积分等统计数据。
  */
 @Data
 @Builder

@@ -29,8 +29,13 @@ import org.gms.net.server.channel.Channel;
 import org.gms.net.server.world.World;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 CHARLIST_REQUEST（请求角色列表） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHARLIST_REQUEST}</p>
+ */
 public final class CharlistRequestHandler extends AbstractPacketHandler {
 
+    /** 处理 请求角色列表 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readByte();

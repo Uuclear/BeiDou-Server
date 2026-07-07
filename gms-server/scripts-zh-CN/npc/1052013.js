@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1052013
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ */
 /*
     NPC ID: 1052013 
     NPC NAME: Computer

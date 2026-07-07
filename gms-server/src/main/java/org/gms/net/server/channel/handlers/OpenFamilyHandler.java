@@ -27,9 +27,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Ubaware
+ * 处理客户端 OPEN_FAMILY（打开家族） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#OPEN_FAMILY}</p>
  */
 public final class OpenFamilyHandler extends AbstractPacketHandler {
+    /** 处理 打开家族 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_family_system")) {

@@ -7,7 +7,16 @@ import java.time.Instant;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
 
+/**
+ * HWID 与账号关联的过期时间计算，根据登录相关度动态调整缓存时长。
+ */
 public class HwidAssociationExpiry {
+    /**
+     * 根据相关度计算 HWID 账号关联的过期时刻。
+     *
+     * @param relevance 登录相关度
+     * @return 过期时间
+     */
     public static Instant getHwidAccountExpiry(int relevance) {
         return Instant.ofEpochMilli(Server.getInstance().getCurrentTime()).plusMillis(hwidExpirationUpdate(relevance));
     }

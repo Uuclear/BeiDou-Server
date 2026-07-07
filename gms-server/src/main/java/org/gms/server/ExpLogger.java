@@ -16,11 +16,23 @@ import java.util.concurrent.ScheduledExecutorService;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 经验获取日志记录器。
+ */
 public class ExpLogger {
     private static final LinkedBlockingQueue<ExpLogRecord> expLoggerQueue = new LinkedBlockingQueue<>();
     private static final short EXP_LOGGER_THREAD_SLEEP_DURATION_SECONDS = 60;
     private static final short EXP_LOGGER_THREAD_SHUTDOWN_WAIT_DURATION_MINUTES = 5;
 
+    /**
+     * 执行 经验、Log、Record 操作。
+     * @param worldExpRate worldExpRate
+     * @param expCoupon expCoupon
+     * @param gainedExp gainedExp
+     * @param currentExp currentExp
+     * @param expGainTime expGainTime
+     * @return record 类型结果
+     */
     public record ExpLogRecord(float worldExpRate, int expCoupon, long gainedExp, int currentExp,Timestamp expGainTime, int charid) {}
 
     public static void putExpLogRecord(ExpLogRecord expLogRecord) {

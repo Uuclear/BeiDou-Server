@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `keymap` 的实体类（DO）。
+ * <p>
+ * 角色按键映射表，持久化技能、物品与动作栏的键盘绑定配置。
  */
 @Data
 @Builder

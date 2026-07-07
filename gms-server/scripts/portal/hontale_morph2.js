@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：hontale_morph2
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 /*
 Leave the Cave of Life - Entrance Map and go back to the Peak of the Big Nest (240040600) should probably cancel the HT morph buff
 */

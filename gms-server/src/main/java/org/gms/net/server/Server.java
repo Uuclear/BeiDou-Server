@@ -86,6 +86,20 @@ import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.*;
 
+/**
+ * 游戏服务端全局单例，统筹 v83 协议栈之上的世界、频道、登录服与业务子系统。
+ * <p>
+ * 网络层职责：
+ * <ul>
+ *   <li>{@link #init()} 启动时注册 {@link ChannelDependencies}、初始化各 {@link World}、
+ *       启动 {@link LoginServer} 与各 {@link ChannelServer}</li>
+ *   <li>{@link #getWorld(int)} / {@link #getChannel(int, int)} 供 Handler 定位玩家所在世界与频道</li>
+ *   <li>{@link #getInetSocket(Client, int, int)} 向客户端返回频道连接地址（支持 NAT 内外网切换）</li>
+ *   <li>{@link #shutdown(boolean)} 优雅关闭所有世界、频道与登录服</li>
+ * </ul>
+ * 客户端连接流程：LoginServer（账号/选角）→ 获得频道 IP → ChannelServer（游戏内通信）。
+ * </p>
+ */
 public class Server {
     static {
         System.setProperty("polyglot.engine.WarnInterpreterOnly", "false"); // Mute GraalVM warning: "The polyglot context is using an implementation that does not support runtime compilation."
@@ -94,6 +108,11 @@ public class Server {
     private static final Logger log = LoggerFactory.getLogger(Server.class);
     private static Server instance = null;
 
+    /**
+     * 获取服务端全局单例（懒加载）。
+     *
+     * @return {@code Server} 实例
+     */
     public static Server getInstance() {
         if (instance == null) {
             instance = new Server();
@@ -222,6 +241,12 @@ public class Server {
         });
     }
 
+    /**
+     * 按世界 ID 获取 {@link World} 实例。
+     *
+     * @param id 世界编号（从 0 起）
+     * @return 对应世界，ID 越界时返回 {@code null}
+     */
     public World getWorld(int id) {
         wldRLock.lock();
         try {
@@ -235,6 +260,9 @@ public class Server {
         }
     }
 
+    /**
+     * @return 所有已初始化世界的不可变列表
+     */
     public List<World> getWorlds() {
         wldRLock.lock();
         try {
@@ -244,6 +272,7 @@ public class Server {
         }
     }
 
+    /** @return 已加载的世界数量 */
     public int getWorldsSize() {
         wldRLock.lock();
         try {
@@ -253,6 +282,13 @@ public class Server {
         }
     }
 
+    /**
+     * 获取指定世界下的频道实例。
+     *
+     * @param world   世界编号
+     * @param channel 频道编号
+     * @return 频道实例，世界或频道不存在时返回 {@code null}
+     */
     public Channel getChannel(int world, int channel) {
         try {
             return this.getWorld(world).getChannel(channel);
@@ -261,6 +297,10 @@ public class Server {
         }
     }
 
+    /**
+     * @param world 世界编号
+     * @return 该世界下所有频道列表，世界不存在时返回空列表
+     */
     public List<Channel> getChannelsFromWorld(int world) {
         try {
             return this.getWorld(world).getChannels();
@@ -269,6 +309,7 @@ public class Server {
         }
     }
 
+    /** @return 所有世界中所有频道的扁平列表 */
     public List<Channel> getAllChannels() {
         try {
             List<Channel> channelz = new ArrayList<>();
@@ -281,6 +322,10 @@ public class Server {
         }
     }
 
+    /**
+     * @param world 世界编号
+     * @return 该世界当前已开放（在线）的频道编号集合
+     */
     public Set<Integer> getOpenChannels(int world) {
         wldRLock.lock();
         try {
@@ -299,6 +344,18 @@ public class Server {
         }
     }
 
+    /**
+     * 根据客户端来源 IP 解析频道连接地址，支持 localhost/LAN 回环替换。
+     * <p>
+     * 登录服在 {@link org.gms.net.opcodes.SendOpcode#SERVER_IP} 等封包中调用，
+     * 使内网/本机客户端获得可达的频道 IP。
+     * </p>
+     *
+     * @param client  发起请求的客户端
+     * @param world   目标世界
+     * @param channel 目标频道
+     * @return {@code [host, port]} 字符串数组，解析失败时返回 {@code null}
+     */
     public String[] getInetSocket(Client client, int world, int channel) {
         String remoteIp = client.getRemoteAddress();
 
@@ -316,6 +373,12 @@ public class Server {
         }
     }
 
+    /**
+     * 在指定世界动态添加一个新频道并启动对应的 {@link ChannelServer}。
+     *
+     * @param worldid 世界编号
+     * @return 新频道的编号，失败时返回 -1
+     */
     public int addChannel(int worldid) {
         World world;
         Map<Integer, String> channelInfo;
@@ -654,6 +717,14 @@ public class Server {
     }
 
     //游戏启动
+    /**
+     * 服务端主初始化入口：加载游戏数据、创建世界与频道、启动 {@link LoginServer}。
+     * <p>
+     * 网络相关步骤包括：{@link #registerChannelDependencies()} 注册封包处理器依赖、
+     * 各世界 {@link ChannelServer} 绑定端口、登录服监听配置端口。
+     * 完成后将 {@link #online} 置为 {@code true}。
+     * </p>
+     */
     public void init() {
         Instant beforeInit = Instant.now();
         log.info(I18nUtil.getLogMessage("Server.init.info1"), ServerConstants.VERSION);
@@ -1095,6 +1166,12 @@ public class Server {
         worlda.reloadGuildSummary();
     }
 
+    /**
+     * 向指定世界所有在线玩家广播封包。
+     *
+     * @param world  目标世界编号
+     * @param packet 已编码的出站封包
+     */
     public void broadcastMessage(int world, Packet packet) {
         for (Channel ch : getChannelsFromWorld(world)) {
             ch.broadcastPacket(packet);
@@ -1610,10 +1687,24 @@ public class Server {
         TimerManager.getInstance().register(this::disconnectIdlesOnLoginState, 300000);
     }
 
+    /**
+     * 返回关闭服务端的 {@link Runnable}，应在无玩家在线时调用。
+     *
+     * @param restart {@code true} 时关闭后自动重新 {@link #init()}
+     * @return 可提交给线程池执行的关闭任务
+     */
     public final Runnable shutdown(final boolean restart) {//no player should be online when trying to shutdown!
         return () -> shutdownInternal(restart);
     }
 
+    /**
+     * 同步关闭所有世界、频道与登录服；可选重启。
+     * <p>
+     * 依次：各 {@link World#shutdown()} → 等待频道关闭 → 停止线程池 → 关闭 {@link LoginServer}。
+     * </p>
+     *
+     * @param restart 是否在关闭后重新初始化
+     */
     public synchronized void shutdownInternal(boolean restart) {
         log.info(I18nUtil.getLogMessage("Server.shutdownInternal.info1"), restart ?
                 I18nUtil.getLogMessage("Server.shutdownInternal.info2") : I18nUtil.getLogMessage("Server.shutdownInternal.info3"));

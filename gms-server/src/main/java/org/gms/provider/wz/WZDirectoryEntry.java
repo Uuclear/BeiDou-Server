@@ -28,6 +28,9 @@ import org.gms.provider.DataFileEntry;
 
 import java.util.*;
 
+/**
+ * WZ 目录条目，维护子目录与文件的索引，供 {@link XMLWZFile} 构建导航树。
+ */
 public class WZDirectoryEntry extends WZEntry implements DataDirectoryEntry {
     private final List<DataDirectoryEntry> subdirs = new ArrayList<>();
     private final List<DataFileEntry> files = new ArrayList<>();
@@ -41,24 +44,29 @@ public class WZDirectoryEntry extends WZEntry implements DataDirectoryEntry {
         super(null, 0, 0, null);
     }
 
+/** 添加子目录条目 */
     public void addDirectory(DataDirectoryEntry dir) {
         subdirs.add(dir);
         entries.put(dir.getName(), dir);
     }
 
+/** 添加文件条目 */
     public void addFile(DataFileEntry fileEntry) {
         files.add(fileEntry);
         entries.put(fileEntry.getName(), fileEntry);
     }
 
+/** 获取子目录列表 */
     public List<DataDirectoryEntry> getSubdirectories() {
         return Collections.unmodifiableList(subdirs);
     }
 
+/** 获取文件列表 */
     public List<DataFileEntry> getFiles() {
         return Collections.unmodifiableList(files);
     }
 
+/** 按名称获取目录或文件条目 */
     public DataEntry getEntry(String name) {
         return entries.get(name);
     }

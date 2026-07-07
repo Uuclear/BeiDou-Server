@@ -3,6 +3,9 @@ package org.gms.server.life;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * 怪物技能类型枚举。
+ */
 public enum MobSkillType {
     ATTACK_UP(100),
     MAGIC_ATTACK_UP(101),
@@ -52,6 +55,11 @@ public enum MobSkillType {
         this.id = id;
     }
 
+    /**
+     * 执行 from 操作。
+     * @param id ID
+     * @return Optional<MobSkillType> 类型结果
+     */
     public static Optional<MobSkillType> from(int id) {
         if (isOutOfIdRange(id)) {
             return Optional.empty();
@@ -66,6 +74,10 @@ public enum MobSkillType {
         return id < 100 || id > 200;
     }
 
+    /**
+     * 获取ID。
+     * @return int 类型结果
+     */
     public int getId() {
         return id;
     }

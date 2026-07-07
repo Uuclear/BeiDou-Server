@@ -20,6 +20,8 @@
 package org.gms.net.server.coordinator.matchchecker;
 
 /**
+ * 匹配检测监听器配方接口，用于延迟加载具体监听器实现。
+ *
  * @author Ronan
  */
 public interface MatchCheckerListenerRecipe {

@@ -30,11 +30,19 @@ import org.gms.server.maps.MapleMap;
 import org.gms.util.I18nUtil;
 import org.gms.util.StringUtil;
 
+/**
+ * GM2命令：传送到指定玩家的位置
+ */
 public class ReachCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ReachCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

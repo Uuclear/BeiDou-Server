@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.gms.util.HexTool;
 
+/**
+ * 出站封包 Netty 日志处理器，在调试模式下记录服务端发送的封包内容。
+ */
 @Sharable
 public class OutPacketLogger extends ChannelOutboundHandlerAdapter implements PacketLogger {
     private static final Logger log = LoggerFactory.getLogger(OutPacketLogger.class);

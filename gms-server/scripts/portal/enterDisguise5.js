@@ -17,11 +17,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* 
-	Map(s): 		Empress' Road : Training Forest III
-	Description: 		Takes you to Entrance to Drill Hall
-*/
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：enterDisguise5
+ * 功能描述：Takes you to Entrance to Drill Hall（原版描述）。
+ */
 var jobtype = 4;
 
 function enter(pi) {

@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201057
+ * 功能描述：NPC脚本，提供地图传送、物品发放、金币奖励。
+ */
 function start() {
     if (cm.c.getPlayer().getMapId() == 103000100 || cm.c.getPlayer().getMapId() == 600010001) {
         cm.sendYesNo("每分钟都有前往" + (cm.c.getPlayer().getMapId() == 103000100 ? "新叶城（Masteria）" : "金银岛（Victoria Island）的（Kerning City）废弃都市") + "的地铁出发，票价为#b5000金币#k。您确定要购买#b#t" + (4031711 + parseInt(cm.c.getPlayer().getMapId() / 300000000)) + "##k吗？");

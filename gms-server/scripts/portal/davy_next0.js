@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：davy_next0
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function passedGrindMode(map, eim) {
     if (eim.getIntProperty("grindMode") == 0) {
         return true;

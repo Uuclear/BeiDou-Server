@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Danny (Leifde)
+ * 怪物技能实例（技能 ID、等级、效果范围）。
  */
 public class MobSkill {
     private static final Logger log = LoggerFactory.getLogger(MobSkill.class);
@@ -100,82 +100,164 @@ public class MobSkill {
         private int limit;
         private List<Integer> toSummon;
 
+        /**
+         * 执行 Builder 操作。
+         * @param type 类型
+         * @param level level
+         * @return Builder 类型结果
+         */
         public Builder(MobSkillType type, int level) {
             this.type = type;
             this.level = level;
         }
 
+        /**
+         * 执行 mpCon 操作。
+         * @param mpCon mpCon
+         * @return Builder 类型结果
+         */
         public Builder mpCon(int mpCon) {
             this.mpCon = mpCon;
             return this;
         }
 
+        /**
+         * 生成效果。
+         * @param spawnEffect spawnEffect
+         * @return Builder 类型结果
+         */
         public Builder spawnEffect(int spawnEffect) {
             this.spawnEffect = spawnEffect;
             return this;
         }
 
+        /**
+         * 执行 hp 操作。
+         * @param hp hp
+         * @return Builder 类型结果
+         */
         public Builder hp(int hp) {
             this.hp = hp;
             return this;
         }
 
+        /**
+         * 执行 x 操作。
+         * @param x x
+         * @return Builder 类型结果
+         */
         public Builder x(int x) {
             this.x = x;
             return this;
         }
 
+        /**
+         * 执行 y 操作。
+         * @param y y
+         * @return Builder 类型结果
+         */
         public Builder y(int y) {
             this.y = y;
             return this;
         }
 
+        /**
+         * 执行 count 操作。
+         * @param count count
+         * @return Builder 类型结果
+         */
         public Builder count(int count) {
             this.count = count;
             return this;
         }
 
+        /**
+         * 执行 duration 操作。
+         * @param duration duration
+         * @return Builder 类型结果
+         */
         public Builder duration(long duration) {
             this.duration = duration;
             return this;
         }
 
+        /**
+         * 执行 cooltime 操作。
+         * @param cooltime cooltime
+         * @return Builder 类型结果
+         */
         public Builder cooltime(long cooltime) {
             this.cooltime = cooltime;
             return this;
         }
 
+        /**
+         * 执行 prop 操作。
+         * @param prop prop
+         * @return Builder 类型结果
+         */
         public Builder prop(float prop) {
             this.prop = prop;
             return this;
         }
 
+        /**
+         * 执行 lt 操作。
+         * @param lt lt
+         * @return Builder 类型结果
+         */
         public Builder lt(Point lt) {
             this.lt = lt;
             return this;
         }
 
+        /**
+         * 执行 rb 操作。
+         * @param rb rb
+         * @return Builder 类型结果
+         */
         public Builder rb(Point rb) {
             this.rb = rb;
             return this;
         }
 
+        /**
+         * 执行 limit 操作。
+         * @param limit limit
+         * @return Builder 类型结果
+         */
         public Builder limit(int limit) {
             this.limit = limit;
             return this;
         }
 
+        /**
+         * 执行 to召唤兽 操作。
+         * @param toSummon toSummon（Integer 列表/集合）
+         * @return Builder 类型结果
+         */
         public Builder toSummon(List<Integer> toSummon) {
             this.toSummon = Collections.unmodifiableList(toSummon);
             return this;
         }
 
+        /**
+         * 执行 build 操作。
+         * @return MobSkill 类型结果
+         */
         public MobSkill build() {
             return new MobSkill(type, level, mpCon, spawnEffect, hp, x, y, count, duration, cooltime, prop, lt, rb,
                     limit, toSummon);
         }
     }
 
+    /**
+     * 应用Delayed、效果。
+     * @param player 玩家
+     * @param monster 怪物
+     * @param skill skill
+     * @param animationTime animationTime
+     */
     public void applyDelayedEffect(final Character player, final Monster monster, final boolean skill, int animationTime) {
         Runnable toRun = () -> {
             if (monster.isAlive()) {
@@ -187,11 +269,22 @@ public class MobSkill {
         service.registerOverallAction(monster.getMap().getId(), toRun, animationTime);
     }
 
+    /**
+     * 应用效果。
+     * @param monster 怪物
+     */
     public void applyEffect(Monster monster) {
         applyEffect(null, monster, false, Collections.emptyList());
     }
 
     // TODO: avoid output argument banishPlayersOutput
+    /**
+     * 应用效果。
+     * @param player 玩家
+     * @param monster 怪物
+     * @param skill skill
+     * @param banishPlayersOutput banishPlayersOutput（Character 列表/集合）
+     */
     public void applyEffect(Character player, Monster monster, boolean skill, List<Character> banishPlayersOutput) {
         // See if the MobSkill is successful before doing anything
         if (!makeChanceResult()) {
@@ -405,38 +498,74 @@ public class MobSkill {
         return monster.getMap().getPlayersInRange(calculateBoundingBox(monster.getPosition()));
     }
 
+    /**
+     * 获取ID。
+     * @return MobSkillId 类型结果
+     */
     public MobSkillId getId() {
         return id;
     }
 
+    /**
+     * 获取类型。
+     * @return MobSkillType 类型结果
+     */
     public MobSkillType getType() {
         return id.type();
     }
 
+    /**
+     * 获取MPCon。
+     * @return int 类型结果
+     */
     public int getMpCon() {
         return mpCon;
     }
 
+    /**
+     * 获取HP。
+     * @return int 类型结果
+     */
     public int getHP() {
         return hp;
     }
 
+    /**
+     * 获取X。
+     * @return int 类型结果
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * 获取Y。
+     * @return int 类型结果
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * 获取持续时间。
+     * @return long 类型结果
+     */
     public long getDuration() {
         return duration;
     }
 
+    /**
+     * 获取Cool、时间。
+     * @return long 类型结果
+     */
     public long getCoolTime() {
         return cooltime;
     }
 
+    /**
+     * 执行 make、Chance、Result 操作。
+     * @return boolean 类型结果
+     */
     public boolean makeChanceResult() {
         return prop == 1.0 || Math.random() < prop;
     }

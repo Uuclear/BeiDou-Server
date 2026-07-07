@@ -19,10 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: PurpleMadness
- * In search for the lost memory - pirate
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：3527
+ * 功能描述：任务脚本（ID: 3527）。
+ * 原作者：PurpleMadness
+ */
 var status = -1;
 
 function start(mode, type, selection) {

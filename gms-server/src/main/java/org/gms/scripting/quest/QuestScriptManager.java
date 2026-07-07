@@ -36,6 +36,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 任务脚本管理器（单例），驱动任务开始/结束/raiseOpen 等 JS 脚本流程。
+ * <p>
+ * 向引擎注入 {@code qm}（{@link QuestActionManager}），脚本路径为
+ * {@code scripts/quest/{questId}.js}；勋章任务可回退到 {@code medalQuest.js}。
+ * </p>
+ *
  * @author RMZero213
  */
 public class QuestScriptManager extends AbstractScriptManager {
@@ -45,6 +51,7 @@ public class QuestScriptManager extends AbstractScriptManager {
     private final Map<Client, QuestActionManager> qms = new HashMap<>();
     private final Map<Client, Invocable> scripts = new HashMap<>();
 
+/** 获取单例实例 */
     public static QuestScriptManager getInstance() {
         return instance;
     }
@@ -58,6 +65,7 @@ public class QuestScriptManager extends AbstractScriptManager {
         return engine;
     }
 
+/** 启动 NPC/物品脚本对话 */
     public void start(Client c, short questid, int npc) {
         Quest quest = Quest.getInstance(questid);
         try {
@@ -93,6 +101,7 @@ public class QuestScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 启动 NPC/物品脚本对话 */
     public void start(Client c, byte mode, byte type, int selection) {
         Invocable iv = scripts.get(c);
         if (iv != null) {
@@ -106,6 +115,7 @@ public class QuestScriptManager extends AbstractScriptManager {
         }
     }
 
+/** end */
     public void end(Client c, short questid, int npc) {
         Quest quest = Quest.getInstance(questid);
         if (!c.getPlayer().getQuest(quest).getStatus().equals(QuestStatus.Status.STARTED) || (!c.getPlayer().getMap().containsNPC(npc) && !quest.isAutoComplete())) {
@@ -145,6 +155,7 @@ public class QuestScriptManager extends AbstractScriptManager {
         }
     }
 
+/** end */
     public void end(Client c, byte mode, byte type, int selection) {
         Invocable iv = scripts.get(c);
         if (iv != null) {
@@ -158,6 +169,7 @@ public class QuestScriptManager extends AbstractScriptManager {
         }
     }
 
+/** raiseOpen */
     public void raiseOpen(Client c, short questid, int npc) {
         try {
             QuestActionManager qm = new QuestActionManager(c, questid, npc, true);
@@ -187,6 +199,7 @@ public class QuestScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose(QuestActionManager qm, Client c) {
         qms.remove(c);
         scripts.remove(c);
@@ -195,6 +208,7 @@ public class QuestScriptManager extends AbstractScriptManager {
         c.getPlayer().flushDelayedUpdateQuests();
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose(Client c) {
         QuestActionManager qm = qms.get(c);
         if (qm != null) {
@@ -202,15 +216,18 @@ public class QuestScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 获取QM */
     public QuestActionManager getQM(Client c) {
         return qms.get(c);
     }
 
+/** reloadQuestScripts */
     public void reloadQuestScripts() {
         scripts.clear();
         qms.clear();
     }
 
+/** checkFunctionExists */
     public boolean checkFunctionExists(Client c, short questid, int npc, String functionName) {
         ScriptEngine engine = getQuestScriptEngine(c, questid);
         if (engine == null) {

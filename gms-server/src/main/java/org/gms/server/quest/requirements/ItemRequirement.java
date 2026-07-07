@@ -35,17 +35,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Tyler (Twdtwd)
+ * 持有物品需求。
  */
 public class ItemRequirement extends AbstractQuestRequirement {
     Map<Integer, Integer> items = new HashMap<>();
 
 
+    /**
+     * 构造 ItemRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public ItemRequirement(Quest quest, Data data) {
         super(QuestRequirementType.ITEM);
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         for (Data itemEntry : data.getChildren()) {
@@ -57,6 +66,12 @@ public class ItemRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
@@ -95,6 +110,12 @@ public class ItemRequirement extends AbstractQuestRequirement {
         return true;
     }
 
+    /**
+     * 获取物品、Amount、Needed。
+     * @param itemid 物品 ID
+     * @param complete complete
+     * @return int 类型结果
+     */
     public int getItemAmountNeeded(int itemid, boolean complete) {
         Integer amount = items.get(itemid);
         if (amount != null) {

@@ -26,12 +26,18 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 RELOG（重新登录） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#RELOG}</p>
+ */
 public final class RelogRequestHandler extends AbstractPacketHandler {
+    /** 仅在客户端尚未完成登录时处理该封包。 */
     @Override
     public boolean validateState(Client c) {
         return !c.isLoggedIn();
     }
 
+    /** 处理 重新登录 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         c.sendPacket(PacketCreator.getRelogResponse());

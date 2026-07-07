@@ -20,13 +20,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	NPC NAME: Cesar (1)
-	NPC ID: 2101018
-	Author: Vcoc
-	Function: AriantPQ
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2101018
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 status = -1;
 
 function start() {

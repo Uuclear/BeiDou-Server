@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.gms.client;
 
+/**
+ * 角色属性枚举，对应客户端 Stat 封包中的属性字段（力量、敏捷、智力、运气、HP、MP 等）。
+ */
 public enum Stat {
     SKIN(0x1),
     FACE(0x2),
@@ -48,10 +51,19 @@ public enum Stat {
         this.i = i;
     }
 
+    /**
+     * 获取值
+     * @return 返回值
+     */
     public int getValue() {
         return i;
     }
 
+    /**
+     * 获取按值
+     * @param value 值
+     * @return 返回值
+     */
     public static Stat getByValue(int value) {
         for (Stat stat : Stat.values()) {
             if (stat.getValue() == value) {
@@ -61,6 +73,11 @@ public enum Stat {
         return null;
     }
 
+    /**
+     * 获取By5ByteEncoding
+     * @param encoded encoded
+     * @return 返回值
+     */
     public static Stat getBy5ByteEncoding(int encoded) {
         switch (encoded) {
             case 64:
@@ -75,6 +92,11 @@ public enum Stat {
         return null;
     }
 
+    /**
+     * 获取按String
+     * @param type 类型
+     * @return 返回值
+     */
     public static Stat getByString(String type) {
     	for (Stat stat : Stat.values()) {
             if (stat.name().equals(type)) {

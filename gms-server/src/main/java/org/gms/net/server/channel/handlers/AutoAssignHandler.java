@@ -27,10 +27,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
 /**
- * @author Generic, Ronan
+ * 处理客户端 AUTO_DISTRIBUTE_AP（自动分配能力点） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#AUTO_DISTRIBUTE_AP}</p>
  */
 public class AutoAssignHandler extends AbstractPacketHandler {
 
+    /** 处理 自动分配能力点 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         AssignAPProcessor.APAutoAssignAction(p, c);

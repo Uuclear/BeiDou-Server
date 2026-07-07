@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：changeName
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /* Changes the players name.
 	Can only be accessed with the item 2430026.
  */

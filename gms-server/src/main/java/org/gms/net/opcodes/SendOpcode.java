@@ -21,6 +21,17 @@
  */
 package org.gms.net.opcodes;
 
+/**
+ * 服务端发往客户端的发送操作码（SendOpcode）枚举，定义 v83 协议中 S→C 封包类型。
+ * <p>
+ * 构造 {@link org.gms.net.packet.OutPacket} 时，操作码作为载荷首 2 字节（小端序）写入。
+ * 客户端根据该值路由到对应的 UI/游戏逻辑处理器。
+ * </p>
+ * <p>
+ * 操作码按功能分组：登录相关（0x00–0x1C）、上下文（CWvsContext，0x1D 起）、
+ * 场景（CField，0x7D 起）等，与官方客户端内部处理器表对应。
+ * </p>
+ */
 public enum SendOpcode implements Opcode {
 
     LOGIN_STATUS(0x00), // 登录状态
@@ -364,11 +375,13 @@ public enum SendOpcode implements Opcode {
         this.code = code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getValue() {
         return code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getName() {
         return this.name();

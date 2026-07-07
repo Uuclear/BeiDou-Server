@@ -1,3 +1,6 @@
+/**
+ * 中文（简体）语言包主入口，聚合各模块 zh-CN 翻译与全局菜单文案。
+ */
 import config from '@/views/game/config/locale/zh-CN';
 import drop from '@/views/game/drop/locale/zh-CN';
 import cashShop from '@/views/game/cashShop/locale/zh-CN';

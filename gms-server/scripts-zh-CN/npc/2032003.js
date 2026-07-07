@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2032003
+ * 功能描述：NPC脚本，提供地图传送、物品发放、经验奖励。
+ */
 /* Lira
  * 
  * Adobis's Mission I : Breath of Lava <Level 2> (280020001)

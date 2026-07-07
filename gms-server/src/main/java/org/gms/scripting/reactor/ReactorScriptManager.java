@@ -41,6 +41,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 反应堆脚本管理器（单例），按反应堆 ID 加载 {@code scripts/reactor/{id}.js}。
+ * <p>
+ * 向引擎注入 {@code rm}（{@link ReactorActionManager}），在受击、激活、接触等时机
+ * 调用脚本可选函数 {@code hit}、{@code act}、{@code touch}、{@code untouch}。
+ * 同时缓存数据库中的反应堆掉落表。
+ * </p>
+ *
  * @author Lerk
  */
 public class ReactorScriptManager extends AbstractScriptManager {
@@ -49,10 +56,12 @@ public class ReactorScriptManager extends AbstractScriptManager {
 
     private final Map<Integer, List<ReactorDropEntry>> drops = new HashMap<>();
 
+/** 获取单例实例 */
     public static ReactorScriptManager getInstance() {
         return instance;
     }
 
+/** 反应堆被攻击时调用脚本 hit 函数 */
     public void onHit(Client c, Reactor reactor) {
         try {
             Invocable iv = initializeInvocable(c, reactor);
@@ -68,6 +77,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 反应堆被激活时调用脚本 act 函数 */
     public void act(Client c, Reactor reactor) {
         try {
             Invocable iv = initializeInvocable(c, reactor);
@@ -81,6 +91,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 获取反应堆掉落配置（数据库缓存） */
     public List<ReactorDropEntry> getDrops(int reactorId) {
         List<ReactorDropEntry> ret = drops.get(reactorId);
         if (ret == null) {
@@ -102,14 +113,17 @@ public class ReactorScriptManager extends AbstractScriptManager {
         return ret;
     }
 
+/** 清空反应堆掉落缓存 */
     public void clearDrops() {
         drops.clear();
     }
 
+/** 玩家接触反应堆时调用 touch 函数 */
     public void touch(Client c, Reactor reactor) {
         touching(c, reactor, true);
     }
 
+/** 玩家离开反应堆时调用 untouch 函数 */
     public void untouch(Client c, Reactor reactor) {
         touching(c, reactor, false);
     }
@@ -135,6 +149,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
         }
 
         Invocable iv = (Invocable) engine;
+        // 向 GraalJS 注入 rm，脚本内通过 rm 调用 ReactorActionManager API
         ReactorActionManager rm = new ReactorActionManager(c, reactor, iv);
         engine.put("rm", rm);
 

@@ -39,7 +39,12 @@ import org.gms.util.PacketCreator;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 处理魔法攻击（MAGIC_ATTACK）伤害计算与广播。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MAGIC_ATTACK}</p>
+ */
 public final class MagicDamageHandler extends AbstractDealDamageHandler {
+    /** 处理 魔法攻击 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

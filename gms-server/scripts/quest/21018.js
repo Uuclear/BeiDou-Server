@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21018
+ * 功能描述：("Effect/OnUserEff.img/guideEffect/aranTutorial/tutorialArrow1");（原版描述）。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

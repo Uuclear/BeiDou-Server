@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `nxcode` 的实体类（DO）。
+ * <p>
+ * NX 兑换码主表，存储兑换码字符串、有效期及可兑换次数限制。
  */
 @Data
 @Builder

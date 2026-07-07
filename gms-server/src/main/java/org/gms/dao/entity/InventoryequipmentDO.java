@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `inventoryequipment` 的实体类（DO）。
+ * <p>
+ * 背包装备扩展表，存储装备的强化、潜能、属性等详细数值。
  */
 @Data
 @Builder

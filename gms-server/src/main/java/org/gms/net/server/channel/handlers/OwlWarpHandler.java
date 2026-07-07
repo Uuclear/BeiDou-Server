@@ -30,8 +30,13 @@ import org.gms.util.PacketCreator;
 /*
  * @author Ronan
  */
+/**
+ * 处理猫头鹰传送至目标商店（OWL_WARP）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#OWL_WARP}</p>
+ */
 public final class OwlWarpHandler extends AbstractPacketHandler {
 
+    /** 处理 处理玩家传送到商店        handles player warp to store 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int ownerid = p.readInt();

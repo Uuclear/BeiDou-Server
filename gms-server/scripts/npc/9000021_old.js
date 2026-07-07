@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9000021_old
+ * 功能描述：NPC脚本，提供职业转职。
+ */
 /*
  * Aran / Cygnus Job Advancer
  * v83 MoopleDEV Rev 116

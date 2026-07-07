@@ -38,11 +38,12 @@ import java.util.Calendar;
 import static java.util.concurrent.TimeUnit.DAYS;
 
 /**
- * @author Ronan
- * @author Ubaware
+ * 处理角色更名请求（NAME_TRANSFER）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#NAME_TRANSFER}</p>
  */
 public final class TransferNameHandler extends AbstractPacketHandler {
 
+    /** 处理 名称转移 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readInt(); //cid

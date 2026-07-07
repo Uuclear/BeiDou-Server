@@ -20,11 +20,22 @@
 package org.gms.client;
 
 /**
- * @author Ronan
+ * 角色属性变更监听器接口，在 HP、属性池等数据变化时接收回调通知。
  */
 public interface AbstractCharacterListener {
+    /**
+     * HP 数值发生变化时回调。
+     *
+     * @param oldHp 变更前的 HP
+     */
     void onHpChanged(int oldHp);
+
+    /** HP/MP 池上限或当前值更新时回调。 */
     void onHpMpPoolUpdate();
+
+    /** 角色基础属性更新时回调。 */
     void onStatUpdate();
+
+    /** 需要向客户端广播属性池更新时回调。 */
     void onAnnounceStatPoolUpdate();
 }

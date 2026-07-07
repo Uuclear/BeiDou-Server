@@ -52,9 +52,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 处理客户端 MTS_OPERATION（MTS操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MTS_OPERATION}</p>
+ */
 public final class MTSHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(MTSHandler.class);
 
+    /** 处理 MTS操作 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         // TODO add karma-to-untradeable flag on sold items here

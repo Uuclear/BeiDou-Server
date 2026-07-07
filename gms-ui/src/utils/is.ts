@@ -1,3 +1,7 @@
+/**
+ * 通用类型判断工具函数集
+ * 基于 Object.prototype.toString 实现各基础类型的运行时检测。
+ */
 const opt = Object.prototype.toString;
 
 export function isArray(obj: any): obj is any[] {

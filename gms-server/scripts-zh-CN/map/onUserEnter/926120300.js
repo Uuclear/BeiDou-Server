@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：926120300
+ * 功能描述：地图脚本（926120300），控制地图内特殊逻辑。
+ */
 function getInactiveReactors(map) {
     var reactors = [];
 

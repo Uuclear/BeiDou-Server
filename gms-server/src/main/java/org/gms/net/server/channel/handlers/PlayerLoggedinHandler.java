@@ -74,6 +74,10 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
+/**
+ * 处理角色进入频道后的登录初始化（PLAYER_LOGGEDIN），加载角色数据并同步世界状态。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PLAYER_LOGGEDIN}</p>
+ */
 public final class PlayerLoggedinHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(PlayerLoggedinHandler.class);
     private static final Set<Integer> attemptingLoginAccounts = new HashSet<>();
@@ -103,11 +107,13 @@ public final class PlayerLoggedinHandler extends AbstractPacketHandler {
         }
     }
 
+    /** 仅在角色进入频道的登录阶段处理该封包。 */
     @Override
     public final boolean validateState(Client c) {
         return !c.isLoggedIn();
     }
 
+    /** 加载角色数据，初始化背包、任务、社交等状态并广播上线。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {  //角色进入频道函数入口
         final int cid = p.readInt(); // TODO: investigate if this is the "client id" supplied in PacketCreator#getServerIP()

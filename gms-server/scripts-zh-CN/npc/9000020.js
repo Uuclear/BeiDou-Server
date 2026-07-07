@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9000020
+ * 功能描述：城镇导游NPC，介绍各地图信息并提供付费传送服务。
+ */
 /*
     Standard dialog script for NPC 9000020 (导游妮妮).
     Uses start/action instead of the custom Level dialog flow so it works with the

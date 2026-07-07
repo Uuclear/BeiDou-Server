@@ -1,4 +1,7 @@
 package org.gms.constants.skills;
+/**
+ * 龙神职业各技能的游戏内技能 ID 常量。
+ */
 
 public class Evan {
     // EVAN1

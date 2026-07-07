@@ -13,6 +13,11 @@ public final class OutstandingCitizenMedal {
     private OutstandingCitizenMedal() {
     }
 
+    /**
+     * 判断是否为Eligible。
+     * @param player 玩家
+     * @return boolean 类型结果
+     */
     public static boolean isEligible(Character player) {
         FamilyEntry familyEntry = player.getFamilyEntry();
         return player.isMarried()
@@ -21,6 +26,10 @@ public final class OutstandingCitizenMedal {
                 && familyEntry.getJuniorCount() >= 1;
     }
 
+    /**
+     * 执行 refresh、Eligibility 操作。
+     * @param player 玩家
+     */
     public static void refreshEligibility(Character player) {
         Quest mainQuest = Quest.getInstance(QUEST_ID);
         Quest eligibilityQuest = Quest.getInstance(ELIGIBILITY_QUEST_ID);
@@ -39,6 +48,10 @@ public final class OutstandingCitizenMedal {
         }
     }
 
+    /**
+     * 执行 clear、Eligibility 操作。
+     * @param player 玩家
+     */
     public static void clearEligibility(Character player) {
         Quest eligibilityQuest = Quest.getInstance(ELIGIBILITY_QUEST_ID);
         if (player.getQuest(eligibilityQuest).getStatus() != QuestStatus.Status.NOT_STARTED) {

@@ -1,4 +1,5 @@
 <template>
+  <!-- 背包 UI 主面板：展示装备/消耗/设置等栏位格子布局。 -->
   <div>
     <a-spin v-if="loading" />
     <div v-else>
@@ -25,6 +26,9 @@
 </template>
 
 <script lang="ts">
+  /**
+   * 背包可视化组件，按栏位类型渲染物品格子。
+   */
   import { defineComponent, ref, watch, onMounted } from 'vue';
   import { getInventoryList } from '@/api/inventory';
   import axios from 'axios';

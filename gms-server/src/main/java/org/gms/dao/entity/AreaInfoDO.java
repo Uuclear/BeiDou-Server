@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `area_info` 的实体类（DO）。
+ * <p>
+ * 区域探索信息表，记录角色对各地图区域的探索完成度。
  */
 @Data
 @Builder

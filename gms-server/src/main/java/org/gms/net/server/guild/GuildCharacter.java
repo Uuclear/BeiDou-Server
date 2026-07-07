@@ -23,6 +23,9 @@ package org.gms.net.server.guild;
 
 import org.gms.client.Character;
 
+/**
+ * 公会成员快照，表示一名公会成员的角色信息、职位与在线状态。
+ */
 public class GuildCharacter {
     private Character character;
     private int level;

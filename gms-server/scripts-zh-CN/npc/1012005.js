@@ -19,10 +19,13 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/* Author: Xterminator
-	NPC Name: 		Cloy
-	Map(s): 		Victoria Road : Henesys Park (100000200)
-	Description: 		Pet Master
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1012005
+ * 功能描述：Cloy，Pet Master（原版描述）。
+ * 原作者：Xterminator
  */
 var status = -2;
 var sel;

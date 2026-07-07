@@ -76,6 +76,9 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 游戏频道运行时实体，管理本频道玩家、地图、副本、雇佣商人及频道级定时任务。
+ */
 public final class Channel {
     private static final Logger log = LoggerFactory.getLogger(Channel.class);
     private static final int BASE_PORT = 7575;

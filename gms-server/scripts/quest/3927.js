@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：3927
+ * 功能描述：任务脚本，完成任务后发放经验奖励。
+ */
 var status = -1;
 var firstSelection;
 function end(mode, type, selection) {

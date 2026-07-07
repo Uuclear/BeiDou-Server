@@ -24,6 +24,9 @@ package org.gms.provider.wz;
 import org.gms.provider.DataEntity;
 import org.gms.provider.DataFileEntry;
 
+/**
+ * WZ 数据文件条目，对应一个 {@code .img} 资源（XML 模式下为 {@code .xml} 文件）。
+ */
 public class WZFileEntry extends WZEntry implements DataFileEntry {
     private int offset;
 
@@ -32,10 +35,12 @@ public class WZFileEntry extends WZEntry implements DataFileEntry {
     }
 
     @Override
+/** 获取 WZ 文件内偏移量 */
     public int getOffset() {
         return offset;
     }
 
+/** 设置 WZ 文件内偏移量 */
     public void setOffset(int offset) {
         this.offset = offset;
     }

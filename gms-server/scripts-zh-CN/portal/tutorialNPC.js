@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：tutorialNPC
+ * 功能描述：地图传送门入口脚本。
+ */
 function enter(pi) {
     if (pi.getPlayer().getLevel() <= 10 && pi.getPlayer().getJob().getId() == 0) {
         var m = pi.getPlayer().getMap().getId();

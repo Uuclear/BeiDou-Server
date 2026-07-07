@@ -26,8 +26,13 @@ import org.gms.client.processor.action.SpawnPetProcessor;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 SPAWN_PET（生成宠物） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SPAWN_PET}</p>
+ */
 public final class SpawnPetHandler extends AbstractPacketHandler {
 
+    /** 处理 生成宠物 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readInt();

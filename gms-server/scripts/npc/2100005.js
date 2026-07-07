@@ -1,11 +1,12 @@
-/* Author: aaroncsn <MapleSea Like>
-	NPC Name: 		Shati
-	Map(s): 		The Burning Road: Ariant(2600000000)
-	Description: 	Assistant Hairdresser
 
-        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
-*/
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2100005
+ * 功能描述：Shati，发型更换。
+ * 原作者：aaroncsn <MapleSea Like>
+ */
 var status = 0;
 var beauty = 0;
 var mhair_r = Array(30150, 30170, 30180, 30320, 30330, 30410, 30460, 30680, 30800, 30820, 30900);

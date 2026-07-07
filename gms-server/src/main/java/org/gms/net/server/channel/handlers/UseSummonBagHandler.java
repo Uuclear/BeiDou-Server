@@ -33,10 +33,12 @@ import org.gms.util.PacketCreator;
 import org.gms.util.Randomizer;
 
 /**
- * @author AngelSL
+ * 处理客户端 USE_SUMMON_BAG（使用召唤袋） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_SUMMON_BAG}</p>
  */
 public final class UseSummonBagHandler extends AbstractPacketHandler {
 
+    /** 处理 使用召唤袋 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         //[4A 00][6C 4C F2 02][02 00][63 0B 20 00]

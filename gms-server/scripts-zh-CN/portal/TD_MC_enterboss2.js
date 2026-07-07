@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：TD_MC_enterboss2
+ * 功能描述：启动关联事件实例并传送玩家（如班车/副本入口）。
+ */
 function enter(pi) {
     if (pi.isQuestCompleted(2331)) {
         pi.openNpc(1300013);

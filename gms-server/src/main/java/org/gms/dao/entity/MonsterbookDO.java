@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `monsterbook` 的实体类（DO）。
+ * <p>
+ * 怪物收藏册进度表，记录角色对各怪物卡片的收集等级与数量。
  */
 @Data
 @Builder

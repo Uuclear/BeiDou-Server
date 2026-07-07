@@ -28,8 +28,13 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 DUEY_ACTION（Duey操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#DUEY_ACTION}</p>
+ */
 public final class DueyHandler extends AbstractPacketHandler {
 
+    /** 处理 Duey操作 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_duey")) {

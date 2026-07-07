@@ -30,9 +30,14 @@ import org.slf4j.LoggerFactory;
 import org.gms.server.ChatLogger;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 PET_CHAT（宠物对话） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PET_CHAT}</p>
+ */
 public final class PetChatHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(PetChatHandler.class);
 
+    /** 处理 宠物对话 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         int petId = p.readInt();

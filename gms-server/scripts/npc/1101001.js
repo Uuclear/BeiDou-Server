@@ -1,9 +1,11 @@
-/*
-   NPC Name: 		Divine Bird
-   Map(s): 		Erev
-   Description: 		3rd job KoC Buff
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1101001
+ * 功能描述：Divine Bird，三转职业任务。
+ */
 function start() {
     const GameConstants = Java.type('org.gms.constants.game.GameConstants');
     if (cm.getPlayer().isCygnus() && GameConstants.getJobBranch(cm.getJob()) > 2) {

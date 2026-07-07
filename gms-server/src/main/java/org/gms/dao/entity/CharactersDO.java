@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `characters` 的实体类（DO）。
+ * <p>
+ * 角色主表，持久化等级、属性、地图位置、公会、人气、背包栏位等角色核心状态。
  */
 @Data
 @Builder

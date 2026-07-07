@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：dojang_up
+ * 功能描述：地图传送门入口脚本。
+ */
 /*
  * @author:   Moogra
  * @function: Warp character up and award player with dojo points

@@ -43,11 +43,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Matze
- * @author Frz
+ * 处理使用强化卷轴（USE_UPGRADE_SCROLL）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_UPGRADE_SCROLL}</p>
  */
 public final class ScrollHandler extends AbstractPacketHandler {
 
+    /** 处理 使用升级卷轴 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (c.tryacquireClient()) {

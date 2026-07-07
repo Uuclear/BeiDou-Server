@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `inventorymerchant` 的实体类（DO）。
+ * <p>
+ * 自由市场/雇佣商人摊位表，存储玩家开设的离线商店物品与 meso。
  */
 @Data
 @Builder

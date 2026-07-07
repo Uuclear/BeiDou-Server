@@ -5,11 +5,19 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM3命令：给玩家发放奖励点数
+ */
 public class GiveRpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("GiveRpCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param client 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client client, String[] params) {
         Character player = client.getPlayer();

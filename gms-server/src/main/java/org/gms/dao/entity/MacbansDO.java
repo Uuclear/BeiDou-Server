@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `macbans` 的实体类（DO）。
+ * <p>
+ * MAC 地址封禁表，记录因违规被封禁的硬件 MAC 及封禁期限。
  */
 @Data
 @Builder

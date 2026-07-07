@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1204001
+ * 功能描述：to Tru.)#k", 3);（原版描述）。
+ */
 /*
  * NPC : Francis (Doll master)
  * Map : 910510200

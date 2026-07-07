@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：3414_free10rate
+ * 功能描述：任务脚本，完成任务后发放经验与物品奖励。
+ */
 var item;
 var stance;
 var status = -1;

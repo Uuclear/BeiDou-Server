@@ -25,11 +25,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Matze
+ * 商店工厂，从 WZ/数据库加载并缓存 NPC 商店数据。
  */
 public class ShopFactory {
     private static final ShopFactory instance = new ShopFactory();
 
+    /**
+     * 获取单例实例。
+     * @return ShopFactory 类型结果
+     */
     public static ShopFactory getInstance() {
         return instance;
     }
@@ -50,6 +54,11 @@ public class ShopFactory {
         return ret;
     }
 
+    /**
+     * 获取商店。
+     * @param shopId shopId
+     * @return Shop 类型结果
+     */
     public Shop getShop(int shopId) {
         if (shops.containsKey(shopId)) {
             return shops.get(shopId);
@@ -57,6 +66,11 @@ public class ShopFactory {
         return loadShop(shopId, true);
     }
 
+    /**
+     * 获取商店为NPC。
+     * @param npcId NPC ID
+     * @return Shop 类型结果
+     */
     public Shop getShopForNPC(int npcId) {
         if (npcShops.containsKey(npcId)) {
             return npcShops.get(npcId);
@@ -64,6 +78,9 @@ public class ShopFactory {
         return loadShop(npcId, false);
     }
 
+    /**
+     * 执行 reload、Shops 操作。
+     */
     public void reloadShops() {
         shops.clear();
         npcShops.clear();

@@ -1,3 +1,6 @@
+/**
+ * 英文语言包主入口，聚合各模块 en-US 翻译与全局菜单文案。
+ */
 import config from '@/views/game/config/locale/en-US';
 import drop from '@/views/game/drop/locale/en-US';
 import cashShop from '@/views/game/cashShop/locale/en-US';

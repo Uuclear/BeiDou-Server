@@ -56,8 +56,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 /**
- * @author Matze
- * @author Ronan - concurrency safety and reviewed minigames
+ * 处理客户端 PLAYER_INTERACTION（玩家互动） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PLAYER_INTERACTION}</p>
  */
 public final class PlayerInteractionHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(PlayerInteractionHandler.class);
@@ -138,6 +138,7 @@ public final class PlayerInteractionHandler extends AbstractPacketHandler {
         return 0;
     }
 
+    /** 处理 玩家互动 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!c.tryacquireClient()) {    // thanks GabrielSin for pointing dupes within player interactions

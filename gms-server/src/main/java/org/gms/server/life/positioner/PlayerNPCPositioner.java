@@ -37,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author RonanLana
+ * 玩家 NPC 在地图上的位置分配器。
  */
 public class PlayerNPCPositioner {
     private static final Logger log = LoggerFactory.getLogger(PlayerNPCPositioner.class);
@@ -235,6 +235,11 @@ public class PlayerNPCPositioner {
         return null;
     }
 
+    /**
+     * 获取下一玩家NPC位置。
+     * @param map 地图名称
+     * @return Point 类型结果
+     */
     public static Point getNextPlayerNpcPosition(MapleMap map) {
         return getNextPlayerNpcPosition(map, map.getWorldServer().getPlayerNpcMapStep(map.getId()));
     }

@@ -1,5 +1,12 @@
-/* @author RonanLana */
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：TD_Boss_enter
+ * 功能描述：启动关联事件实例并传送玩家（如班车/副本入口）。
+ * 原作者：RonanLana
+ */
 function enter(pi) {
     var stage = ((Math.floor(pi.getMapId() / 100)) % 10) - 1;
     var em = pi.getEventManager("TD_Battle" + stage);

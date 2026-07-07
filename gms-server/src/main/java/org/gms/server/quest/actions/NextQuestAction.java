@@ -30,22 +30,36 @@ import org.gms.server.quest.QuestActionType;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务链接下一任务动作。
  */
 public class NextQuestAction extends AbstractQuestAction {
     int nextQuest;
 
+    /**
+     * 构造 NextQuestAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public NextQuestAction(Quest quest, Data data) {
         super(QuestActionType.NEXTQUEST, quest);
         processData(data);
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         nextQuest = DataTool.getInt(data);
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         QuestStatus status = chr.getQuest(Quest.getInstance(questID));

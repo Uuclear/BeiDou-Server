@@ -24,6 +24,8 @@ import org.gms.net.server.services.BaseScheduler;
 import org.gms.net.server.services.BaseService;
 
 /**
+ * 怪物清场技能调度服务，按地图分区定时处理怪物范围清除类技能。
+ *
  * @author Ronan
  */
 public class MobClearSkillService extends BaseService {

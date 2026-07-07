@@ -10,17 +10,30 @@ import org.gms.util.RateLimitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 频道服子 Channel 初始化器。
+ * <p>
+ * 按 world/channel 创建 {@link Client#createChannelClient}，校验目标频道是否在线后装配 Pipeline。
+ * </p>
+ */
 public class ChannelServerInitializer extends ServerChannelInitializer {
     private static final Logger log = LoggerFactory.getLogger(ChannelServerInitializer.class);
 
     private final int world;
     private final int channel;
 
+    /**
+     * @param world   所属世界编号
+     * @param channel 频道编号
+     */
     public ChannelServerInitializer(int world, int channel) {
         this.world = world;
         this.channel = channel;
     }
 
+    /**
+     * 初始化频道服客户端连接：限流 → 频道有效性检查 → Hello 握手 → Pipeline 装配。
+     */
     @Override
     public void initChannel(SocketChannel socketChannel) {
         final String clientIp = socketChannel.remoteAddress().getHostString();

@@ -54,7 +54,12 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * 事件管理器，负责管理游戏中的各种事件实例
+ * 单个事件（如组队任务、远征、公会战）在频道内的管理器，对应一个 {@code scripts/event/*.js} 脚本。
+ * <p>
+ * 负责创建/销毁 {@link EventInstanceManager}、调度延迟脚本回调、管理大厅锁与公会排队，
+ * 并通过 {@link Invocable} 调用 JS 中的 {@code setup}、{@code clearPQ} 等函数。
+ * </p>
+ *
  * @author Matze
  * @author Ronan
  */

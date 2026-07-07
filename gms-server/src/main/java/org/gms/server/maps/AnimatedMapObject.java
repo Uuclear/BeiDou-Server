@@ -21,8 +21,19 @@
 */
 package org.gms.server.maps;
 
+/**
+ * 可动画地图对象接口，定义朝向（stance）等动画状态。
+ */
 public interface AnimatedMapObject extends MapObject {
+    /**
+     * 获取当前姿态/动画状态编号。
+     * @return int
+     */
     int getStance();
+    /**
+     * 设置姿态/动画状态编号。
+     * @param stance 参数
+     */
     void setStance(int stance);
     boolean isFacingLeft();
 }

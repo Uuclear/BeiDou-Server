@@ -17,24 +17,8 @@
 
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-package org.gms.client.inventory;
-
-import org.gms.util.DatabaseConnection;
-import org.gms.util.Pair;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
- * @author Flav
+ * 物品工厂枚举，根据物品 ID 创建对应的 Item 或 Equip 实例。
  */
 public enum ItemFactory {
 
@@ -64,6 +48,10 @@ public enum ItemFactory {
         this.account = account;
     }
 
+    /**
+     * 获取值
+     * @return 返回值
+     */
     public int getValue() {
         return value;
     }
@@ -84,10 +72,23 @@ public enum ItemFactory {
         }
     }
 
+    /**
+     * 保存Items
+     * @param items items
+     * @param id ID
+     * @param con con
+     */
     public void saveItems(List<Pair<Item, InventoryType>> items, int id, Connection con) throws SQLException {
         saveItems(items, null, id, con);
     }
 
+    /**
+     * 保存Items
+     * @param items items
+     * @param bundlesList bundlesList
+     * @param id ID
+     * @param con con
+     */
     public void saveItems(List<Pair<Item, InventoryType>> items, List<Short> bundlesList, int id, Connection con) throws SQLException {
         // thanks Arufonsu, MedicOP, BHB for pointing a "synchronized" bottleneck here
 
@@ -130,6 +131,13 @@ public enum ItemFactory {
         return equip;
     }
 
+    /**
+     * 加载Equipped物品
+     * @param id ID
+     * @param isAccount isAccount
+     * @param login login
+     * @return 返回值
+     */
     public static List<Pair<Item, Integer>> loadEquippedItems(int id, boolean isAccount, boolean login) throws SQLException {
         List<Pair<Item, Integer>> items = new ArrayList<>();
 

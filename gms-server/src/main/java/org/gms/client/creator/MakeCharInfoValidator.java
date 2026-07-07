@@ -5,6 +5,9 @@ import org.gms.provider.Data;
 import org.gms.provider.DataProviderFactory;
 import org.gms.provider.wz.WZFiles;
 
+/**
+ * 创建角色信息验证器，校验角色名合法性及创建参数有效性。
+ */
 public class MakeCharInfoValidator {
     private static final MakeCharInfo charFemale;
     private static final MakeCharInfo charMale;
@@ -32,6 +35,11 @@ public class MakeCharInfoValidator {
         };
     }
 
+    /**
+     * 判断是否为New角色Valid
+     * @param character character
+     * @return 返回值
+     */
     public static boolean isNewCharacterValid(Character character) {
         MakeCharInfo makeCharInfo = getMakeCharInfo(character);
         if (makeCharInfo == null) return false;

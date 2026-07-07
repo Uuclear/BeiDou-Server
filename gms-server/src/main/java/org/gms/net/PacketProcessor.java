@@ -55,6 +55,19 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * 封包处理器注册中心，负责将 {@link RecvOpcode} 操作码映射到对应的 {@link PacketHandler} 实现。
+ * <p>
+ * 在 v83 协议栈中，客户端连接经 Netty 解码为 {@link org.gms.net.packet.InPacket} 后，
+ * 由 {@link org.gms.client.Client} 根据包头中的操作码从此处查找处理器并分发。
+ * 登录服（world=-1, channel=-1）与频道服使用不同的处理器表：登录服注册账号/角色相关处理器，
+ * 频道服注册游戏内交互处理器。
+ * </p>
+ * <p>
+ * 每个 (world, channel) 组合对应一个 {@code PacketProcessor} 单例实例，通过
+ * {@link #getProcessor(int, int)} 懒加载创建。
+ * </p>
+ */
 public final class PacketProcessor {
     private static final Logger log = LoggerFactory.getLogger(PacketProcessor.class);
     private static final Map<String, PacketProcessor> instances = new LinkedHashMap<>();
@@ -73,14 +86,33 @@ public final class PacketProcessor {
         handlers = new PacketHandler[maxRecvOp + 1];
     }
 
+    /**
+     * 注册频道服处理器所需的依赖（如 NoteService、FredrickProcessor）。
+     * 必须在调用 {@link #getChannelServerProcessor(int, int)} 之前由 {@link org.gms.net.server.Server#init()} 完成注册。
+     *
+     * @param channelDependencies 频道服处理器依赖容器
+     */
     public static void registerGameHandlerDependencies(ChannelDependencies channelDependencies) {
         PacketProcessor.channelDeps = channelDependencies;
     }
 
+    /**
+     * 获取登录服专用的封包处理器实例（world=-1, channel=-1）。
+     *
+     * @return 登录服 {@code PacketProcessor}
+     */
     public static PacketProcessor getLoginServerProcessor() {
         return getProcessor(LoginServer.WORLD_ID, LoginServer.CHANNEL_ID);
     }
 
+    /**
+     * 获取指定世界与频道对应的封包处理器实例。
+     *
+     * @param world   世界编号
+     * @param channel 频道编号
+     * @return 频道服 {@code PacketProcessor}
+     * @throws IllegalStateException 若尚未调用 {@link #registerGameHandlerDependencies(ChannelDependencies)}
+     */
     public static PacketProcessor getChannelServerProcessor(int world, int channel) {
         if (channelDeps == null) {
             throw new IllegalStateException("Unable to get channel server processor - dependencies are not registered");
@@ -89,6 +121,12 @@ public final class PacketProcessor {
         return getProcessor(world, channel);
     }
 
+    /**
+     * 根据接收操作码查找已注册的处理器。
+     *
+     * @param packetId 客户端发来的 RecvOpcode 值（包头前 2 字节，小端序）
+     * @return 对应的 {@link PacketHandler}，若操作码越界或未注册则返回 {@code null}
+     */
     public PacketHandler getHandler(short packetId) {
         if (packetId < 0 || packetId >= handlers.length) {
             return null;
@@ -97,6 +135,12 @@ public final class PacketProcessor {
         return handler;
     }
 
+    /**
+     * 将操作码与处理器绑定到内部数组（以 opcode 值为下标）。
+     *
+     * @param code    接收操作码
+     * @param handler 处理该操作码的处理器实例
+     */
     public void registerHandler(Opcode code, PacketHandler handler) {
         try {
             handlers[code.getValue()] = handler;
@@ -105,6 +149,13 @@ public final class PacketProcessor {
         }
     }
 
+    /**
+     * 按 (world, channel) 获取或创建 {@code PacketProcessor} 单例。
+     *
+     * @param world   世界编号；登录服为 -1
+     * @param channel 频道编号；登录服为 -1
+     * @return 对应处理器实例
+     */
     public synchronized static PacketProcessor getProcessor(int world, int channel) {
         final String processorId = world + " " + channel;
         PacketProcessor processor = instances.get(processorId);
@@ -116,6 +167,15 @@ public final class PacketProcessor {
         return processor;
     }
 
+    /**
+     * 重置处理器表并按服务端版本注册处理器。
+     * <p>
+     * {@code channel < 0} 时注册登录服处理器；否则注册频道服处理器。
+     * 当前仅支持 v83（{@link ServerConstants#VERSION} == 83）。
+     * </p>
+     *
+     * @param channel 频道编号，用于区分登录服与频道服
+     */
     public void reset(int channel) {
         handlers = new PacketHandler[handlers.length];
 

@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：9018000
+ * 功能描述：地图反应堆交互脚本。
+ */
 /**
  * @author BubblesDev
  * @purpose Flower 1

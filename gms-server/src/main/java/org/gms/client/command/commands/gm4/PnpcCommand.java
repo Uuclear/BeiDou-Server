@@ -39,11 +39,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * GM4命令：在当前位置生成一个永久NPC
+ */
 public class PnpcCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PnpcCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

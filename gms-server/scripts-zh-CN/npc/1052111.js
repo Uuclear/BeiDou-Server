@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1052111
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /*
 	Trash Can 3
 	Kerning Subway

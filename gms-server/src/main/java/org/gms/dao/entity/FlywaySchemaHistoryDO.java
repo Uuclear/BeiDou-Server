@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `flyway_schema_history` 的实体类（DO）。
+ * <p>
+ * Flyway 数据库迁移历史表，由 Flyway 自动维护的版本执行记录。
  */
 @Data
 @Builder

@@ -18,26 +18,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-package org.gms.client;
-
-import org.gms.net.packet.Packet;
-import org.gms.net.server.Server;
-import org.gms.net.server.world.World;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.util.DatabaseConnection;
-import org.gms.util.PacketCreator;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
- * @author Jay Estrella - Mr.Trash :3
- * @author Ubaware
+ * 家族系统管理类，维护家族成员关系、声望及特权。
  */
 public class Family {
     private static final Logger log = LoggerFactory.getLogger(Family.class);
@@ -50,6 +32,11 @@ public class Family {
     private String preceptsMessage = "";
     private int totalGenerations;
 
+    /**
+     * 家族
+     * @param id ID
+     * @param world 世界
+     */
     public Family(int id, int world) {
         int newId = id;
         if (id == -1) {
@@ -70,19 +57,35 @@ public class Family {
         return false;
     }
 
+    /**
+     * 获取ID
+     * @return 返回值
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * 获取世界
+     * @return 返回值
+     */
     public int getWorld() {
         return world;
     }
 
+    /**
+     * 设置Leader
+     * @param leader leader
+     */
     public void setLeader(FamilyEntry leader) {
         this.leader = leader;
         setName(leader.getName());
     }
 
+    /**
+     * 获取Leader
+     * @return 返回值
+     */
     public FamilyEntry getLeader() {
         return leader;
     }
@@ -91,22 +94,43 @@ public class Family {
         this.name = name;
     }
 
+    /**
+     * 获取TotalMembers
+     * @return 返回值
+     */
     public int getTotalMembers() {
         return members.size();
     }
 
+    /**
+     * 获取TotalGenerations
+     * @return 返回值
+     */
     public int getTotalGenerations() {
         return totalGenerations;
     }
 
+    /**
+     * 设置TotalGenerations
+     * @param generations generations
+     */
     public void setTotalGenerations(int generations) {
         this.totalGenerations = generations;
     }
 
+    /**
+     * 获取名称
+     * @return 返回值
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * 设置Message
+     * @param message 消息
+     * @param save save
+     */
     public void setMessage(String message, boolean save) {
         this.preceptsMessage = message;
         if (save) {
@@ -121,14 +145,26 @@ public class Family {
         }
     }
 
+    /**
+     * 获取Message
+     * @return 返回值
+     */
     public String getMessage() {
         return preceptsMessage;
     }
 
+    /**
+     * 添加条目
+     * @param entry entry
+     */
     public void addEntry(FamilyEntry entry) {
         members.put(entry.getChrId(), entry);
     }
 
+    /**
+     * 移除条目Branch
+     * @param root root
+     */
     public void removeEntryBranch(FamilyEntry root) {
         members.remove(root.getChrId());
         for (FamilyEntry junior : root.getJuniors()) {
@@ -138,6 +174,10 @@ public class Family {
         }
     }
 
+    /**
+     * 添加条目Tree
+     * @param root root
+     */
     public void addEntryTree(FamilyEntry root) {
         members.put(root.getChrId(), root);
         for (FamilyEntry junior : root.getJuniors()) {
@@ -147,14 +187,28 @@ public class Family {
         }
     }
 
+    /**
+     * 获取条目按ID
+     * @param cid cid
+     * @return 返回值
+     */
     public FamilyEntry getEntryByID(int cid) {
         return members.get(cid);
     }
 
+    /**
+     * 广播
+     * @param packet 封包
+     */
     public void broadcast(Packet packet) {
         broadcast(packet, -1);
     }
 
+    /**
+     * 广播
+     * @param packet 封包
+     * @param ignoreID ignoreID
+     */
     public void broadcast(Packet packet, int ignoreID) {
         for (FamilyEntry entry : members.values()) {
             Character chr = entry.getChr();
@@ -167,6 +221,18 @@ public class Family {
         }
     }
 
+    /**
+     * Familybuff
+     * @param duration duration
+     */
+    /**
+     * Familybuff
+     * @param duration duration
+     */
+    /**
+     * 激活家族增益效果
+     * @param duration 持续时间
+     */
     public void Familybuff(int duration) {
         for (FamilyEntry entry : members.values()) {
             Character chr = entry.getChr();
@@ -178,6 +244,9 @@ public class Family {
         }
     }
 
+    /**
+     * 广播家族信息Update
+     */
     public void broadcastFamilyInfoUpdate() {
         for (FamilyEntry entry : members.values()) {
             Character chr = entry.getChr();
@@ -187,6 +256,9 @@ public class Family {
         }
     }
 
+    /**
+     * 重置DailyReps
+     */
     public void resetDailyReps() {
         for (FamilyEntry entry : members.values()) {
             entry.setTodaysRep(0);
@@ -195,8 +267,10 @@ public class Family {
         }
     }
 
+    /**
+     * 保存全部MembersRep
+     */
     public void saveAllMembersRep() { //was used for autosave task, but character autosave should be enough
-        try (Connection con = DatabaseConnection.getConnection()) {
             con.setAutoCommit(false);
             boolean success = true;
             for (FamilyEntry entry : members.values()) {

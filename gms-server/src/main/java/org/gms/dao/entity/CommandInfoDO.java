@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * 数据库表 `command_info` 的实体类（DO）。
+ * <p>
+ * GM 命令元信息表，定义管理指令的语法、权限等级与描述。
+ */
 @Data
 @Builder
 @NoArgsConstructor

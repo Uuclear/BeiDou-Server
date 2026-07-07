@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21739
+ * 功能描述：rmant on Lith about the situation.");（原版描述）。
+ */
 var status = -1;
 
 function end(mode, type, selection) {

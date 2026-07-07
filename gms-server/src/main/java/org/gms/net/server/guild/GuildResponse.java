@@ -23,6 +23,9 @@ package org.gms.net.server.guild;
 
 import org.gms.net.packet.Packet;
 
+/**
+ * 公会操作响应枚举，将业务结果映射为对应的公会消息封包。
+ */
 public enum GuildResponse {
     NOT_IN_CHANNEL(0x2a),
     ALREADY_IN_GUILD(0x28),
@@ -37,6 +40,12 @@ public enum GuildResponse {
         value = val;
     }
 
+    /**
+     * 获取该响应对应的公会消息封包。
+     *
+     * @param targetName 邀请目标角色名（部分响应码需要）
+     * @return 公会消息封包
+     */
     public final Packet getPacket(String targetName) {
         if (value >= MANAGING_INVITE.value) {
             return GuildPackets.responseGuildMessage((byte) value, targetName);

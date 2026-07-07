@@ -33,10 +33,11 @@ import org.gms.util.PacketCreator;
 import java.util.Set;
 
 /**
- * @author TheRamon
- * @author Ronan
+ * 处理客户端 PET_LOOT（宠物拾取） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PET_LOOT}</p>
  */
 public final class PetLootHandler extends AbstractPacketHandler {
+    /** 处理 宠物拾取 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

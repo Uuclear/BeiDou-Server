@@ -1,13 +1,14 @@
 package org.gms.server.gachapon;
 
 /**
- * @author Ronan - parsed MapleSEA loots
- * <p>
- * MapleSEA-like loots thanks to AyumiLove - src: https://ayumilovemaple.wordpress.com/maplestory-gachapon-guide/
+ * 冰封雪域扭蛋奖池。
  */
-
 public class ElNath extends GachaponItems {
 
+    /**
+     * 获取Common、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getCommonItems() {
         return new int[]{
@@ -51,11 +52,19 @@ public class ElNath extends GachaponItems {
         };
     }
 
+    /**
+     * 获取Uncommon、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getUncommonItems() {
         return new int[]{2022439, 2040804, 2040805, 2340000};
     }
 
+    /**
+     * 获取Rare、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getRareItems() {
         return new int[]{2043803, 1102085};

@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：go1010100
+ * 功能描述：地图脚本（go1010100），控制地图内特殊逻辑。
+ */
 function start(ms) {
     ms.mapEffect("maplemap/enter/1010100");
 }

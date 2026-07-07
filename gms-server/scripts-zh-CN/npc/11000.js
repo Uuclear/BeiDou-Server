@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：11000
+ * 功能描述：NPC脚本（ID: 11000）。
+ */
 function start() {
     const ShopFactory = Java.type('org.gms.server.ShopFactory');
     ShopFactory.getInstance().getShop(11000).sendShop(cm.getClient());

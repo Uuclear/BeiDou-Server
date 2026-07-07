@@ -32,12 +32,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务动作接口。
  */
 public class QuestAction extends AbstractQuestAction {
     int mesos;
     Map<Integer, Integer> quests = new HashMap<>();
 
+    /**
+     * 构造 QuestAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public QuestAction(Quest quest, Data data) {
         super(QuestActionType.QUEST, quest);
         questID = quest.getId();
@@ -45,6 +50,10 @@ public class QuestAction extends AbstractQuestAction {
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         for (Data qEntry : data) {
@@ -54,6 +63,11 @@ public class QuestAction extends AbstractQuestAction {
         }
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         for (Integer questID : quests.keySet()) {

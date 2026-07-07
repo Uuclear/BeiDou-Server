@@ -35,7 +35,7 @@ import java.util.concurrent.ScheduledFuture;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * @author kevintjuh93
+ * 金字塔副本（怪物金字塔 Party Quest）逻辑。
  */
 public class Pyramid extends PartyQuest {
     public enum PyramidMode {
@@ -46,6 +46,10 @@ public class Pyramid extends PartyQuest {
             this.mode = mode;
         }
 
+        /**
+         * 获取Mode。
+         * @return int 类型结果
+         */
         public int getMode() {
             return mode;
         }
@@ -60,6 +64,12 @@ public class Pyramid extends PartyQuest {
     ScheduledFuture<?> timer = null;
     ScheduledFuture<?> gaugeSchedule = null;
 
+    /**
+     * 构造 Pyramid 实例。
+     * @param party party
+     * @param mode mode
+     * @param mapid 地图 ID
+     */
     public Pyramid(Party party, PyramidMode mode, int mapid) {
         super(party);
         this.mode = mode;
@@ -79,6 +89,9 @@ public class Pyramid extends PartyQuest {
         }
     }
 
+    /**
+     * 执行 start、Gauge、调度 操作。
+     */
     public void startGaugeSchedule() {
         if (gaugeSchedule == null) {
             gauge = 100;
@@ -93,6 +106,9 @@ public class Pyramid extends PartyQuest {
         }
     }
 
+    /**
+     * 执行 kill 操作。
+     */
     public void kill() {
         kill++;
         if (gauge < 100) {
@@ -106,6 +122,9 @@ public class Pyramid extends PartyQuest {
         checkBuffs();
     }
 
+    /**
+     * 执行 cool 操作。
+     */
     public void cool() {
         cool++;
         int plus = coolAdd;
@@ -122,6 +141,9 @@ public class Pyramid extends PartyQuest {
 
     }
 
+    /**
+     * 执行 miss 操作。
+     */
     public void miss() {
         miss++;
         count -= missSub;
@@ -129,6 +151,10 @@ public class Pyramid extends PartyQuest {
         broadcastInfo("miss", miss);
     }
 
+    /**
+     * 执行 timer 操作。
+     * @return int 类型结果
+     */
     public int timer() {
         int value;
         if (stage > 0) {
@@ -151,6 +177,10 @@ public class Pyramid extends PartyQuest {
         return value;
     }
 
+    /**
+     * 执行 warp 操作。
+     * @param mapid 地图 ID
+     */
     public void warp(int mapid) {
         for (Character chr : getParticipants()) {
             chr.changeMap(mapid, 0);
@@ -165,6 +195,11 @@ public class Pyramid extends PartyQuest {
         }
     }
 
+    /**
+     * 向地图广播信息。
+     * @param info info
+     * @param amount amount
+     */
     public void broadcastInfo(String info, int amount) {
         for (Character chr : getParticipants()) {
             chr.sendPacket(PacketCreator.getEnergy("massacre_" + info, amount));
@@ -172,6 +207,10 @@ public class Pyramid extends PartyQuest {
         }
     }
 
+    /**
+     * 执行 use技能 操作。
+     * @return boolean 类型结果
+     */
     public boolean useSkill() {
         if (skill < 1) {
             return false;
@@ -182,6 +221,9 @@ public class Pyramid extends PartyQuest {
         return true;
     }
 
+    /**
+     * 检查Buffs。
+     */
     public void checkBuffs() {
         int total = (kill + cool);
         if (buffcount == 0 && total >= 250) {
@@ -227,6 +269,10 @@ public class Pyramid extends PartyQuest {
         }
     }
 
+    /**
+     * 执行 send、Score 操作。
+     * @param chr 角色
+     */
     public void sendScore(Character chr) {
         if (exp == 0) {
             int totalkills = (kill + cool);

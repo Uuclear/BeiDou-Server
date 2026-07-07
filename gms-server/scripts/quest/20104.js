@@ -1,10 +1,14 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20104
+ * 功能描述：General script for knight transfer（原版描述）。
+ * 原作者：Magical-H
+ */
 /*
  * Cygnus 1st Job advancement - Night Walker
  */
-/*
-    Author:         Magical-H
-    Description:    General script for knight transfer
- */
+
 var job = {
     1 : "DAWNWARRIOR",				// 魂骑士
     2 : "BLAZEWIZARD",				// 炎术士

@@ -26,8 +26,13 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.server.ItemInformationProvider;
 
+/**
+ * 处理客户端 CANCEL_ITEM_EFFECT（取消物品效果） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CANCEL_ITEM_EFFECT}</p>
+ */
 public final class CancelItemEffectHandler extends AbstractPacketHandler {
 
+    /** 处理 取消物品效果 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int itemId = -p.readInt();

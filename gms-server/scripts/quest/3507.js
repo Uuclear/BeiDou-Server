@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：3507
+ * 功能描述：任务脚本（ID: 3507）。
+ */
 var status = -1;
 
 function end(mode, type, selection) {

@@ -28,6 +28,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 活动实例召回协调器，记录玩家可重新进入的未完成活动副本实例。
+ *
  * @author Ronan
  */
 public class EventRecallCoordinator {

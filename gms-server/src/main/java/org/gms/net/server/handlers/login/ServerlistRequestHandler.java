@@ -31,8 +31,13 @@ import org.gms.util.PacketCreator;
 
 import java.util.List;
 
+/**
+ * 处理请求或重新请求服务器列表（SERVERLIST_REQUEST / SERVERLIST_REREQUEST）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SERVERLIST_REREQUEST}, {@link org.gms.net.opcodes.RecvOpcode#SERVERLIST_REQUEST}</p>
+ */
 public final class ServerlistRequestHandler extends AbstractPacketHandler {
 
+    /** 处理 重新请求服务器列表 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Server server = Server.getInstance();

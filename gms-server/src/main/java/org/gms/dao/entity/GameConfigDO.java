@@ -13,10 +13,9 @@ import java.io.Serial;
 import java.util.Date;
 
 /**
- * 游戏参数表 实体类。
- *
- * @author CN
- * @since 2024-10-18
+ * 数据库表 `game_config` 的实体类（DO）。
+ * <p>
+ * 游戏运行时配置表，以键值对形式存储可热更新的服务端参数。
  */
 @Data
 @Builder

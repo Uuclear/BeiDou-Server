@@ -1,10 +1,12 @@
-/* @Author Ronan
-        Name: Heracle
-        Map(s): Guild Headquarters
-        Info: Hall of Fame
-        Script: credits.js
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：credits
+ * 功能描述：Hall of Fame（原版描述）。
+ * 原作者：Ronan
+ */
 var status;
 
 var name_tree = [];

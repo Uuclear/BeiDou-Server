@@ -1,3 +1,9 @@
+/**
+ * DOM 事件监听工具
+ * 封装 addEventListener / removeEventListener，兼容不支持的环境。
+ */
+
+/** 安全地为目标元素添加事件监听 */
 export function addEventListen(
   target: Window | HTMLElement,
   event: string,
@@ -12,6 +18,7 @@ export function addEventListen(
   }
 }
 
+/** 安全地移除目标元素的事件监听 */
 export function removeEventListen(
   target: Window | HTMLElement,
   event: string,

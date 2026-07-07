@@ -42,12 +42,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * @author Jay Estrella
- * @author Ubaware
+ * 处理客户端 ACCEPT_FAMILY（接受家族邀请） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ACCEPT_FAMILY}</p>
  */
 public final class AcceptFamilyHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(AcceptFamilyHandler.class);
 
+    /** 处理 接受家族邀请 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_family_system")) {

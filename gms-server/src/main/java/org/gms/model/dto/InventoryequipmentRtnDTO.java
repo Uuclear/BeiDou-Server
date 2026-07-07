@@ -3,6 +3,9 @@ package org.gms.model.dto;
 import com.mybatisflex.annotation.Column;
 import lombok.*;
 
+/**
+ * 背包装备分页查询响应 DTO，合并物品基础信息与装备扩展属性。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

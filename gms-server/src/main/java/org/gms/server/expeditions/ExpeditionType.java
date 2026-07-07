@@ -25,9 +25,8 @@ package org.gms.server.expeditions;
 import org.gms.config.GameConfig;
 
 /**
- * @author Alan (SharpAceX)
+ * 远征队类型枚举（扎昆、黑龙、品克缤等）。
  */
-
 public enum ExpeditionType {
     BALROG_EASY(3, 30, 50, 255, 5),
     BALROG_NORMAL(6, 30, 50, 255, 5),
@@ -57,22 +56,42 @@ public enum ExpeditionType {
         this.registrationMinutes = minutes;
     }
 
+    /**
+     * 获取Min、Size。
+     * @return int 类型结果
+     */
     public int getMinSize() {
         return !GameConfig.getServerBoolean("use_enable_solo_expeditions") ? minSize : 1;
     }
 
+    /**
+     * 获取Max、Size。
+     * @return int 类型结果
+     */
     public int getMaxSize() {
         return maxSize;
     }
 
+    /**
+     * 获取Min等级。
+     * @return int 类型结果
+     */
     public int getMinLevel() {
         return minLevel;
     }
 
+    /**
+     * 获取Max等级。
+     * @return int 类型结果
+     */
     public int getMaxLevel() {
         return maxLevel;
     }
 
+    /**
+     * 获取Registration、Minutes。
+     * @return int 类型结果
+     */
     public int getRegistrationMinutes() {
         return registrationMinutes;
     }

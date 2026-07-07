@@ -1,4 +1,5 @@
 <template>
+  <!-- 消息列表内容区，按类型分组展示消息卡片。 -->
   <a-list :bordered="false">
     <a-list-item
       v-for="item in renderList"
@@ -71,6 +72,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 消息列表子组件，渲染各类型消息并触发已读回调。
+   */
   import { PropType } from 'vue';
   import { MessageRecord, MessageListType } from '@/api/message';
 

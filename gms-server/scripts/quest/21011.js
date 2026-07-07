@@ -19,9 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21011
+ * 功能描述：任务脚本，完成任务后发放经验与物品奖励。
+ * 原作者：kevintjuh93
+ */
 var status = -1;
 
 function start(mode, type, selection) {

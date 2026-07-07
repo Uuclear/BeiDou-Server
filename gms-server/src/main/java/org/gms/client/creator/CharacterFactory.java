@@ -34,7 +34,7 @@ import org.gms.server.ItemInformationProvider;
 import org.gms.util.PacketCreator;
 
 /**
- * @author RonanLana
+ * 角色创建工厂抽象基类，封装新角色校验、默认装备与入库的通用流程，由各职业子类提供配方。
  */
 public abstract class CharacterFactory {
     private static final Logger log = LoggerFactory.getLogger(CharacterFactory.class);

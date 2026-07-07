@@ -6,6 +6,12 @@ import org.gms.property.ServiceProperty;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * 标准 WZ 包枚举，定义各游戏数据包路径及语言目录回退规则。
+ * <p>
+ * 原始包位于 {@code wz/}，本地化包位于 {@code wz-语言/}（如 {@code wz-zh-CN/}）。
+ * </p>
+ */
 public enum WZFiles {
     QUEST("Quest"),
     ETC("Etc"),
@@ -28,6 +34,7 @@ public enum WZFiles {
         this.fileName = name + ".wz";
     }
 
+/** 获取 WZ 文件路径（含语言回退） */
     public Path getFile() {
         Path langPath = getLanguageFile();
 
@@ -35,15 +42,18 @@ public enum WZFiles {
         return Files.exists(langPath) ? langPath : getBaseFile();
     }
 
+/** 获取默认 WZ 文件路径 */
     public Path getBaseFile() {
         return Path.of(DIRECTORY, fileName);
     }
 
+/** 获取语言目录 WZ 文件路径 */
     public Path getLanguageFile() {
         ServiceProperty serviceProperty = ServerManager.getApplicationContext().getBean(ServiceProperty.class);
         return Path.of(DIRECTORY + "-" + serviceProperty.getLanguage(), fileName);
     }
 
+/** 获取 WZ 文件路径字符串 */
     public String getFilePath() {
         return getFile().toString();
     }

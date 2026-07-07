@@ -30,7 +30,7 @@ import org.gms.util.PacketCreator;
 import java.util.concurrent.ScheduledFuture;
 
 /**
- * @author kevintjuh93
+ * 健身活动（躲避障碍）。
  */
 public class Fitness {
     private final Character chr;
@@ -39,6 +39,10 @@ public class Fitness {
     private ScheduledFuture<?> schedule = null;
     private ScheduledFuture<?> schedulemsg = null;
 
+    /**
+     * 构造 Fitness 实例。
+     * @param chr 角色
+     */
     public Fitness(final Character chr) {
         this.chr = chr;
         this.schedule = TimerManager.getInstance().schedule(() -> {
@@ -48,6 +52,9 @@ public class Fitness {
         }, 900000);
     }
 
+    /**
+     * 执行 start、健身 操作。
+     */
     public void startFitness() {
         chr.getMap().startEvent();
         chr.getClient().sendPacket(PacketCreator.getClock(900));
@@ -59,14 +66,25 @@ public class Fitness {
         chr.sendPacket(PacketCreator.serverNotice(0, "The portal has now opened. Press the up arrow key at the portal to enter."));
     }
 
+    /**
+     * 判断是否为计时器、Started。
+     * @return boolean 类型结果
+     */
     public boolean isTimerStarted() {
         return time > 0 && timeStarted > 0;
     }
 
+    /**
+     * 获取时间。
+     * @return long 类型结果
+     */
     public long getTime() {
         return time;
     }
 
+    /**
+     * 重置Times。
+     */
     public void resetTimes() {
         this.time = 0;
         this.timeStarted = 0;
@@ -74,10 +92,17 @@ public class Fitness {
         schedulemsg.cancel(false);
     }
 
+    /**
+     * 获取时间剩余。
+     * @return long 类型结果
+     */
     public long getTimeLeft() {
         return time - (System.currentTimeMillis() - timeStarted);
     }
 
+    /**
+     * 检查与、Message。
+     */
     public void checkAndMessage() {
         this.schedulemsg = TimerManager.getInstance().register(() -> {
             if (chr.getFitness() == null) {

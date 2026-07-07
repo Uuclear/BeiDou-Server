@@ -59,9 +59,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 处理客户端 TAKE_DAMAGE（受到伤害） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#TAKE_DAMAGE}</p>
+ */
 public final class TakeDamageHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(TakeDamageHandler.class);
 
+    /** 处理 受到伤害 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         List<Character> banishPlayers = new ArrayList<>();

@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2101001
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ */
 function start() {
     cm.sendNext("我想念我的妹妹...她总是在宫殿里当仆人，我只有在星期天才能见到她。国王和王后真是自私。");
     cm.dispose();

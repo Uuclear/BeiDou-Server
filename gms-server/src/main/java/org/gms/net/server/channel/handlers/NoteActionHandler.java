@@ -32,6 +32,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+/**
+ * 处理游戏内便签/邮件操作（NOTE_ACTION）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#NOTE_ACTION}</p>
+ */
 public final class NoteActionHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(NoteActionHandler.class);
 
@@ -41,6 +45,7 @@ public final class NoteActionHandler extends AbstractPacketHandler {
         this.noteService = noteService;
     }
 
+    /** 处理 笔记操作 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         int action = p.readByte();

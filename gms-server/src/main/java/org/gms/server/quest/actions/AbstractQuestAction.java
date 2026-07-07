@@ -27,28 +27,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务动作抽象基类，定义 run/processData/check 及职业位编码解析工具。
  */
 public abstract class AbstractQuestAction {
     private final QuestActionType type;
     protected int questID;
 
+    /**
+     * 构造 AbstractQuestAction 实例。
+     * @param action 动作类型
+     * @param quest 任务
+     */
     public AbstractQuestAction(QuestActionType action, Quest quest) {
         this.type = action;
         this.questID = quest.getId();
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     * @return abstract void 类型结果
+     */
     public abstract void run(Character chr, Integer extSelection);
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     * @return abstract void 类型结果
+     */
     public abstract void processData(Data data);
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     * @return boolean 类型结果
+     */
     public boolean check(Character chr, Integer extSelection) {
         return true;
     }
 
+    /**
+     * 获取类型。
+     * @return QuestActionType 类型结果
+     */
     public QuestActionType getType() {
         return type;
     }
 
+    /**
+     * 获取职业、By5、字节、Encoding。
+     * @param encoded 位编码值
+     * @return List<Integer> 类型结果
+     */
     public static List<Integer> getJobBy5ByteEncoding(int encoded) {
         List<Integer> ret = new ArrayList<>();
         if ((encoded & 0x1) != 0) {
@@ -93,13 +124,13 @@ public abstract class AbstractQuestAction {
         }
         if ((encoded & 0x100000) != 0) {
             ret.add(2000);
-            ret.add(2001); //?
+            ret.add(2001); // 含义尚不确定
         }
         if ((encoded & 0x200000) != 0) {
             ret.add(2100);
         }
         if ((encoded & 0x400000) != 0) {
-            ret.add(2001); //?
+            ret.add(2001); // 含义尚不确定
             ret.add(2200);
         }
 
@@ -112,6 +143,11 @@ public abstract class AbstractQuestAction {
         return ret;
     }
 
+    /**
+     * 获取职业、按、简单、Encoding。
+     * @param encoded 位编码值
+     * @return List<Integer> 类型结果
+     */
     public static List<Integer> getJobBySimpleEncoding(int encoded) {
         List<Integer> ret = new ArrayList<>();
         if ((encoded & 0x1) != 0) {

@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9000010
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 function start() {
     cm.sendNext("很抱歉，但恐怕你没有赢得这个活动。以后再试试吧。你可以通过我回到原来的地方。");
 }

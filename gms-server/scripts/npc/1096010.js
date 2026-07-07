@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1096010
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 function start() {
     if (cm.isQuestStarted(2566)) {
         if (!cm.haveItem(4032985)) {

@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+/**
+ * 全局异常处理器，将业务异常与系统异常统一转换为 ResultBody 响应。
+ * 通过 @ControllerAdvice 拦截控制器层抛出的异常，并记录错误日志。
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `nxcode_items` 的实体类（DO）。
+ * <p>
+ * NX 兑换码关联道具表，定义每个兑换码可领取的物品与数量。
  */
 @Data
 @Builder

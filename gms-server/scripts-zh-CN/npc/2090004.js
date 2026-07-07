@@ -1,10 +1,12 @@
-/* @author aaroncsn <MapleSea Like>
- * @author Ronan
-	NPC Name: 		Mr. Do
-	Map(s): 		Mu Lung: Mu Lung(2500000000)
-	Description: 		Potion Creator
- */
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2090004
+ * 功能描述：Mr. Do，Potion Creator（原版描述）。
+ * 原作者：aaroncsn <MapleSea Like>
+ */
 var status = 0;
 var selectedType = -1;
 var selectedItem = -1;

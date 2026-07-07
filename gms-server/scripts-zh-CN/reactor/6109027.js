@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：6109027
+ * 功能描述：地图反应堆交互脚本。
+ */
 function action() {
     var flames = Array("g6", "g7", "h6", "h7", "i6", "i7");
     for (var i = 0; i < flames.length; i++) {

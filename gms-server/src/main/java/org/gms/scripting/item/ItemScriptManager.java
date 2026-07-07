@@ -25,14 +25,22 @@ import org.gms.client.Client;
 import org.gms.scripting.npc.NPCScriptManager;
 import org.gms.server.ItemInformationProvider.ScriptedItem;
 
+/**
+ * 物品脚本入口管理器（单例），将脚本化物品委托给 {@link NPCScriptManager} 执行。
+ * <p>
+ * 物品 WZ 中配置的脚本名对应 {@code scripts/item/{script}.js}，引擎变量名为 {@code im}。
+ * </p>
+ */
 public class ItemScriptManager {
 
     private static final ItemScriptManager instance = new ItemScriptManager();
 
+    /** 获取单例实例 */
     public static ItemScriptManager getInstance() {
         return instance;
     }
 
+    /** 执行物品脚本，委托 NPC 脚本管理器以 {@code im} 变量加载 item 脚本 */
     public void runItemScript(Client c, ScriptedItem scriptItem) {
         NPCScriptManager.getInstance().start(c, scriptItem, null);
     }

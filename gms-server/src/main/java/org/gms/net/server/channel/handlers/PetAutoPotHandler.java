@@ -29,8 +29,13 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.ItemInformationProvider;
 import org.gms.server.StatEffect;
 
+/**
+ * 处理客户端 PET_AUTO_POT（宠物自动使用药水） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PET_AUTO_POT}</p>
+ */
 public final class PetAutoPotHandler extends AbstractPacketHandler {
 
+    /** 处理 宠物自动使用药水 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readByte();

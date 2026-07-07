@@ -1,3 +1,6 @@
+/**
+ * 资料查询页面英文文案。
+ */
 export default {
   'informationSearch.placeholder.type': 'Select information type',
   'informationSearch.placeholder.filter': 'Input search text',

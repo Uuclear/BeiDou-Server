@@ -18,11 +18,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client;
-
 /**
- * @author PurpleMadness < Patrick :O >
+ * 坐骑数据模型，管理坐骑 ID、等级、疲劳度及技能。
  */
 public class Mount {
     private int itemid;
@@ -33,6 +30,12 @@ public class Mount {
     private Character owner;
     private boolean active;
 
+    /**
+     * 坐骑
+     * @param owner 所有者
+     * @param id ID
+     * @param skillid skillid
+     */
     public Mount(Character owner, int id, int skillid) {
         this.itemid = id;
         this.skillid = skillid;
@@ -43,10 +46,18 @@ public class Mount {
         active = true;
     }
 
+    /**
+     * 获取物品ID
+     * @return 返回值
+     */
     public int getItemId() {
         return itemid;
     }
 
+    /**
+     * 获取技能ID
+     * @return 返回值
+     */
     public int getSkillId() {
         return skillid;
     }
@@ -66,6 +77,10 @@ public class Mount {
      *
      * @return the id
      */
+    /**
+     * 获取ID
+     * @return 返回值
+     */
     public int getId() {
         if (this.itemid < 1903000) {
             return itemid - 1901999;
@@ -73,18 +88,34 @@ public class Mount {
         return 5;
     }
 
+    /**
+     * 获取Tiredness
+     * @return 返回值
+     */
     public int getTiredness() {
         return tiredness;
     }
 
+    /**
+     * 获取经验
+     * @return 返回值
+     */
     public int getExp() {
         return exp;
     }
 
+    /**
+     * 获取等级
+     * @return 返回值
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * 设置Tiredness
+     * @param newtiredness newtiredness
+     */
     public void setTiredness(int newtiredness) {
         this.tiredness = newtiredness;
         if (tiredness < 0) {
@@ -92,35 +123,72 @@ public class Mount {
         }
     }
 
+    /**
+     * incrementAndGetTiredness
+     * @return 返回值
+     */
     public int incrementAndGetTiredness() {
         this.tiredness++;
         return this.tiredness;
     }
 
+    /**
+     * 设置经验
+     * @param newexp newexp
+     */
     public void setExp(int newexp) {
         this.exp = newexp;
     }
 
+    /**
+     * 设置等级
+     * @param newlevel newlevel
+     */
     public void setLevel(int newlevel) {
         this.level = newlevel;
     }
 
+    /**
+     * 设置物品ID
+     * @param newitemid newitemid
+     */
     public void setItemId(int newitemid) {
         this.itemid = newitemid;
     }
 
+    /**
+     * 设置技能ID
+     * @param newskillid newskillid
+     */
     public void setSkillId(int newskillid) {
         this.skillid = newskillid;
     }
 
+    /**
+     * 设置活跃
+     * @param set set
+     */
     public void setActive(boolean set) {
         this.active = set;
     }
 
+    /**
+     * 判断是否为活跃
+     * @return 返回值
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * empty
+     */
+    /**
+     * empty
+     */
+    /**
+     * 清空数据
+     */
     public void empty() {
         if (owner != null) {
             owner.getClient().getWorldServer().unregisterMountHunger(owner);

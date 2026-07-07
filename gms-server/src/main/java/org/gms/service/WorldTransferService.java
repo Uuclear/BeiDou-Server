@@ -27,6 +27,9 @@ import java.util.Objects;
 import static org.gms.dao.entity.table.CharactersDOTableDef.CHARACTERS_D_O;
 import static org.gms.dao.entity.table.WorldtransfersDOTableDef.WORLDTRANSFERS_D_O;
 
+/**
+ * 跨世界传送业务服务，处理角色在大区之间的迁移逻辑。
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -36,6 +39,9 @@ public class WorldTransferService {
     private final AccountService accountService;
     private final BuddiesMapper buddiesMapper;
 
+    /**
+     * 执行 applyAllWorldTransfer 相关业务逻辑。
+     */
     public void applyAllWorldTransfer() {
         List<WorldtransfersDO> worldtransfersDOList = worldtransfersMapper.selectListByQuery(QueryWrapper.create()
                 .where(WORLDTRANSFERS_D_O.COMPLETION_TIME.isNull()));
@@ -114,6 +120,13 @@ public class WorldTransferService {
         log.info(I18nUtil.getLogMessage("CharacterService.doWorldTransfer.info1"), data.getFrom(), data.getTo());
     }
 
+    /**
+     * 执行 registerWorldTransfer 相关业务逻辑。
+     *
+     * @param chr chr
+     * @param newWorld newWorld
+     * @return boolean 类型结果
+     */
     public boolean registerWorldTransfer(Character chr, int newWorld) {
         List<WorldtransfersDO> worldTransfersDOList = worldtransfersMapper.selectListByQuery(QueryWrapper.create()
                 .where(WORLDTRANSFERS_D_O.CHARACTERID.eq(chr.getId())));
@@ -126,6 +139,12 @@ public class WorldTransferService {
         return true;
     }
 
+    /**
+     * 执行 cancelPendingWorldTransfer 相关业务逻辑。
+     *
+     * @param chr chr
+     * @param needFinish needFinish
+     */
     public void cancelPendingWorldTransfer(Character chr, boolean needFinish) {
         QueryWrapper queryWrapper = QueryWrapper.create().where(WORLDTRANSFERS_D_O.CHARACTERID.eq(chr.getId()));
         if (needFinish) queryWrapper.and(WORLDTRANSFERS_D_O.COMPLETION_TIME.isNull());

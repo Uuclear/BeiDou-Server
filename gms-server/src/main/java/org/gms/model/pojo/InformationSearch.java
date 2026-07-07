@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 信息检索条件 POJO，供管理端与内部服务按类型列表 types 与关键字 filter 过滤游戏资源（怪物、道具、NPC 等）。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

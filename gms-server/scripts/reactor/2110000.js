@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * 
- * 2110000.js: Zakum Party Quest Chest - action go280010000
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2110000
+ * 功能描述：反应堆触发后传送玩家。
+ * 原作者：Lerk
+ */
 function act() {
     rm.playerMessage(5, "An unknown force has moved you to the starting point.");
     rm.warp(280010000, 0);

@@ -31,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
+ * 登录尝试记录存储，按账号追踪短时间内的登录次数以限制暴力尝试。
+ *
  * @author Ronan
  */
 public class LoginStorage {

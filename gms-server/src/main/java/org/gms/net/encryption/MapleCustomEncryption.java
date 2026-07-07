@@ -21,13 +21,26 @@
 */
 package org.gms.net.encryption;
 
+/**
+ * MapleStory 自定义封包混淆层，在 AES-OFB 之外对载荷进行二次变换。
+ * <p>
+ * v83 封包加解密顺序：
+ * <ul>
+ *   <li>发送：明文 → {@link #encryptData} → AES-OFB</li>
+ *   <li>接收：AES-OFB → {@link #decryptData} → 明文</li>
+ * </ul>
+ * 算法对载荷执行 6 轮正向/反向遍历，结合循环移位、XOR 与取反操作。
+ * </p>
+ */
 public class MapleCustomEncryption {
+    /** 8 位循环左移 */
     private static byte rollLeft(byte in, int count) {
         int tmp = (int) in & 0xFF;
         tmp = tmp << (count % 8);
         return (byte) ((tmp & 0xFF) | (tmp >> 8));
     }
 
+    /** 8 位循环右移 */
     private static byte rollRight(byte in, int count) {
         int tmp = (int) in & 0xFF;
         tmp = (tmp << 8) >>> (count % 8);
@@ -35,11 +48,18 @@ public class MapleCustomEncryption {
         return (byte) ((tmp & 0xFF) | (tmp >>> 8));
     }
 
+    /**
+     * 发送前对封包载荷加密（在 AES 之前调用）。
+     *
+     * @param data 载荷字节数组，就地修改
+     * @return 同一数组引用
+     */
     public static byte[] encryptData(byte[] data) {
         for (int j = 0; j < 6; j++) {
-            byte remember = 0;
+            byte remember = 0; // 链式 XOR 状态，每字节依赖前一字节结果
             byte dataLength = (byte) (data.length & 0xFF);
             if (j % 2 == 0) {
+                // 偶数轮：正向遍历
                 for (int i = 0; i < data.length; i++) {
                     byte cur = data[i];
                     cur = rollLeft(cur, 3);
@@ -53,6 +73,7 @@ public class MapleCustomEncryption {
                     data[i] = cur;
                 }
             } else {
+                // 奇数轮：反向遍历，使用不同的移位与常量
                 for (int i = data.length - 1; i >= 0; i--) {
                     byte cur = data[i];
                     cur = rollLeft(cur, 4);
@@ -69,6 +90,12 @@ public class MapleCustomEncryption {
         return data;
     }
 
+    /**
+     * 接收后对封包载荷解密（在 AES 之后调用），为 {@link #encryptData} 的逆操作。
+     *
+     * @param data 载荷字节数组，就地修改
+     * @return 同一数组引用
+     */
     public static byte[] decryptData(byte[] data) {
         for (int j = 1; j <= 6; j++) {
             byte remember = 0;
@@ -89,6 +116,7 @@ public class MapleCustomEncryption {
                     dataLength--;
                 }
             } else {
+                // 奇数轮：反向遍历，使用不同的移位与常量
                 for (int i = data.length - 1; i >= 0; i--) {
                     byte cur = data[i];
                     cur = rollLeft(cur, 3);

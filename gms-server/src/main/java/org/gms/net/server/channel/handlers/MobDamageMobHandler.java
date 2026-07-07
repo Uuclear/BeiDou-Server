@@ -39,12 +39,13 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @author Jay Estrella
- * @author Ronan
+ * 处理客户端 MOB_DAMAGE_MOB（怪物对怪物造成伤害） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOB_DAMAGE_MOB}</p>
  */
 public final class MobDamageMobHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(MobDamageMobHandler.class);
 
+    /** 处理 怪物对怪物造成伤害 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         int from = p.readInt();

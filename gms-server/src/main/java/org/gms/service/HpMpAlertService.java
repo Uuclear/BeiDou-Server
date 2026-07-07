@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * HP/MP 告警业务服务，管理低血量/低蓝量提醒相关配置。
+ */
 @Slf4j
 @Service
 public class HpMpAlertService {
@@ -28,6 +31,12 @@ public class HpMpAlertService {
         return (byte) normalized;
     }
 
+    /**
+     * 执行 getHpAlert 相关业务逻辑。
+     *
+     * @param characterId characterId
+     * @return byte 类型结果
+     */
     public byte getHpAlert(int characterId) {
         HpMpAlertDO cached = cacheMap.get(characterId);
         if (cached != null) {
@@ -51,6 +60,12 @@ public class HpMpAlertService {
         return 0;
     }
 
+    /**
+     * 执行 setHpAlert 相关业务逻辑。
+     *
+     * @param characterId characterId
+     * @param alert alert
+     */
     public void setHpAlert(int characterId, byte alert) {
         byte normalizedAlert = normalizeAlertStep(alert);
         HpMpAlertDO cached = cacheMap.get(characterId);
@@ -68,10 +83,22 @@ public class HpMpAlertService {
         cacheMap.put(characterId, hpMpAlert);
     }
 
+    /**
+     * 执行 getHpAlertPer 相关业务逻辑。
+     *
+     * @param characterId characterId
+     * @return float 类型结果
+     */
     public float getHpAlertPer(int characterId) {
         return (float) Byte.toUnsignedInt(getHpAlert(characterId)) / ALERT_STEP_DIVISOR;
     }
 
+    /**
+     * 执行 getMpAlert 相关业务逻辑。
+     *
+     * @param characterId characterId
+     * @return byte 类型结果
+     */
     public byte getMpAlert(int characterId) {
         HpMpAlertDO cached = cacheMap.get(characterId);
         if (cached != null) {
@@ -95,6 +122,12 @@ public class HpMpAlertService {
         return 0;
     }
 
+    /**
+     * 执行 setMpAlert 相关业务逻辑。
+     *
+     * @param characterId characterId
+     * @param alert alert
+     */
     public void setMpAlert(int characterId, byte alert) {
         byte normalizedAlert = normalizeAlertStep(alert);
         HpMpAlertDO cached = cacheMap.get(characterId);
@@ -112,6 +145,12 @@ public class HpMpAlertService {
         cacheMap.put(characterId, hpMpAlert);
     }
 
+    /**
+     * 执行 getMpAlertPer 相关业务逻辑。
+     *
+     * @param characterId characterId
+     * @return float 类型结果
+     */
     public float getMpAlertPer(int characterId) {
         return (float) Byte.toUnsignedInt(getMpAlert(characterId)) / ALERT_STEP_DIVISOR;
     }

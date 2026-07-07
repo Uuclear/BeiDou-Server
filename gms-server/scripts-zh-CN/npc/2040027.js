@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*      Author: Xterminator, Moogra
-	NPC Name: 		Fourth Eos Rock
-	Map(s): 		Ludibrium : Eos Tower 1st Floor (221020000)
-	Description: 		Brings you to 41st Floor
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040027
+ * 功能描述：Fourth Eos Rock，Brings you to 41st Floor（原版描述）。
+ * 原作者：Xterminator, Moogra
+ */
 function start() {
     if (cm.haveItem(4001020)) {
         cm.sendYesNo("您可以使用#b#t4001020##k来激活#b#p2040027##k。您要前往第41层的#b#p2040026##k吗？");

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `cooldowns` 的实体类（DO）。
+ * <p>
+ * 冷却时间表，记录技能、物品或活动的剩余冷却毫秒数。
  */
 @Data
 @Builder

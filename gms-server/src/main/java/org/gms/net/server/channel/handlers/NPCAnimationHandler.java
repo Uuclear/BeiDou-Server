@@ -27,7 +27,12 @@ import org.gms.net.opcodes.SendOpcode;
 import org.gms.net.packet.InPacket;
 import org.gms.net.packet.OutPacket;
 
+/**
+ * 处理 NPC 动作/动画触发（NPC_ACTION）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#NPC_ACTION}</p>
+ */
 public final class NPCAnimationHandler extends AbstractPacketHandler {
+    /** 处理 NPC动作 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (c.getPlayer().isChangingMaps()) {   // possible cause of error 38 in some map transition scenarios, thanks Arnah

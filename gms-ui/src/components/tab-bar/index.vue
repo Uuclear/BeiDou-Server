@@ -1,4 +1,5 @@
 <template>
+  <!-- 多页签标签栏容器，固定在顶栏下方，展示已打开页面标签并随路由变化新增标签。 -->
   <div class="tab-bar-container">
     <a-affix ref="affixRef" :offset-top="offsetTop">
       <div class="tab-bar-box">
@@ -19,6 +20,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 标签页栏组件，监听路由变化向 TabBar store 追加标签，并随导航栏高度调整 affix 偏移。
+   */
   import { ref, computed, watch, onUnmounted } from 'vue';
   import type { RouteLocationNormalized } from 'vue-router';
   import {

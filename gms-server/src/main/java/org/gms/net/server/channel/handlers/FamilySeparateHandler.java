@@ -27,8 +27,13 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理家族成员分离操作（SEPARATE_FAMILY_BY_SENIOR / SEPARATE_FAMILY_BY_JUNIOR）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SEPARATE_FAMILY_BY_SENIOR}, {@link org.gms.net.opcodes.RecvOpcode#SEPARATE_FAMILY_BY_JUNIOR}</p>
+ */
 public class FamilySeparateHandler extends AbstractPacketHandler {
 
+    /** 处理 通过长辈分离家族 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_family_system")) {

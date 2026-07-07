@@ -36,8 +36,13 @@ import org.gms.net.PacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 CANCEL_BUFF（取消增益效果） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CANCEL_BUFF}</p>
+ */
 public final class CancelBuffHandler extends AbstractPacketHandler implements PacketHandler {
 
+    /** 处理 取消增益效果 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int sourceid = p.readInt();

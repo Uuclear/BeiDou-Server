@@ -34,9 +34,14 @@ import java.awt.*;
 /*
  * @author GabrielSin
  */
+/**
+ * 处理客户端 GRENADE_EFFECT（手榴弹效果） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#GRENADE_EFFECT}</p>
+ */
 public class GrenadeEffectHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(GrenadeEffectHandler.class);
 
+    /** 处理 手榴弹效果 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

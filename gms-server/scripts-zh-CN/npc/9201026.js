@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201026
+ * 功能描述：NPC脚本，提供物品发放、经验奖励。
+ */
 /* Nana, the Love fairy
 	Amoria (680000000)
 	Engagement ring NPC.

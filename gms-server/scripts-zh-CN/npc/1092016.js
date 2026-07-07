@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-        Author : XxOsirisxX (BubblesDev)
-        NPC Name:               Shiny Stone
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1092016
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ * 原作者：XxOsirisxX (BubblesDev)
+ */
 function start() {
     if (cm.isQuestStarted(2166)) {
         cm.sendNext("这是一块美丽而闪亮的岩石。我能感受到它周围的神秘力量。");

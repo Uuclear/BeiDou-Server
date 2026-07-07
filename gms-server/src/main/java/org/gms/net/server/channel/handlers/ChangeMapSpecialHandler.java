@@ -30,9 +30,11 @@ import org.gms.server.maps.Portal;
 import org.gms.util.PacketCreator;
 
 /**
- * 传送点脚本传送玩家到指定地图触发
+ * 处理客户端 CHANGE_MAP_SPECIAL（特殊更改地图） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHANGE_MAP_SPECIAL}</p>
  */
 public final class ChangeMapSpecialHandler extends AbstractPacketHandler {
+    /** 处理 特殊更改地图 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readByte();

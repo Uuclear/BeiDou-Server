@@ -42,9 +42,14 @@ import org.gms.util.Randomizer;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 处理客户端 ADMIN_COMMAND（管理员命令） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ADMIN_COMMAND}</p>
+ */
 public final class AdminCommandHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(AdminCommandHandler.class);
 
+    /** 处理 管理员命令 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (!c.getPlayer().isGM()) {

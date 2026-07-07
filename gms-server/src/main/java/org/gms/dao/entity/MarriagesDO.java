@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `marriages` 的实体类（DO）。
+ * <p>
+ * 婚姻系统表，存储结婚双方角色 ID、婚礼状态及戒指信息。
  */
 @Data
 @Builder

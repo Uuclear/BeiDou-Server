@@ -46,6 +46,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 命令执行器单例，负责注册、分发和执行玩家/GM 聊天命令（@ 和 ! 前缀）。
+ */
 public class CommandsExecutor {
     private static final Logger log = LoggerFactory.getLogger(CommandsExecutor.class);
     @Getter
@@ -61,6 +64,13 @@ public class CommandsExecutor {
 
     private static final CommandService commandService = ServerManager.getApplicationContext().getBean(CommandService.class);
 
+    /**
+     * 判断消息内容是否为玩家或 GM 命令（以 @ 或 ! 开头）。
+     *
+     * @param client 客户端会话
+     * @param content 聊天消息内容
+     * @return 若为命令则返回 true
+     */
     public static boolean isCommand(Client client, String content) {
         char heading = content.charAt(0);
         if (client.getPlayer().isGM()) {
@@ -69,6 +79,9 @@ public class CommandsExecutor {
         return heading == USER_HEADING;
     }
 
+    /**
+     * 加载Commands执行器
+     */
     public void loadCommandsExecutor() {
 //        registeredCommands.clear();
 //        commandsNameDesc.clear();
@@ -83,6 +96,11 @@ public class CommandsExecutor {
         commandService.loadCommands(registeredCommands, commandsNameDesc);
     }
 
+    /**
+     * handle
+     * @param client 客户端会话
+     * @param message 消息
+     */
     public void handle(Client client, String message) {
         if (client.tryacquireClient()) {
             try {

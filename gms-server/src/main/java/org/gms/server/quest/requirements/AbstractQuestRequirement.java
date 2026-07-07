@@ -26,33 +26,39 @@ import org.gms.provider.Data;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * Base class for a Quest Requirement. Quest system uses it for all requirements.
- *
- * @author Tyler (Twdtwd)
+ * 任务需求抽象基类，定义 check 与 processData。
  */
 public abstract class AbstractQuestRequirement {
     private final QuestRequirementType type;
 
+    /**
+     * 执行 抽象任务需求 操作。
+     * @param type 类型
+     * @return AbstractQuestRequirement 类型结果
+     */
     public AbstractQuestRequirement(QuestRequirementType type) {
         this.type = type;
     }
 
     /**
-     * Checks the requirement to see if the player currently meets it.
-     *
-     * @param chr   The {@link Character} to check on.
-     * @param npcid The NPC ID it was called from.
-     * @return boolean    If the check was passed or not.
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return abstract boolean 类型结果
      */
     public abstract boolean check(Character chr, Integer npcid);
 
     /**
-     * Processes the data and stores it in the class for future use.
-     *
-     * @param data The data to process.
+     * 处理数据。
+     * @param data WZ 数据节点
+     * @return abstract void 类型结果
      */
     public abstract void processData(Data data);
 
+    /**
+     * 获取类型。
+     * @return QuestRequirementType 类型结果
+     */
     public QuestRequirementType getType() {
         return type;
     }

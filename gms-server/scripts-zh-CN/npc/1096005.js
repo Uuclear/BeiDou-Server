@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1096005
+ * 功能描述：(4, 1096005);//else you will crash sending sendNext（原版描述）。
+ */
 var status = -1;
 
 function start() {

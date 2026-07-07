@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2150
+ * 功能描述：任务对话脚本，推进任务剧情与分支选择。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

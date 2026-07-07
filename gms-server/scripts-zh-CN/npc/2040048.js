@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040048
+ * 功能描述：NPC脚本，提供地图传送、金币奖励。
+ */
 var pay = 1800;
 var ticket = 4031134;
 var msg;

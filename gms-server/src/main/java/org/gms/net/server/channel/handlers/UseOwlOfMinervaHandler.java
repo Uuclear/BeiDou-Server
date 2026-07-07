@@ -32,10 +32,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- * @author Ronan
+ * 处理猫头鹰搜索常用商品信息（OWL_ACTION）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#OWL_ACTION}</p>
  */
 public final class UseOwlOfMinervaHandler extends AbstractPacketHandler {
 
+    /** 处理 发送最常用的信息给客户端     sends most searched info to client 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         List<Pair<Integer, Integer>> owlSearched = c.getWorldServer().getOwlSearchedItems();

@@ -1,4 +1,7 @@
 package org.gms.constants.id;
+/**
+ * NPC 模板 ID 常量，用于对话、商店、任务发放等 NPC 交互逻辑。
+ */
 
 public class NpcId {
     public static final int CUSTOM_DEV = 9977777;

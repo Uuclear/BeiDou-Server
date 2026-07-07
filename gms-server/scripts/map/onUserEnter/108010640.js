@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：108010640
+ * 功能描述：地图脚本（108010640），控制地图内特殊逻辑。
+ */
 var npcid = 1104104;
 const Point = Java.type('java.awt.Point');
 var spawnPos = new Point(372, 70);

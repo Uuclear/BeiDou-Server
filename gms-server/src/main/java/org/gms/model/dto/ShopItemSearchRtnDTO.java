@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 商店道具详情响应 DTO，返回 shopitems 表条目及关联的 NPC/道具展示信息。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

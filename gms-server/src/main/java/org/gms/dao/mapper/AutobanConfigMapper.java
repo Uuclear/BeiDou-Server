@@ -4,10 +4,9 @@ import com.mybatisflex.core.BaseMapper;
 import org.gms.dao.entity.AutobanConfigDO;
 
 /**
- * 自动封禁配置表 Mapper。
- *
- * @author Nap
- * @since 2026-04-22
+ * `autoban_config` 表 / {@link org.gms.dao.entity.AutobanConfigDO} 的 MyBatis Mapper 接口。
+ * <p>
+ * 自动封禁规则配置表，定义各类反作弊检测的积分阈值与周期。
  */
 public interface AutobanConfigMapper extends BaseMapper<AutobanConfigDO> {
 }

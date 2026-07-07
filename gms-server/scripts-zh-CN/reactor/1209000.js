@@ -18,11 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Ronan
- * 
- * 1200000.js: Bart reactor, Aerial Strike skill
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：1209000
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Ronan
+ */
 function act() {    // string visibility thanks to ProXAIMeRx & Glvelturall
     if (rm.isQuestStarted(6400)) {
         rm.setQuestProgress(6400, 1, 2);

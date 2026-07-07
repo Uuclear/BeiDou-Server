@@ -56,7 +56,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * @author Alan (SharpAceX)
+ * 远征队实例，管理成员、状态与 Boss 战流程。
  */
 public class Expedition {
     private static final Logger log = LoggerFactory.getLogger(Expedition.class);
@@ -108,6 +108,14 @@ public class Expedition {
     private final int maxSize;
     private final Lock pL = new ReentrantLock(true);
 
+    /**
+     * 构造 Expedition 实例。
+     * @param player 玩家
+     * @param met met
+     * @param sil sil
+     * @param minPlayers minPlayers
+     * @param maxPlayers maxPlayers
+     */
     public Expedition(Character player, ExpeditionType met, boolean sil, int minPlayers, int maxPlayers) {
         leader = player;
         members.put(player.getId(), player.getName());
@@ -119,14 +127,25 @@ public class Expedition {
         bossLogs = new CopyOnWriteArrayList<>();
     }
 
+    /**
+     * 获取Min、Size。
+     * @return int 类型结果
+     */
     public int getMinSize() {
         return minSize;
     }
 
+    /**
+     * 获取Max、Size。
+     * @return int 类型结果
+     */
     public int getMaxSize() {
         return maxSize;
     }
 
+    /**
+     * 执行 begin、Registration 操作。
+     */
     public void beginRegistration() {
         registering = true;
         leader.sendPacket(PacketCreator.getClock((int) MINUTES.toSeconds(type.getRegistrationMinutes())));
@@ -153,6 +172,10 @@ public class Expedition {
         }, MINUTES.toMillis(type.getRegistrationMinutes()));
     }
 
+    /**
+     * 执行 dispose 操作。
+     * @param log log
+     */
     public void dispose(boolean log) {
         broadcastExped(PacketCreator.removeClock());
 
@@ -190,10 +213,16 @@ public class Expedition {
         return I18nUtil.getMessage("Expedition.getTimeString.message1", minutes, seconds);
     }
 
+    /**
+     * 执行 finish、Registration 操作。
+     */
     public void finishRegistration() {
         registering = false;
     }
 
+    /**
+     * 启动服务/调度器。
+     */
     public void start() {
         finishRegistration();
         registerExpeditionAttempt();
@@ -205,6 +234,11 @@ public class Expedition {
         Server.getInstance().broadcastGMMessage(startMap.getWorld(), PacketCreator.serverNotice(6, I18nUtil.getMessage("Expedition.start.message2", type.toString(), leader.getName())));
     }
 
+    /**
+     * 添加成员。
+     * @param player 玩家
+     * @return String 类型结果
+     */
     public String addMember(Character player) {
         if (!registering) {
             return I18nUtil.getMessage("Expedition.addMember.message1");
@@ -229,6 +263,11 @@ public class Expedition {
         return I18nUtil.getMessage("Expedition.addMember.message6");
     }
 
+    /**
+     * 添加成员Int。
+     * @param player 玩家
+     * @return int 类型结果
+     */
     public int addMemberInt(Character player) {
         if (!registering) {
             return 1; //"Sorry, this expedition is already underway. Registration is closed!";
@@ -262,6 +301,11 @@ public class Expedition {
         }
     }
 
+    /**
+     * 移除成员。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean removeMember(Character chr) {
         if (members.remove(chr.getId()) != null) {
             chr.sendPacket(PacketCreator.removeClock());
@@ -275,6 +319,10 @@ public class Expedition {
         return false;
     }
 
+    /**
+     * 执行 ban 操作。
+     * @param chr 角色
+     */
     public void ban(Entry<Integer, String> chr) {
         int cid = chr.getKey();
         if (!banned.contains(cid)) {
@@ -298,6 +346,11 @@ public class Expedition {
         }
     }
 
+    /**
+     * 执行 monster、Killed 操作。
+     * @param chr 角色
+     * @param mob 怪物
+     */
     public void monsterKilled(Character chr, Monster mob) {
         for (int expeditionBoss : EXPEDITION_BOSSES) {
             if (mob.getId() == expeditionBoss) { //If the monster killed was a boss
@@ -308,6 +361,11 @@ public class Expedition {
         }
     }
 
+    /**
+     * 设置Property。
+     * @param key key
+     * @param value value
+     */
     public void setProperty(String key, String value) {
         pL.lock();
         try {
@@ -317,6 +375,11 @@ public class Expedition {
         }
     }
 
+    /**
+     * 获取Property。
+     * @param key key
+     * @return String 类型结果
+     */
     public String getProperty(String key) {
         pL.lock();
         try {
@@ -326,10 +389,18 @@ public class Expedition {
         }
     }
 
+    /**
+     * 获取类型。
+     * @return ExpeditionType 类型结果
+     */
     public ExpeditionType getType() {
         return type;
     }
 
+    /**
+     * 获取活动成员。
+     * @return List<Character> 类型结果
+     */
     public List<Character> getActiveMembers() {    // thanks MedicOP for figuring out an issue with broadcasting packets to offline members
         PlayerStorage ps = startMap.getWorldServer().getPlayerStorage();
 
@@ -344,10 +415,18 @@ public class Expedition {
         return activeMembers;
     }
 
+    /**
+     * 获取成员。
+     * @return Map<Integer, String> 类型结果
+     */
     public Map<Integer, String> getMembers() {
         return new HashMap<>(members);
     }
 
+    /**
+     * 获取成员、List。
+     * @return List<Entry<Integer, String>> 类型结果
+     */
     public List<Entry<Integer, String>> getMemberList() {
         List<Entry<Integer, String>> memberList = new LinkedList<>();
         Entry<Integer, String> leaderEntry = null;
@@ -367,6 +446,10 @@ public class Expedition {
         return memberList;
     }
 
+    /**
+     * 判断是否为远征队、队伍、Together。
+     * @return boolean 类型结果
+     */
     public final boolean isExpeditionTeamTogether() {
         List<Character> chars = getActiveMembers();
         if (chars.size() <= 1) {
@@ -387,6 +470,11 @@ public class Expedition {
         return true;
     }
 
+    /**
+     * 传送远征队队伍。
+     * @param warpFrom warpFrom
+     * @param warpTo warpTo
+     */
     public final void warpExpeditionTeam(int warpFrom, int warpTo) {
         List<Character> players = getActiveMembers();
 
@@ -397,6 +485,10 @@ public class Expedition {
         }
     }
 
+    /**
+     * 传送远征队队伍。
+     * @param warpTo warpTo
+     */
     public final void warpExpeditionTeam(int warpTo) {
         List<Character> players = getActiveMembers();
 
@@ -405,6 +497,12 @@ public class Expedition {
         }
     }
 
+    /**
+     * 传送远征队队伍到地图刷新坐标。
+     * @param warpFrom warpFrom
+     * @param warpTo warpTo
+     * @param toSp toSp
+     */
     public final void warpExpeditionTeamToMapSpawnPoint(int warpFrom, int warpTo, int toSp) {
         List<Character> players = getActiveMembers();
 
@@ -415,6 +513,11 @@ public class Expedition {
         }
     }
 
+    /**
+     * 传送远征队队伍到地图刷新坐标。
+     * @param warpTo warpTo
+     * @param toSp toSp
+     */
     public final void warpExpeditionTeamToMapSpawnPoint(int warpTo, int toSp) {
         List<Character> players = getActiveMembers();
 
@@ -423,46 +526,94 @@ public class Expedition {
         }
     }
 
+    /**
+     * 添加频道远征队。
+     * @param ch ch
+     * @return boolean 类型结果
+     */
     public final boolean addChannelExpedition(Channel ch) {
         return ch.addExpedition(this);
     }
 
+    /**
+     * 移除频道远征队。
+     * @param ch ch
+     */
     public final void removeChannelExpedition(Channel ch) {
         ch.removeExpedition(this);
     }
 
+    /**
+     * 获取队长。
+     * @return Character 类型结果
+     */
     public Character getLeader() {
         return leader;
     }
 
+    /**
+     * 获取Recruiting、地图。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getRecruitingMap() {
         return startMap;
     }
 
+    /**
+     * 执行 contains 操作。
+     * @param player 玩家
+     * @return boolean 类型结果
+     */
     public boolean contains(Character player) {
         return members.containsKey(player.getId()) || isLeader(player);
     }
 
+    /**
+     * 判断是否为队长。
+     * @param player 玩家
+     * @return boolean 类型结果
+     */
     public boolean isLeader(Character player) {
         return isLeader(player.getId());
     }
 
+    /**
+     * 判断是否为队长。
+     * @param playerid playerid
+     * @return boolean 类型结果
+     */
     public boolean isLeader(int playerid) {
         return leader.getId() == playerid;
     }
 
+    /**
+     * 判断是否为Registering。
+     * @return boolean 类型结果
+     */
     public boolean isRegistering() {
         return registering;
     }
 
+    /**
+     * 判断是否为在、Progress。
+     * @return boolean 类型结果
+     */
     public boolean isInProgress() {
         return !registering;
     }
 
+    /**
+     * 获取Start、时间。
+     * @return long 类型结果
+     */
     public long getStartTime() {
         return startTime;
     }
 
+    /**
+     * 获取Boss、Logs。
+     * @return List<String> 类型结果
+     */
     public List<String> getBossLogs() {
         return bossLogs;
     }

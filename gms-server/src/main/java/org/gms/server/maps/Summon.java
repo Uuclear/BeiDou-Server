@@ -29,7 +29,7 @@ import org.gms.util.PacketCreator;
 import java.awt.*;
 
 /**
- * @author Jan
+ * 召唤兽地图对象，跟随主人并参与战斗。
  */
 public class Summon extends AbstractAnimatedMapObject {
     private final Character owner;
@@ -38,6 +38,13 @@ public class Summon extends AbstractAnimatedMapObject {
     private int hp;
     private final SummonMovementType movementType;
 
+    /**
+     * 构造 Summon 实例。
+     * @param owner 归属角色
+     * @param skill skill
+     * @param pos 坐标
+     * @param movementType movementType
+     */
     public Summon(Character owner, int skill, Point pos, SummonMovementType movementType) {
         this.owner = owner;
         this.skill = skill;
@@ -50,49 +57,93 @@ public class Summon extends AbstractAnimatedMapObject {
         setPosition(pos);
     }
 
+    /**
+     * 执行 send、刷新、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendSpawnData(Client client) {
         client.sendPacket(PacketCreator.spawnSummon(this, false));
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendDestroyData(Client client) {
         client.sendPacket(PacketCreator.removeSummon(this, true));
     }
 
+    /**
+     * 获取归属者。
+     * @return Character 类型结果
+     */
     public Character getOwner() {
         return owner;
     }
 
+    /**
+     * 获取技能。
+     * @return int 类型结果
+     */
     public int getSkill() {
         return skill;
     }
 
+    /**
+     * 获取HP。
+     * @return int 类型结果
+     */
     public int getHP() {
         return hp;
     }
 
+    /**
+     * 添加HP。
+     * @param delta delta
+     */
     public void addHP(int delta) {
         this.hp += delta;
     }
 
+    /**
+     * 获取移动类型。
+     * @return SummonMovementType 类型结果
+     */
     public SummonMovementType getMovementType() {
         return movementType;
     }
 
+    /**
+     * 判断是否为Stationary。
+     * @return boolean 类型结果
+     */
     public boolean isStationary() {
         return (skill == 3111002 || skill == 3211002 || skill == 5211001 || skill == 13111004);
     }
 
+    /**
+     * 获取技能等级。
+     * @return byte 类型结果
+     */
     public byte getSkillLevel() {
         return skillLevel;
     }
 
+    /**
+     * 获取类型。
+     * @return MapObjectType 类型结果
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.SUMMON;
     }
 
+    /**
+     * 判断是否为Puppet。
+     * @return boolean 类型结果
+     */
     public final boolean isPuppet() {
         switch (skill) {
             case 3111002:

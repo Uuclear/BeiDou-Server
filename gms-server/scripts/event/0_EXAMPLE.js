@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：0_EXAMPLE
+ * 功能描述：about the event to be displayed at the recruitment area.（原版描述）。
+ */
 // Event-instantiation variables
 var isPq = true;
 var minPlayers, maxPlayers;     // Range of party members for this event instance.

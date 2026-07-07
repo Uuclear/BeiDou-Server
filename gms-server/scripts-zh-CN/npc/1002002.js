@@ -19,10 +19,13 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/* Author: Xterminator
-	NPC Name: 		Pison
-	Map(s): 		Victoria Road : Lith Harbor (104000000)
-	Description: 		Florina Beach Tour Guide
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1002002
+ * 功能描述：Pison，Florina Beach Tour Guide（原版描述）。
+ * 原作者：Xterminator
  */
 var status = 0;
 

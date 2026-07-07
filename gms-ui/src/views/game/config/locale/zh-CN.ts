@@ -1,3 +1,6 @@
+/**
+ * 游戏参数配置页中文文案。
+ */
 export default {
   'config.search.type.label': '参数大类',
   'config.search.subType.label': '参数分类',

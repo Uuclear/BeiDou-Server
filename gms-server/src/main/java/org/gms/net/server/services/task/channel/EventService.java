@@ -24,6 +24,8 @@ import org.gms.net.server.services.BaseScheduler;
 import org.gms.net.server.services.BaseService;
 
 /**
+ * 频道事件调度服务，按地图分区管理活动脚本相关的定时任务。
+ *
  * @author Ronan
  */
 public class EventService extends BaseService {

@@ -19,10 +19,13 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
-	NPC Name: 		Parwen
-	Description: 		Quest - Verifying the password
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：3360
+ * 功能描述：Parwen，任务相关对话与奖励。
+ */
 var status = -1;
 var pass;
 

@@ -28,11 +28,19 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM2命令：设置所有背包格子数
+ */
 public class SetSlotCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SetSlotCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

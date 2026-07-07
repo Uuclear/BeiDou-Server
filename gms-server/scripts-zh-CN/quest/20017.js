@@ -1,8 +1,11 @@
-/*
-	NPC Name: 		Cygnus
-	Description: 		Quest - Encounter with the Young Queen
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20017
+ * 功能描述：Cygnus，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

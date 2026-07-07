@@ -21,6 +21,9 @@
 */
 package org.gms.client;
 
+/**
+ * 肤色枚举，定义角色创建时可选的肤色类型。
+ */
 public enum SkinColor {
     NORMAL(0),
     DARK(1),
@@ -37,10 +40,19 @@ public enum SkinColor {
         this.id = id;
     }
 
+    /**
+     * 获取ID
+     * @return 返回值
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * 获取按ID
+     * @param id ID
+     * @return 返回值
+     */
     public static SkinColor getById(int id) {
         for (SkinColor l : SkinColor.values()) {
             if (l.getId() == id) {

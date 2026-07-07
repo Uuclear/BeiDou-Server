@@ -12,10 +12,9 @@ import java.io.Serializable;
 import java.sql.Date;
 
 /**
- * 扩展字段表 实体类。
- *
- * @author CN
- * @since 2024-07-08
+ * 数据库表 `extend_value` 的实体类（DO）。
+ * <p>
+ * 扩展键值存储表，以类型+键的方式保存各类业务的附加字段。
  */
 @Data
 @Builder

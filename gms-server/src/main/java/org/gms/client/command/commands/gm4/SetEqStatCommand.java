@@ -32,11 +32,19 @@ import org.gms.client.inventory.InventoryType;
 import org.gms.constants.inventory.ItemConstants;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM4命令：将背包的所有装备设置成指定属性
+ */
 public class SetEqStatCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SetEqStatCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

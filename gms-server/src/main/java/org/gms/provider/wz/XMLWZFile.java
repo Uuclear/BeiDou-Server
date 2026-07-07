@@ -34,6 +34,13 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * 基于 XML 文件系统的 WZ 数据提供者实现。
+ * <p>
+ * 扫描 WZ 导出目录构建导航树（{@link WZDirectoryEntry}），按路径加载
+ * {@code .xml} 并解析为 {@link XMLDomMapleData}。图片等资源目录与 XML 同级存放。
+ * </p>
+ */
 public class XMLWZFile implements DataProvider {
 	private static final Logger log = LoggerFactory.getLogger(DataProvider.class);
 	private final Path root;
@@ -50,11 +57,13 @@ public class XMLWZFile implements DataProvider {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(lroot)) {
             for (Path path : stream) {
                 String fileName = path.getFileName().toString();
+                // 子目录：非 .img 后缀的文件夹视为 WZ 目录节点
                 if (Files.isDirectory(path) && !fileName.endsWith(".img")) {
                     WZDirectoryEntry newDir = new WZDirectoryEntry(fileName, 0, 0, wzdir);
                     wzdir.addDirectory(newDir);
                     fillMapleDataEntitys(path, newDir);
                 } else if (fileName.endsWith(".xml")) {
+                    // 数据文件：去掉 .xml 后缀作为 .img 逻辑名
                     wzdir.addFile(new WZFileEntry(fileName.substring(0, fileName.length() - 4), 0, 0, wzdir));
                 }
             }
@@ -64,6 +73,7 @@ public class XMLWZFile implements DataProvider {
     }
 
     @Override
+/** 按路径加载 WZ 数据 */
     public synchronized Data getData(String path) {
         Path dataFile = root.resolve(path + ".xml");
         Path imageDataDir = root.resolve(path);
@@ -83,6 +93,7 @@ public class XMLWZFile implements DataProvider {
     }
 
 	@Override
+/** 获取 WZ 根目录条目 */
 	public DataDirectoryEntry getRoot() {
 		return rootForNavigation;
 	}

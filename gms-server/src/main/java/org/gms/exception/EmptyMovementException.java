@@ -23,10 +23,16 @@ import org.gms.net.packet.InPacket;
 
 
 /**
- * @author Ronan
+ * 空移动包异常，当解析玩家移动数据包内容为空时抛出。
+ * 用于网络层移动校验，携带原始 InPacket 便于排查。
  */
 public class EmptyMovementException extends Exception {
 
+    /**
+     * 构造 EmptyMovementException。
+     *
+     * @param inPacket 原始网络数据包
+     */
     public EmptyMovementException(InPacket inPacket) {
         super("Empty movement: " + inPacket);
     }

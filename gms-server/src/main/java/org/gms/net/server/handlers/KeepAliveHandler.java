@@ -25,12 +25,18 @@ import org.gms.client.Client;
 import org.gms.net.PacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端心跳响应（PONG），维持连接存活。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PONG}</p>
+ */
 public class KeepAliveHandler implements PacketHandler {
+    /** 记录客户端 PONG 响应，更新连接存活时间。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         c.pongReceived();
     }
 
+    /** 任意连接状态下均可处理该封包。 */
     @Override
     public boolean validateState(Client c) {
         return true;

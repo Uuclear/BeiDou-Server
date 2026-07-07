@@ -21,20 +21,36 @@
 */
 package org.gms.client;
 
+/**
+ * 角色名称与 ID 的简单数据对，用于列表展示和查询。
+ */
 public class CharacterNameAndId {
     private final int id;
     private final String name;
 
+    /**
+     * 角色名称AndID
+     * @param id ID
+     * @param name 名称
+     */
     public CharacterNameAndId(int id, String name) {
         super();
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * 获取ID
+     * @return 返回值
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * 获取名称
+     * @return 返回值
+     */
     public String getName() {
         return name;
     }

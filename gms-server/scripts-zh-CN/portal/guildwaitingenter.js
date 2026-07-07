@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * @Author Ronan
- * 
- * Guild Quest Waiting Room - Entry Portal (map 990000000)
- */
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：guildwaitingenter
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ * 原作者：Lerk
+ */
 function enter(pi) {
     var entryTime = pi.getPlayer().getEventInstance().getProperty("entryTimestamp");
     var timeNow = Date.now();

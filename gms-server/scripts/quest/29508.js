@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：29508
+ * 功能描述：任务脚本，完成任务后发放物品奖励。
+ */
 var OutstandingCitizenMedal = Java.type('org.gms.server.quest.medal.OutstandingCitizenMedal');
 var medalId = OutstandingCitizenMedal.MEDAL_ID;
 

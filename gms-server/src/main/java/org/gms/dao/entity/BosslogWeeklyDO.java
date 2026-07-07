@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `bosslog_weekly` 的实体类（DO）。
+ * <p>
+ * 周 Boss 击杀记录表，限制角色每周对特定 Boss 的挑战次数。
  */
 @Data
 @Builder

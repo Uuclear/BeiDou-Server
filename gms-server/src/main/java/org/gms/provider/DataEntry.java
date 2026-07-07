@@ -22,11 +22,24 @@
 package org.gms.provider;
 
 /**
+ * WZ 目录/文件条目的元数据接口（名称、大小、校验和、偏移）。
+ * <p>
+ * 用于在不解析 XML 的情况下遍历 WZ 包结构；二进制 WZ 格式中偏移量有意义，
+ * XML 导出模式下多为占位值 0。
+ * </p>
+ *
  * @author Matze
  */
 public interface DataEntry extends DataEntity {
+    @Override
     String getName();
+
+    /** @return 条目字节大小 */
     int getSize();
+
+    /** @return 条目校验和 */
     int getChecksum();
+
+    /** @return 在 WZ 包内的字节偏移（XML 模式下通常为 0） */
     int getOffset();
 }

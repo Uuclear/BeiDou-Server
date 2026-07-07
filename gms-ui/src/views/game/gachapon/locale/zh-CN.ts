@@ -1,3 +1,6 @@
+/**
+ * 百宝箱（扭蛋）管理页中文文案。
+ */
 export default {
   'gachapon.placeholder.gachaponId': '百宝箱ID',
 

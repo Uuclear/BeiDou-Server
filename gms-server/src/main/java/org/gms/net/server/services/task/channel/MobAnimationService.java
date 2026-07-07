@@ -29,6 +29,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 怪物动画调度服务，按地图分区定时驱动怪物动作与状态动画更新。
+ *
  * @author Ronan
  */
 public class MobAnimationService extends BaseService {

@@ -44,6 +44,9 @@ import static com.mybatisflex.core.query.QueryMethods.distinct;
 import static org.gms.dao.entity.table.GameConfigDOTableDef.GAME_CONFIG_D_O;
 import static org.gms.dao.entity.table.LangResourcesDOTableDef.LANG_RESOURCES_D_O;
 
+/**
+ * 游戏参数配置服务，管理 GameConfig 数据库记录的增删改查及 YAML 导入导出。
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -52,10 +55,18 @@ public class ConfigService {
     private final ServiceProperty serviceProperty;
     private final LangResourceService langResourceService;
 
+    /**
+     * 执行 loadGameConfigs 相关业务逻辑。
+     * @return List<GameConfigDO> 类型结果
+     */
     public List<GameConfigDO> loadGameConfigs() {
         return gameConfigMapper.selectAll();
     }
 
+    /**
+     * 执行 getConfigTypeList 相关业务逻辑。
+     * @return ConfigTypeDTO 类型结果
+     */
     public ConfigTypeDTO getConfigTypeList() {
         List<GameConfigDO> typeDOList = gameConfigMapper.selectListByQuery(QueryWrapper.create().select(distinct(GAME_CONFIG_D_O.CONFIG_TYPE)));
         List<GameConfigDO> subTypeDOList = gameConfigMapper.selectListByQuery(QueryWrapper.create().select(distinct(GAME_CONFIG_D_O.CONFIG_SUB_TYPE)));
@@ -65,6 +76,10 @@ public class ConfigService {
                 .build();
     }
 
+    /**
+     * 获取全部自动封禁配置列表。
+     * @return 配置 DTO 列表
+     */
     public Page<GameConfigDO> getConfigList(GameConfigReqDTO condition) {
         // join i18n表
         QueryWrapper queryWrapper = QueryWrapper.create()
@@ -86,6 +101,11 @@ public class ConfigService {
         return gameConfigMapper.paginate(condition.getPageNo(), condition.getPageSize(), queryWrapper);
     }
 
+    /**
+     * 执行 addConfig 相关业务逻辑。
+     *
+     * @param condition condition
+     */
     @Transactional(rollbackFor = Exception.class)
     public void addConfig(GameConfigDO condition) {
         RequireUtil.requireNotEmpty(condition.getConfigType(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "configType"));
@@ -113,6 +133,11 @@ public class ConfigService {
         GameConfig.add(condition);
     }
 
+    /**
+     * 执行 updateConfig 相关业务逻辑。
+     *
+     * @param condition condition
+     */
     @Transactional(rollbackFor = Exception.class)
     public void updateConfig(GameConfigDO condition) {
         RequireUtil.requireNotNull(condition.getId(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "id"));
@@ -133,6 +158,11 @@ public class ConfigService {
         GameConfig.update(gameConfigDO);
     }
 
+    /**
+     * 执行 deleteConfig 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteConfig(Long id) {
         RequireUtil.requireNotNull(id, I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "id"));
@@ -147,12 +177,23 @@ public class ConfigService {
         GameConfig.remove(gameConfigDO);
     }
 
+    /**
+     * 执行 deleteConfigList 相关业务逻辑。
+     *
+     * @param ids ids
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteConfigList(List<Long> ids) {
         RequireUtil.requireNotEmpty(ids, I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "ids"));
         ids.forEach(this::deleteConfig);
     }
 
+    /**
+     * 执行 importYml 相关业务逻辑。
+     *
+     * @param file 上传文件
+     * @return int 类型结果
+     */
     public int importYml(MultipartFile file) {
         String filename = file.getOriginalFilename();
         RequireUtil.requireNotEmpty(filename, I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "file"));
@@ -252,6 +293,10 @@ public class ConfigService {
         return src;
     }
 
+    /**
+     * 执行 exportYml 相关业务逻辑。
+     * @return ResponseEntity<Resource> 类型结果
+     */
     public ResponseEntity<Resource> exportYml() {
         List<GameConfigDO> gameConfigDOS = loadGameConfigs();
         // 转成yml格式
@@ -284,6 +329,10 @@ public class ConfigService {
             yaml.dump(ymlCollect, writer);
             byte[] bytes = writer.toString().getBytes(StandardCharsets.UTF_8);
             Resource resource = new ByteArrayResource(bytes) {
+                /**
+                 * 执行 getFilename 相关业务逻辑。
+                 * @return String 类型结果
+                 */
                 @Override
                 public String getFilename() {
                     return "export.yml";

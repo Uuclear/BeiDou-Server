@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040043
+ * 功能描述：Used to find the combo to unlock the next door. Players stand on 5 different crates to guess the combo.（原版描述）。
+ */
 /*
 @	Author : Twdtwd
 @       Author : Ronan

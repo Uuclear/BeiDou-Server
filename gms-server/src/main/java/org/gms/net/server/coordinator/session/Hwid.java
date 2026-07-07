@@ -2,6 +2,11 @@ package org.gms.net.server.coordinator.session;
 
 import java.util.regex.Pattern;
 
+/**
+ * 硬件标识（HWID）值对象，支持从主机字符串解析与格式校验。
+ *
+ * @param hwid 8 位十六进制 HWID 字符串
+ */
 public record Hwid(String hwid) {
     private static final int HWID_LENGTH = 8;
     // First part is a mac address (without dashes), second part is the hwid
@@ -11,6 +16,13 @@ public record Hwid(String hwid) {
         return VALID_HOST_STRING_PATTERN.matcher(hostString).matches();
     }
 
+    /**
+     * 从主机字符串（MAC_HWID 格式）解析 HWID。
+     *
+     * @param hostString 主机标识字符串
+     * @return 解析后的 HWID
+     * @throws IllegalArgumentException 格式无效时抛出
+     */
     public static Hwid fromHostString(String hostString) throws IllegalArgumentException {
         if (hostString == null || !isValidHostString(hostString)) {
             throw new IllegalArgumentException("hostString has invalid format");

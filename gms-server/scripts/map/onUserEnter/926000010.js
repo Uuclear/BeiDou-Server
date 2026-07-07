@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：926000010
+ * 功能描述：地图脚本（926000010），控制地图内特殊逻辑。
+ */
 function start(ms) {
     var map = ms.getClient().getChannelServer().getMapFactory().getMap(926000010);
     map.resetPQ(1);

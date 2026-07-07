@@ -28,23 +28,38 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 怪物图鉴收集数量需求。
  */
 public class MonsterBookCountRequirement extends AbstractQuestRequirement {
     private int reqCards;
 
 
+    /**
+     * 构造 MonsterBookCountRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public MonsterBookCountRequirement(Quest quest, Data data) {
         super(QuestRequirementType.MONSTER_BOOK);
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         reqCards = DataTool.getInt(data);
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return chr.getMonsterBook().getTotalCards() >= reqCards;

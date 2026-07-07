@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：scroll_generator
+ * 功能描述：卷轴生成或兑换相关功能。
+ */
 /* NPC: MapleTV / Larry
 	
 	Exchanger NPC:

@@ -36,9 +36,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 处理客户端 DELETE_CHAR（删除角色） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#DELETE_CHAR}</p>
+ */
 public final class DeleteCharHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(DeleteCharHandler.class);
 
+    /** 处理 删除角色 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         String pic = p.readString();

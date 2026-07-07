@@ -24,9 +24,8 @@ package org.gms.server.maps;
 import org.gms.constants.id.MapId;
 
 /**
- * @author Alan (SharpAceX)
+ * 迷你地下城配置信息。
  */
-
 public enum MiniDungeonInfo {
 
     //http://bbb.hidden-street.net/search_finder/mini%20dungeon
@@ -54,18 +53,35 @@ public enum MiniDungeonInfo {
         this.dungeons = dungeons;
     }
 
+    /**
+     * 获取Base。
+     * @return int 类型结果
+     */
     public int getBase() {
         return baseId;
     }
 
+    /**
+     * 获取副本ID。
+     * @return int 类型结果
+     */
     public int getDungeonId() {
         return dungeonId;
     }
 
+    /**
+     * 获取Dungeons。
+     * @return int 类型结果
+     */
     public int getDungeons() {
         return dungeons;
     }
 
+    /**
+     * 判断是否为副本地图。
+     * @param map 地图名称
+     * @return boolean 类型结果
+     */
     public static boolean isDungeonMap(int map) {
         for (MiniDungeonInfo dungeon : MiniDungeonInfo.values()) {
             if (map >= dungeon.getDungeonId() && map <= dungeon.getDungeonId() + dungeon.getDungeons()) {
@@ -75,6 +91,11 @@ public enum MiniDungeonInfo {
         return false;
     }
 
+    /**
+     * 获取副本。
+     * @param map 地图名称
+     * @return MiniDungeonInfo 类型结果
+     */
     public static MiniDungeonInfo getDungeon(int map) {
         for (MiniDungeonInfo dungeon : MiniDungeonInfo.values()) {
             if (map >= dungeon.getDungeonId() && map <= dungeon.getDungeonId() + dungeon.getDungeons()) {

@@ -1,4 +1,5 @@
 <template>
+  <!-- 在线玩家列表页：查询在线角色并向玩家发放物品/资源。 -->
   <div class="container" :loading="true">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.account.player')">
@@ -303,6 +304,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 在线玩家管理页，支持分页筛选与 GM 发放资源。
+   */
   import useLoading from '@/hooks/loading';
   import { ref } from 'vue';
   import { AccountState } from '@/store/modules/account/types';

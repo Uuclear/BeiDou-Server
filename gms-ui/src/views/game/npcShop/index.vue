@@ -1,4 +1,5 @@
 <template>
+  <!-- NPC 商店管理页：查询商店与商品、增删改商店物品。 -->
   <div class="container" :loading="true">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.npcShop')">
@@ -230,6 +231,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * NPC 商店管理页，双表联动展示商店与商品数据。
+   */
   import { ref } from 'vue';
   import useLoading from '@/hooks/loading';
   import {

@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1052017
+ * 功能描述：NPC脚本（ID: 1052017）。
+ */
 function start() {
     cm.getPlayer().getStorage().sendStorage(cm.getClient(), 1052017);
     cm.dispose();

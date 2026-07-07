@@ -37,6 +37,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
+ * 登录绕过协调器，在 PIN/PIC 校验通过后短时缓存免重复验证状态。
+ *
  * @author Ronan
  */
 public class LoginBypassCoordinator {

@@ -13,8 +13,13 @@ import org.gms.util.PacketCreator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 处理宝箱类道具开启（USE_TREASUER_CHEST）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_TREASUER_CHEST}</p>
+ */
 public final class UseTreasureChestHandler extends AbstractPacketHandler {
 
+    /** 处理 使用宝箱 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
 

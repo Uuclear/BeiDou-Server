@@ -1,4 +1,5 @@
 <template>
+  <!-- 自动封禁规则配置页：查看与修改各检测项积分与封禁时长。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.autoban')">
@@ -116,6 +117,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 自动封禁配置页，表格内联编辑 autoban 规则。
+   */
   import { ref } from 'vue';
   import {
     getAutobanConfigList,

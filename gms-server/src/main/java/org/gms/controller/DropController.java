@@ -11,12 +11,22 @@ import org.gms.util.I18nUtil;
 import org.gms.util.RequireUtil;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 怪物掉落配置控制器，管理普通掉落与全局掉落表的 CRUD 操作。
+ * 将 REST 请求转换为 DropService 对掉落数据库及缓存的维护。
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/drop")
 public class DropController {
     private final DropService dropService;
 
+    /**
+     * 分页获取掉落列表。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "分页获取掉落列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getDropList")
@@ -24,6 +34,12 @@ public class DropController {
         return ResultBody.success(request, dropService.getDropList(request.getData(), false));
     }
 
+    /**
+     * 分页获取全局掉落列表。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "分页获取全局掉落列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getGlobalDropList")
@@ -31,6 +47,12 @@ public class DropController {
         return ResultBody.success(request, dropService.getDropList(request.getData(), true));
     }
 
+    /**
+     * 新增掉落，返回新增id。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "新增掉落，返回新增id")
     @PutMapping("/" + ApiConstant.LATEST + "/addDropData")
@@ -39,6 +61,12 @@ public class DropController {
         return ResultBody.success(request, dropService.modifyDropData(request.getData(), false, false));
     }
 
+    /**
+     * 新增全局掉落，返回新增id。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "新增全局掉落，返回新增id")
     @PutMapping("/" + ApiConstant.LATEST + "/addGlobalDropData")
@@ -47,6 +75,12 @@ public class DropController {
         return ResultBody.success(request, dropService.modifyDropData(request.getData(), true, false));
     }
 
+    /**
+     * 根据id更新掉落信息。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id更新掉落信息")
     @PostMapping("/" + ApiConstant.LATEST + "/updateDropData")
@@ -56,6 +90,12 @@ public class DropController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 根据id更新全局掉落信息。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id更新全局掉落信息")
     @PostMapping("/" + ApiConstant.LATEST + "/updateGlobalDropData")
@@ -65,6 +105,12 @@ public class DropController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 根据id删除掉落信息。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id删除掉落信息")
     @DeleteMapping("/" + ApiConstant.LATEST + "/deleteDropData/{id}")
@@ -73,6 +119,12 @@ public class DropController {
         return ResultBody.success(null);
     }
 
+    /**
+     * 根据id删除全局掉落信息。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id删除全局掉落信息")
     @DeleteMapping("/" + ApiConstant.LATEST + "/deleteGlobalDropData/{id}")

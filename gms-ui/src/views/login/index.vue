@@ -1,4 +1,5 @@
 <template>
+  <!-- 用户登录页布局，居中展示登录表单与页脚。 -->
   <div class="container">
     <div class="content">
       <div class="content-inner">
@@ -12,6 +13,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 登录页面容器，组合 LoginForm 与 Footer 组件。
+   */
   import Footer from '@/components/footer/index.vue';
   import LoginForm from './components/login-form.vue';
 </script>

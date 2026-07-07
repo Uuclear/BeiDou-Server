@@ -25,6 +25,9 @@ import lombok.Getter;
 import org.gms.util.I18nUtil;
 
 
+/**
+ * 职业枚举，定义冒险岛各职业分支 ID 及名称。
+ */
 public enum Job {
     BEGINNER(0, I18nUtil.getMessage("job.name.0")),
     WARRIOR(100, I18nUtil.getMessage("job.name.100")),
@@ -78,10 +81,19 @@ public enum Job {
     }
 
 
+    /**
+     * 获取最大
+     * @return 返回值
+     */
     public static int getMax() {
         return maxId;
     }
 
+    /**
+     * 获取按ID
+     * @param id ID
+     * @return 返回值
+     */
     public static Job getById(int id) {
         for (Job l : Job.values()) {
             if (l.getId() == id) {
@@ -91,6 +103,11 @@ public enum Job {
         return BEGINNER;
     }
 
+    /**
+     * 获取By5ByteEncoding
+     * @param encoded encoded
+     * @return 返回值
+     */
     public static Job getBy5ByteEncoding(int encoded) {
         return switch (encoded) {
             case 2 -> WARRIOR;
@@ -108,11 +125,19 @@ public enum Job {
         };
     }
 
+    /**
+     * 判断是否为A
+     * @param basejob basejob
+     * @return 返回值
+     */
     public boolean isA(Job basejob) {  // thanks Steve (kaito1410) for pointing out an improvement here
-        int basebranch = basejob.getId() / 10;
         return (getId() / 10 == basebranch && getId() >= basejob.getId()) || (basebranch % 10 == 0 && getId() / 100 == basejob.getId() / 100);
     }
 
+    /**
+     * 获取职业Niche
+     * @return 返回值
+     */
     public int getJobNiche() {
         return (id / 100) % 10;
         
@@ -126,6 +151,12 @@ public enum Job {
         */
     }
 
+    /**
+     * 获取职业Style内部
+     * @param jobid jobid
+     * @param opt opt
+     * @return 返回值
+     */
     public static Job getJobStyleInternal(int jobid, byte opt) {
         int jobtype = jobid / 100;
 

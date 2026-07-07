@@ -21,6 +21,9 @@
 */
 package org.gms.client;
 
+/**
+ * 技能宏数据模型，存储玩家配置的技能快捷键组合。
+ */
 public class SkillMacro {
     private int skill1;
     private int skill2;
@@ -29,6 +32,15 @@ public class SkillMacro {
     private final int shout;
     private final int position;
 
+    /**
+     * 技能宏
+     * @param skill1 skill1
+     * @param skill2 skill2
+     * @param skill3 skill3
+     * @param name 名称
+     * @param shout shout
+     * @param position 位置
+     */
     public SkillMacro(int skill1, int skill2, int skill3, String name, int shout, int position) {
         this.skill1 = skill1;
         this.skill2 = skill2;
@@ -38,38 +50,74 @@ public class SkillMacro {
         this.position = position;
     }
 
+    /**
+     * 获取Skill1
+     * @return 返回值
+     */
     public int getSkill1() {
         return skill1;
     }
 
+    /**
+     * 获取Skill2
+     * @return 返回值
+     */
     public int getSkill2() {
         return skill2;
     }
 
+    /**
+     * 获取Skill3
+     * @return 返回值
+     */
     public int getSkill3() {
         return skill3;
     }
 
+    /**
+     * 设置Skill1
+     * @param skill 技能
+     */
     public void setSkill1(int skill) {
         skill1 = skill;
     }
 
+    /**
+     * 设置Skill2
+     * @param skill 技能
+     */
     public void setSkill2(int skill) {
         skill2 = skill;
     }
 
+    /**
+     * 设置Skill3
+     * @param skill 技能
+     */
     public void setSkill3(int skill) {
         skill3 = skill;
     }
 
+    /**
+     * 获取名称
+     * @return 返回值
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 获取Shout
+     * @return 返回值
+     */
     public int getShout() {
         return shout;
     }
 
+    /**
+     * 获取位置
+     * @return 返回值
+     */
     public int getPosition() {
         return position;
     }

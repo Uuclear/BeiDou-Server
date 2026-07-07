@@ -16,28 +16,9 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client;
-
-import org.gms.net.packet.Packet;
-import org.gms.net.server.Server;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.util.DatabaseConnection;
-import org.gms.util.PacketCreator;
-import org.gms.util.Pair;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
- * @author Ubaware
+ * 家族成员条目，记录成员 ID、名称、等级及在线状态。
  */
-
 public class FamilyEntry {
     private static final Logger log = LoggerFactory.getLogger(FamilyEntry.class);
 
@@ -61,6 +42,14 @@ public class FamilyEntry {
     private int level;
     private Job job;
 
+    /**
+     * 家族条目
+     * @param family family
+     * @param characterID characterID
+     * @param charName charName
+     * @param level 等级
+     * @param job job
+     */
     public FamilyEntry(Family family, int characterID, String charName, int level, Job job) {
         this.family = family;
         this.characterID = characterID;
@@ -69,10 +58,18 @@ public class FamilyEntry {
         this.job = job;
     }
 
+    /**
+     * 获取Chr
+     * @return 返回值
+     */
     public Character getChr() {
         return character;
     }
 
+    /**
+     * 设置角色
+     * @param newCharacter newCharacter
+     */
     public void setCharacter(Character newCharacter) {
         if (newCharacter == null) {
             cacheOffline(newCharacter);
@@ -90,6 +87,18 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * join
+     * @param senior senior
+     */
+    /**
+     * join
+     * @param senior senior
+     */
+    /**
+     * 加入
+     * @param senior 上级家族成员
+     */
     public synchronized void join(FamilyEntry senior) {
         if (senior == null || getSenior() != null) {
             return;
@@ -125,6 +134,15 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * fork
+     */
+    /**
+     * fork
+     */
+    /**
+     * 分离
+     */
     public synchronized void fork() {
         Family oldFamily = getFamily();
         FamilyEntry oldSenior = getSenior();
@@ -221,14 +239,26 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * 获取家族
+     * @return 返回值
+     */
     public Family getFamily() {
         return family;
     }
 
+    /**
+     * 获取ChrID
+     * @return 返回值
+     */
     public int getChrId() {
         return characterID;
     }
 
+    /**
+     * 获取名称
+     * @return 返回值
+     */
     public String getName() {
         Character chr = character;
         if (chr != null) {
@@ -238,6 +268,10 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * 获取等级
+     * @return 返回值
+     */
     public int getLevel() {
         Character chr = character;
         if (chr != null) {
@@ -247,6 +281,10 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * 获取职业
+     * @return 返回值
+     */
     public Job getJob() {
         Character chr = character;
         if (chr != null) {
@@ -256,14 +294,26 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * 获取Reputation
+     * @return 返回值
+     */
     public int getReputation() {
         return reputation;
     }
 
+    /**
+     * 获取TodaysRep
+     * @return 返回值
+     */
     public int getTodaysRep() {
         return todaysRep;
     }
 
+    /**
+     * 设置Reputation
+     * @param reputation reputation
+     */
     public void setReputation(int reputation) {
         if (reputation != this.reputation) {
             this.repChanged = true;
@@ -271,6 +321,10 @@ public class FamilyEntry {
         this.reputation = reputation;
     }
 
+    /**
+     * 设置TodaysRep
+     * @param today today
+     */
     public void setTodaysRep(int today) {
         if (today != todaysRep) {
             this.repChanged = true;
@@ -278,10 +332,18 @@ public class FamilyEntry {
         this.todaysRep = today;
     }
 
+    /**
+     * 获取Reps到Senior
+     * @return 返回值
+     */
     public int getRepsToSenior() {
         return repsToSenior;
     }
 
+    /**
+     * 设置Reps到Senior
+     * @param reputation reputation
+     */
     public void setRepsToSenior(int reputation) {
         if (reputation != this.repsToSenior) {
             this.repChanged = true;
@@ -289,6 +351,11 @@ public class FamilyEntry {
         this.repsToSenior = reputation;
     }
 
+    /**
+     * 获得Reputation
+     * @param gain gain
+     * @param countTowardsTotal countTowardsTotal
+     */
     public void gainReputation(int gain, boolean countTowardsTotal) {
         gainReputation(gain, countTowardsTotal, this);
     }
@@ -308,6 +375,11 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * giveReputation到Senior
+     * @param gain gain
+     * @param includeSuperSenior includeSuperSenior
+     */
     public void giveReputationToSenior(int gain, boolean includeSuperSenior) {
         int actualGain = gain;
         FamilyEntry senior = getSenior();
@@ -329,10 +401,18 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * 获取TotalReputation
+     * @return 返回值
+     */
     public int getTotalReputation() {
         return totalReputation;
     }
 
+    /**
+     * 设置TotalReputation
+     * @param totalReputation totalReputation
+     */
     public void setTotalReputation(int totalReputation) {
         if (totalReputation != this.totalReputation) {
             this.repChanged = true;
@@ -340,10 +420,20 @@ public class FamilyEntry {
         this.totalReputation = totalReputation;
     }
 
+    /**
+     * 获取Senior
+     * @return 返回值
+     */
     public FamilyEntry getSenior() {
         return senior;
     }
 
+    /**
+     * 设置Senior
+     * @param senior senior
+     * @param save save
+     * @return 返回值
+     */
     public synchronized boolean setSenior(FamilyEntry senior, boolean save) {
         if (this.senior == senior) {
             return false;
@@ -405,10 +495,19 @@ public class FamilyEntry {
         return true;
     }
 
+    /**
+     * 获取Juniors
+     * @return 返回值
+     */
     public List<FamilyEntry> getJuniors() {
         return Collections.unmodifiableList(Arrays.asList(juniors));
     }
 
+    /**
+     * 获取OtherJunior
+     * @param junior junior
+     * @return 返回值
+     */
     public FamilyEntry getOtherJunior(FamilyEntry junior) {
         if (juniors[0] == junior) {
             return juniors[1];
@@ -418,8 +517,11 @@ public class FamilyEntry {
         return null;
     }
 
+    /**
+     * 获取Junior数量
+     * @return 返回值
+     */
     public int getJuniorCount() { //close enough to be relatively consistent to multiple threads (and the result is not vital)
-        int juniorCount = 0;
         if (juniors[0] != null) {
             juniorCount++;
         }
@@ -429,6 +531,11 @@ public class FamilyEntry {
         return juniorCount;
     }
 
+    /**
+     * 添加Junior
+     * @param newJunior newJunior
+     * @return 返回值
+     */
     public synchronized boolean addJunior(FamilyEntry newJunior) {
         for (int i = 0; i < juniors.length; i++) {
             if (juniors[i] == null) { // successfully add new junior to family
@@ -445,14 +552,23 @@ public class FamilyEntry {
         return false;
     }
 
+    /**
+     * 判断是否为Junior
+     * @param entry entry
+     * @return 返回值
+     */
     public synchronized boolean isJunior(FamilyEntry entry) { //require locking since result accuracy is vital
-        if (juniors[0] == entry) {
             return true;
         } else {
             return juniors[1] == entry;
         }
     }
 
+    /**
+     * 移除Junior
+     * @param junior junior
+     * @return 返回值
+     */
     public synchronized boolean removeJunior(FamilyEntry junior) {
         for (int i = 0; i < juniors.length; i++) {
             if (juniors[i] == junior) {
@@ -467,22 +583,43 @@ public class FamilyEntry {
         return false;
     }
 
+    /**
+     * 获取TotalSeniors
+     * @return 返回值
+     */
     public int getTotalSeniors() {
         return totalSeniors;
     }
 
+    /**
+     * 设置TotalSeniors
+     * @param totalSeniors totalSeniors
+     */
     public void setTotalSeniors(int totalSeniors) {
         this.totalSeniors = totalSeniors;
     }
 
+    /**
+     * 获取TotalJuniors
+     * @return 返回值
+     */
     public int getTotalJuniors() {
         return totalJuniors;
     }
 
+    /**
+     * 设置TotalJuniors
+     * @param totalJuniors totalJuniors
+     */
     public void setTotalJuniors(int totalJuniors) {
         this.totalJuniors = totalJuniors;
     }
 
+    /**
+     * 广播到Senior
+     * @param packet 封包
+     * @param includeSuperSenior includeSuperSenior
+     */
     public void announceToSenior(Packet packet, boolean includeSuperSenior) {
         FamilyEntry senior = getSenior();
         if (senior != null) {
@@ -500,6 +637,10 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * 更新Senior家族信息
+     * @param includeSuperSenior includeSuperSenior
+     */
     public void updateSeniorFamilyInfo(boolean includeSuperSenior) {
         FamilyEntry senior = getSenior();
         if (senior != null) {
@@ -519,6 +660,9 @@ public class FamilyEntry {
 
     /**
      * Traverses entire family tree to update senior/junior counts. Call on leader.
+     */
+    /**
+     * doFull数量
      */
     public synchronized void doFullCount() {
         Pair<Integer, Integer> counts = this.traverseAndUpdateCounts(0);
@@ -543,6 +687,11 @@ public class FamilyEntry {
         return new Pair<>(highestGeneration, juniorCount); //creating new objects to return is a bit inefficient, but cleaner than packing into a long
     }
 
+    /**
+     * 使用Entitlement
+     * @param entitlement entitlement
+     * @return 返回值
+     */
     public boolean useEntitlement(FamilyEntitlement entitlement) {
         int id = entitlement.ordinal();
         if (entitlements[id] >= 1) {
@@ -560,6 +709,11 @@ public class FamilyEntry {
         return true;
     }
 
+    /**
+     * refundEntitlement
+     * @param entitlement entitlement
+     * @return 返回值
+     */
     public boolean refundEntitlement(FamilyEntitlement entitlement) {
         int id = entitlement.ordinal();
         try (Connection con = DatabaseConnection.getConnection(); PreparedStatement ps = con.prepareStatement("DELETE FROM family_entitlement WHERE entitlementid = ? AND charid = ?")) {
@@ -573,24 +727,45 @@ public class FamilyEntry {
         return true;
     }
 
+    /**
+     * 判断是否为EntitlementUsed
+     * @param entitlement entitlement
+     * @return 返回值
+     */
     public boolean isEntitlementUsed(FamilyEntitlement entitlement) {
         return entitlements[entitlement.ordinal()] >= 1;
     }
 
+    /**
+     * 获取EntitlementUsage数量
+     * @param entitlement entitlement
+     * @return 返回值
+     */
     public int getEntitlementUsageCount(FamilyEntitlement entitlement) {
         return entitlements[entitlement.ordinal()];
     }
 
+    /**
+     * 设置EntitlementUsed
+     * @param id ID
+     */
     public void setEntitlementUsed(int id) {
         entitlements[id]++;
     }
 
+    /**
+     * 重置EntitlementUsages
+     */
     public void resetEntitlementUsages() {
         for (FamilyEntitlement entitlement : FamilyEntitlement.values()) {
             entitlements[entitlement.ordinal()] = 0;
         }
     }
 
+    /**
+     * 保存Reputation
+     * @return 返回值
+     */
     public boolean saveReputation() {
         if (!repChanged) {
             return true;
@@ -603,6 +778,11 @@ public class FamilyEntry {
         }
     }
 
+    /**
+     * 保存Reputation
+     * @param con con
+     * @return 返回值
+     */
     public boolean saveReputation(Connection con) {
         if (!repChanged) {
             return true;
@@ -621,6 +801,15 @@ public class FamilyEntry {
         return true;
     }
 
+    /**
+     * savedSuccessfully
+     */
+    /**
+     * savedSuccessfully
+     */
+    /**
+     * 标记家族数据保存成功
+     */
     public void savedSuccessfully() {
         this.repChanged = false;
     }

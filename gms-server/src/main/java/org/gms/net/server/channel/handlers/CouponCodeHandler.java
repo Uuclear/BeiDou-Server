@@ -50,8 +50,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * @author Penguins (Acrylic)
- * @author Ronan (HeavenMS)
+ * 处理客户端 COUPON_CODE（优惠券代码） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#COUPON_CODE}</p>
  */
 public final class CouponCodeHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CouponCodeHandler.class);
@@ -183,6 +183,7 @@ public final class CouponCodeHandler extends AbstractPacketHandler {
         }
     }
 
+    /** 处理 优惠券代码 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.skip(2);

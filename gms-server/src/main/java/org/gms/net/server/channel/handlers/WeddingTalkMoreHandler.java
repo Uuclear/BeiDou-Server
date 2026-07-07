@@ -28,10 +28,12 @@ import org.gms.util.PacketCreator;
 import org.gms.util.packets.WeddingPackets;
 
 /**
- * @author Ronan
+ * 处理客户端 WEDDING_TALK_MORE（继续结婚对话） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#WEDDING_TALK_MORE}</p>
  */
 public final class WeddingTalkMoreHandler extends AbstractPacketHandler {
 
+    /** 处理 继续结婚对话 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         EventInstanceManager eim = c.getPlayer().getEventInstance();

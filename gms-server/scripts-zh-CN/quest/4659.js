@@ -19,12 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* 	Author: Moogra
-	NPC Name: 		?????????????
-	Map(s): 		New Leaf City
-	Description: 		Quest - Pet Evolution
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：4659
+ * 功能描述：?????????????，任务相关对话与奖励。
+ * 原作者：Moogra
+ */
 var status = -1;
 
 function start(mode, type, selection) {

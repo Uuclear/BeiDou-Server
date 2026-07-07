@@ -20,11 +20,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	Map(s): 		Empress' Road : Crossroads of Ereve
-	Description: 		Takes you to Training Forest I
-*/
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：enterDisguise0
+ * 功能描述：Takes you to Training Forest I（原版描述）。
+ */
 function enter(pi) {
     if (pi.isQuestStarted(20301) || pi.isQuestStarted(20302) || pi.isQuestStarted(20303) || pi.isQuestStarted(20304) || pi.isQuestStarted(20305)) {
         if (pi.hasItem(4032179)) {

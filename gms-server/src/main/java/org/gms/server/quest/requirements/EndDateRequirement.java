@@ -30,19 +30,24 @@ import org.gms.server.quest.QuestRequirementType;
 import java.util.Calendar;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务截止日期需求。
  */
 public class EndDateRequirement extends AbstractQuestRequirement {
     private String timeStr;
 
 
+    /**
+     * 构造 EndDateRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public EndDateRequirement(Quest quest, Data data) {
         super(QuestRequirementType.END_DATE);
         processData(data);
     }
-
     /**
-     * @param data
+     * 处理数据。
+     * @param data WZ 数据节点
      */
     @Override
     public void processData(Data data) {
@@ -50,6 +55,12 @@ public class EndDateRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         Calendar cal = Calendar.getInstance();

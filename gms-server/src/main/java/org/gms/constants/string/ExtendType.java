@@ -11,6 +11,9 @@ import java.util.Map;
  * 目前支持每日/每周，需要每月/季度/年度扩展时，请扩展此枚举
  */
 @Getter
+/**
+ * 扩展属性实体类型常量，标识扩展数据所属的业务实体。
+ */
 public enum ExtendType {
     ACCOUNT_EXTEND("11"),
     ACCOUNT_EXTEND_DAILY("12"),

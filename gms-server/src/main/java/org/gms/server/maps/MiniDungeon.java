@@ -32,7 +32,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * @author Ronan
+ * 迷你地下城实例，含独立计时与怪物刷新。
  */
 public class MiniDungeon {
     List<Character> players = new ArrayList<>();
@@ -42,6 +42,11 @@ public class MiniDungeon {
     int baseMap;
     long expireTime;
 
+    /**
+     * 构造 MiniDungeon 实例。
+     * @param base base
+     * @param timeLimit 时间限制（秒）
+     */
     public MiniDungeon(int base, long timeLimit) {
         baseMap = base;
         expireTime = SECONDS.toMillis(timeLimit);
@@ -51,6 +56,11 @@ public class MiniDungeon {
         expireTime += System.currentTimeMillis();
     }
 
+    /**
+     * 注册玩家。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean registerPlayer(Character chr) {
         int time = (int) ((expireTime - System.currentTimeMillis()) / 1000);
         if (time > 0) {
@@ -71,6 +81,11 @@ public class MiniDungeon {
         return true;
     }
 
+    /**
+     * 执行 unregister、玩家 操作。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean unregisterPlayer(Character chr) {
         chr.sendPacket(PacketCreator.removeClock());
 
@@ -93,6 +108,9 @@ public class MiniDungeon {
         return true;
     }
 
+    /**
+     * 执行 close 操作。
+     */
     public void close() {
         lock.lock();
         try {
@@ -109,6 +127,9 @@ public class MiniDungeon {
         }
     }
 
+    /**
+     * 执行 dispose 操作。
+     */
     public void dispose() {
         lock.lock();
         try {

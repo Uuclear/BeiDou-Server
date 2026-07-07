@@ -32,12 +32,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Danny (Leifde)
+ * 怪物攻击信息工厂。
  */
 public class MobAttackInfoFactory {
     private static final Map<String, MobAttackInfo> mobAttacks = new HashMap<>();
     private static final DataProvider dataSource = DataProviderFactory.getDataProvider(WZFiles.MOB);
 
+    /**
+     * 获取怪物攻击信息。
+     * @param mob 怪物
+     * @param attack attack
+     * @return MobAttackInfo 类型结果
+     */
     public static MobAttackInfo getMobAttackInfo(Monster mob, int attack) {
         MobAttackInfo ret = mobAttacks.get(mob.getId() + "" + attack);
         if (ret != null) {

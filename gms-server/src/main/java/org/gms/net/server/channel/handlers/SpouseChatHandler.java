@@ -28,7 +28,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.ChatLogger;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 SPOUSE_CHAT（配偶聊天） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SPOUSE_CHAT}</p>
+ */
 public final class SpouseChatHandler extends AbstractPacketHandler {
+    /** 处理 配偶聊天 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readString();//recipient

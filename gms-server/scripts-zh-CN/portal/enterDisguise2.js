@@ -17,11 +17,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* 
-	Map(s): 		Empress' Road : Training Forest I
-	Description: 		Takes you to Tiv's Forest
-*/
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：enterDisguise2
+ * 功能描述：Takes you to Tiv's Forest（原版描述）。
+ */
 var jobtype = 1;
 
 function enter(pi) {

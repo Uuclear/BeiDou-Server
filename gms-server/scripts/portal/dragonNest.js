@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：dragonNest
+ * 功能描述：启动关联事件实例并传送玩家（如班车/副本入口）。
+ */
 function enter(pi) {
     if (pi.isQuestCompleted(3706)) {
         pi.playPortalSound();

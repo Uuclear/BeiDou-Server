@@ -22,6 +22,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.*;
 
+/**
+ * JWT 认证过滤器，从 Authorization 头解析令牌并填充 SecurityContext。
+ * 继承 OncePerRequestFilter，在 UsernamePasswordAuthenticationFilter 之前执行。
+ */
 @Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired

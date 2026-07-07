@@ -1,14 +1,14 @@
 package org.gms.server.gachapon;
 
 /**
- * @author Alan (SharpAceX) - gachapon source classes stub
- * @author Ronan - parsed MapleSEA loots
- * <p>
- * MapleSEA-like loots src: http://maplesecrets.blogspot.com/2011/05/gachapon-showa-towns-sauna.html
+ * 昭和温泉（男）扭蛋奖池。
  */
-
 public class ShowaSpaMale extends GachaponItems {
 
+    /**
+     * 获取Common、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getCommonItems() {
         return new int[]{
@@ -46,11 +46,19 @@ public class ShowaSpaMale extends GachaponItems {
         };
     }
 
+    /**
+     * 获取Uncommon、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getUncommonItems() {
         return new int[]{2040916, 1102042};
     }
 
+    /**
+     * 获取Rare、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getRareItems() {
         return new int[]{};

@@ -24,7 +24,23 @@ package org.gms.net;
 import org.gms.client.Client;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 入站封包处理器接口，定义封包处理逻辑与会话状态校验。
+ */
 public interface PacketHandler {
+    /**
+     * 处理客户端发来的入站封包。
+     *
+     * @param p 入站封包
+     * @param c 客户端会话
+     */
     void handlePacket(InPacket p, Client c);
+
+    /**
+     * 校验当前客户端状态是否允许处理该封包。
+     *
+     * @param c 客户端会话
+     * @return 状态合法返回 true
+     */
     boolean validateState(Client c);
 }

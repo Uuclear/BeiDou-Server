@@ -20,13 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-        @Author Ronan
 
-        1061009 - Door of Dimension
-	Enter 3rd job event
-*/
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1061009
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ * 原作者：Ronan
+ */
 function jobString(niche) {
     if (niche == 1) {
         return "warrior";

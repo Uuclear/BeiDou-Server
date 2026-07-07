@@ -18,6 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * 脚本类型：物品
+ * 对象 ID：2430014
+ * 功能描述：蘑菇城任务道具，在地图 106020300 靠近 obstacle 传送门时使用，消除结界并完成任务 100202。
+ */
 function start(){
     if (im.getMapId() == 106020300) {
         var portal = im.getMap().getPortal("obstacle");

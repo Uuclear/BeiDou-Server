@@ -21,6 +21,9 @@
 */
 package org.gms.client.status;
 
+/**
+ * 怪物状态枚举，定义可施加在怪物身上的各类异常状态效果。
+ */
 public enum MonsterStatus {
     WATK(0x1),
     WDEF(0x2),
@@ -67,10 +70,18 @@ public enum MonsterStatus {
         this.first = first;
     }
 
+    /**
+     * 判断是否为First
+     * @return 返回值
+     */
     public boolean isFirst() {
         return first;
     }
 
+    /**
+     * 获取值
+     * @return 返回值
+     */
     public int getValue() {
         return i;
     }

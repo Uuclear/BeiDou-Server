@@ -70,12 +70,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * @author Matze
+ * 物品信息提供者（单例），从 WZ 加载物品名称、属性、限制等静态数据。
  */
 public class ItemInformationProvider {
     private static final Logger log = LoggerFactory.getLogger(ItemInformationProvider.class);
     private final static ItemInformationProvider instance = new ItemInformationProvider();
 
+    /**
+     * 获取单例实例。
+     * @return ItemInformationProvider 类型结果
+     */
     public static ItemInformationProvider getInstance() {
         return instance;
     }
@@ -155,6 +159,10 @@ public class ItemInformationProvider {
     }
 
 
+    /**
+     * 获取所有物品。
+     * @return List<Pair<Integer, String>> 类型结果
+     */
     public List<Pair<Integer, String>> getAllItems() {
         if (!itemNameCache.isEmpty()) {
             return itemNameCache;
@@ -190,6 +198,10 @@ public class ItemInformationProvider {
         return itemPairs;
     }
 
+    /**
+     * 获取所有Etc物品。
+     * @return List<Pair<Integer, String>> 类型结果
+     */
     public List<Pair<Integer, String>> getAllEtcItems() {
         if (!itemNameCache.isEmpty()) {
             return itemNameCache;
@@ -274,6 +286,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 执行 no、Cancel、Mouse 操作。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean noCancelMouse(int itemId) {
         if (noCancelMouseCache.containsKey(itemId)) {
             return noCancelMouseCache.get(itemId);
@@ -319,6 +336,13 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取物品Ids在范围。
+     * @param minId minId
+     * @param maxId maxId
+     * @param ignoreCashItem ignoreCashItem
+     * @return List<Integer> 类型结果
+     */
     public List<Integer> getItemIdsInRange(int minId, int maxId, boolean ignoreCashItem) {
         List<Integer> list = new ArrayList<>();
 
@@ -357,6 +381,12 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取Slot、Max。
+     * @param c c
+     * @param itemId 物品 ID
+     * @return short 类型结果
+     */
     public short getSlotMax(Client c, int itemId) {
         Short slotMax = slotMaxCache.get(itemId);
         if (slotMax != null) {
@@ -385,6 +415,11 @@ public class ItemInformationProvider {
         return (short) (ret + getExtraSlotMaxFromPlayer(c, itemId));
     }
 
+    /**
+     * 获取金币。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getMeso(int itemId) {
         if (getMesoCache.containsKey(itemId)) {
             return getMesoCache.get(itemId);
@@ -469,6 +504,11 @@ public class ItemInformationProvider {
         return new Pair<>(pEntry, fEntry);
     }
 
+    /**
+     * 获取Whole、Price。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getWholePrice(int itemId) {
         if (wholePriceCache.containsKey(itemId)) {
             return wholePriceCache.get(itemId);
@@ -477,6 +517,11 @@ public class ItemInformationProvider {
         return getItemPriceData(itemId).getLeft();
     }
 
+    /**
+     * 获取Unit、Price。
+     * @param itemId 物品 ID
+     * @return double 类型结果
+     */
     public double getUnitPrice(int itemId) {
         if (unitPriceCache.containsKey(itemId)) {
             return unitPriceCache.get(itemId);
@@ -485,6 +530,12 @@ public class ItemInformationProvider {
         return getItemPriceData(itemId).getRight();
     }
 
+    /**
+     * 获取Price。
+     * @param itemId 物品 ID
+     * @param quantity quantity
+     * @return int 类型结果
+     */
     public int getPrice(int itemId, int quantity) {
         int retPrice = getWholePrice(itemId);
         if (retPrice == -1) {
@@ -500,6 +551,10 @@ public class ItemInformationProvider {
         return retPrice;
     }
 
+    /**
+     * 获取Replace、在、Expire。
+     * @return Pair<Integer, String> 类型结果
+     */
     public Pair<Integer, String> getReplaceOnExpire(int itemId) {   // thanks to GabrielSin
         if (replaceOnExpireCache.containsKey(itemId)) {
             return replaceOnExpireCache.get(itemId);
@@ -541,6 +596,11 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取装备属性。
+     * @param itemId 物品 ID
+     * @return Map<String, Integer> 类型结果
+     */
     public Map<String, Integer> getEquipStats(int itemId) {
         if (equipStatsCache.containsKey(itemId)) {
             return equipStatsCache.get(itemId);
@@ -578,6 +638,11 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取装备等级Req。
+     * @param itemId 物品 ID
+     * @return Integer 类型结果
+     */
     public Integer getEquipLevelReq(int itemId) {
         if (equipLevelReqCache.containsKey(itemId)) {
             return equipLevelReqCache.get(itemId);
@@ -596,6 +661,11 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取Scroll、Reqs。
+     * @param itemId 物品 ID
+     * @return List<Integer> 类型结果
+     */
     public List<Integer> getScrollReqs(int itemId) {
         if (scrollReqsCache.containsKey(itemId)) {
             return scrollReqsCache.get(itemId);
@@ -614,6 +684,11 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取Weapon、类型。
+     * @param itemId 物品 ID
+     * @return WeaponType 类型结果
+     */
     public WeaponType getWeaponType(int itemId) {
         int cat = (itemId / 10000) % 100;
         WeaponType[] type = {WeaponType.SWORD1H, WeaponType.GENERAL1H_SWING, WeaponType.GENERAL1H_SWING, WeaponType.DAGGER_OTHER, WeaponType.NOT_A_WEAPON, WeaponType.NOT_A_WEAPON, WeaponType.NOT_A_WEAPON, WeaponType.WAND, WeaponType.STAFF, WeaponType.NOT_A_WEAPON, WeaponType.SWORD2H, WeaponType.GENERAL2H_SWING, WeaponType.GENERAL2H_SWING, WeaponType.SPEAR_STAB, WeaponType.POLE_ARM_SWING, WeaponType.BOW, WeaponType.CROSSBOW, WeaponType.CLAW, WeaponType.KNUCKLE, WeaponType.GUN};
@@ -627,6 +702,11 @@ public class ItemInformationProvider {
         return Math.pow(1.0 - prop, dices);
     }
 
+    /**
+     * 执行 roll、Success、Chance 操作。
+     * @param propPercent propPercent
+     * @return boolean 类型结果
+     */
     public static boolean rollSuccessChance(double propPercent) {
         return Math.random() >= testYourLuck(propPercent / 100.0, GameConfig.getServerInt("scroll_chance_rolls"));
     }
@@ -643,6 +723,12 @@ public class ItemInformationProvider {
         return (short) Randomizer.rand(-range, range);
     }
 
+    /**
+     * 执行 scroll、Option、装备、带、Chaos 操作。
+     * @param nEquip nEquip
+     * @param range range
+     * @param option option
+     */
     public void scrollOptionEquipWithChaos(Equip nEquip, int range, boolean option) {
         // option: watk, matk, wdef, mdef, spd, jump, hp, mp
         //   stat: dex, luk, str, int, avoid, acc
@@ -1049,7 +1135,11 @@ public class ItemInformationProvider {
     /*
         Issue with clean slate found thanks to Masterrulax
         Vicious added in the clean slate check thanks to Crypter (CrypterDEV)
-    */
+    /**
+     * 判断是否可以Use、Clean、Slate。
+     * @param equip equip
+     * @return boolean 类型结果
+     */
     public boolean canUseCleanSlate(Equip equip) {
         Map<String, Integer> eqStats = getEquipStats(equip.getItemId());
         if (eqStats == null || eqStats.get("tuc") == 0) {
@@ -1062,6 +1152,15 @@ public class ItemInformationProvider {
         return freeUpgradeCount + appliedScrollCount < totalUpgradeCount + viciousCount;
     }
 
+    /**
+     * 执行 scroll、装备、带、ID 操作。
+     * @param equip equip
+     * @param scrollId scrollId
+     * @param usingWhiteScroll usingWhiteScroll
+     * @param vegaItemId vegaItemId
+     * @param isGM isGM
+     * @return Item 类型结果
+     */
     public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, int vegaItemId, boolean isGM) {
         // 检查是否是游戏管理员且配置中启用了完美GM卷轴功能
         boolean assertGM = (isGM && GameConfig.getServerBoolean("use_perfect_gm_scroll"));
@@ -1146,6 +1245,11 @@ public class ItemInformationProvider {
         return equip; // 返回处理后的装备
     }
 
+    /**
+     * 执行 improve、装备、属性 操作。
+     * @param nEquip nEquip
+     * @param stats stats（String, Integer 列表/集合）
+     */
     public static void improveEquipStats(Equip nEquip, Map<String, Integer> stats) {
         for (Entry<String, Integer> stat : stats.entrySet()) {
             switch (stat.getKey()) {
@@ -1197,6 +1301,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取装备按ID。
+     * @param equipId equipId
+     * @return Item 类型结果
+     */
     public Item getEquipById(int equipId) {
         return getEquipById(equipId, -1);
     }
@@ -1261,6 +1370,11 @@ public class ItemInformationProvider {
         return (short) ((defaultValue - lMaxRange) + Math.floor(Randomizer.nextDouble() * (lMaxRange * 2 + 1)));
     }
 
+    /**
+     * 执行 randomize、属性 操作。
+     * @param equip equip
+     * @return Equip 类型结果
+     */
     public Equip randomizeStats(Equip equip) {
         equip.setStr(getRandStat(equip.getStr(), 5));
         equip.setDex(getRandStat(equip.getDex(), 5));
@@ -1287,6 +1401,11 @@ public class ItemInformationProvider {
         return (short) (defaultValue + Math.floor(Randomizer.nextDouble() * (lMaxRange + 1)));
     }
 
+    /**
+     * 执行 randomize、Upgrade、属性 操作。
+     * @param equip equip
+     * @return Equip 类型结果
+     */
     public Equip randomizeUpgradeStats(Equip equip) {
         equip.setStr(getRandUpgradedStat(equip.getStr(), 2));
         equip.setDex(getRandUpgradedStat(equip.getDex(), 2));
@@ -1304,6 +1423,11 @@ public class ItemInformationProvider {
         return equip;
     }
 
+    /**
+     * 获取物品效果。
+     * @param itemId 物品 ID
+     * @return StatEffect 类型结果
+     */
     public StatEffect getItemEffect(int itemId) {
         StatEffect ret = itemEffects.get(itemId);
         if (ret == null) {
@@ -1321,6 +1445,11 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取召唤兽、Mobs。
+     * @param itemId 物品 ID
+     * @return int[][] 类型结果
+     */
     public int[][] getSummonMobs(int itemId) {
         Data data = getItemData(itemId);
         int theInt = data.getChildByPath("mob").getChildren().size();
@@ -1332,6 +1461,11 @@ public class ItemInformationProvider {
         return mobs2spawn;
     }
 
+    /**
+     * 获取Watk、为、Projectile。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getWatkForProjectile(int itemId) {
         Integer atk = projectileWatkCache.get(itemId);
         if (atk != null) {
@@ -1343,11 +1477,21 @@ public class ItemInformationProvider {
         return atk.intValue();
     }
 
+    /**
+     * 获取名称。
+     * @param itemId 物品 ID
+     * @return String 类型结果
+     */
     public String getName(int itemId) {
         Pair<String, String> nameDesc = getNameDesc(itemId);
         return null == nameDesc ? null : nameDesc.left;
     }
 
+    /**
+     * 获取名称、Desc。
+     * @param itemId 物品 ID
+     * @return Pair<String, String> 类型结果
+     */
     public Pair<String, String> getNameDesc(int itemId) {
         if (nameDescCache.containsKey(itemId)) {
             return nameDescCache.get(itemId);
@@ -1366,6 +1510,11 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 获取Msg。
+     * @param itemId 物品 ID
+     * @return String 类型结果
+     */
     public String getMsg(int itemId) {
         if (msgCache.containsKey(itemId)) {
             return msgCache.get(itemId);
@@ -1379,6 +1528,11 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 判断是否为Untradeable、Restricted。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isUntradeableRestricted(int itemId) {
         if (untradeableCache.containsKey(itemId)) {
             return untradeableCache.get(itemId);
@@ -1396,6 +1550,11 @@ public class ItemInformationProvider {
         return bRestricted;
     }
 
+    /**
+     * 判断是否为Account、Restricted。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isAccountRestricted(int itemId) {
         if (accountItemRestrictionCache.containsKey(itemId)) {
             return accountItemRestrictionCache.get(itemId);
@@ -1413,6 +1572,11 @@ public class ItemInformationProvider {
         return bRestricted;
     }
 
+    /**
+     * 判断是否为战利品、Restricted。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isLootRestricted(int itemId) {
         if (dropRestrictionCache.containsKey(itemId)) {
             return dropRestrictionCache.get(itemId);
@@ -1433,10 +1597,20 @@ public class ItemInformationProvider {
         return bRestricted;
     }
 
+    /**
+     * 判断是否为掉落、Restricted。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isDropRestricted(int itemId) {
         return isLootRestricted(itemId) || isQuestItem(itemId);
     }
 
+    /**
+     * 判断是否为Pickup、Restricted。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isPickupRestricted(int itemId) {
         if (pickupRestrictionCache.containsKey(itemId)) {
             return pickupRestrictionCache.get(itemId);
@@ -1486,6 +1660,12 @@ public class ItemInformationProvider {
         return new Pair<>(ret, retSkill);
     }
 
+    /**
+     * 获取技能属性。
+     * @param itemId 物品 ID
+     * @param playerJob playerJob
+     * @return Map<String, Integer> 类型结果
+     */
     public Map<String, Integer> getSkillStats(int itemId, double playerJob) {
         Pair<Map<String, Integer>, Data> retData = getSkillStatsInternal(itemId);
         if (retData.getLeft().isEmpty()) {
@@ -1511,6 +1691,12 @@ public class ItemInformationProvider {
         return ret;
     }
 
+    /**
+     * 判断是否可以宠物、Consume。
+     * @param petId petId
+     * @param itemId 物品 ID
+     * @return Pair<Integer, Boolean> 类型结果
+     */
     public Pair<Integer, Boolean> canPetConsume(Integer petId, Integer itemId) {
         Pair<Integer, Set<Integer>> foodData = cashPetFoodCache.get(itemId);
 
@@ -1544,6 +1730,11 @@ public class ItemInformationProvider {
         return new Pair<>(foodData.getLeft(), foodData.getRight().contains(petId));
     }
 
+    /**
+     * 判断是否为任务物品。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isQuestItem(int itemId) {
         if (isQuestItemCache.containsKey(itemId)) {
             return isQuestItemCache.get(itemId);
@@ -1554,6 +1745,11 @@ public class ItemInformationProvider {
         return questItem;
     }
 
+    /**
+     * 判断是否为队伍任务物品。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isPartyQuestItem(int itemId) {
         if (isPartyQuestItemCache.containsKey(itemId)) {
             return isPartyQuestItemCache.get(itemId);
@@ -1576,10 +1772,20 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取Card、怪物、ID。
+     * @param id ID
+     * @return int 类型结果
+     */
     public int getCardMobId(int id) {
         return monsterBookID.get(id);
     }
 
+    /**
+     * 判断是否为Untradeable、在、装备。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isUntradeableOnEquip(int itemId) {
         if (onEquipUntradeableCache.containsKey(itemId)) {
             return onEquipUntradeableCache.get(itemId);
@@ -1589,6 +1795,11 @@ public class ItemInformationProvider {
         return untradeableOnEquip;
     }
 
+    /**
+     * 获取Scripted、物品、信息。
+     * @param itemId 物品 ID
+     * @return ScriptedItem 类型结果
+     */
     public ScriptedItem getScriptedItemInfo(int itemId) {
         if (scriptedItemCache.containsKey(itemId)) {
             return scriptedItemCache.get(itemId);
@@ -1604,6 +1815,11 @@ public class ItemInformationProvider {
         return scriptedItemCache.get(itemId);
     }
 
+    /**
+     * 判断是否为Karma、Able。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isKarmaAble(int itemId) {
         if (karmaCache.containsKey(itemId)) {
             return karmaCache.get(itemId);
@@ -1613,6 +1829,11 @@ public class ItemInformationProvider {
         return bRestricted;
     }
 
+    /**
+     * 获取状态、Change、物品。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getStateChangeItem(int itemId) {
         if (triggerItemCache.containsKey(itemId)) {
             return triggerItemCache.get(itemId);
@@ -1623,6 +1844,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取Create、物品。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getCreateItem(int itemId) {
         if (createItem.containsKey(itemId)) {
             return createItem.get(itemId);
@@ -1633,6 +1859,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取怪物物品。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getMobItem(int itemId) {
         if (mobItem.containsKey(itemId)) {
             return mobItem.get(itemId);
@@ -1643,6 +1874,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取Use延迟。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getUseDelay(int itemId) {
         if (useDelay.containsKey(itemId)) {
             return useDelay.get(itemId);
@@ -1653,6 +1889,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取怪物HP。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getMobHP(int itemId) {
         if (mobHP.containsKey(itemId)) {
             return mobHP.get(itemId);
@@ -1663,6 +1904,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取经验按ID。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getExpById(int itemId) {
         if (expCache.containsKey(itemId)) {
             return expCache.get(itemId);
@@ -1673,6 +1919,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取Max等级按ID。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getMaxLevelById(int itemId) {
         if (levelCache.containsKey(itemId)) {
             return levelCache.get(itemId);
@@ -1683,6 +1934,10 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取物品、Reward。
+     * @return Pair<Integer, List<RewardItem>> 类型结果
+     */
     public Pair<Integer, List<RewardItem>> getItemReward(int itemId) {//Thanks Celino - used some stuffs :)
         if (rewardCache.containsKey(itemId)) {
             return rewardCache.get(itemId);
@@ -1707,6 +1962,11 @@ public class ItemInformationProvider {
         return hmm;
     }
 
+    /**
+     * 判断是否为Consume、在、Pickup。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isConsumeOnPickup(int itemId) {
         if (consumeOnPickupCache.containsKey(itemId)) {
             return consumeOnPickupCache.get(itemId);
@@ -1717,6 +1977,11 @@ public class ItemInformationProvider {
         return consume;
     }
 
+    /**
+     * 判断是否为Two、Handed。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public final boolean isTwoHanded(int itemId) {
         switch (getWeaponType(itemId)) {
             case GENERAL2H_SWING:
@@ -1734,6 +1999,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 判断是否为Cash。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isCash(int itemId) {
         int itemType = itemId / 1000000;
         if (itemType == 5) {
@@ -1747,6 +2017,11 @@ public class ItemInformationProvider {
         return eqpStats != null && eqpStats.get("cash") == 1;
     }
 
+    /**
+     * 判断是否为Upgradeable。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isUpgradeable(int itemId) {
         Item it = this.getEquipById(itemId);
         Equip eq = (Equip) it;
@@ -1756,6 +2031,11 @@ public class ItemInformationProvider {
                 eq.getAvoid() > 0 || eq.getSpeed() > 0 || eq.getJump() > 0 || eq.getHp() > 0 || eq.getMp() > 0);
     }
 
+    /**
+     * 判断是否为Unmerchable。
+     * @param itemId 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean isUnmerchable(int itemId) {
         if (GameConfig.getServerBoolean("use_enforce_unmerchable_cash") && isCash(itemId)) {
             return true;
@@ -1764,6 +2044,12 @@ public class ItemInformationProvider {
         return GameConfig.getServerBoolean("use_enforce_unmerchable_pet") && ItemConstants.isPet(itemId);
     }
 
+    /**
+     * 判断是否可以Wear、Equipment。
+     * @param chr 角色
+     * @param items items（Item 列表/集合）
+     * @return Collection<Item> 类型结果
+     */
     public Collection<Item> canWearEquipment(Character chr, Collection<Item> items) {
         Inventory inv = chr.getInventory(InventoryType.EQUIPPED);
         if (inv.checked()) {
@@ -1840,6 +2126,13 @@ public class ItemInformationProvider {
         return itemz;
     }
 
+    /**
+     * 判断是否可以Wear、Equipment。
+     * @param chr 角色
+     * @param equip equip
+     * @param dst dst
+     * @return boolean 类型结果
+     */
     public boolean canWearEquipment(Character chr, Equip equip, int dst) {
         int id = equip.getItemId();
 
@@ -1910,6 +2203,11 @@ public class ItemInformationProvider {
         return true;
     }
 
+    /**
+     * 获取物品数据按名称。
+     * @param name name
+     * @return ArrayList<Pair<Integer, String>> 类型结果
+     */
     public ArrayList<Pair<Integer, String>> getItemDataByName(String name) {
         ArrayList<Pair<Integer, String>> ret = new ArrayList<>();
         for (Pair<Integer, String> itemPair : ItemInformationProvider.getInstance().getAllItems()) {
@@ -1941,6 +2239,12 @@ public class ItemInformationProvider {
         return equipLevelData;
     }
 
+    /**
+     * 获取装备等级。
+     * @param itemId 物品 ID
+     * @param getMaxLevel getMaxLevel
+     * @return int 类型结果
+     */
     public int getEquipLevel(int itemId, boolean getMaxLevel) {
         Integer eqLevel = equipMaxLevelCache.get(itemId);
         if (eqLevel == null) {
@@ -1973,6 +2277,12 @@ public class ItemInformationProvider {
         return eqLevel;
     }
 
+    /**
+     * 获取物品、Levelup、属性。
+     * @param itemId 物品 ID
+     * @param level level
+     * @return List<Pair<String, Integer>> 类型结果
+     */
     public List<Pair<String, Integer>> getItemLevelupStats(int itemId, int level) {
         List<Pair<String, Integer>> list = new LinkedList<>();
         Data data = getEquipLevelInfo(itemId);
@@ -2038,6 +2348,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取Maker、Reagent、Stat、Upgrade。
+     * @param itemId 物品 ID
+     * @return Pair<String, Integer> 类型结果
+     */
     public Pair<String, Integer> getMakerReagentStatUpgrade(int itemId) {
         try {
             Pair<String, Integer> statUpgd = statUpgradeMakerCache.get(itemId);
@@ -2069,6 +2384,11 @@ public class ItemInformationProvider {
         }
     }
 
+    /**
+     * 获取Maker、Crystal、来自、Leftover。
+     * @param leftoverId leftoverId
+     * @return int 类型结果
+     */
     public int getMakerCrystalFromLeftover(Integer leftoverId) {
         try {
             Integer itemid = mobCrystalMakerCache.get(leftoverId);
@@ -2099,6 +2419,11 @@ public class ItemInformationProvider {
         return -1;
     }
 
+    /**
+     * 获取Maker、物品、Entry。
+     * @param toCreate toCreate
+     * @return MakerItemCreateEntry 类型结果
+     */
     public MakerItemCreateEntry getMakerItemEntry(int toCreate) {
         MakerItemCreateEntry makerEntry;
 
@@ -2144,6 +2469,11 @@ public class ItemInformationProvider {
         return makerEntry;
     }
 
+    /**
+     * 获取Maker、Crystal、来自、装备。
+     * @param equipId equipId
+     * @return int 类型结果
+     */
     public int getMakerCrystalFromEquip(Integer equipId) {
         try {
             return getCrystalForLevel(getEquipLevelReq(equipId));
@@ -2154,6 +2484,11 @@ public class ItemInformationProvider {
         return -1;
     }
 
+    /**
+     * 获取Maker、Stimulant、来自、装备。
+     * @param equipId equipId
+     * @return int 类型结果
+     */
     public int getMakerStimulantFromEquip(Integer equipId) {
         try {
             return getCrystalForLevel(getEquipLevelReq(equipId));
@@ -2164,6 +2499,11 @@ public class ItemInformationProvider {
         return -1;
     }
 
+    /**
+     * 获取Maker、Disassembled、物品。
+     * @param itemId 物品 ID
+     * @return List<Pair<Integer, Integer>> 类型结果
+     */
     public List<Pair<Integer, Integer>> getMakerDisassembledItems(Integer itemId) {
         List<Pair<Integer, Integer>> items = new LinkedList<>();
 
@@ -2183,6 +2523,11 @@ public class ItemInformationProvider {
         return items;
     }
 
+    /**
+     * 获取Maker、Disassembled、Fee。
+     * @param itemId 物品 ID
+     * @return int 类型结果
+     */
     public int getMakerDisassembledFee(Integer itemId) {
         int fee = -1;
         try (Connection con = DatabaseConnection.getConnection();
@@ -2203,6 +2548,10 @@ public class ItemInformationProvider {
         return fee;
     }
 
+    /**
+     * 获取Maker、Stimulant。
+     * @return int 类型结果
+     */
     public int getMakerStimulant(int itemId) {  // thanks to Arnah
         Integer itemid = makerCatalystCache.get(itemId);
         if (itemid != null) {
@@ -2223,6 +2572,11 @@ public class ItemInformationProvider {
         return itemid;
     }
 
+    /**
+     * 获取Who掉落。
+     * @param itemId 物品 ID
+     * @return Set<String> 类型结果
+     */
     public Set<String> getWhoDrops(Integer itemId) {
         Set<String> list = new HashSet<>();
         try (Connection con = DatabaseConnection.getConnection();
@@ -2254,6 +2608,11 @@ public class ItemInformationProvider {
         return (skilldata.get("skillid") != 0 && ((player.getSkillLevel(skill2) >= skilldata.get("reqSkillLevel") || skilldata.get("reqSkillLevel") == 0) && player.getMasterLevel(skill2) < skilldata.get("masterLevel")));
     }
 
+    /**
+     * 执行 usable、Mastery、Books 操作。
+     * @param player 玩家
+     * @return List<Integer> 类型结果
+     */
     public List<Integer> usableMasteryBooks(Character player) {
         List<Integer> masterybook = new LinkedList<>();
         for (Integer i = 2290000; i <= 2290139; i++) {
@@ -2265,6 +2624,11 @@ public class ItemInformationProvider {
         return masterybook;
     }
 
+    /**
+     * 执行 usable、技能、Books 操作。
+     * @param player 玩家
+     * @return List<Integer> 类型结果
+     */
     public List<Integer> usableSkillBooks(Character player) {
         List<Integer> skillbook = new LinkedList<>();
         for (Integer i = 2280000; i <= 2280019; i++) {
@@ -2276,6 +2640,11 @@ public class ItemInformationProvider {
         return skillbook;
     }
 
+    /**
+     * 获取任务、Consumables、信息。
+     * @param itemId 物品 ID
+     * @return QuestConsItem 类型结果
+     */
     public final QuestConsItem getQuestConsumablesInfo(final int itemId) {
         if (questItemConsCache.containsKey(itemId)) {
             return questItemConsCache.get(itemId);
@@ -2307,6 +2676,11 @@ public class ItemInformationProvider {
         return qcItem;
     }
 
+    /**
+     * 获取物品、Cash、信息。
+     * @param itemId 物品 ID
+     * @return ItemCashInfo 类型结果
+     */
     public final ItemCashInfo getItemCashInfo(int itemId) {
         if (itemCashInfoCache.containsKey(itemId)) {
             return itemCashInfoCache.get(itemId);
@@ -2332,20 +2706,39 @@ public class ItemInformationProvider {
         private final int npc;
         private final String script;
 
+        /**
+         * 执行 Scripted、物品 操作。
+         * @param npc npc
+         * @param script script
+         * @param rop rop
+         * @return ScriptedItem 类型结果
+         */
         public ScriptedItem(int npc, String script, boolean rop) {
             this.npc = npc;
             this.script = script;
             this.runOnPickup = rop;
         }
 
+        /**
+         * 获取NPC。
+         * @return int 类型结果
+         */
         public int getNpc() {
             return npc;
         }
 
+        /**
+         * 获取脚本。
+         * @return String 类型结果
+         */
         public String getScript() {
             return script;
         }
 
+        /**
+         * 执行 run、在、Pickup 操作。
+         * @return boolean 类型结果
+         */
         public boolean runOnPickup() {
             return runOnPickup;
         }
@@ -2363,6 +2756,11 @@ public class ItemInformationProvider {
         public int questid, exp, grade;
         public Map<Integer, Integer> items;
 
+        /**
+         * 获取物品需求。
+         * @param itemid 物品 ID
+         * @return Integer 类型结果
+         */
         public Integer getItemRequirement(int itemid) {
             return items.get(itemid);
         }
@@ -2376,6 +2774,11 @@ public class ItemInformationProvider {
 
     }
 
+    /**
+     * 获取物品IDs来自名称。
+     * @param search search
+     * @return ArrayList<Pair<Integer, String>> 类型结果
+     */
     public static ArrayList<Pair<Integer, String>> getItemsIDsFromName(String search) {
         ArrayList<Pair<Integer, String>> retItems = new ArrayList<>();
         List<Pair<Integer, String>> allItems = getInstance().getAllItems();

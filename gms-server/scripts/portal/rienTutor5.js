@@ -19,9 +19,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	Author: kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：rienTutor5
+ * 功能描述：地图传送门入口脚本。
+ * 原作者：kevintjuh93
+ */
 function enter(pi) {
     pi.talkGuide("You're very close to town. I'll head over there first since I have some things to take care of. You take your time.");
     pi.blockPortal();

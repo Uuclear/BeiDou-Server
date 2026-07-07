@@ -1,4 +1,5 @@
 <template>
+  <!-- 商城管理主页：按分类浏览商品、上下架与批量操作。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.cashShop')">
@@ -38,6 +39,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 商城管理入口页，组合分类选择与商品表格。
+   */
   import CashShopTable from '@/views/game/cashShop/table.vue';
   import { ref } from 'vue';
   import { getAllCategoryList } from '@/api/cashShop';

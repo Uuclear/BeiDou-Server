@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：29400
+ * 功能描述：任务脚本，完成任务后发放物品奖励。
+ */
 var VeteranHunterMedal = Java.type('org.gms.server.quest.medal.VeteranHunterMedal');
 var medalId = VeteranHunterMedal.MEDAL_ID;
 var requiredKills = VeteranHunterMedal.REQUIRED_KILLS;

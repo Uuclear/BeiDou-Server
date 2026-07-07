@@ -28,11 +28,19 @@ import org.gms.client.command.Command;
 import org.gms.constants.net.ServerConstants;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM5命令：把传入的参数存到服务端变量中，用于后续测试
+ */
 public class SetCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SetCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         for (int i = 0; i < params.length; i++) {

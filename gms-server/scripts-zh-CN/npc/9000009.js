@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Author:   Xterminator, Moogra
-   NPC Name: Vikin
-   Map(s): 	 Victoria Road: Lith Harbor (104000000)
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9000009
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ * 原作者：Xterminator, Moogra
+ */
 function start() {
     cm.sendOk("嘿嘿!!! 找到宝藏卷轴！我把地图丢在某个地方了，没有地图我就不能离开这里。");
     cm.dispose();

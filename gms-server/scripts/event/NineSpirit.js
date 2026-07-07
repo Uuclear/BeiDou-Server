@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：NineSpirit
+ * 功能描述：游戏事件脚本（NineSpirit），管理实例生命周期与玩家进出。
+ */
 var minPlayers = 1;
 var timeLimit = 5; //5 minutes
 var eventTimer = 1000 * 60 * timeLimit;

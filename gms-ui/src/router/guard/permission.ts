@@ -1,3 +1,7 @@
+/**
+ * 路由权限守卫
+ * 支持客户端静态菜单与服务端动态菜单两种模式下的访问控制。
+ */
 import type { Router, RouteRecordNormalized } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
 

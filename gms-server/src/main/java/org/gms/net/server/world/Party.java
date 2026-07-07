@@ -44,6 +44,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 组队实体，管理成员列表、队长、队伍副本及传送门等队伍级状态。
+ */
 public class Party {
 
     @Setter

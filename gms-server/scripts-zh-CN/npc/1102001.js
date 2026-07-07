@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1102001
+ * 功能描述：.（原版描述）。
+ */
 /* NPC Base
 	Map Name (Map ID)
 	Extra NPC info.

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `shops` 的实体类（DO）。
+ * <p>
+ * NPC 商店定义表，描述商店所属 NPC、地图及商店类型等元信息。
  */
 @Data
 @Builder

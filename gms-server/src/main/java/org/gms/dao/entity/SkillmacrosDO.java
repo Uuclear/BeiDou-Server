@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `skillmacros` 的实体类（DO）。
+ * <p>
+ * 技能宏配置表，保存快捷栏中组合技能的名称、图标与技能序列。
  */
 @Data
 @Builder

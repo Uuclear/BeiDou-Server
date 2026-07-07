@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20720
+ * 功能描述：rmation that may help us.");（原版描述）。
+ */
 /*
 	QUEST: Before the Mission in Perion Begins
 	NPC: Neinheart

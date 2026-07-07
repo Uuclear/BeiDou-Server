@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `makerreagentdata` 的实体类（DO）。
+ * <p>
+ * 制作人催化剂表，定义可用于制作的催化剂道具及效果。
  */
 @Data
 @Builder

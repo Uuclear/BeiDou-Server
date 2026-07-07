@@ -30,9 +30,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.scripting.npc.NPCScriptManager;
 
 /**
- * @author kevintjuh93
+ * 处理客户端 CLICK_GUIDE（点击引导） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CLICK_GUIDE}</p>
  */
 public class ClickGuideHandler extends AbstractPacketHandler {
+    /** 处理 点击引导 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (c.getPlayer().getJob().equals(Job.NOBLESSE)) {

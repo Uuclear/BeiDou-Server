@@ -25,8 +25,13 @@ import org.gms.client.Client;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 ADMIN_LOG（管理员日志） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ADMIN_LOG}</p>
+ */
 public final class AdminLogHandler extends AbstractPacketHandler {
 
+    /** 处理 管理员日志 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         //harhar

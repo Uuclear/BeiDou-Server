@@ -122,9 +122,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Matze
- * @author Frz
- * @author Ronan
+ * 技能/道具 Buff 效果定义，解析 WZ 中的 stat 数据并应用到角色或怪物状态。
  */
 public class StatEffect {
     private short watk, matk, wdef, mdef, acc, avoid, speed, jump;
@@ -190,10 +188,21 @@ public class StatEffect {
         return !cardStats.party || partyHunting;
     }
 
+    /**
+     * 判断是否为活动。
+     * @param applyto applyto
+     * @return boolean 类型结果
+     */
     public boolean isActive(Character applyto) {
         return isEffectActive(applyto.getMapId(), applyto.getPartyMembersOnSameMap().size() > 1);
     }
 
+    /**
+     * 获取Card、倍率。
+     * @param mapid 地图 ID
+     * @param itemid 物品 ID
+     * @return int 类型结果
+     */
     public int getCardRate(int mapid, int itemid) {
         if (cardStats != null) {
             if (cardStats.itemCode == Integer.MAX_VALUE) {
@@ -212,10 +221,23 @@ public class StatEffect {
         return 0;
     }
 
+    /**
+     * 加载技能效果来自数据。
+     * @param source 来源角色
+     * @param skillid skillid
+     * @param overtime overtime
+     * @return StatEffect 类型结果
+     */
     public static StatEffect loadSkillEffectFromData(Data source, int skillid, boolean overtime) {
         return loadFromData(source, skillid, true, overtime);
     }
 
+    /**
+     * 加载物品效果来自数据。
+     * @param source 来源角色
+     * @param itemid 物品 ID
+     * @return StatEffect 类型结果
+     */
     public static StatEffect loadItemEffectFromData(Data source, int itemid) {
         return loadFromData(source, itemid, false, false);
     }
@@ -876,9 +898,10 @@ public class StatEffect {
     }
 
     /**
-     * @param applyto
-     * @param obj
-     * @param attack  damage done by the skill
+     * 应用Passive。
+     * @param applyto applyto
+     * @param obj 地图对象
+     * @param attack attack
      */
     public void applyPassive(Character applyto, MapObject obj, int attack) {
         if (makeChanceResult()) {
@@ -899,6 +922,11 @@ public class StatEffect {
         }
     }
 
+    /**
+     * 应用Echo、的、Hero。
+     * @param applyfrom applyfrom
+     * @return boolean 类型结果
+     */
     public boolean applyEchoOfHero(Character applyfrom) {
         Map<Integer, Character> mapPlayers = applyfrom.getMap().getMapPlayers();
         mapPlayers.remove(applyfrom.getId());
@@ -911,14 +939,31 @@ public class StatEffect {
         return hwResult;
     }
 
+    /**
+     * 应用到。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean applyTo(Character chr) {
         return applyTo(chr, chr, true, null, false, 1);
     }
 
+    /**
+     * 应用到。
+     * @param chr 角色
+     * @param useMaxRange useMaxRange
+     * @return boolean 类型结果
+     */
     public boolean applyTo(Character chr, boolean useMaxRange) {
         return applyTo(chr, chr, true, null, useMaxRange, 1);
     }
 
+    /**
+     * 应用到。
+     * @param chr 角色
+     * @param pos 坐标
+     * @return boolean 类型结果
+     */
     public boolean applyTo(Character chr, Point pos) {
         return applyTo(chr, chr, true, pos, false, 1);
     }
@@ -1233,10 +1278,19 @@ public class StatEffect {
         return bounds;
     }
 
+    /**
+     * 获取Buff、Local、持续时间。
+     * @return int 类型结果
+     */
     public int getBuffLocalDuration() {
         return !GameConfig.getServerBoolean("use_buff_everlasting") ? duration : Integer.MAX_VALUE;
     }
 
+    /**
+     * 执行 silent、Apply、Buff 操作。
+     * @param chr 角色
+     * @param localStartTime localStartTime
+     */
     public void silentApplyBuff(Character chr, long localStartTime) {
         int localDuration = getBuffLocalDuration();
         localDuration = alchemistModifyVal(chr, localDuration, false);
@@ -1257,6 +1311,11 @@ public class StatEffect {
         }
     }
 
+    /**
+     * 应用Combo、Buff。
+     * @param applyto applyto
+     * @param combo combo
+     */
     public final void applyComboBuff(final Character applyto, int combo) {
         final List<Pair<BuffStat, Integer>> stat = Collections.singletonList(new Pair<>(BuffStat.ARAN_COMBO, combo));
         applyto.sendPacket(PacketCreator.giveBuff(sourceid, 99999, stat));
@@ -1267,6 +1326,10 @@ public class StatEffect {
         applyto.registerEffect(this, starttime, Long.MAX_VALUE, false);
     }
 
+    /**
+     * 应用Beacon、Buff。
+     * @param applyto applyto
+     */
     public final void applyBeaconBuff(final Character applyto, int objectid) { // thanks Thora & Hyun for reporting an issue with homing beacon autoflagging mobs when changing maps
         final List<Pair<BuffStat, Integer>> stat = Collections.singletonList(new Pair<>(BuffStat.HOMING_BEACON, objectid));
         applyto.sendPacket(PacketCreator.giveBuff(1, sourceid, stat));
@@ -1275,6 +1338,12 @@ public class StatEffect {
         applyto.registerEffect(this, starttime, Long.MAX_VALUE, false);
     }
 
+    /**
+     * 更新Buff、效果。
+     * @param target target
+     * @param activeStats activeStats（Pair<BuffStat, Integer> 列表/集合）
+     * @param starttime starttime
+     */
     public void updateBuffEffect(Character target, List<Pair<BuffStat, Integer>> activeStats, long starttime) {
         int localDuration = getBuffLocalDuration();
         localDuration = alchemistModifyVal(target, localDuration, false);
@@ -1581,30 +1650,61 @@ public class StatEffect {
         return sourceid == Buccaneer.TIME_LEAP;
     }
 
+    /**
+     * 判断是否为龙、Blood。
+     * @return boolean 类型结果
+     */
     public boolean isDragonBlood() {
         return skill && sourceid == DragonKnight.DRAGON_BLOOD;
     }
 
+    /**
+     * 判断是否为Berserk。
+     * @return boolean 类型结果
+     */
     public boolean isBerserk() {
         return skill && sourceid == DarkKnight.BERSERK;
     }
 
+    /**
+     * 判断是否为Recovery。
+     * @return boolean 类型结果
+     */
     public boolean isRecovery() {
         return sourceid == Beginner.RECOVERY || sourceid == Noblesse.RECOVERY || sourceid == Legend.RECOVERY || sourceid == Evan.RECOVERY;
     }
 
+    /**
+     * 判断是否为地图椅子。
+     * @return boolean 类型结果
+     */
     public boolean isMapChair() {
         return sourceid == Beginner.MAP_CHAIR || sourceid == Noblesse.MAP_CHAIR || sourceid == Legend.MAP_CHAIR;
     }
 
+    /**
+     * 判断是否为地图椅子。
+     * @param sourceid sourceid
+     * @return boolean 类型结果
+     */
     public static boolean isMapChair(int sourceid) {
         return sourceid == Beginner.MAP_CHAIR || sourceid == Noblesse.MAP_CHAIR || sourceid == Legend.MAP_CHAIR;
     }
 
+    /**
+     * 判断是否为HP、MP、Recovery。
+     * @param sourceid sourceid
+     * @return boolean 类型结果
+     */
     public static boolean isHpMpRecovery(int sourceid) {
         return sourceid == ItemId.RUSSELLONS_PILLS || sourceid == ItemId.SORCERERS_POTION;
     }
 
+    /**
+     * 判断是否为Ariant、Shield。
+     * @param sourceid sourceid
+     * @return boolean 类型结果
+     */
     public static boolean isAriantShield(int sourceid) {
         return sourceid == ItemId.ARPQ_SHIELD;
     }
@@ -1625,6 +1725,10 @@ public class StatEffect {
         return skill && sourceid == Hero.ENRAGE;
     }
 
+    /**
+     * 判断是否为Beholder。
+     * @return boolean 类型结果
+     */
     public boolean isBeholder() {
         return skill && sourceid == DarkKnight.BEHOLDER;
     }
@@ -1650,6 +1754,10 @@ public class StatEffect {
         return skill && sourceid == Priest.MYSTIC_DOOR;
     }
 
+    /**
+     * 判断是否为怪物、Riding。
+     * @return boolean 类型结果
+     */
     public boolean isMonsterRiding() {
         return skill && (sourceid % 10000000 == 1004 || sourceid == Corsair.BATTLE_SHIP || sourceid == Beginner.SPACESHIP || sourceid == Noblesse.SPACESHIP
                 || sourceid == Beginner.YETI_MOUNT1 || sourceid == Beginner.YETI_MOUNT2 || sourceid == Beginner.WITCH_BROOMSTICK || sourceid == Beginner.BALROG_MOUNT
@@ -1657,18 +1765,34 @@ public class StatEffect {
                 || sourceid == Legend.YETI_MOUNT1 || sourceid == Legend.YETI_MOUNT2 || sourceid == Legend.WITCH_BROOMSTICK || sourceid == Legend.BALROG_MOUNT);
     }
 
+    /**
+     * 判断是否为Magic、传送门。
+     * @return boolean 类型结果
+     */
     public boolean isMagicDoor() {
         return skill && sourceid == Priest.MYSTIC_DOOR;
     }
 
+    /**
+     * 判断是否为Poison。
+     * @return boolean 类型结果
+     */
     public boolean isPoison() {
         return skill && (sourceid == FPMage.POISON_MIST || sourceid == FPWizard.POISON_BREATH || sourceid == FPMage.ELEMENT_COMPOSITION || sourceid == NightWalker.POISON_BOMB || sourceid == BlazeWizard.FLAME_GEAR);
     }
 
+    /**
+     * 判断是否为Morph。
+     * @return boolean 类型结果
+     */
     public boolean isMorph() {
         return morphId > 0;
     }
 
+    /**
+     * 判断是否为Morph、Without、攻击。
+     * @return boolean 类型结果
+     */
     public boolean isMorphWithoutAttack() {
         return morphId > 0 && morphId < 100; // Every morph item I have found has been under 100, pirate skill transforms start at 1000.
     }
@@ -1705,6 +1829,11 @@ public class StatEffect {
         }
     }
 
+    /**
+     * 判断是否为Heros、Will。
+     * @param skillid skillid
+     * @return boolean 类型结果
+     */
     public static boolean isHerosWill(int skillid) {
         switch (skillid) {
             case Hero.HEROS_WILL:
@@ -1812,20 +1941,40 @@ public class StatEffect {
         return null;
     }
 
+    /**
+     * 判断是否为技能。
+     * @return boolean 类型结果
+     */
     public boolean isSkill() {
         return skill;
     }
 
+    /**
+     * 获取Source、ID。
+     * @return int 类型结果
+     */
     public int getSourceId() {
         return sourceid;
     }
+    /**
+     * 设置Source、ID。
+     * @param id ID
+     */
     public void setSourceId(int id) {
         sourceid = id;
     }
+    /**
+     * 获取Buff、Source、ID。
+     * @return int 类型结果
+     */
     public int getBuffSourceId() {
         return skill ? sourceid : -sourceid;
     }
 
+    /**
+     * 执行 make、Chance、Result 操作。
+     * @return boolean 类型结果
+     */
     public boolean makeChanceResult() {
         return prop == 1.0 || Math.random() < prop;
     }
@@ -1837,12 +1986,22 @@ public class StatEffect {
      private WeakReference<Character> target;
      private long startTime;
 
+     /**
+      * 执行 Cancel、效果、动作 操作。
+      * @param target target
+      * @param effect effect
+      * @param startTime startTime
+      * @return CancelEffectAction 类型结果
+      */
      public CancelEffectAction(Character target, StatEffect effect, long startTime) {
      this.effect = effect;
      this.target = new WeakReference<>(target);
      this.startTime = startTime;
      }
 
+     /**
+      * 执行动作逻辑。
+      */
      @Override
      public void run() {
      Character realTarget = target.get();
@@ -1856,102 +2015,203 @@ public class StatEffect {
         return hp;
     }
 
+    /**
+     * 获取MP。
+     * @return short 类型结果
+     */
     public short getMp() {
         return mp;
     }
 
+    /**
+     * 获取HP倍率。
+     * @return double 类型结果
+     */
     public double getHpRate() {
         return hpR;
     }
 
+    /**
+     * 获取MP倍率。
+     * @return double 类型结果
+     */
     public double getMpRate() {
         return mpR;
     }
 
+    /**
+     * 获取HPR。
+     * @return byte 类型结果
+     */
     public byte getHpR() {
         return mhpR;
     }
 
+    /**
+     * 获取MPR。
+     * @return byte 类型结果
+     */
     public byte getMpR() {
         return mmpR;
     }
 
+    /**
+     * 获取HPR倍率。
+     * @return short 类型结果
+     */
     public short getHpRRate() {
         return mhpRRate;
     }
 
+    /**
+     * 获取MPR倍率。
+     * @return short 类型结果
+     */
     public short getMpRRate() {
         return mmpRRate;
     }
 
+    /**
+     * 获取HPCon。
+     * @return short 类型结果
+     */
     public short getHpCon() {
         return hpCon;
     }
 
+    /**
+     * 获取MPCon。
+     * @return short 类型结果
+     */
     public short getMpCon() {
         return mpCon;
     }
 
+    /**
+     * 获取Matk。
+     * @return short 类型结果
+     */
     public short getMatk() {
         return matk;
     }
 
+    /**
+     * 获取Watk。
+     * @return short 类型结果
+     */
     public short getWatk() {
         return watk;
     }
 
+    /**
+     * 获取持续时间。
+     * @return int 类型结果
+     */
     public int getDuration() {
         return duration;
     }
 
+    /**
+     * 获取Statups。
+     * @return List<Pair<BuffStat, Integer>> 类型结果
+     */
     public List<Pair<BuffStat, Integer>> getStatups() {
         return statups;
     }
 
+    /**
+     * 执行 same、Source 操作。
+     * @param effect effect
+     * @return boolean 类型结果
+     */
     public boolean sameSource(StatEffect effect) {
         return this.sourceid == effect.sourceid && this.skill == effect.skill;
     }
 
+    /**
+     * 获取X。
+     * @return int 类型结果
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * 获取Y。
+     * @return int 类型结果
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * 获取伤害。
+     * @return int 类型结果
+     */
     public int getDamage() {
         return damage;
     }
 
+    /**
+     * 获取攻击数量。
+     * @return int 类型结果
+     */
     public int getAttackCount() {
         return attackCount;
     }
 
+    /**
+     * 获取怪物数量。
+     * @return int 类型结果
+     */
     public int getMobCount() {
         return mobCount;
     }
 
+    /**
+     * 获取Fix伤害。
+     * @return int 类型结果
+     */
     public int getFixDamage() {
         return fixdamage;
     }
 
+    /**
+     * 获取Bullet、数量。
+     * @return short 类型结果
+     */
     public short getBulletCount() {
         return bulletCount;
     }
 
+    /**
+     * 获取Bullet、Consume。
+     * @return short 类型结果
+     */
     public short getBulletConsume() {
         return bulletConsume;
     }
 
+    /**
+     * 获取Money、Con。
+     * @return int 类型结果
+     */
     public int getMoneyCon() {
         return moneyCon;
     }
 
+    /**
+     * 获取Cooldown。
+     * @return int 类型结果
+     */
     public int getCooldown() {
         return cooldown;
     }
 
+    /**
+     * 获取怪物、Stati。
+     * @return Map<MonsterStatus, Integer> 类型结果
+     */
     public Map<MonsterStatus, Integer> getMonsterStati() {
         return monsterStatus;
     }

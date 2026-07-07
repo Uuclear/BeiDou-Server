@@ -40,6 +40,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * NPC 脚本管理器（单例），负责加载 GraalJS NPC/物品脚本并驱动对话流程。
+ * <p>
+ * 向脚本引擎注入 {@code cm}（{@link NPCConversationManager}）或 {@code im}（物品脚本），
+ * 调用脚本的 {@code start}、{@code action} 等函数；支持按 NPC ID、脚本名及
+ * {@code BeiDouSpecial/} 扩展目录解析脚本路径。
+ * </p>
+ *
  * @author Matze
  */
 public class NPCScriptManager extends AbstractScriptManager {
@@ -49,10 +56,12 @@ public class NPCScriptManager extends AbstractScriptManager {
     private final Map<Client, NPCConversationManager> cms = new HashMap<>();
     private final Map<Client, Invocable> scripts = new HashMap<>();
 
+/** 获取单例实例 */
     public static NPCScriptManager getInstance() {
         return instance;
     }
 
+/** 检查 NPC 脚本文件是否存在 */
     public boolean isNpcScriptAvailable(Client c, String fileName) {
         ScriptEngine engine = null;
         if (fileName != null) {
@@ -62,26 +71,32 @@ public class NPCScriptManager extends AbstractScriptManager {
         return engine != null;
     }
 
+/** 启动 NPC/物品脚本对话 */
     public boolean start(Client c, int npc, Character chr) {
         return start(c, npc, -1, chr);
     }
 
+/** 启动 NPC/物品脚本对话 */
     public boolean start(Client c, int npc, int oid, Character chr) {
         return start(c, npc, oid, null, chr);
     }
 
+/** 启动 NPC/物品脚本对话 */
     public boolean start(Client c, int npc, String fileName, Character chr) {
         return start(c, npc, -1, fileName, chr);
     }
 
+/** 启动 NPC/物品脚本对话 */
     public boolean start(Client c, int npc, int oid, String fileName, Character chr) {
         return start(c, npc, oid, fileName, chr, false, "cm");
     }
 
+/** 启动 NPC/物品脚本对话 */
     public boolean start(Client c, ScriptedItem scriptItem, Character chr) {
         return start(c, scriptItem.getNpc(), -1, scriptItem.getScript(), chr, true, "im");
     }
 
+/** 启动 NPC/物品脚本对话 */
     public void start(String filename, Client c, int npc, List<PartyCharacter> chrs) {
         try {
             final NPCConversationManager cm = new NPCConversationManager(c, npc, chrs, true);
@@ -143,7 +158,7 @@ public class NPCScriptManager extends AbstractScriptManager {
                     dispose(c);
                     return false;
                 }
-                engine.put(engineName, cm);
+                engine.put(engineName, cm); // GraalJS 绑定：npc 脚本用 cm，物品脚本用 im
 
                 Invocable iv = (Invocable) engine;
                 scripts.put(c, iv);
@@ -169,6 +184,7 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 处理 NPC 对话选项回调 */
     public void action(Client c, byte mode, byte type, int selection) {
         Invocable iv = scripts.get(c);
         if (iv != null) {
@@ -187,6 +203,7 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 处理多级对话（NextLevel）回调 */
     public void nextLevel(Client c, byte mode, byte type, int selection) {
         Invocable iv = scripts.get(c);
         if (iv != null) {
@@ -244,6 +261,7 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose(NPCConversationManager cm) {
         Client c = cm.getClient();
         c.getPlayer().setCS(false);
@@ -261,10 +279,12 @@ public class NPCScriptManager extends AbstractScriptManager {
         c.getPlayer().flushDelayedUpdateQuests();
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose(Client c) {
         dispose(c, false);
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose(Client c, boolean action) {
         NPCConversationManager cm = cms.get(c);
         if (cm != null) {
@@ -275,6 +295,7 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
+/** 获取客户端当前 NPC 对话管理器 */
     public NPCConversationManager getCM(Client c) {
         return cms.get(c);
     }

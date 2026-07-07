@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：pepeking_effect
+ * 功能描述：地图脚本（pepeking_effect），控制地图内特殊逻辑。
+ */
 function start(ms) {
     var mobId = 3300000 + (Math.floor(Math.random() * 3) + 5);
     var player = ms.getPlayer();

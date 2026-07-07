@@ -28,8 +28,13 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.maps.MapObject;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 CHAR_INFO_REQUEST（请求角色信息） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHAR_INFO_REQUEST}</p>
+ */
 public final class CharInfoRequestHandler extends AbstractPacketHandler {
 
+    /** 处理 请求角色信息 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.skip(4);

@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：ariant_castle
+ * 功能描述：-----------------------------------------------------------------------------------（原版描述）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  Portal - To get into Ariant Castle

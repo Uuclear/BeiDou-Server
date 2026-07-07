@@ -37,9 +37,11 @@ import org.gms.server.life.Monster;
 import org.gms.util.PacketCreator;
 
 /**
- * @author kevintjuh93
+ * 处理客户端 USE_CATCH_ITEM（使用捕捉物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_CATCH_ITEM}</p>
  */
 public final class UseCatchItemHandler extends AbstractPacketHandler {
+    /** 处理 使用捕捉物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

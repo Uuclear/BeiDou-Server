@@ -45,8 +45,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * 处理客户端 ENTER_MTS（进入MTS） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ENTER_MTS}</p>
+ */
 public final class EnterMTSHandler extends AbstractPacketHandler {
 
+    /** 处理 进入MTS 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

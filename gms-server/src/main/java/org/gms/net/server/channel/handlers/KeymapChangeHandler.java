@@ -30,7 +30,12 @@ import org.gms.constants.game.GameConstants;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 CHANGE_KEYMAP（更改键盘映射） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHANGE_KEYMAP}</p>
+ */
 public final class KeymapChangeHandler extends AbstractPacketHandler {
+    /** 处理 更改键盘映射 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (p.available() >= 8) {

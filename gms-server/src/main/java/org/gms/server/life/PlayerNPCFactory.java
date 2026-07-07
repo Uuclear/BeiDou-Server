@@ -24,11 +24,16 @@ import org.gms.provider.DataProviderFactory;
 import org.gms.provider.wz.WZFiles;
 
 /**
- * @author RonanLana
+ * 玩家 NPC 工厂，从数据库加载并创建 PlayerNPC。
  */
 public class PlayerNPCFactory {
     private static final DataProvider npcData = DataProviderFactory.getDataProvider(WZFiles.NPC);
 
+    /**
+     * 判断是否为Existent、Scriptid。
+     * @param scriptid scriptid
+     * @return synchronized static boolean 类型结果
+     */
     public synchronized static boolean isExistentScriptid(int scriptid) {
         return npcData.getData(scriptid + ".img") != null;
     }

@@ -20,39 +20,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.processor.npc;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.inventory.Inventory;
-import org.gms.client.inventory.InventoryType;
-import org.gms.client.inventory.Item;
-import org.gms.client.inventory.ItemFactory;
-import org.gms.client.inventory.manipulator.InventoryManipulator;
-import org.gms.net.server.Server;
-import org.gms.net.server.world.World;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.server.ItemInformationProvider;
-import org.gms.server.maps.HiredMerchant;
-import org.gms.service.NoteService;
-import org.gms.util.DatabaseConnection;
-import org.gms.util.PacketCreator;
-import org.gms.util.Pair;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
-
-import static java.util.concurrent.TimeUnit.DAYS;
-
 /**
- * @author RonanLana - synchronization of Fredrick modules and operation results
+ * 弗雷德里克（仓库）NPC 处理器，管理玩家仓库的存取操作。
  */
 public class FredrickProcessor {
     private static final Logger log = LoggerFactory.getLogger(FredrickProcessor.class);
@@ -60,6 +29,10 @@ public class FredrickProcessor {
 
     private final NoteService noteService;
 
+    /**
+     * Fredrick处理器
+     * @param noteService noteService
+     */
     public FredrickProcessor(NoteService noteService) {
         this.noteService = noteService;
     }
@@ -92,6 +65,12 @@ public class FredrickProcessor {
         return 0x0;
     }
 
+    /**
+     * timestampElapsedDays
+     * @param then then
+     * @param timeNow timeNow
+     * @return 返回值
+     */
     public static int timestampElapsedDays(Timestamp then, long timeNow) {
         return (int) ((timeNow - then.getTime()) / DAYS.toMillis(1));
     }
@@ -108,6 +87,10 @@ public class FredrickProcessor {
         return msg;
     }
 
+    /**
+     * 移除Fredrick日志
+     * @param cid cid
+     */
     public static void removeFredrickLog(int cid) {
         try (Connection con = DatabaseConnection.getConnection()) {
             removeFredrickLog(con, cid);
@@ -123,6 +106,10 @@ public class FredrickProcessor {
         }
     }
 
+    /**
+     * insertFredrick日志
+     * @param cid cid
+     */
     public static void insertFredrickLog(int cid) {
         try (Connection con = DatabaseConnection.getConnection()) {
 
@@ -159,6 +146,15 @@ public class FredrickProcessor {
         }
     }
 
+    /**
+     * runFredrickSchedule
+     */
+    /**
+     * runFredrickSchedule
+     */
+    /**
+     * 执行弗雷德里克仓库过期清理定时任务
+     */
     public void runFredrickSchedule() {
         try (Connection con = DatabaseConnection.getConnection()) {
             List<Pair<Integer, Integer>> expiredCids = new LinkedList<>();
@@ -272,8 +268,11 @@ public class FredrickProcessor {
         }
     }
 
+    /**
+     * fredrickRetrieveItems
+     * @param c 客户端会话
+     */
     public void fredrickRetrieveItems(Client c) {     // thanks Gustav for pointing out the dupe on Fredrick handling
-        if (c.tryacquireClient()) {
             try {
                 Character chr = c.getPlayer();
 

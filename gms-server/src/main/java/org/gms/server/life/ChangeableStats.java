@@ -19,10 +19,18 @@ package org.gms.server.life;
 
 import org.gms.constants.game.GameConstants;
 
+/**
+ * 可变更怪物属性（v83 WZ 不支持，保留占位）。
+ */
 public class ChangeableStats extends OverrideMonsterStats {
 
     public int watk, matk, wdef, mdef, level;
 
+    /**
+     * 构造 ChangeableStats 实例。
+     * @param stats stats
+     * @param ostats ostats
+     */
     public ChangeableStats(MonsterStats stats, OverrideMonsterStats ostats) {
         hp = ostats.getHp();
         exp = ostats.getExp();
@@ -34,6 +42,11 @@ public class ChangeableStats extends OverrideMonsterStats {
         level = stats.getLevel();
     }
 
+    /**
+     * 构造 ChangeableStats 实例。
+     * @param stats stats
+     * @param newLevel newLevel
+     */
     public ChangeableStats(MonsterStats stats, int newLevel, boolean pqMob) { // here we go i think
         final double mod = (double) newLevel / (double) stats.getLevel();
         final double hpRatio = (double) stats.getHp() / (double) stats.getExp();
@@ -48,6 +61,12 @@ public class ChangeableStats extends OverrideMonsterStats {
         level = newLevel;
     }
 
+    /**
+     * 构造 ChangeableStats 实例。
+     * @param stats stats
+     * @param statModifier statModifier
+     * @param pqMob pqMob
+     */
     public ChangeableStats(MonsterStats stats, float statModifier, boolean pqMob) {
         this(stats, (int) (statModifier * stats.getLevel()), pqMob);
     }

@@ -35,6 +35,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 定时任务调度器抽象基类，管理注册条目、空闲检测与监听器通知。
+ *
  * @author Ronan
  */
 public abstract class BaseScheduler {

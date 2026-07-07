@@ -19,10 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
-    Author:         Magical-H
-    Description:    Swan Knights be current job advancement
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20314
+ * 功能描述：职业转职。
+ * 原作者：Magical-H
+ */
 var job = {
     1 : "DAWNWARRIOR",				// 魂骑士
     2 : "BLAZEWIZARD",				// 炎术士

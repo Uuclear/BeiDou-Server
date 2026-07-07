@@ -18,34 +18,17 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-package org.gms.client.processor.npc;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.autoban.AutobanFactory;
-import org.gms.client.inventory.Inventory;
-import org.gms.client.inventory.InventoryType;
-import org.gms.client.inventory.Item;
-import org.gms.client.inventory.manipulator.InventoryManipulator;
-import org.gms.client.inventory.manipulator.KarmaManipulator;
-import org.gms.config.GameConfig;
-import org.gms.constants.id.ItemId;
-import org.gms.constants.inventory.ItemConstants;
-import org.gms.net.packet.InPacket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.server.ItemInformationProvider;
-import org.gms.server.Storage;
-import org.gms.util.PacketCreator;
-
 /**
- * @author Matze
- * @author Ronan - inventory concurrency protection on storing items
+ * 仓库处理器，处理客户端仓库相关的封包请求。
  */
 public class StorageProcessor {
     private static final Logger log = LoggerFactory.getLogger(StorageProcessor.class);
 
+    /**
+     * storageAction
+     * @param p p
+     * @param c 客户端会话
+     */
     public static void storageAction(InPacket p, Client c) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         Character chr = c.getPlayer();

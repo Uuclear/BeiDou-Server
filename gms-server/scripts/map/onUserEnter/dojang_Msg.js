@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author: Traitor
-	Map(s):	Mu Lung Dojo Entrance
-	Desc:   Sends the entrance message or the taunt message from that dojo guy
-*/
+
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：dojang_Msg
+ * 功能描述：地图脚本（dojang_Msg），控制地图内特殊逻辑。
+ * 原作者：Traitor
+ */
 var messages = Array("Your courage for challenging the Mu Lung Dojo is commendable!", "If you want to taste the bitterness of defeat, come on in!", "I will make you thoroughly regret challenging the Mu Lung Dojo! Hurry up!");
 
 function start(ms) {

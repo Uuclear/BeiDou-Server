@@ -35,9 +35,14 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * 处理客户端 VIEW_ALL_CHAR（查看所有角色） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#VIEW_ALL_CHAR}</p>
+ */
 public final class ViewAllCharHandler extends AbstractPacketHandler {
     private static final int CHARACTER_LIMIT = 60; // Client will crash if sending 61 or more characters
 
+    /** 处理 查看所有角色 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         try {

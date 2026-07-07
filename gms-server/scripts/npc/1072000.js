@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1072000
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ */
 /* Warrior Job Instructor
 	Warrior 2nd Job Advancement
 	Victoria Road : West Rocky Mountain IV (102020300)

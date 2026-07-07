@@ -30,9 +30,11 @@ import org.gms.server.maps.HiredMerchant;
 import org.gms.util.PacketCreator;
 
 /**
- * @author kevintjuh93 - :3
+ * 处理客户端 REMOTE_STORE（远程商店） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#REMOTE_STORE}</p>
  */
 public class RemoteStoreHandler extends AbstractPacketHandler {
+    /** 处理 远程商店 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

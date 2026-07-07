@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：物品
+ * 对象 ID：2430015
+ * 功能描述：尖刺消除剂，在地图 106020500 任务 2324 进行中时靠近 investigate2 传送门使用，清除荆棘并传送至 106020501。
+ */
 function start() {
     if (im.getMapId() == 106020500 && im.isQuestActive(2324)) {
         var player = im.getPlayer();

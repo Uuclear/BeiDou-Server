@@ -1,3 +1,7 @@
+/**
+ * 全局组件注册插件
+ * 按需引入 ECharts 模块以减小打包体积，并全局注册 Chart、Breadcrumb 组件。
+ */
 import { App } from 'vue';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';

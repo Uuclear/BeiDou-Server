@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21741
+ * 功能描述：rmation about the Black Wings. This time, you'll have to travel quite a bit. Do you know a town called #bMu Lung#k? You'll have to head there.");（原版描述）。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

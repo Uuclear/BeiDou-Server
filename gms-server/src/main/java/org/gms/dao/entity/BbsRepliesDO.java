@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `bbs_replies` 的实体类（DO）。
+ * <p>
+ * 公告板回复帖表，存储主题帖下的回复内容与作者信息。
  */
 @Data
 @Builder

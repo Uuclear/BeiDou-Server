@@ -29,12 +29,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author kevintjuh93
- * <p>
- * Modified by -- Ronan - concurrency protection
+ * 处理客户端 USE_GACHA_EXP（使用扭蛋经验） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_GACHA_EXP}</p>
  */
 public class UseGachaExpHandler extends AbstractPacketHandler {
 
+    /** 处理 使用扭蛋经验 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
 

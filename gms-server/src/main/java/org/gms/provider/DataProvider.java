@@ -21,7 +21,22 @@
 */
 package org.gms.provider;
 
+/**
+ * WZ 数据提供者接口，负责按路径加载 XML 数据并提供目录导航。
+ * <p>
+ * 典型实现为 {@link org.gms.provider.wz.XMLWZFile}，由 {@link DataProviderFactory} 创建，
+ * 可配合 {@link LocalizedDataProvider} 实现语言包回退。
+ * </p>
+ */
 public interface DataProvider {
+    /**
+     * 按相对路径加载数据文件（不含 {@code .xml} 后缀）。
+     *
+     * @param path 相对于 WZ 根目录的路径，例如 {@code "Item/Consume/0200.img"}
+     * @return 解析后的数据树根节点，文件不存在时返回 {@code null}
+     */
     Data getData(String path);
+
+    /** @return WZ 包的根目录条目，用于枚举子目录与文件 */
     DataDirectoryEntry getRoot();
 }

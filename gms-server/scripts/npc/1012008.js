@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1012008
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /*
  * @Author - Sparrow
  * @NPC - 1012008 - Casey the Game Master

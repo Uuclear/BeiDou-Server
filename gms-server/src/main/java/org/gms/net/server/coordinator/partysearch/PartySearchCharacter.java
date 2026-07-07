@@ -24,6 +24,8 @@ import org.gms.client.Character;
 import java.lang.ref.WeakReference;
 
 /**
+ * 组队搜索参与者快照，持有玩家弱引用、等级与排队状态。
+ *
  * @author Ronan
  */
 public class PartySearchCharacter {

@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator,repair by hamburger
-	NPC Name: 		Rain
-	Map(s): 		Maple Road : Amherst (1010000)
-	Description: 		Talks about Amherst
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：12101
+ * 功能描述：Rain，Talks about Amherst（原版描述）。
+ * 原作者：Xterminator,repair by hamburger
+ */
 var status = -1;
 
 function start()

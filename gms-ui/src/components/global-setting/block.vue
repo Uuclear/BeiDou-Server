@@ -1,3 +1,4 @@
+<!-- 全局设置中的一个配置块：标题 + 多个开关/数字表单项。 -->
 <template>
   <div class="block">
     <h5 class="title">{{ title }}</h5>
@@ -14,6 +15,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 设置面板配置区块组件。
+   */
   import { PropType } from 'vue';
   import { useAppStore } from '@/store';
   import FormWrapper from './form-wrapper.vue';
@@ -37,6 +41,7 @@
     },
   });
   const appStore = useAppStore();
+  /** 设置项变更时同步到 app store，并处理色弱模式、服务端菜单等特殊逻辑 */
   const handleChange = async ({
     key,
     value,

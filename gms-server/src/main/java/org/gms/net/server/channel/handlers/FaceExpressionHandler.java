@@ -28,7 +28,12 @@ import org.gms.constants.inventory.ItemConstants;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 FACE_EXPRESSION（表情符号） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#FACE_EXPRESSION}</p>
+ */
 public final class FaceExpressionHandler extends AbstractPacketHandler {
+    /** 处理 表情符号 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

@@ -1,4 +1,5 @@
 <template>
+  <!-- 顶栏消息通知下拉面板，展示未读消息数量与消息列表入口。 -->
   <a-spin style="display: block" :loading="loading">
     <a-tabs v-model:activeKey="messageType" type="rounded" destroy-on-hide>
       <a-tab-pane v-for="item in tabList" :key="item.key">
@@ -22,6 +23,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 消息盒子组件，拉取消息列表并支持标记已读。
+   */
   import { ref, reactive, toRefs, computed } from 'vue';
   import {
     queryMessageList,

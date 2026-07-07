@@ -33,12 +33,13 @@ import org.gms.server.maps.MapObject;
 import java.awt.*;
 
 /**
- * @author Matze
- * @author Ronan
+ * 处理客户端 ITEM_PICKUP（捡起物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ITEM_PICKUP}</p>
  */
 public final class ItemPickupHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ItemPickupHandler.class);
 
+    /** 校验拾取距离后，将地图掉落物收入背包。 */
     @Override
     public void handlePacket(final InPacket p, final Client c) {
         p.readInt(); //Timestamp

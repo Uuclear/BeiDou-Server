@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author lee
- * @since 2024-09-19
+ * 数据库表 `gachapon_reward` 的实体类（DO）。
+ * <p>
+ * 扭蛋奖励条目表，定义奖池中各道具的中奖权重与数量。
  */
 @Data
 @Builder

@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2112016
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /**
  * @author: Ronan
  * @npc: Hidden Documents

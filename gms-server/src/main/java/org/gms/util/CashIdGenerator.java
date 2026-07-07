@@ -27,12 +27,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * 现金商城相关唯一 ID 生成器（戒指、宠物等），避免与数据库已有 ID 冲突。
+ * <p>
+ * 从 rings、pets 表加载已占用 ID，内存递增分配；接近上限时重新从数据库同步。
+ *
  * @author RonanLana
  */
 public class CashIdGenerator {
     private final static Set<Integer> existentCashIds = new HashSet<>(10000);
     private static Integer runningCashId = 0;
 
+    /**
+     * 从数据库加载已占用的现金 ID（戒指、宠物），并重置内存游标至下一个可用值。
+     */
     public static synchronized void loadExistentCashIdsFromDb() {
         RingsMapper ringsMapper = ServerManager.getApplicationContext().getBean(RingsMapper.class);
         existentCashIds.clear();
@@ -61,6 +68,11 @@ public class CashIdGenerator {
         }
     }
 
+    /**
+     * 生成下一个未占用的现金商城唯一 ID。
+     *
+     * @return 新的现金 ID
+     */
     public static synchronized int generateCashId() {
         while (true) {
             if (!existentCashIds.contains(runningCashId)) {
@@ -75,6 +87,11 @@ public class CashIdGenerator {
         }
     }
 
+    /**
+     * 释放已分配的现金 ID，使其可被再次分配（例如物品销毁时）。
+     *
+     * @param cashId 待释放的 ID
+     */
     public static synchronized void freeCashId(int cashId) {
         existentCashIds.remove(cashId);
     }

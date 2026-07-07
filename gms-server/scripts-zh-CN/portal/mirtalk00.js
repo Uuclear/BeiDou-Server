@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：mirtalk00
+ * 功能描述：(22013, "dt00=o")) {（原版描述）。
+ */
 //Author: kevintjuh93
 
 function enter(pi) {

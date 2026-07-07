@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：CafePQ_4
+ * 功能描述：组队任务（PQ）事件实例，管理队伍、地图与奖励。
+ */
 /**
  * @author: Ronan
  * @event: Cafe PQ 4

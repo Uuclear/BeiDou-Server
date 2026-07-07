@@ -27,6 +27,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * 地图管理器，按频道/世界缓存并分发 MapleMap 实例。
+ */
 public class MapManager {
     private final int channel;
     private final int world;
@@ -37,6 +40,12 @@ public class MapManager {
     private final Lock mapsRLock;
     private final Lock mapsWLock;
 
+    /**
+     * 构造 MapManager 实例。
+     * @param eim 事件实例管理器
+     * @param world world
+     * @param channel 频道号
+     */
     public MapManager(EventInstanceManager eim, int world, int channel) {
         this.world = world;
         this.channel = channel;
@@ -47,6 +56,11 @@ public class MapManager {
         this.mapsWLock = readWriteLock.writeLock();
     }
 
+    /**
+     * 重置地图。
+     * @param mapid 地图 ID
+     * @return MapleMap 类型结果
+     */
     public MapleMap resetMap(int mapid) {
         mapsWLock.lock();
         try {
@@ -88,6 +102,11 @@ public class MapManager {
         return map;
     }
 
+    /**
+     * 获取地图。
+     * @param mapid 地图 ID
+     * @return MapleMap 类型结果
+     */
     public MapleMap getMap(int mapid) {
         MapleMap map;
 
@@ -101,15 +120,30 @@ public class MapManager {
         return (map != null) ? map : loadMapFromWz(mapid, true);
     }
 
+    /**
+     * 获取地图按生命体ID。
+     * @param lifeId lifeId
+     * @return MapleMap 类型结果
+     */
     public MapleMap getMapByLifeId(int lifeId) {
         String mapId = MapFactory.getMapIdByLifeId(lifeId);
         return mapId == null ? null : getMap(Integer.parseInt(mapId));
     }
 
+    /**
+     * 获取Disposable、地图。
+     * @param mapid 地图 ID
+     * @return MapleMap 类型结果
+     */
     public MapleMap getDisposableMap(int mapid) {
         return loadMapFromWz(mapid, false);
     }
 
+    /**
+     * 判断是否为地图已加载。
+     * @param mapId mapId
+     * @return boolean 类型结果
+     */
     public boolean isMapLoaded(int mapId) {
         mapsRLock.lock();
         try {
@@ -119,6 +153,10 @@ public class MapManager {
         }
     }
 
+    /**
+     * 获取Maps。
+     * @return Map<Integer, MapleMap> 类型结果
+     */
     public Map<Integer, MapleMap> getMaps() {
         mapsRLock.lock();
         try {
@@ -128,6 +166,9 @@ public class MapManager {
         }
     }
 
+    /**
+     * 更新Maps。
+     */
     public void updateMaps() {
         for (MapleMap map : getMaps().values()) {
             map.respawn();
@@ -135,6 +176,9 @@ public class MapManager {
         }
     }
 
+    /**
+     * 执行 dispose 操作。
+     */
     public void dispose() {
         for (MapleMap map : getMaps().values()) {
             map.dispose();

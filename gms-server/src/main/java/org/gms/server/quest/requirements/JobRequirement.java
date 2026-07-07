@@ -32,18 +32,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tyler (Twdtwd)
+ * 职业需求（位编码匹配）。
  */
 public class JobRequirement extends AbstractQuestRequirement {
     List<Integer> jobs = new ArrayList<>();
 
+    /**
+     * 构造 JobRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public JobRequirement(Quest quest, Data data) {
         super(QuestRequirementType.JOB);
         processData(data);
     }
-
     /**
-     * @param data
+     * 处理数据。
+     * @param data WZ 数据节点
      */
     @Override
     public void processData(Data data) {
@@ -53,6 +58,12 @@ public class JobRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         for (Integer job : jobs) {

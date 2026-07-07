@@ -29,10 +29,12 @@ import org.gms.server.maps.FieldLimit;
 import org.gms.util.PacketCreator;
 
 /**
- * @author kevintjuh93
+ * 处理客户端 TROCK_ADD_MAP（添加传送岩地图） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#TROCK_ADD_MAP}</p>
  */
 public final class TrockAddMapHandler extends AbstractPacketHandler {
 
+    /** 处理 添加传送岩地图 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

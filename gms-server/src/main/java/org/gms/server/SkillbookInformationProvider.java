@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  */
 
 /**
- * Only used in 1 script that gives players information about where skillbooks can be found
+ * 技能书信息提供者，管理技能书与技能 ID 映射。
  */
 public class SkillbookInformationProvider {
     private static final Logger log = LoggerFactory.getLogger(SkillbookInformationProvider.class);
@@ -64,6 +64,9 @@ public class SkillbookInformationProvider {
     private static final int SKILLBOOK_MIN_ITEMID = 2280000;
     private static final int SKILLBOOK_MAX_ITEMID = 2300000;  // exclusively
 
+    /**
+     * 加载所有、Skillbook、信息。
+     */
     public static void loadAllSkillbookInformation() {
         Map<Integer, SkillBookEntry> loadedSkillbooks = new HashMap<>();
         loadedSkillbooks.putAll(fetchSkillbooksFromQuests());
@@ -268,11 +271,21 @@ public class SkillbookInformationProvider {
         return scriptSkillbooks;
     }
 
+    /**
+     * 获取Skillbook、Availability。
+     * @param itemId 物品 ID
+     * @return SkillBookEntry 类型结果
+     */
     public static SkillBookEntry getSkillbookAvailability(int itemId) {
         SkillBookEntry sbe = foundSkillbooks.get(itemId);
         return sbe != null ? sbe : SkillBookEntry.UNAVAILABLE;
     }
 
+    /**
+     * 获取Teachable、Skills。
+     * @param chr 角色
+     * @return List<Integer> 类型结果
+     */
     public static List<Integer> getTeachableSkills(Character chr) {
         List<Integer> list = new ArrayList<>();
 

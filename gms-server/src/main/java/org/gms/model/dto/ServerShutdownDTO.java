@@ -3,6 +3,9 @@ package org.gms.model.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * 服务器关停请求 DTO，携带关停倒计时、公告信息等管理端下发参数。
+ */
 @Data
 @Schema(description = "关服请求参数")
 public class ServerShutdownDTO {

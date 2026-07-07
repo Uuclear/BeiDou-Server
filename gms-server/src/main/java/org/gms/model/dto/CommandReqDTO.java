@@ -6,6 +6,9 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
+/**
+ * GM 命令管理请求 DTO，用于分页查询、新增或修改 command_info 表中的指令配置。
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder

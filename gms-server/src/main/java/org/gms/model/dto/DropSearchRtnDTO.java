@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 怪物掉落配置搜索响应 DTO，返回单条掉落规则的道具、概率及掉落者信息。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

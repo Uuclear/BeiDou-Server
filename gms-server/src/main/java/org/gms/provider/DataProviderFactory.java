@@ -27,11 +27,25 @@ import org.gms.provider.wz.XMLWZFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * WZ 数据提供者工厂，根据 {@link WZFiles} 枚举创建带语言回退的 {@link DataProvider}。
+ * <p>
+ * 若存在 {@code wz-语言/} 目录，则优先从语言目录读取已本地化的 XML；
+ * 缺失文件自动回退到默认 {@code wz/} 目录，无需复制完整 WZ 包。
+ * </p>
+ */
 public class DataProviderFactory {
+    /** 从指定路径创建 XML WZ 数据提供者。 */
     private static DataProvider getWZ(Path in) {
         return new XMLWZFile(in);
     }
 
+    /**
+     * 获取指定 WZ 包的数据提供者（含语言目录回退）。
+     *
+     * @param in WZ 包枚举（如 {@link WZFiles#ITEM}）
+     * @return 可直接调用 {@link DataProvider#getData(String)} 的提供者实例
+     */
     public static DataProvider getDataProvider(WZFiles in) {
         Path basePath = in.getBaseFile();
         Path languagePath = in.getLanguageFile();

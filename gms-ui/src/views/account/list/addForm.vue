@@ -1,4 +1,5 @@
 <template>
+  <!-- 新增游戏账户表单弹窗。 -->
   <a-modal
     v-model:visible="visible"
     :title="$t('account.list.addForm.title')"
@@ -46,6 +47,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 账户注册表单组件，校验并提交 addAccount API。
+   */
   import { reactive, ref } from 'vue';
   import useLoading from '@/hooks/loading';
   import { addAccount, RegisterForm } from '@/api/account';

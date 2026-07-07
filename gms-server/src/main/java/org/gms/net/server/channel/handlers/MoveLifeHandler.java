@@ -44,13 +44,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Danny (Leifde)
- * @author ExtremeDevilz
- * @author Ronan (HeavenMS)
+ * 处理客户端 MOVE_LIFE（移动生命体） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOVE_LIFE}</p>
  */
 public final class MoveLifeHandler extends AbstractMovementPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(MoveLifeHandler.class);
 
+    /** 处理 移动生命体 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character player = c.getPlayer();

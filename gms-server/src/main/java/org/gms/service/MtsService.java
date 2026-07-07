@@ -13,12 +13,20 @@ import java.util.List;
 import static org.gms.dao.entity.table.MtsCartDOTableDef.MTS_CART_D_O;
 import static org.gms.dao.entity.table.MtsItemsDOTableDef.MTS_ITEMS_D_O;
 
+/**
+ * 拍卖行（MTS）业务服务，管理拍卖行商品与交易相关数据。
+ */
 @Service
 @AllArgsConstructor
 public class MtsService {
     private final MtsCartMapper mtsCartMapper;
     private final MtsItemsMapper mtsItemsMapper;
 
+    /**
+     * 执行 deleteMtsByCharacterId 相关业务逻辑。
+     *
+     * @param cid cid
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteMtsByCharacterId(int cid) {
         QueryWrapper queryWrapper = QueryWrapper.create().where(MTS_CART_D_O.CID.eq(cid));

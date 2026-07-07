@@ -27,9 +27,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Terry Han (Acrylic)
+ * 处理商城内现金余额查询（CHECK_CASH）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHECK_CASH}</p>
  */
 public final class TouchingCashShopHandler extends AbstractPacketHandler {
+    /** 处理 检查现金 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         c.sendPacket(PacketCreator.showCash(c.getPlayer()));

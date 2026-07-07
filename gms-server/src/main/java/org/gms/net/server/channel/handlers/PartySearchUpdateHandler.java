@@ -26,10 +26,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
 /**
- * 脚本、GM指令传送玩家到指定地图触发
+ * 处理客户端 PARTY_SEARCH_UPDATE（更新组队搜索） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PARTY_SEARCH_UPDATE}</p>
  */
 public final class PartySearchUpdateHandler extends AbstractPacketHandler {
 
+    /** 处理 更新组队搜索 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         c.getWorldServer().getPartySearchCoordinator().unregisterPartyLeader(c.getPlayer());

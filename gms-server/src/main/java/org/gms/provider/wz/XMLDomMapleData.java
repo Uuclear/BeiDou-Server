@@ -41,6 +41,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * 基于 W3C DOM 的 WZ XML 数据节点实现。
+ * <p>
+ * 将 WZ 导出的 XML 元素（{@code imgdir}、{@code int}、{@code string}、{@code vector} 等）
+ * 映射为 {@link Data} 接口；{@link #getChildByPath(String)} 按名称逐级匹配子节点，
+ * {@link #getData()} 根据 {@link DataType} 解析 value/x/y 等属性为 Java 对象。
+ * </p>
+ */
 public class XMLDomMapleData implements Data {
     private final Node node;
     private Path imageDataDir;
@@ -79,6 +87,7 @@ public class XMLDomMapleData implements Data {
             boolean foundChild = false;
             for (int i = 0; i < childNodes.getLength(); i++) {
                 Node childNode = childNodes.item(i);
+                // WZ XML 子节点通过 name 属性标识，而非标签文本
                 if (childNode.getNodeType() == Node.ELEMENT_NODE
                         && childNode.getAttributes().getNamedItem("name").getNodeValue().equals(s)) {
                     myNode = childNode;
@@ -97,6 +106,7 @@ public class XMLDomMapleData implements Data {
     }
 
     @Override
+/** 获取子节点列表 */
     public synchronized List<Data> getChildren() {
         List<Data> ret = new ArrayList<>();
 
@@ -114,6 +124,7 @@ public class XMLDomMapleData implements Data {
     }
 
     @Override
+/** 按路径加载 WZ 数据 */
     public synchronized Object getData() {
         NamedNodeMap attributes = node.getAttributes();
         DataType type = getType();
@@ -159,9 +170,11 @@ public class XMLDomMapleData implements Data {
     }
 
     @Override
+/** 获取节点数据类型 */
     public synchronized DataType getType() {
         String nodeName = node.getNodeName();
 
+        // XML 标签名映射为 WZ 二进制类型码的等价枚举
         switch (nodeName) {
             case "imgdir":
                 return DataType.PROPERTY;
@@ -192,6 +205,7 @@ public class XMLDomMapleData implements Data {
     }
 
     @Override
+/** 获取父节点 */
     public synchronized DataEntity getParent() {
         Node parentNode;
         parentNode = node.getParentNode();
@@ -204,11 +218,13 @@ public class XMLDomMapleData implements Data {
     }
 
     @Override
+/** 获取事件实例名称 */
     public synchronized String getName() {
         return node.getAttributes().getNamedItem("name").getNodeValue();
     }
 
     @Override
+/** iterator */
     public synchronized Iterator<Data> iterator() {
         return getChildren().iterator();
     }

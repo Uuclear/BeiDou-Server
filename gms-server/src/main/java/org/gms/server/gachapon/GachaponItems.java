@@ -23,25 +23,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package org.gms.server.gachapon;
 
 /**
- * @author Alan (SharpAceX)
+ * 扭蛋奖池接口，各城镇实现不同物品表。
  */
-
 public abstract class GachaponItems {
 
+    /**
+     * 获取Common、物品。
+     * @return abstract int[] 类型结果
+     */
     public abstract int[] getCommonItems();
+    /**
+     * 获取Uncommon、物品。
+     * @return abstract int[] 类型结果
+     */
     public abstract int[] getUncommonItems();
+    /**
+     * 获取Rare、物品。
+     * @return abstract int[] 类型结果
+     */
     public abstract int[] getRareItems();
 
     private final int[] commonItems;
     private final int[] uncommonItems;
     private final int[] rareItems;
 
+    /**
+     * 构造 GachaponItems 实例。
+     */
     public GachaponItems() {
         this.commonItems = getCommonItems();
         this.uncommonItems = getUncommonItems();
         this.rareItems = getRareItems();
     }
 
+    /**
+     * 获取物品。
+     * @param tier 稀有度层级
+     * @return int[] 类型结果
+     */
     public final int[] getItems(int tier) {
         switch (tier) {
         case 0:

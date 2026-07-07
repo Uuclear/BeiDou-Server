@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：enterRider
+ * 功能描述：启动关联事件实例并传送玩家（如班车/副本入口）。
+ */
 function enter(pi) {
     if (pi.isQuestStarted(21610) && pi.haveItem(4001193, 1) == 0) {
         var em = pi.getEventManager("Aran_2ndmount");

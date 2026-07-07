@@ -1,3 +1,7 @@
+/**
+ * 消息盒子相关接口 Mock
+ * 模拟站内消息列表查询与批量已读接口。
+ */
 import Mock from 'mockjs';
 import setupMock, { successResponseWrap } from '@/utils/setup-mock';
 

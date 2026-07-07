@@ -24,6 +24,9 @@ package org.gms.provider.wz;
 import org.gms.provider.DataEntity;
 import org.gms.provider.DataEntry;
 
+/**
+ * WZ 条目基类，保存名称、大小、校验和及父节点引用。
+ */
 public class WZEntry implements DataEntry {
     private final String name;
     private final int size;
@@ -39,22 +42,27 @@ public class WZEntry implements DataEntry {
         this.parent = parent;
     }
 
+/** 获取事件实例名称 */
     public String getName() {
         return name;
     }
 
+/** 获取Size */
     public int getSize() {
         return size;
     }
 
+/** 获取Checksum */
     public int getChecksum() {
         return checksum;
     }
 
+/** 获取 WZ 文件内偏移量 */
     public int getOffset() {
         return offset;
     }
 
+/** 获取父节点 */
     public DataEntity getParent() {
         return parent;
     }

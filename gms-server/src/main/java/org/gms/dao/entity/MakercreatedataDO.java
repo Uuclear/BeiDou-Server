@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `makercreatedata` 的实体类（DO）。
+ * <p>
+ * 制作人可制作物品表，列出各职业可制作的装备与道具清单。
  */
 @Data
 @Builder

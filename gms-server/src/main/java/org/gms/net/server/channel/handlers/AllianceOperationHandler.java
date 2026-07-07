@@ -33,10 +33,12 @@ import org.gms.net.server.guild.GuildPackets;
 import org.gms.util.PacketCreator;
 
 /**
- * @author XoticStory, Ronan
+ * 处理客户端 ALLIANCE_OPERATION（联盟操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ALLIANCE_OPERATION}</p>
  */
 public final class AllianceOperationHandler extends AbstractPacketHandler {
 
+    /** 处理 联盟操作 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Alliance alliance = null;

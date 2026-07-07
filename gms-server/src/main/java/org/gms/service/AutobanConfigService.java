@@ -18,10 +18,8 @@ import java.util.concurrent.TimeUnit;
 import static org.gms.dao.entity.table.AutobanConfigDOTableDef.AUTOBAN_CONFIG_D_O;
 
 /**
- * 自动封禁配置服务。
- *
- * @author Nap
- * @since 2026-04-22
+ * 自动封禁配置服务，负责从数据库加载规则并同步至 AutobanFactory。
+ * 服务启动时初始化内存配置，GM 更新后即时刷新工厂缓存。
  */
 @Service
 @AllArgsConstructor

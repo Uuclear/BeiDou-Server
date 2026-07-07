@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator
-	NPC Name: 		Mr. Goldstein
-	Map(s): 		Victoria Road : Lith Harbour (104000000)
-	Description:		Extends Buddy List
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1002003
+ * 功能描述：Mr. Goldstein，Extends Buddy List（原版描述）。
+ * 原作者：Xterminator
+ */
 var status = 0;
 
 function start() {

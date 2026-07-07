@@ -29,6 +29,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 怪物刷新点，控制刷新间隔、数量上限与范围。
+ */
 public class SpawnPoint {
     private final int monster;
     private final int mobTime;
@@ -42,6 +45,15 @@ public class SpawnPoint {
     private final boolean immobile;
     private boolean denySpawn = false;
 
+    /**
+     * 构造 SpawnPoint 实例。
+     * @param monster 怪物
+     * @param pos 坐标
+     * @param immobile immobile
+     * @param mobTime mobTime
+     * @param mobInterval mobInterval
+     * @param team team
+     */
     public SpawnPoint(final Monster monster, Point pos, boolean immobile, int mobTime, int mobInterval, int team) {
         this.monster = monster.getId();
         this.pos = new Point(pos);
@@ -54,18 +66,34 @@ public class SpawnPoint {
         this.nextPossibleSpawn = Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * 获取Spawned。
+     * @return int 类型结果
+     */
     public int getSpawned() {
         return spawnedMonsters.intValue();
     }
 
+    /**
+     * 设置Deny、刷新。
+     * @param val val
+     */
     public void setDenySpawn(boolean val) {
         denySpawn = val;
     }
 
+    /**
+     * 获取Deny、刷新。
+     * @return boolean 类型结果
+     */
     public boolean getDenySpawn() {
         return denySpawn;
     }
 
+    /**
+     * 执行 should、刷新 操作。
+     * @return boolean 类型结果
+     */
     public boolean shouldSpawn() {
         if (denySpawn || mobTime < 0 || spawnedMonsters.get() > 0) {
             return false;
@@ -73,10 +101,18 @@ public class SpawnPoint {
         return nextPossibleSpawn <= Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * 执行 should、Force、刷新 操作。
+     * @return boolean 类型结果
+     */
     public boolean shouldForceSpawn() {
         return mobTime >= 0 && spawnedMonsters.get() <= 0;
     }
 
+    /**
+     * 获取怪物。
+     * @return Monster 类型结果
+     */
     public Monster getMonster() {
         Monster mob = new Monster(LifeFactory.getMonster(monster));
         mob.setPosition(new Point(pos));
@@ -85,6 +121,10 @@ public class SpawnPoint {
         mob.setF(f);
         spawnedMonsters.incrementAndGet();
         mob.addListener(new MonsterListener() {
+            /**
+             * 执行 monster、Killed 操作。
+             * @param aniTime aniTime
+             */
             @Override
             public void monsterKilled(int aniTime) {
                 nextPossibleSpawn = Server.getInstance().getCurrentTime();
@@ -96,6 +136,10 @@ public class SpawnPoint {
                 spawnedMonsters.decrementAndGet();
             }
 
+            /**
+             * 执行 monster、Damaged 操作。
+             * @param from from
+             */
             @Override
             public void monsterDamaged(Character from, int trueDmg) {}
 
@@ -108,26 +152,50 @@ public class SpawnPoint {
         return mob;
     }
 
+    /**
+     * 获取怪物ID。
+     * @return int 类型结果
+     */
     public int getMonsterId() {
         return monster;
     }
 
+    /**
+     * 获取位置。
+     * @return Point 类型结果
+     */
     public Point getPosition() {
         return pos;
     }
 
+    /**
+     * 获取F。
+     * @return int 类型结果
+     */
     public final int getF() {
         return f;
     }
 
+    /**
+     * 获取Fh。
+     * @return int 类型结果
+     */
     public final int getFh() {
         return fh;
     }
 
+    /**
+     * 获取怪物时间。
+     * @return int 类型结果
+     */
     public int getMobTime() {
         return mobTime;
     }
 
+    /**
+     * 获取队伍。
+     * @return int 类型结果
+     */
     public int getTeam() {
         return team;
     }

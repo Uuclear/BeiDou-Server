@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：advice09
+ * 功能描述：地图传送门入口脚本。
+ */
 function enter(pi) {
     pi.showInstruction("同时按下方向键的#n#e#b[Alt]#k和#e#b[Down]#k#n向下跳跃。", 450, 6);
     return true;

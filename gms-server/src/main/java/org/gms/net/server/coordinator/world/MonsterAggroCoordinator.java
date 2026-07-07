@@ -40,6 +40,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 怪物仇恨协调器，跨玩家追踪怪物仇恨列表并定时刷新仇恨排序。
+ *
  * @author Ronan
  */
 public class MonsterAggroCoordinator {

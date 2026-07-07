@@ -34,7 +34,12 @@ import org.gms.net.server.Server;
 import org.gms.server.maps.MapleMap;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 HEAL_OVER_TIME（持续治疗） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#HEAL_OVER_TIME}</p>
+ */
 public final class HealOvertimeHandler extends AbstractPacketHandler {
+    /** 处理 持续治疗 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

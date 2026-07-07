@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*@author Ronan
- *6102002.js
- *Drops CWKPQ chest bonuses...
- */
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：6102002
+ * 功能描述：地图反应堆交互脚本。
+ * 原作者：Ronan
+ */
 function act() {
     rm.sprayItems(true, 1, 90, 360, 15);
 }

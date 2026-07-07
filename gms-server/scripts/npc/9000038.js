@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9000038
+ * 功能描述：NPC脚本（ID: 9000038）。
+ */
 /**
  * @author: Ronan
  * @npc: Agent Kitty

@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.gms.constants.skills;
-
 /**
- * @author Tyler
+ * 战士（一转）职业各技能的游戏内技能 ID 常量。
  */
+
 public class Warrior {
     public static final int IMPROVED_HPREC = 1000000;
     public static final int IMPROVED_MAXHP = 1000001;

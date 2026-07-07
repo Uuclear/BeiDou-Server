@@ -21,6 +21,12 @@
 
     Author: Ronan Lana (RonanLana)
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040014
+ * 功能描述：NPC脚本，提供物品发放、金币奖励。
+ */
 /* Chico
 	Lidibrium : Ludibrium Village (2040014)
 	

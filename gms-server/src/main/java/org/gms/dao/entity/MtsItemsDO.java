@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `mts_items` 的实体类（DO）。
+ * <p>
+ * 拍卖行（MTS）上架物品表，存储玩家挂售道具的价格与展示信息。
  */
 @Data
 @Builder

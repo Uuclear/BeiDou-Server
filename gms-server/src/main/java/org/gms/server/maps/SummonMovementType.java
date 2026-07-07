@@ -21,6 +21,9 @@
 */
 package org.gms.server.maps;
 
+/**
+ * 召唤兽移动类型枚举。
+ */
 public enum SummonMovementType {
     STATIONARY(0), FOLLOW(1), CIRCLE_FOLLOW(3);
     private final int val;
@@ -29,6 +32,10 @@ public enum SummonMovementType {
         this.val = val;
     }
 
+    /**
+     * 获取Value。
+     * @return int 类型结果
+     */
     public int getValue() {
         return val;
     }

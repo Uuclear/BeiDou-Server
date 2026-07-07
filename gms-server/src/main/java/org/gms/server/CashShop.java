@@ -65,6 +65,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Flav
  * @author Ponk
  */
+/**
+ * 点券商城逻辑，处理现金道具购买与发货。
+ */
 public class CashShop {
     public static final int NX_CREDIT = 1;
     public static final int MAPLE_POINT = 2;
@@ -85,6 +88,12 @@ public class CashShop {
     private static final AccountService accountService = ServerManager.getApplicationContext().getBean(AccountService.class);
     private static final CharacterService characterService = ServerManager.getApplicationContext().getBean(CharacterService.class);
 
+    /**
+     * 构造 CashShop 实例。
+     * @param accountId accountId
+     * @param characterId characterId
+     * @param jobType jobType
+     */
     public CashShop(int accountId, int characterId, int jobType) {
         this.accountId = accountId;
         this.characterId = characterId;
@@ -132,6 +141,9 @@ public class CashShop {
         @Getter
         private static final Map<Integer, ModifiedCashItemDO> modifiedCashItems = new HashMap<>();
 
+        /**
+         * 加载所有、Cash、物品。
+         */
         public static void loadAllCashItems() {
             DataProvider etc = DataProviderFactory.getDataProvider(WZFiles.ETC);
 
@@ -196,6 +208,9 @@ public class CashShop {
             loadAllModifiedCashItems();
         }
 
+        /**
+         * 加载所有、Modified、Cash、物品。
+         */
         public static void loadAllModifiedCashItems() {
             modifiedCashItems.clear();
             CashShopService cashShopService = ServerManager.getApplicationContext().getBean(CashShopService.class);
@@ -208,6 +223,10 @@ public class CashShop {
             cashCategories.addAll(cashShopService.getAllCategoryList());
         }
 
+        /**
+         * 获取Random、Cash、物品。
+         * @return Optional<ModifiedCashItemDO> 类型结果
+         */
         public static Optional<ModifiedCashItemDO> getRandomCashItem() {
             if (items.isEmpty()) {
                 return Optional.empty();
@@ -224,6 +243,11 @@ public class CashShop {
             return items.get(new Random().nextInt(items.size()));
         }
 
+        /**
+         * 获取物品。
+         * @param sn sn
+         * @return ModifiedCashItemDO 类型结果
+         */
         public static ModifiedCashItemDO getItem(int sn) {
             ModifiedCashItemDO cashItemDO = items.get(sn);
             if(cashItemDO == null) {
@@ -253,10 +277,20 @@ public class CashShop {
             return returnDo;
         }
 
+        /**
+         * 获取Wz物品。
+         * @param sn sn
+         * @return ModifiedCashItemDO 类型结果
+         */
         public static ModifiedCashItemDO getWzItem(int sn) {
             return items.get(sn);
         }
 
+        /**
+         * 获取Package。
+         * @param itemId 物品 ID
+         * @return List<Item> 类型结果
+         */
         public static List<Item> getPackage(int itemId) {
             List<Item> cashPackage = new ArrayList<>();
 
@@ -267,15 +301,31 @@ public class CashShop {
             return cashPackage;
         }
 
+        /**
+         * 判断是否为Package。
+         * @param itemId 物品 ID
+         * @return boolean 类型结果
+         */
         public static boolean isPackage(int itemId) {
             return packages.containsKey(itemId);
         }
 
     }
 
+    /**
+     * 执行 Cash、商店、Surprise、Result 操作。
+     * @param usedCashShopSurprise usedCashShopSurprise
+     * @param reward reward
+     * @return record 类型结果
+     */
     public record CashShopSurpriseResult(Item usedCashShopSurprise, Item reward) {
     }
 
+    /**
+     * 获取Cash。
+     * @param type 类型
+     * @return int 类型结果
+     */
     public int getCash(int type) {
         return switch (type) {
             case NX_CREDIT -> nxCredit;
@@ -286,6 +336,11 @@ public class CashShop {
 
     }
 
+    /**
+     * 执行 gain、Cash 操作。
+     * @param type 类型
+     * @param cash cash
+     */
     public void gainCash(int type, int cash) {
         switch (type) {
             case NX_CREDIT -> nxCredit += cash;
@@ -294,6 +349,12 @@ public class CashShop {
         }
     }
 
+    /**
+     * 执行 gain、Cash 操作。
+     * @param type 类型
+     * @param buyItem buyItem
+     * @param world world
+     */
     public void gainCash(int type, ModifiedCashItemDO buyItem, int world) {
         gainCash(type, -buyItem.getPrice());
         if (!GameConfig.getServerBoolean("use_enforce_item_suggestion")) {
@@ -301,14 +362,26 @@ public class CashShop {
         }
     }
 
+    /**
+     * 判断是否为Opened。
+     * @return boolean 类型结果
+     */
     public boolean isOpened() {
         return opened;
     }
 
+    /**
+     * 执行 open 操作。
+     * @param b b
+     */
     public void open(boolean b) {
         opened = b;
     }
 
+    /**
+     * 获取物品栏。
+     * @return List<Item> 类型结果
+     */
     public List<Item> getInventory() {
         lock.lock();
         try {
@@ -318,6 +391,11 @@ public class CashShop {
         }
     }
 
+    /**
+     * 查找按、Cash、ID。
+     * @param cashId cashId
+     * @return Item 类型结果
+     */
     public Item findByCashId(int cashId) {
         boolean isRing;
         Equip equip = null;
@@ -337,6 +415,11 @@ public class CashShop {
         return null;
     }
 
+    /**
+     * 添加到物品栏。
+     * @param item item
+     * @return boolean 类型结果
+     */
     public boolean addToInventory(Item item) {
         lock.lock();
         try {
@@ -350,6 +433,11 @@ public class CashShop {
         }
     }
 
+    /**
+     * 判断是否可以添加到物品栏。
+     * @param itemCount itemCount
+     * @return boolean 类型结果
+     */
     public boolean canAddToInventory(int itemCount) {
         lock.lock();
         try {
@@ -359,10 +447,18 @@ public class CashShop {
         }
     }
 
+    /**
+     * 获取物品栏限制。
+     * @return int 类型结果
+     */
     public int getInventoryLimit() {
         return MAX_CASH_INVENTORY_SAFE;
     }
 
+    /**
+     * 获取物品栏、Size。
+     * @return int 类型结果
+     */
     public int getInventorySize() {
         lock.lock();
         try {
@@ -372,6 +468,10 @@ public class CashShop {
         }
     }
 
+    /**
+     * 移除来自物品栏。
+     * @param item item
+     */
     public void removeFromInventory(Item item) {
         lock.lock();
         try {
@@ -381,22 +481,48 @@ public class CashShop {
         }
     }
 
+    /**
+     * 获取Wish、List。
+     * @return List<Integer> 类型结果
+     */
     public List<Integer> getWishList() {
         return wishList;
     }
 
+    /**
+     * 执行 clear、Wish、List 操作。
+     */
     public void clearWishList() {
         wishList.clear();
     }
 
+    /**
+     * 添加到、Wish、List。
+     * @param sn sn
+     */
     public void addToWishList(int sn) {
         wishList.add(sn);
     }
 
+    /**
+     * 执行 gift 操作。
+     * @param recipient recipient
+     * @param from from
+     * @param message message
+     * @param sn sn
+     */
     public void gift(int recipient, String from, String message, int sn) {
         gift(recipient, from, message, sn, -1);
     }
 
+    /**
+     * 执行 gift 操作。
+     * @param recipient recipient
+     * @param from from
+     * @param message message
+     * @param sn sn
+     * @param ringid ringid
+     */
     public void gift(int recipient, String from, String message, int sn, int ringid) {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("INSERT INTO `gifts` VALUES (DEFAULT, ?, ?, ?, ?, ?)")) {
@@ -411,6 +537,10 @@ public class CashShop {
         }
     }
 
+    /**
+     * 加载Gifts。
+     * @return List<Pair<Item, String>> 类型结果
+     */
     public List<Pair<Item, String>> loadGifts() {
         List<Pair<Item, String>> gifts = new ArrayList<>();
 
@@ -464,14 +594,25 @@ public class CashShop {
         return gifts;
     }
 
+    /**
+     * 获取Available、Notes。
+     * @return int 类型结果
+     */
     public int getAvailableNotes() {
         return notes;
     }
 
+    /**
+     * 执行 decrease、Notes 操作。
+     */
     public void decreaseNotes() {
         notes--;
     }
 
+    /**
+     * 执行 save 操作。
+     * @param con con
+     */
     public void save(Connection con) throws SQLException {
         try (PreparedStatement ps = con.prepareStatement("UPDATE `accounts` SET `nxCredit` = ?, `maplePoint` = ?, `nxPrepaid` = ? WHERE `id` = ?")) {
             ps.setInt(1, nxCredit);
@@ -506,6 +647,11 @@ public class CashShop {
         }
     }
 
+    /**
+     * 执行 open、Cash、商店、Surprise 操作。
+     * @param cashId cashId
+     * @return Optional<CashShopSurpriseResult> 类型结果
+     */
     public Optional<CashShopSurpriseResult> openCashShopSurprise(long cashId) {
         lock.lock();
         try {
@@ -551,6 +697,10 @@ public class CashShop {
                 .findAny();
     }
 
+    /**
+     * 获取物品、Size。
+     * @return int 类型结果
+     */
     public int getItemsSize() {
         lock.lock();
         try {
@@ -572,6 +722,12 @@ public class CashShop {
         }
     }
 
+    /**
+     * 生成Coupon、物品。
+     * @param itemId 物品 ID
+     * @param quantity quantity
+     * @return Item 类型结果
+     */
     public static Item generateCouponItem(int itemId, short quantity) {
         return ModifiedCashItemDO.builder()
                 .sn(77777777)

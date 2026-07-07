@@ -1,9 +1,12 @@
-/*
- 	Author: GitHub:@Magical-H
- 	Map: Mushroom Castle - Deep Inside Mushroom Forest (106020300)  蘑菇森林深处
- 	Right Portal    右传送点
- */
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：obstacle
+ * 功能描述：("Effect/OnUserEff/normalEffect/mushroomcastle/chatBalloon1");（原版描述）。
+ * 原作者：GitHub:@Magical-H
+ */
 function enter(pi) {
     if (pi.isQuestStarted(100202)) {    //使用过奇拉蘑菇孢子后允许直接通过
         pi.playPortalSound();

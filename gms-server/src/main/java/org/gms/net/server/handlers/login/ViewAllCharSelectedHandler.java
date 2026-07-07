@@ -37,6 +37,10 @@ import org.gms.util.Randomizer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 处理客户端 PICK_ALL_CHAR（选择所有角色） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PICK_ALL_CHAR}</p>
+ */
 public final class ViewAllCharSelectedHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ViewAllCharSelectedHandler.class);
 
@@ -50,6 +54,7 @@ public final class ViewAllCharSelectedHandler extends AbstractPacketHandler {
         };
     }
 
+    /** 处理 选择所有角色 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int charId = p.readInt();

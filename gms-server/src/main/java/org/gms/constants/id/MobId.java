@@ -1,4 +1,7 @@
 package org.gms.constants.id;
+/**
+ * 怪物（Mob）模板 ID 常量，用于刷怪、任务、副本等逻辑中的怪物引用。
+ */
 
 public class MobId {
     public static final int ARPQ_BOMB = 9300166;
@@ -36,6 +39,9 @@ public class MobId {
     public static final int ZAKUM_ARM_7 = 8800009;
     public static final int ZAKUM_ARM_8 = 8800010;
 
+    /**
+     * 判断ZakumArm相关条件是否成立。
+     */
     public static boolean isZakumArm(int mobId) {
         return mobId >= ZAKUM_ARM_1 && mobId <= ZAKUM_ARM_8;
     }
@@ -55,6 +61,9 @@ public class MobId {
     public static final int HORNTAIL = 8810018;
     public static final int SUMMON_HORNTAIL = 8810026;
 
+    /**
+     * 判断DeadHorntailPart相关条件是否成立。
+     */
     public static boolean isDeadHorntailPart(int mobId) {
         return mobId >= DEAD_HORNTAIL_MIN && mobId <= DEAD_HORNTAIL_MAX;
     }
@@ -97,6 +106,9 @@ public class MobId {
     private static final int DOJO_BOSS_MIN = 9300184;
     private static final int DOJO_BOSS_MAX = 9300215;
 
+    /**
+     * 判断DojoBoss相关条件是否成立。
+     */
     public static boolean isDojoBoss(int mobId) {
         return mobId >= DOJO_BOSS_MIN && mobId <= DOJO_BOSS_MAX;
     }

@@ -1,9 +1,12 @@
-/* Author: aaroncsn <MapleSea Like, Need to add creation of minigame>
-	NPC Name: 		Wisp
-	Map(s): 		Ludibrium: Eos Tower Entrance(220000400)
-	Description: 		Pet Master
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040030
+ * 功能描述：Wisp，Pet Master（原版描述）。
+ * 原作者：aaroncsn <MapleSea Like, Need to add creation of minigame>
+ */
 function start() {
     status = -1;
     action(1, 0, 0);

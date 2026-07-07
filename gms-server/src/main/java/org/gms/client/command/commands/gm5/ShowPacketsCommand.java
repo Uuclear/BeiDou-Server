@@ -29,11 +29,19 @@ import org.gms.config.GameConfig;
 import org.gms.dao.entity.GameConfigDO;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM5命令：打印服务端收包开关
+ */
 public class ShowPacketsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ShowPacketsCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         GameConfig.update(GameConfigDO.builder()

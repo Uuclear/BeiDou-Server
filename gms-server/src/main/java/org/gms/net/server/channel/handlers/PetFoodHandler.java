@@ -34,8 +34,13 @@ import org.gms.net.packet.InPacket;
 import org.gms.net.server.Server;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 PET_FOOD（宠物食物） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PET_FOOD}</p>
+ */
 public final class PetFoodHandler extends AbstractPacketHandler {
 
+    /** 处理 宠物食物 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

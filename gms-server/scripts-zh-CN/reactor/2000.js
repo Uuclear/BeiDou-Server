@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * 
- * 2000.js: Maple Island Box - drops various items, notably quest items Old Wooden Board and Rusty Screw
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2000
+ * 功能描述：反应堆触发后掉落地图物品。
+ * 原作者：Lerk
+ */
 function act() {
     rm.dropItems(true, 2, 8, 15, 1);
 }

@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator 
-	NPC Name: 		Eckhart
-	Map(s): 		Empress' Road : Ereve (130000000)
-	Description: 		Quest - Knighthood Exam: Night Walker
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20204
+ * 功能描述：Eckhart，任务相关对话与奖励。
+ * 原作者：Xterminator
+ */
 /*
     Author:         Magical-H
     Description:    骑士团转职通用脚本

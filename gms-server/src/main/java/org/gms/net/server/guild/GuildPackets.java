@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 公会相关出站封包构造工具类，涵盖公会信息、邀请、职位、联盟及 BBS 等协议。
+ */
 public class GuildPackets {
     public static Packet showGuildInfo(Character chr) {
         OutPacket p = OutPacket.create(SendOpcode.GUILD_OPERATION);

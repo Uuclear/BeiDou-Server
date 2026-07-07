@@ -28,11 +28,16 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestActionType;
 
 /**
- * @author Ronan
+ * 任务变更宠物亲密度动作。
  */
 public class PetTamenessAction extends AbstractQuestAction {
     int tameness;
 
+    /**
+     * 构造 PetTamenessAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public PetTamenessAction(Quest quest, Data data) {
         super(QuestActionType.PETTAMENESS, quest);
         questID = quest.getId();
@@ -40,11 +45,20 @@ public class PetTamenessAction extends AbstractQuestAction {
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         tameness = DataTool.getInt(data);
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         Client c = chr.getClient();

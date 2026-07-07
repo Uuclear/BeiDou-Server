@@ -27,9 +27,11 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
 /**
- * @author Matze
+ * 处理客户端 STORAGE（仓库） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#STORAGE}</p>
  */
 public final class StorageHandler extends AbstractPacketHandler {
+    /** 处理 仓库 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         StorageProcessor.storageAction(p, c);

@@ -34,7 +34,12 @@ import org.gms.net.server.world.MessengerCharacter;
 import org.gms.net.server.world.World;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 MESSENGER（消息传递） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MESSENGER}</p>
+ */
 public final class MessengerHandler extends AbstractPacketHandler {
+    /** 处理 消息传递 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (c.tryacquireClient()) {

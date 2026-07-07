@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2332
+ * 功能描述：任务脚本（ID: 2332）。
+ */
 /*
 	QUEST: Where's Violetta?
 	NPC: none

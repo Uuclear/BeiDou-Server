@@ -1,9 +1,12 @@
-/* Author: aaroncsn <MapleSea Like>
-	NPC Name: 		Muhammad
-	Map(s): 		Ariant:The Town of Ariant(260000200)
-	Description: 	Jewel Refiner
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2100001
+ * 功能描述：Muhammad，Jewel Refiner（原版描述）。
+ * 原作者：aaroncsn <MapleSea Like>
+ */
 var status = 0;
 var selectedType = -1;
 var selectedItem = -1;

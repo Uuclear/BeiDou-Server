@@ -25,6 +25,9 @@ import static org.gms.dao.entity.table.InventoryitemsDOTableDef.INVENTORYITEMS_D
 import static org.gms.dao.entity.table.NamechangesDOTableDef.NAMECHANGES_D_O;
 import static org.gms.dao.entity.table.RingsDOTableDef.RINGS_D_O;
 
+/**
+ * 改名业务服务，处理角色或账号改名申请与记录。
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -34,6 +37,9 @@ public class NameChangeService {
     private final RingsMapper ringsMapper;
     private final InventoryitemsMapper inventoryitemsmapper;
 
+    /**
+     * 执行 applyAllNameChange 相关业务逻辑。
+     */
     public void applyAllNameChange() {
         List<NamechangesDO> namechangesDOList = getAllNameChanges();
         namechangesDOList.forEach(namechangesDO -> {
@@ -46,6 +52,12 @@ public class NameChangeService {
         });
     }
 
+    /**
+     * 执行 applyNameChange 相关业务逻辑。
+     *
+     * @param characterId characterId
+     * @param characterName characterName
+     */
     public void applyNameChange(int characterId, String characterName) {//下线时检测是否需要更换昵称并应用
         List<NamechangesDO> namechangesDOList = namechangesMapper.selectListByQuery(QueryWrapper.create()
                 .where(NAMECHANGES_D_O.COMPLETION_TIME.isNull()).and(NAMECHANGES_D_O.CHARACTERID.eq(characterId)));
@@ -64,6 +76,10 @@ public class NameChangeService {
         }
     }
 
+    /**
+     * 执行 getAllNameChanges 相关业务逻辑。
+     * @return List<NamechangesDO> 类型结果
+     */
     public List<NamechangesDO> getAllNameChanges() {
         return namechangesMapper.selectListByQuery(QueryWrapper.create().where(NAMECHANGES_D_O.COMPLETION_TIME.isNull()));
     }
@@ -84,6 +100,13 @@ public class NameChangeService {
         log.info(I18nUtil.getLogMessage("CharacterService.doNameChange.info1"), data.getOlder(), data.getNewer());
     }
 
+    /**
+     * 执行 registerNameChange 相关业务逻辑。
+     *
+     * @param chr chr
+     * @param newName newName
+     * @return boolean 类型结果
+     */
     public boolean registerNameChange(Character chr, String newName) {
         List<NamechangesDO> namechangesDOList = namechangesMapper.selectListByQuery(QueryWrapper.create()
                 .where(NAMECHANGES_D_O.CHARACTERID.eq(chr.getId())));
@@ -96,6 +119,12 @@ public class NameChangeService {
         return true;
     }
 
+    /**
+     * 执行 cancelPendingNameChange 相关业务逻辑。
+     *
+     * @param chr chr
+     * @param needFinish needFinish
+     */
     public void cancelPendingNameChange(Character chr, boolean needFinish) {
         QueryWrapper queryWrapper = QueryWrapper.create().where(NAMECHANGES_D_O.CHARACTERID.eq(chr.getId()));
         if (needFinish) queryWrapper.and(NAMECHANGES_D_O.COMPLETION_TIME.isNull());

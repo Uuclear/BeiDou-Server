@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1202010
+ * 功能描述：NPC脚本，提供金币奖励。
+ */
 var status = 0;
 
 var spawnPnpc = false;

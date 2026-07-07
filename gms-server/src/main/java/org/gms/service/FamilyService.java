@@ -20,6 +20,9 @@ import java.util.List;
 
 import static org.gms.dao.entity.table.FamilyEntitlementDOTableDef.FAMILY_ENTITLEMENT_D_O;
 
+/**
+ * 家族业务服务，管理家族组织、成员及家族技能等数据。
+ */
 @Service
 @AllArgsConstructor
 public class FamilyService {
@@ -27,6 +30,9 @@ public class FamilyService {
     private final FamilyEntitlementMapper familyEntitlementMapper;
     private final CharacterService characterService;
 
+    /**
+     * 执行 loadAllFamilies 相关业务逻辑。
+     */
     public void loadAllFamilies() {
         List<FamilyCharacterDO> familyCharacterDOList = familyCharacterMapper.selectAll();
         List<Pair<Integer, FamilyEntry>> unmatchedJuniors = new ArrayList<>(); // <<world, seniorid> familyEntry>

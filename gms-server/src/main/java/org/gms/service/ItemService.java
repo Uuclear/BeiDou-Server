@@ -10,9 +10,18 @@ import org.gms.server.ItemInformationProvider;
 import org.gms.util.I18nUtil;
 import org.springframework.stereotype.Service;
 
+/**
+ * 道具业务服务，提供道具信息查询及道具相关配置维护。
+ */
 @Service
 @Slf4j
 public class ItemService {
+    /**
+     * 执行 getEquipmentInfoByItemId 相关业务逻辑。
+     *
+     * @param itemId itemId
+     * @return Equip 类型结果
+     */
     public Equip getEquipmentInfoByItemId(Integer itemId) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         String itemName = ii.getName(itemId);

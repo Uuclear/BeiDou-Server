@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：q3239
+ * 功能描述：游戏事件脚本（q3239），管理实例生命周期与玩家进出。
+ */
 var entryMap;
 var exitMap;
 var eventLength = 20;

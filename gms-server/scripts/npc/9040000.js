@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9040000
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ */
 /**
  * @author: Ronan
  * @npc: Shuang

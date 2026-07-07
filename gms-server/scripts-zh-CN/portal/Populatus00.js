@@ -20,8 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* @author RonanLana */
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：Populatus00
+ * 功能描述：启动关联事件实例并传送玩家（如班车/副本入口）。
+ * 原作者：RonanLana
+ */
 function enter(pi) {
     if (!((pi.isQuestStarted(6361) && pi.haveItem(4031870, 1)) || (pi.isQuestCompleted(6361) && !pi.isQuestCompleted(6363)))) {
         var em = pi.getEventManager("PapulatusBattle");

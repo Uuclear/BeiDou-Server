@@ -21,6 +21,13 @@
 */
 package org.gms.provider.wz;
 
+/**
+ * WZ 节点数据类型枚举，与 XML 元素标签名一一对应。
+ * <p>
+ * 由 {@link XMLDomMapleData#getType()} 根据节点标签解析；
+ * {@link org.gms.provider.DataTool} 读取标量值时依赖此类型做强制转换。
+ * </p>
+ */
 public enum DataType {
     NONE,
     IMG_0x00,

@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Ronan
+ * 掉落管理器，根据队伍成员任务进度过滤怪物有效掉落列表。
  */
 public class LootManager {
 
@@ -58,7 +58,7 @@ public class LootManager {
                     qItemAmount = qCompleteAmount;
                 }
 
-                // thanks kvmba for noticing quest items with no required amount failing to be detected as such
+                // 感谢 kvmba：修复无数量要求的任务物品未被正确识别的问题
 
                 int qItemStatus = chrInv.hasItem(dropEntry.itemId, qItemAmount);
                 if (qItemStatus == 2) {
@@ -76,6 +76,12 @@ public class LootManager {
         return false;
     }
 
+    /**
+     * 检索相关掉落。
+     * @param monsterId 怪物 ID
+     * @param players 玩家列表（Character 列表/集合）
+     * @return List<MonsterDropEntry> 类型结果
+     */
     public static List<MonsterDropEntry> retrieveRelevantDrops(int monsterId, List<Character> players) {
         List<MonsterDropEntry> loots = MonsterInformationProvider.getInstance().retrieveEffectiveDrop(monsterId);
         if (loots.isEmpty()) {

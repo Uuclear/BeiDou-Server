@@ -59,6 +59,9 @@ import static org.gms.dao.entity.table.SkillsDOTableDef.SKILLS_D_O;
 import static org.gms.dao.entity.table.TrocklocationsDOTableDef.TROCKLOCATIONS_D_O;
 import static org.gms.dao.entity.table.WishlistsDOTableDef.WISHLISTS_D_O;
 
+/**
+ * 角色业务服务，查询在线玩家列表并调整个人经验/金币/掉落倍率。
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -90,14 +93,30 @@ public class CharacterService {
     private final NameChangeService nameChangeService;
     private final WorldTransferService worldTransferService;
 
+    /**
+     * 执行 findById 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     * @return CharactersDO 类型结果
+     */
     public CharactersDO findById(int id) {
         return charactersMapper.selectOneById(id);
     }
 
+    /**
+     * 更新配置项并热加载可运行时生效的参数。
+     * @param gameConfigDO 游戏配置实体
+     */
     public void update(CharactersDO condition) {
         charactersMapper.update(condition);
     }
 
+    /**
+     * 执行 getChrOnlineList 相关业务逻辑。
+     *
+     * @param request 请求体封装对象
+     * @return Page<ChrOnlineListRtnDTO> 类型结果
+     */
     public Page<ChrOnlineListRtnDTO> getChrOnlineList(ChrOnlineListReqDTO request) {
         Collection<Character> chrList = Server.getInstance().getWorld(request.getWorld()).getPlayerStorage().getAllCharacters();
         return BasePageUtil.create(chrList, request)
@@ -115,6 +134,11 @@ public class CharacterService {
                         .build());
     }
 
+    /**
+     * 执行 updateRate 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     */
     public void updateRate(ExtendValueDO data) {
         checkName(data);
         data.setExtendType(ExtendType.CHARACTER_EXTEND.getType());
@@ -133,6 +157,11 @@ public class CharacterService {
         character.setCouponRates();
     }
 
+    /**
+     * 执行 resetRate 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     */
     public void resetRate(ExtendValueDO data) {
         checkName(data);
         extendValueMapper.deleteByQuery(QueryWrapper.create()
@@ -145,6 +174,11 @@ public class CharacterService {
         character.setCouponRates();
     }
 
+    /**
+     * 执行 resetRates 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     */
     public void resetRates(ExtendValueDO data) {
         check(data);
         extendValueMapper.deleteByQuery(QueryWrapper.create()
@@ -157,10 +191,19 @@ public class CharacterService {
         character.setCouponRates();
     }
 
+    /**
+     * 执行 resetMerchant 相关业务逻辑。
+     */
     public void resetMerchant() {
         charactersMapper.updateAllHasMerchant(0);
     }
 
+    /**
+     * 执行 getWorldsRankPlayers 相关业务逻辑。
+     *
+     * @param worldSize worldSize
+     * @return List<List<CharactersDO>> 类型结果
+     */
     public List<List<CharactersDO>> getWorldsRankPlayers(int worldSize) {
         boolean wholeServerRanking = GameConfig.getServerBoolean("use_whole_server_ranking");
         List<List<CharactersDO>> worldsRankingList = new ArrayList<>();
@@ -187,6 +230,12 @@ public class CharacterService {
         return worldsRankingList;
     }
 
+    /**
+     * 执行 getWorldRankPlayers 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @return List<CharactersDO> 类型结果
+     */
     public List<CharactersDO> getWorldRankPlayers(int worldId) {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select(CHARACTERS_D_O.NAME, CHARACTERS_D_O.LEVEL, CHARACTERS_D_O.WORLD)
@@ -200,21 +249,43 @@ public class CharacterService {
         return charactersMapper.selectListByQuery(queryWrapper);
     }
 
+    /**
+     * 执行 findByName 相关业务逻辑。
+     *
+     * @param name 名称
+     * @return CharactersDO 类型结果
+     */
     public CharactersDO findByName(String name) {
         List<CharactersDO> charactersDOS = charactersMapper.selectListByQuery(QueryWrapper.create().where(CHARACTERS_D_O.NAME.eq(name)));
         return charactersDOS.isEmpty() ? null : charactersDOS.getFirst();
     }
 
+    /**
+     * 执行 removeSkill 相关业务逻辑。
+     *
+     * @param skillsDO skillsDO
+     */
     public void removeSkill(SkillsDO skillsDO) {
         skillsMapper.deleteByQuery(QueryWrapper.create(skillsDO));
     }
 
+    /**
+     * 执行 deleteGuild 相关业务逻辑。
+     *
+     * @param guildsDO guildsDO
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteGuild(GuildsDO guildsDO) {
         charactersMapper.updateByQuery(CharactersDO.builder().guildid(0).guildrank(5).build(), QueryWrapper.create().where(CHARACTERS_D_O.GUILDID.eq(guildsDO.getGuildid())));
         guildsMapper.deleteById(guildsDO.getGuildid());
     }
 
+    /**
+     * 执行 deleteCharFromDB 相关业务逻辑。
+     *
+     * @param player player
+     * @param senderAccId senderAccId
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteCharFromDB(Character player, int senderAccId) {
         int cid = player.getId();
@@ -295,6 +366,12 @@ public class CharacterService {
         worldTransferService.cancelPendingWorldTransfer(player, false);
     }
 
+    /**
+     * 执行 saveCharToDB 相关业务逻辑。
+     *
+     * @param player player
+     * @param notAutosave notAutosave
+     */
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_UNCOMMITTED)
     public void saveCharToDB(Character player, boolean notAutosave) {
         if (!player.isLoggedIn()) {
@@ -307,6 +384,14 @@ public class CharacterService {
         charactersMapper.insertSelective(cdo);
     }
 
+    /**
+     * 执行 loadCharFromDB 相关业务逻辑。
+     *
+     * @param cid cid
+     * @param client client
+     * @param channelServer channelServer
+     * @return Character 类型结果
+     */
     public Character loadCharFromDB(int cid, Client client, boolean channelServer) {
         CharactersDO charactersDO = findById(cid);
         RequireUtil.requireNotNull(charactersDO, I18nUtil.getExceptionMessage("UNKNOWN_CHARACTER"));
@@ -424,22 +509,52 @@ public class CharacterService {
         return chr;
     }
 
+    /**
+     * 执行 getTrockLocationByCharacter 相关业务逻辑。
+     *
+     * @param cid cid
+     * @return List<TrocklocationsDO> 类型结果
+     */
     public List<TrocklocationsDO> getTrockLocationByCharacter(Integer cid) {
         return trocklocationsMapper.selectListByQuery(QueryWrapper.create().where(TROCKLOCATIONS_D_O.CHARACTERID.eq(cid)));
     }
 
+    /**
+     * 执行 getAreaInfoByCharacter 相关业务逻辑。
+     *
+     * @param cid cid
+     * @return List<AreaInfoDO> 类型结果
+     */
     public List<AreaInfoDO> getAreaInfoByCharacter(Integer cid) {
         return areaInfoMapper.selectListByQuery(QueryWrapper.create().where(AREA_INFO_D_O.CHARID.eq(cid)));
     }
 
+    /**
+     * 执行 getEventStatsByCharacter 相关业务逻辑。
+     *
+     * @param cid cid
+     * @return List<EventstatsDO> 类型结果
+     */
     public List<EventstatsDO> getEventStatsByCharacter(Integer cid) {
         return eventstatsMapper.selectListByQuery(QueryWrapper.create().where(EVENTSTATS_D_O.CHARACTERID.eq(cid)));
     }
 
+    /**
+     * 执行 getWishlistsByCharacter 相关业务逻辑。
+     *
+     * @param cid cid
+     * @return List<WishlistsDO> 类型结果
+     */
     public List<WishlistsDO> getWishlistsByCharacter(Integer cid) {
         return wishlistsMapper.selectListByQuery(QueryWrapper.create().where(WISHLISTS_D_O.CHARID.eq(cid)));
     }
 
+    /**
+     * 执行 getCharacterByAccountId 相关业务逻辑。
+     *
+     * @param accountId accountId
+     * @return List<CharactersDO> 类型结果
+     */
     public List<CharactersDO> getCharacterByAccountId(int accountId) {
         return charactersMapper.selectListByQuery(QueryWrapper.create().where(CHARACTERS_D_O.ACCOUNTID.eq(accountId)));
     }

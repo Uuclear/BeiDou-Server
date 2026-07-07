@@ -6,9 +6,11 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
 /**
- * @author Shavit
+ * 处理客户端 CHANGE_QUICKSLOT（CP_QuickslotKeyMappedModified） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHANGE_QUICKSLOT}</p>
  */
 public class QuickslotKeyMappedModifiedHandler extends AbstractPacketHandler {
+    /** 处理 CP_QuickslotKeyMappedModified 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         // Invalid size for the packet.

@@ -18,16 +18,9 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.inventory;
-
-import lombok.Getter;
-import org.gms.util.I18nUtil;
-
 /**
- * @author Matze
+ * 背包类型枚举，定义装备栏、消耗栏、设置栏、其他栏、现金栏等背包分类。
  */
-@Getter
 public enum InventoryType {
     UNDEFINED(0, I18nUtil.getMessage("InventoryType.UNDEFINED")),
     EQUIP(1, I18nUtil.getMessage("InventoryType.EQUIP")),
@@ -46,10 +39,19 @@ public enum InventoryType {
         this.name = name;
     }
 
+    /**
+     * 获取BitfieldEncoding
+     * @return 返回值
+     */
     public short getBitfieldEncoding() {
         return (short) (2 << type);
     }
 
+    /**
+     * 获取按类型
+     * @param type 类型
+     * @return 返回值
+     */
     public static InventoryType getByType(byte type) {
         for (InventoryType l : InventoryType.values()) {
             if (l.getType() == type) {
@@ -59,6 +61,11 @@ public enum InventoryType {
         return UNDEFINED;
     }
 
+    /**
+     * 获取按WZ名称
+     * @param name 名称
+     * @return 返回值
+     */
     public static InventoryType getByWZName(String name) {
         return switch (name) {
             case "Install" -> SETUP;
@@ -70,11 +77,19 @@ public enum InventoryType {
         };
     }
 
+    /**
+     * 判断是否可以Change槽位最大
+     * @return 返回值
+     */
     public boolean canChangeSlotMax() {
         // 如果需要支持更改现金的最大堆叠，可以修改这里
         return this == USE || this == ETC;
     }
 
+    /**
+     * 判断是否为Equip
+     * @return 返回值
+     */
     public boolean isEquip() {
         return this == EQUIP || this == EQUIPPED;
     }

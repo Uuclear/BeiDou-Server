@@ -31,9 +31,14 @@ import org.gms.util.I18nUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 处理客户端 GIVE_FAME（赠送声望） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#GIVE_FAME}</p>
+ */
 public final class GiveFameHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(GiveFameHandler.class);
 
+    /** 处理 赠送声望 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character target = (Character) c.getPlayer().getMap().getMapObject(p.readInt());

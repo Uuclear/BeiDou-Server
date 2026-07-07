@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `family_character` 的实体类（DO）。
+ * <p>
+ * 家族成员角色表，记录角色所属家族、职级及贡献度。
  */
 @Data
 @Builder

@@ -1,4 +1,12 @@
+/**
+ * 用户状态类型定义
+ * 描述游戏账户的完整字段及前端角色类型。
+ */
+
+/** 前端权限角色：空、通配、管理员、普通用户 */
 export type RoleType = '' | '*' | 'admin' | 'user';
+
+/** 当前登录用户的完整账户状态 */
 export interface UserState {
   id?: number;
   name?: string;

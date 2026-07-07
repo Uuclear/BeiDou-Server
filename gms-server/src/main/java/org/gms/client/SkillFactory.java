@@ -85,14 +85,25 @@ import org.gms.server.life.Element;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 技能工厂类，从 WZ 数据文件加载并缓存所有职业技能数据，提供技能查询与初始化功能。
+ */
 public class SkillFactory {
     private static volatile Map<Integer, Skill> skills = new HashMap<>();
     private static final DataProvider datasource = DataProviderFactory.getDataProvider(WZFiles.SKILL);
 
+    /**
+     * 获取技能
+     * @param id ID
+     * @return 返回值
+     */
     public static Skill getSkill(int id) {
         return skills.get(id);
     }
 
+    /**
+     * 加载全部Skills
+     */
     public static void loadAllSkills() {
         final Map<Integer, Skill> loadedSkills = new HashMap<>();
         final DataDirectoryEntry root = datasource.getRoot();
@@ -384,6 +395,11 @@ public class SkillFactory {
         return ret;
     }
 
+    /**
+     * 获取技能名称
+     * @param skillid skillid
+     * @return 返回值
+     */
     public static String getSkillName(int skillid) {
         Data data = DataProviderFactory.getDataProvider(WZFiles.STRING).getData("Skill.img");
         StringBuilder skill = new StringBuilder();

@@ -1,4 +1,5 @@
 <template>
+  <!-- 背包物品详情表格，支持编辑数量、属性及删除物品。 -->
   <a-table
     row-key="id"
     :loading="loading"
@@ -157,6 +158,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 背包物品列表表格组件，对接 update/delete inventory API。
+   */
   import { ref } from 'vue';
   import {
     deleteInventory,

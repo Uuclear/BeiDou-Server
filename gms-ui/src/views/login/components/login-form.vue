@@ -1,4 +1,5 @@
 <template>
+  <!-- 登录表单：用户名、密码输入与提交，成功后跳转 redirect 目标页。 -->
   <div class="login-form-wrapper">
     <div class="login-form-title">{{ $t('title') }}</div>
     <div class="login-form-sub-title">{{ $t('form.login.title') }}</div>
@@ -68,6 +69,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 登录表单组件，调用 user store 完成认证并处理错误提示。
+   */
   import { ref, reactive, nextTick } from 'vue';
   import { useRouter } from 'vue-router';
   import { Message } from '@arco-design/web-vue';

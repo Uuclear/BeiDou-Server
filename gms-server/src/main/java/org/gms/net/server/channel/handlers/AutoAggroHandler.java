@@ -28,8 +28,13 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.life.Monster;
 import org.gms.server.maps.MapleMap;
 
+/**
+ * 处理客户端 AUTO_AGGRO（自动仇恨） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#AUTO_AGGRO}</p>
+ */
 public final class AutoAggroHandler extends AbstractPacketHandler {
 
+    /** 处理 自动仇恨 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character player = c.getPlayer();

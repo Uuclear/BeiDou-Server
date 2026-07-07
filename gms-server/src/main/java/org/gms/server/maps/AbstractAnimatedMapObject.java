@@ -30,27 +30,46 @@ import org.gms.net.packet.Packet;
 
 import java.util.Arrays;
 
+/**
+ * 可动画地图对象抽象基类。
+ */
 public abstract class AbstractAnimatedMapObject extends AbstractMapObject implements AnimatedMapObject {
     public static final int IDLE_MOVEMENT_PACKET_LENGTH = 15;
     private static final Packet IDLE_MOVEMENT_PACKET = createIdleMovementPacket();
 
     private int stance;
 
+    /**
+     * 获取Stance。
+     * @return int 类型结果
+     */
     @Override
     public int getStance() {
         return stance;
     }
 
+    /**
+     * 设置Stance。
+     * @param stance stance
+     */
     @Override
     public void setStance(int stance) {
         this.stance = stance;
     }
 
+    /**
+     * 判断是否为Facing、剩余。
+     * @return boolean 类型结果
+     */
     @Override
     public boolean isFacingLeft() {
         return Math.abs(stance) % 2 == 1;
     }
 
+    /**
+     * 获取Idle、移动。
+     * @return InPacket 类型结果
+     */
     public InPacket getIdleMovement() {
         final byte[] idleMovementBytes = IDLE_MOVEMENT_PACKET.getBytes();
         byte[] movementData = Arrays.copyOf(idleMovementBytes, idleMovementBytes.length);

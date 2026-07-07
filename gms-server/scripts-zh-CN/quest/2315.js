@@ -1,13 +1,11 @@
-/* ===========================================================
-        @author Resonance
-	NPC Name: 		Minister of Home Affairs
-	Map(s): 		Mushroom Castle: Corner of Mushroom Forest(106020000)
-	Description: 	Quest -  Exploring Mushroom Forest(2)
-=============================================================
-Version 1.0 - Script Done.(18/7/2010)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2315
+ * 功能描述：Minister of Home Affairs，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

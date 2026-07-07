@@ -21,6 +21,11 @@
 */
 
 /**
+ * 脚本类型：自定义NPC
+ * 对象 ID：当前地图掉落
+ * 功能描述：北斗脚本中心爆率查询入口，提供当前地图爆率查询与系统物品爆率查询功能。
+ */
+/**
  * @description 拍卖行中心脚本
  */
 var mogu = "#fUI/UIWindow.img/Minigame/Omok/stone/0/black/0#";

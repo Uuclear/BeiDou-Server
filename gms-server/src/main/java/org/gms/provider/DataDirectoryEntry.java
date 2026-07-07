@@ -24,10 +24,22 @@ package org.gms.provider;
 import java.util.List;
 
 /**
+ * WZ 目录条目接口，可包含子目录与数据文件，用于构建 WZ 包导航树。
+ *
  * @author Matze
  */
 public interface DataDirectoryEntry extends DataEntry {
+    /** @return 直接子目录列表 */
     List<DataDirectoryEntry> getSubdirectories();
+
+    /** @return 直接子文件列表 */
     List<DataFileEntry> getFiles();
+
+    /**
+     * 按名称查找子目录或文件。
+     *
+     * @param name 条目名称（不含扩展名）
+     * @return 匹配的条目，不存在时返回 {@code null}
+     */
     DataEntry getEntry(String name);
 }

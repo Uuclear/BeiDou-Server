@@ -31,11 +31,19 @@ import org.gms.server.events.gm.Event;
 import org.gms.server.maps.FieldLimit;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM0（所有玩家可用）命令：参加当前的活动
+ */
 public class JoinEventCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("JoinEventCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

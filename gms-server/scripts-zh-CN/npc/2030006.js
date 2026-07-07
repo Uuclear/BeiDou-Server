@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2030006
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /* Holy Stone
 	Holy Ground at the Snowfield (211040401)
 	3rd job advancement - Question trial.

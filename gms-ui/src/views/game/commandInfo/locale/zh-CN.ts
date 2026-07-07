@@ -1,3 +1,6 @@
+/**
+ * GM 指令管理页中文文案。
+ */
 export default {
   'command.search.type.label': '指令等级',
 

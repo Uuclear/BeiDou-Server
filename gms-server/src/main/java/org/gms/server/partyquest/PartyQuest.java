@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author kevintjuh93
+ * 组队任务基类/通用逻辑。
  */
 public class PartyQuest {
     private static final Logger log = LoggerFactory.getLogger(PartyQuest.class);
@@ -42,6 +42,10 @@ public class PartyQuest {
     Party party;
     List<Character> participants = new ArrayList<>();
 
+    /**
+     * 构造 PartyQuest 实例。
+     * @param party party
+     */
     public PartyQuest(Party party) {
         this.party = party;
         PartyCharacter leader = party.getLeader();
@@ -58,14 +62,26 @@ public class PartyQuest {
         }
     }
 
+    /**
+     * 获取队伍。
+     * @return Party 类型结果
+     */
     public Party getParty() {
         return party;
     }
 
+    /**
+     * 获取Participants。
+     * @return List<Character> 类型结果
+     */
     public List<Character> getParticipants() {
         return participants;
     }
 
+    /**
+     * 移除Participant。
+     * @param chr 角色
+     */
     public void removeParticipant(Character chr) throws Throwable {
         synchronized (participants) {
             participants.remove(chr);
@@ -74,6 +90,12 @@ public class PartyQuest {
         }
     }
 
+    /**
+     * 获取经验。
+     * @param PQ PQ
+     * @param level level
+     * @return int 类型结果
+     */
     public static int getExp(String PQ, int level) {
         switch (PQ) {
         case "HenesysPQ":

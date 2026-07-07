@@ -36,10 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author RonanLana
- * <p>
- * Note: the podium uses getGroundBelow that in its turn uses inputted posY minus 7.
- * Podium system will implement increase-by-7 to negate that behaviour.
+ * 玩家 NPC 领奖台/排名台数据结构。
  */
 public class PlayerNPCPodium {
     private static final Logger log = LoggerFactory.getLogger(PlayerNPCPodium.class);
@@ -141,6 +138,11 @@ public class PlayerNPCPodium {
         }
     }
 
+    /**
+     * 获取下一玩家NPC位置。
+     * @param map 地图名称
+     * @return Point 类型结果
+     */
     public static Point getNextPlayerNpcPosition(MapleMap map) {
         Point pos = getNextPlayerNpcPosition(map, map.getWorldServer().getPlayerNpcMapPodiumData(map.getId()));
         if (pos == null) {

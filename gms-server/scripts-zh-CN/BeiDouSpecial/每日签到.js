@@ -1,8 +1,9 @@
-/**北斗脚本
 
-签到脚本
-
----By hanmburger*/
+/**
+ * 脚本类型：自定义NPC
+ * 对象 ID：每日签到
+ * 功能描述：每日签到系统，每天签到一次获得北斗指南书奖励。
+ */
 var status = -1;
 var text;
 var BeiDouUI ="#fMap/MapHelper.img/BeiDou/logo#";

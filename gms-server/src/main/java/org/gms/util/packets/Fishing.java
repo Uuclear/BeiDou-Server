@@ -33,6 +33,10 @@ import org.gms.util.PacketCreator;
 import java.util.Calendar;
 
 /**
+ * 钓鱼玩法逻辑：基于日期与时间计算成功率，执行一次钓鱼并发放奖励。
+ * <p>
+ * 成功率由年内日序、当日时分秒及鱼饵等级共同决定；成功时可获得金币、经验或随机物品。
+ *
  * @author FateJiki (RaGeZONE)
  * @author Ronan - timing pattern
  */
@@ -43,6 +47,11 @@ public class Fishing {
         return 50.0 + 7.0 * (7.0 * Math.sin(x)) * (Math.cos(Math.pow(x, 0.777)));
     }
 
+    /**
+     * 根据当前日历计算钓鱼成功率相关的两个似然值（年内因素与时间因素）。
+     *
+     * @return 长度为 2 的数组：{@code [0]} 为年内日序似然，{@code [1]} 为当日时分秒似然
+     */
     public static double[] fetchFishingLikelihood() {
         Calendar calendar = Calendar.getInstance();
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
@@ -69,6 +78,14 @@ public class Fishing {
         return (0.23 * yearLikelihood) + (0.77 * timeLikelihood) + (baitLikelihood) > 57.777;
     }
 
+    /**
+     * 执行一次钓鱼判定与奖励发放（金币/经验/物品），并广播特效包。
+     *
+     * @param chr             钓鱼角色
+     * @param baitLevel       鱼饵等级（影响额外成功率）
+     * @param yearLikelihood  年内日序似然值
+     * @param timeLikelihood  当日时分秒似然值
+     */
     public static void doFishing(Character chr, int baitLevel, double yearLikelihood, double timeLikelihood) {
         // thanks Fadi, Vcoc for suggesting a custom fishing system
 
@@ -127,6 +144,11 @@ public class Fishing {
         chr.getMap().broadcastMessage(chr, PacketCreator.showForeignInfo(chr.getId(), fishingEffect), false);
     }
 
+    /**
+     * 按权重随机抽取一件钓鱼奖励物品 ID（普通/罕见/稀有池）。
+     *
+     * @return 物品 ID
+     */
     public static int getRandomItem() {
         int rand = (int) (100.0 * Math.random());
         int[] commons = {1002851, 2002020, 2002020, ItemId.MANA_ELIXIR, 2000018, 2002018, 2002024, 2002027, 2002027, 2000018, 2000018, 2000018, 2000018, 2002030, 2002018, 2000016}; // filler' up

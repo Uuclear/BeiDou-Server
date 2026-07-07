@@ -21,9 +21,17 @@
 */
 package org.gms.server.life;
 
+/**
+ * 元素克制关系枚举（弱点、抗性、免疫）。
+ */
 public enum ElementalEffectiveness {
     NORMAL, IMMUNE, STRONG, WEAK, NEUTRAL;
 
+    /**
+     * 获取按编号。
+     * @param num 数量
+     * @return ElementalEffectiveness 类型结果
+     */
     public static ElementalEffectiveness getByNumber(int num) {
         switch (num) {
             case 1:

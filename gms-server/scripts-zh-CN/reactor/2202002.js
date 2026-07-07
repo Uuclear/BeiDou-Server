@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Ronan
- * 
- * 2202002.js: Box - Toy Factory
- * 
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2202002
+ * 功能描述：反应堆触发后传送玩家。
+ * 原作者：Ronan
+ */
 function act() {
     if (rm.isQuestActive(3238)) {
         rm.warp(922000020, 0);

@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：enterPort
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function enter(pi) {
     if (pi.isQuestStarted(21301) && pi.getQuestProgressInt(21301, 9001013) == 0) {
         if (pi.getPlayerCount(108010700) != 0) {

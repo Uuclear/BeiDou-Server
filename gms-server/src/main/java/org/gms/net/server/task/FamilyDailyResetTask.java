@@ -15,10 +15,18 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
 
+/**
+ * 家族每日重置定时任务，清零当日声望并清理过期家族权益记录。
+ */
 public class FamilyDailyResetTask implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(FamilyDailyResetTask.class);
     private final World world;
 
+    /**
+     * 构造指定世界的家族每日重置任务。
+     *
+     * @param world 目标世界
+     */
     public FamilyDailyResetTask(World world) {
         this.world = world;
     }
@@ -36,6 +44,11 @@ public class FamilyDailyResetTask implements Runnable {
         }
     }
 
+    /**
+     * 重置指定世界的家族当日声望与权益使用记录。
+     *
+     * @param world 目标世界
+     */
     public static void resetEntitlementUsage(World world) {
         Calendar resetTime = Calendar.getInstance();
         resetTime.add(Calendar.MINUTE, 1); // to make sure that we're in the "next day", since this is called at midnight

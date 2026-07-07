@@ -29,11 +29,19 @@ import org.gms.client.command.Command;
 import org.gms.net.packet.logging.MonitoredChrLogger;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM3命令：开启或关闭监控所有玩家的发包
+ */
 public class MonitorsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("MonitorsCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

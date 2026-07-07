@@ -9,12 +9,12 @@ import org.gms.server.minigame.RockPaperScissor;
 import org.gms.util.PacketCreator;
 
 /**
- * @Author Arnah
- * @Website http://Vertisy.ca/
- * @since Aug 15, 2016
+ * 处理客户端 RPS_ACTION（石头剪刀布操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#RPS_ACTION}</p>
  */
 public final class RPSActionHandler extends AbstractPacketHandler {
 
+    /** 处理 石头剪刀布操作 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

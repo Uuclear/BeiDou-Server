@@ -34,8 +34,13 @@ import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
 @Slf4j
+/**
+ * 处理客户端 CREATE_CHAR（创建角色） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CREATE_CHAR}</p>
+ */
 public final class CreateCharHandler extends AbstractPacketHandler {
 
+    /** 处理 创建角色 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         String name = p.readString();

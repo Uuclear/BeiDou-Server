@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Matze
+ * NPC 商店实例，管理商品列表与购买逻辑。
  */
 public class Shop {
     private static final Logger log = LoggerFactory.getLogger(Shop.class);
@@ -80,11 +80,22 @@ public class Shop {
         items.add(item);
     }
 
+    /**
+     * 执行 send、商店 操作。
+     * @param c c
+     */
     public void sendShop(Client c) {
         c.getPlayer().setShop(this);
         c.sendPacket(PacketCreator.getNPCShop(c, getNpcId(), items));
     }
 
+    /**
+     * 执行 buy 操作。
+     * @param c c
+     * @param slot slot
+     * @param itemId 物品 ID
+     * @param quantity quantity
+     */
     public void buy(Client c, short slot, int itemId, short quantity) {
         ShopItem item = findBySlot(slot);
         if (item != null) {
@@ -201,6 +212,13 @@ public class Shop {
         return quantity;
     }
 
+    /**
+     * 执行 sell 操作。
+     * @param c c
+     * @param type 类型
+     * @param slot slot
+     * @param quantity quantity
+     */
     public void sell(Client c, InventoryType type, short slot, short quantity) {
         if (quantity == 0xFFFF || quantity == 0) {
             quantity = 1;
@@ -230,6 +248,11 @@ public class Shop {
         }
     }
 
+    /**
+     * 执行 recharge 操作。
+     * @param c c
+     * @param slot slot
+     */
     public void recharge(Client c, short slot) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         Inventory inventory = c.getPlayer().getInventory(InventoryType.USE);
@@ -264,6 +287,12 @@ public class Shop {
         return items.get(slot);
     }
 
+    /**
+     * 创建来自DB。
+     * @param id ID
+     * @param isShopId isShopId
+     * @return Shop 类型结果
+     */
     public static Shop createFromDB(int id, boolean isShopId) {
         Shop ret = null;
         int shopId;
@@ -315,10 +344,18 @@ public class Shop {
         return ret;
     }
 
+    /**
+     * 获取NPCID。
+     * @return int 类型结果
+     */
     public int getNpcId() {
         return npcId;
     }
 
+    /**
+     * 获取ID。
+     * @return int 类型结果
+     */
     public int getId() {
         return id;
     }

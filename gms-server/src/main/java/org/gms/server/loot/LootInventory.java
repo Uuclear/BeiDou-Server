@@ -28,11 +28,15 @@ import java.util.Map;
 
 
 /**
- * @author Ronan
+ * 掉落判定时使用的玩家物品栏快照。
  */
 public class LootInventory {
     Map<Integer, Integer> items = new HashMap<>(50);
 
+    /**
+     * 构造 LootInventory 实例。
+     * @param from from
+     */
     public LootInventory(Character from) {
         for (InventoryType values : InventoryType.values()) {
 
@@ -48,6 +52,12 @@ public class LootInventory {
         }
     }
 
+    /**
+     * 判断是否拥有物品。
+     * @param itemid 物品 ID
+     * @param quantity quantity
+     * @return int 类型结果
+     */
     public int hasItem(int itemid, int quantity) {
         Integer itemQty = items.get(itemid);
         return itemQty == null ? 0 : itemQty >= quantity ? 2 : itemQty > 0 ? 1 : 0;

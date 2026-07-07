@@ -28,11 +28,16 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestActionType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务变更人气值动作。
  */
 public class FameAction extends AbstractQuestAction {
     int fame;
 
+    /**
+     * 构造 FameAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public FameAction(Quest quest, Data data) {
         super(QuestActionType.FAME, quest);
         questID = quest.getId();
@@ -40,11 +45,20 @@ public class FameAction extends AbstractQuestAction {
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         fame = DataTool.getInt(data);
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         chr.gainFame(fame);

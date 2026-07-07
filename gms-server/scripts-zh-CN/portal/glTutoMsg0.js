@@ -20,9 +20,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-@author kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：glTutoMsg0
+ * 功能描述：地图传送门入口脚本。
+ * 原作者：kevintjuh93
+ */
 function enter(pi) {
     pi.showInstruction("离开这个区域，将无法再回来。", 150, 5);
     return true;

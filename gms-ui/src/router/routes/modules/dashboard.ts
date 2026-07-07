@@ -1,3 +1,7 @@
+/**
+ * 仪表盘模块路由
+ * 包含工作台、信息检索等子页面，使用默认布局包裹。
+ */
 import { DEFAULT_LAYOUT } from '../base';
 import { AppRouteRecordRaw } from '../types';
 

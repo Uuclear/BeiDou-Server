@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2041013
+ * 功能描述：NPC脚本，提供美容（发型/脸型/肤色）、物品发放。
+ */
 var status = 0;
 var price = 1000000;
 var skin = Array(0, 1, 2, 3, 4);

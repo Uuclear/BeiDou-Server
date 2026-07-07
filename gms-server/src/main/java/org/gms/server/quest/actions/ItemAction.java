@@ -47,19 +47,27 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * @author Tyler (Twdtwd)
- * @author Ronan
+ * 任务奖励/扣除物品动作。
  */
 public class ItemAction extends AbstractQuestAction {
     private static final Logger log = LoggerFactory.getLogger(ItemAction.class);
     List<ItemData> items = new ArrayList<>();
 
+    /**
+     * 构造 ItemAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public ItemAction(Quest quest, Data data) {
         super(QuestActionType.ITEM, quest);
         processData(data);
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         for (Data iEntry : data.getChildren()) {
@@ -89,6 +97,11 @@ public class ItemAction extends AbstractQuestAction {
         items.sort((o1, o2) -> o1.map - o2.map);
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         List<ItemData> takeItem = new LinkedList<>();
@@ -162,6 +175,12 @@ public class ItemAction extends AbstractQuestAction {
         }
     }
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer extSelection) {
         List<Pair<Item, InventoryType>> gainList = new LinkedList<>();
@@ -305,6 +324,12 @@ public class ItemAction extends AbstractQuestAction {
         return true;
     }
 
+    /**
+     * 执行 restore、Lost、物品 操作。
+     * @param chr 角色
+     * @param itemid 物品 ID
+     * @return boolean 类型结果
+     */
     public boolean restoreLostItem(Character chr, int itemid) {
         if (!ItemInformationProvider.getInstance().isQuestItem(itemid)) {
             return false;
@@ -334,6 +359,17 @@ public class ItemAction extends AbstractQuestAction {
         private final int map, id, count, job, gender, period;
         private final Integer prop;
 
+        /**
+         * 执行 物品数据 操作。
+         * @param map 地图名称
+         * @param id ID
+         * @param count count
+         * @param prop prop
+         * @param job job
+         * @param gender gender
+         * @param period period
+         * @return ItemData 类型结果
+         */
         public ItemData(int map, int id, int count, Integer prop, int job, int gender, int period) {
             this.map = map;
             this.id = id;
@@ -344,26 +380,50 @@ public class ItemAction extends AbstractQuestAction {
             this.period = period;
         }
 
+        /**
+         * 获取ID。
+         * @return int 类型结果
+         */
         public int getId() {
             return id;
         }
 
+        /**
+         * 获取数量。
+         * @return int 类型结果
+         */
         public int getCount() {
             return count;
         }
 
+        /**
+         * 获取Prop。
+         * @return Integer 类型结果
+         */
         public Integer getProp() {
             return prop;
         }
 
+        /**
+         * 获取职业。
+         * @return int 类型结果
+         */
         public int getJob() {
             return job;
         }
 
+        /**
+         * 获取Gender。
+         * @return int 类型结果
+         */
         public int getGender() {
             return gender;
         }
 
+        /**
+         * 获取Period。
+         * @return int 类型结果
+         */
         public int getPeriod() {
             return period;
         }

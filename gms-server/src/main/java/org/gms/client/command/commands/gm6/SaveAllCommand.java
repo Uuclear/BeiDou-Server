@@ -33,11 +33,19 @@ import org.gms.service.HpMpAlertService;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * GM6（最高权限）命令：玩家存档
+ */
 public class SaveAllCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SaveAllCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

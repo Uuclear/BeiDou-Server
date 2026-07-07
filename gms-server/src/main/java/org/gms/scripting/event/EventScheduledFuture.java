@@ -22,17 +22,33 @@ package org.gms.scripting.event;
 import org.gms.scripting.event.scheduler.EventScriptScheduler;
 
 /**
+ * 事件调度任务的取消句柄。
+ * <p>
+ * 由 {@link EventManager#schedule(String, long)} 等方法返回，
+ * 调用 {@link #cancel(boolean)} 可从 {@link EventScriptScheduler} 中移除尚未执行的脚本回调。
+ * 无论参数值如何，均不会在任务执行中强制中断（non-interrupt）。
+ * </p>
+ *
  * @author Ronan
  */
 public class EventScheduledFuture {
     Runnable r;
     EventScriptScheduler ess;
 
+    /**
+     * @param r   已注册的脚本回调任务
+     * @param ess 所属事件脚本调度器
+     */
     public EventScheduledFuture(Runnable r, EventScriptScheduler ess) {
         this.r = r;
         this.ess = ess;
     }
 
+    /**
+     * 取消尚未执行的调度任务。
+     *
+     * @param dummy 保留参数，实际始终采用非中断取消策略
+     */
     public void cancel(boolean dummy) {   // will always implement "non-interrupt if running" regardless of boolean value
         ess.cancelEntry(r);
     }

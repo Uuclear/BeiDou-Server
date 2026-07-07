@@ -20,8 +20,17 @@
 */
 package org.gms.server.maps;
 
+/**
+ * 反应堆掉落条目（物品 ID、概率、任务关联）。
+ */
 public class ReactorDropEntry {
 
+    /**
+     * 构造 ReactorDropEntry 实例。
+     * @param itemId 物品 ID
+     * @param chance chance
+     * @param questId questId
+     */
     public ReactorDropEntry(int itemId, int chance, int questId) {
         this.itemId = itemId;
         this.chance = chance;

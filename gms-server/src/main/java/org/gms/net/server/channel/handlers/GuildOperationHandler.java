@@ -45,6 +45,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+/**
+ * 处理客户端 GUILD_OPERATION（公会操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#GUILD_OPERATION}</p>
+ */
 public final class GuildOperationHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(GuildOperationHandler.class);
 
@@ -56,6 +60,7 @@ public final class GuildOperationHandler extends AbstractPacketHandler {
         return !Pattern.compile("[^\u4e00-\u9fa5a-zA-Z0-9_]").matcher(name).find();
     }
 
+    /** 处理 公会操作 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character mc = c.getPlayer();

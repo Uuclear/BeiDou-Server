@@ -31,8 +31,7 @@ import java.awt.*;
 import java.util.Collection;
 
 /**
- * @author Matze
- * @author Ronan
+ * 魔法师传送门（Door）技能创建的地图对象。
  */
 public class Door {
     private int ownerId;
@@ -46,6 +45,11 @@ public class Door {
     private DoorObject townDoor;
     private DoorObject areaDoor;
 
+    /**
+     * 构造 Door 实例。
+     * @param owner 归属角色
+     * @param targetPosition targetPosition
+     */
     public Door(Character owner, Point targetPosition) {
         this.ownerId = owner.getId();
         this.target = owner.getMap();
@@ -78,6 +82,10 @@ public class Door {
         }
     }
 
+    /**
+     * 更新传送门传送门。
+     * @param owner 归属角色
+     */
     public void updateDoorPortal(Character owner) {
         int slot = owner.fetchDoorSlot();
 
@@ -124,6 +132,10 @@ public class Door {
         }
     }
 
+    /**
+     * 执行 attempt、移除、传送门 操作。
+     * @param owner 归属角色
+     */
     public static void attemptRemoveDoor(final Character owner) {
         final Door destroyDoor = owner.getPlayerDoor();
         if (destroyDoor != null && destroyDoor.dispose()) {
@@ -145,34 +157,66 @@ public class Door {
         return town.getDoorPortal(doorid);
     }
 
+    /**
+     * 获取归属者ID。
+     * @return int 类型结果
+     */
     public int getOwnerId() {
         return ownerId;
     }
 
+    /**
+     * 获取Town、传送门。
+     * @return DoorObject 类型结果
+     */
     public DoorObject getTownDoor() {
         return townDoor;
     }
 
+    /**
+     * 获取区域传送门。
+     * @return DoorObject 类型结果
+     */
     public DoorObject getAreaDoor() {
         return areaDoor;
     }
 
+    /**
+     * 获取Town。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getTown() {
         return town;
     }
 
+    /**
+     * 获取Town、传送门。
+     * @return Portal 类型结果
+     */
     public Portal getTownPortal() {
         return townPortal;
     }
 
+    /**
+     * 获取Target。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getTarget() {
         return target;
     }
 
+    /**
+     * 获取传送门状态。
+     * @return Pair<String, Integer> 类型结果
+     */
     public Pair<String, Integer> getDoorStatus() {
         return posStatus;
     }
 
+    /**
+     * 获取Elapsed、部署、时间。
+     * @return long 类型结果
+     */
     public long getElapsedDeployTime() {
         return System.currentTimeMillis() - deployTime;
     }
@@ -186,6 +230,10 @@ public class Door {
         }
     }
 
+    /**
+     * 判断是否为活动。
+     * @return boolean 类型结果
+     */
     public boolean isActive() {
         return active;
     }

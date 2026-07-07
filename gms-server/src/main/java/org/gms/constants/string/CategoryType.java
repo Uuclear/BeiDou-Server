@@ -4,6 +4,9 @@ import lombok.Getter;
 import org.gms.util.I18nUtil;
 
 @Getter
+/**
+ * 扩展分类类型常量，用于扩展属性系统的分类标识。
+ */
 public enum CategoryType {
     MAIN(8, I18nUtil.getMessage("CategoryType.MAIN")),
     EVENT(1, I18nUtil.getMessage("CategoryType.EVENT")),

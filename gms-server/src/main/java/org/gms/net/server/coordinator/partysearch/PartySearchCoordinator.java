@@ -46,6 +46,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
+ * 组队搜索协调器，按职业与等级区间撮合玩家并发送组队邀请。
+ *
  * @author Ronan
  */
 public class PartySearchCoordinator {

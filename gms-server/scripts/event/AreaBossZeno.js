@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：AreaBossZeno
+ * 功能描述：BOSS战事件实例（AreaBossZeno）。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  Zeno Spawner

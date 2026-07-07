@@ -27,10 +27,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Xterminator
+ * 处理客户端 CLOSE_CHALKBOARD（关闭黑板） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CLOSE_CHALKBOARD}</p>
  */
 public final class CloseChalkboardHandler extends AbstractPacketHandler {
 
+    /** 处理 关闭黑板 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         c.getPlayer().setChalkboard(null);

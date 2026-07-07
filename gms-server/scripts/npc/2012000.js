@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2012000
+ * 功能描述：NPC脚本，提供物品发放、金币奖励。
+ */
 var ticket = [4031047, 4031074, 4031331, 4031576];
 var cost = [5000, 6000, 30000, 6000];
 var mapNames = ["Ellinia of Victoria Island", "Ludibrium", "Leafre", "Ariant"];

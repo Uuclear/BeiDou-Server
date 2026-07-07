@@ -1,11 +1,12 @@
-/* Author: aaroncsn <MapleSea Like>
-	NPC Name: 		Aldin
-	Map(s): 		The Burning Road: Ariant(2600000000)
-	Description: 	Ariant Plastic Surgery
 
-        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
-*/
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2100009
+ * 功能描述：Aldin，Ariant Plastic Surgery（原版描述）。
+ * 原作者：aaroncsn <MapleSea Like>
+ */
 var status = 0;
 var beauty = 0;
 var mface_r = Array(20001, 20003, 20009, 20010, 20025, 20031);

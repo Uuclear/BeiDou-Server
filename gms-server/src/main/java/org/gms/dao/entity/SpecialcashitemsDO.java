@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `specialcashitems` 的实体类（DO）。
+ * <p>
+ * 特殊现金商城道具配置，定义限时或活动类商城售卖条目。
  */
 @Data
 @Builder

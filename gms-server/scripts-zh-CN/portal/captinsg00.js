@@ -1,5 +1,12 @@
-/* @author RonanLana */
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：captinsg00
+ * 功能描述：启动关联事件实例并传送玩家（如班车/副本入口）。
+ * 原作者：RonanLana
+ */
 function enter(pi) {
     if (!pi.haveItem(4000381)) {
         pi.playerMessage(5, "你尚未持有白色精华。");

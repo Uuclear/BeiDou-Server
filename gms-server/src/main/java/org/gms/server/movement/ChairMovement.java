@@ -25,21 +25,43 @@ import org.gms.net.packet.OutPacket;
 
 import java.awt.*;
 
+/**
+ * 椅子坐下/站起移动状态。
+ */
 public class ChairMovement extends AbstractLifeMovement {
     private int fh;
 
+    /**
+     * 构造 ChairMovement 实例。
+     * @param type 类型
+     * @param position 坐标
+     * @param duration duration
+     * @param newstate newstate
+     */
     public ChairMovement(int type, Point position, int duration, int newstate) {
         super(type, position, duration, newstate);
     }
 
+    /**
+     * 获取Fh。
+     * @return int 类型结果
+     */
     public int getFh() {
         return fh;
     }
 
+    /**
+     * 设置Fh。
+     * @param fh fh
+     */
     public void setFh(int fh) {
         this.fh = fh;
     }
 
+    /**
+     * 执行 serialize 操作。
+     * @param p p
+     */
     @Override
     public void serialize(OutPacket p) {
         p.writeByte(getType());

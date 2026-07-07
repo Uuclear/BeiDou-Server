@@ -14,8 +14,13 @@ import org.gms.net.server.coordinator.world.InviteCoordinator.InviteType;
 import org.gms.server.maps.MapleMap;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 FAMILY_SUMMON_RESPONSE（家族召唤响应） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#FAMILY_SUMMON_RESPONSE}</p>
+ */
 public class FamilySummonResponseHandler extends AbstractPacketHandler {
 
+    /** 处理 家族召唤响应 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_family_system")) {

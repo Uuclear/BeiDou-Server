@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `quickslotkeymapped` 的实体类（DO）。
+ * <p>
+ * 快捷栏按键映射表，持久化角色快捷栏槽位与键盘按键的绑定关系。
  */
 @Data
 @Builder

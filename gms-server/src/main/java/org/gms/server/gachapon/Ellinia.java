@@ -1,14 +1,14 @@
 package org.gms.server.gachapon;
 
 /**
- * @author Alan (SharpAceX) - gachapon source classes stub & pirate equipment
- * @author Ronan - parsed MapleSEA loots
- * <p>
- * MapleSEA-like loots thanks to AyumiLove - src: https://ayumilovemaple.wordpress.com/maplestory-gachapon-guide/
+ * 魔法密林扭蛋奖池。
  */
-
 public class Ellinia extends GachaponItems {
 
+    /**
+     * 获取Common、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getCommonItems() {
         return new int[]{
@@ -52,11 +52,19 @@ public class Ellinia extends GachaponItems {
         };
     }
 
+    /**
+     * 获取Uncommon、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getUncommonItems() {
         return new int[]{1082149, 1002391, 1002419};
     }
 
+    /**
+     * 获取Rare、物品。
+     * @return int[] 类型结果
+     */
     @Override
     public int[] getRareItems() {
         return new int[]{};

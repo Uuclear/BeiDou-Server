@@ -1,3 +1,7 @@
+/**
+ * Loading 状态组合式函数
+ * 管理 loading 布尔状态，并在 loading 结束时尝试刷新 JWT Token。
+ */
 import { ref } from 'vue';
 import { refreshToken } from '@/api/user';
 import { clearToken, getToken, setToken } from '@/utils/auth';
@@ -5,8 +9,8 @@ import { clearToken, getToken, setToken } from '@/utils/auth';
 export default function useLoading(initValue = false) {
   const loading = ref(initValue);
   /**
-   * @description 本来应该在请求时刷新，但是所有的请求都是独立方法，没有封装，只能在这里统一异步刷新
-   * @param value loading状态
+   * 在 loading 结束时异步刷新 Token
+   * 因各 API 未统一封装，只能在 setLoading(false) 时触发
    */
   const handleRefreshToken = async (value: boolean) => {
     if (value) {

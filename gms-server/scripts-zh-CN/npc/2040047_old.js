@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040047_old
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ */
 /**
  * @author: Eric
  * @npc: Sgt. Anderson

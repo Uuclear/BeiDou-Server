@@ -37,13 +37,19 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Calendar;
 
+/**
+ * 处理客户端 LOGIN_PASSWORD（登录密码） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#LOGIN_PASSWORD}</p>
+ */
 public final class LoginPasswordHandler implements PacketHandler {
 
+    /** 仅在客户端尚未完成登录时处理该封包。 */
     @Override
     public boolean validateState(Client c) {
         return !c.isLoggedIn();
     }
 
+    /** 校验账号密码与硬件信息，完成登录认证并返回角色列表。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         String remoteHost = c.getRemoteAddress();

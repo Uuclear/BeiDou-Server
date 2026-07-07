@@ -19,14 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : Generic
-	NPC Name: 		Kiku
-	Map(s): 		Empress' Road : Training Forest I
-	Description: 		Quest - Kiku the Training Instructor
-	Quest ID : 		20002
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20002
+ * 功能描述：Kiku，任务相关对话与奖励。
+ * 原作者：Generic
+ */
 var status = -1;
 
 function start(mode, type, selection) {

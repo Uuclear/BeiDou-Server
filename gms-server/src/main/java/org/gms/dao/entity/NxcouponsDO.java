@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `nxcoupons` 的实体类（DO）。
+ * <p>
+ * NX 优惠券表，定义按星期与时段生效的商城折扣券规则。
  */
 @Data
 @Builder

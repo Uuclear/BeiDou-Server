@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `fredstorage` 的实体类（DO）。
+ * <p>
+ * Fred 特殊仓库表，存储活动或 NPC Fred 相关的暂存物品。
  */
 @Data
 @Builder

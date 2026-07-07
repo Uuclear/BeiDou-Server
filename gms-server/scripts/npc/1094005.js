@@ -18,11 +18,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
-    Author: Kevin (DietStory v1.02)
-    NPC: Bush - Abel Glasses Quest
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1094005
+ * 功能描述：NPC脚本，提供物品发放。
+ * 原作者：Kevin (DietStory v1.02)
+ */
 var rolled = 0;
 
 function start(mode, type, selection) {

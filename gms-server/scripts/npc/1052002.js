@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1052002
+ * 功能描述：通过输入数字执行管理或兑换操作。
+ */
 /* JM from tha Streetz
         Victoria Road: Kerning City (103000000)
         

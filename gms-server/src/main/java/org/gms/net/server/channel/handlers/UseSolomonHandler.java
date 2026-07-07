@@ -33,12 +33,12 @@ import org.gms.server.ItemInformationProvider;
 import org.gms.util.PacketCreator;
 
 /**
- * @author XoticStory
- * <p>
- * Modified by -- kevintjuh93, Ronan
+ * 处理客户端 USE_SOLOMON_ITEM（使用所罗门物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_SOLOMON_ITEM}</p>
  */
 public final class UseSolomonHandler extends AbstractPacketHandler {
 
+    /** 处理 使用所罗门物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.readInt();

@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator
-	NPC Name: 		Shanks
-	Map(s): 		Maple Road : Southperry (60000)
-	Description: 		Brings you to Victoria Island
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：22000
+ * 功能描述：Shanks，Brings you to Victoria Island（原版描述）。
+ * 原作者：Xterminator
+ */
 var status = 0;
 
 function start() {

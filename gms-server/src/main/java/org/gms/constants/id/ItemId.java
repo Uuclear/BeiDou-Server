@@ -1,6 +1,9 @@
 package org.gms.constants.id;
 
 import java.util.stream.IntStream;
+/**
+ * 游戏物品 ID 常量及按物品类型判定的工具方法，涵盖消耗品、装备、任务道具、现金商城物品等。
+ */
 
 public class ItemId {
     // Misc
@@ -20,24 +23,39 @@ public class ItemId {
     public static final int ARPQ_SHIELD = 2022269;
     public static final int ROARING_TIGER_MESSENGER = 5390006;
 
+    /**
+     * 判断物品 ID 是否为经验加成道具。
+     */
     public static boolean isExpIncrease(int itemId) {
         return itemId >= 2022450 && itemId <= 2022452;
     }
 
+    /**
+     * 判断物品 ID 是否为倍率券。
+     */
     public static boolean isRateCoupon(int itemId) {
         int itemType = itemId / 1000;
         return itemType == 5211 || itemType == 5360;
     }
 
+    /**
+     * 判断物品 ID 是否为怪物卡。
+     */
     public static boolean isMonsterCard(int itemId) {
         int itemType = itemId / 10000;
         return itemType == 238;
     }
 
+    /**
+     * 判断物品 ID 是否为金字塔副本增益道具。
+     */
     public static boolean isPyramidBuff(int itemId) {
         return (itemId >= 2022585 && itemId <= 2022588) || (itemId >= 2022616 && itemId <= 2022617);
     }
 
+    /**
+     * 判断物品 ID 是否为武陵道场增益道具。
+     */
     public static boolean isDojoBuff(int itemId) {
         return itemId >= 2022359 && itemId <= 2022421;
     }
@@ -62,6 +80,9 @@ public class ItemId {
     private static final int CHAIR_MIN = RELAXER;
     private static final int CHAIR_MAX = FISHING_CHAIR;
 
+    /**
+     * 判断Chair相关条件是否成立。
+     */
     public static boolean isChair(int itemId) {
         return itemId >= CHAIR_MIN && itemId <= CHAIR_MAX;
         // alt: return itemId / 10000 == 301;
@@ -76,6 +97,9 @@ public class ItemId {
     private static final int THROWING_STAR_MAX = 2070016;
     public static final int DEVIL_RAIN_THROWING_STAR = 2070014;
 
+    /**
+     * allThrowingStarIds 相关查询或判定。
+     */
     public static int[] allThrowingStarIds() {
         return IntStream.range(THROWING_STAR_MIN, THROWING_STAR_MAX + 1).toArray();
     }
@@ -87,6 +111,9 @@ public class ItemId {
     public static final int BLAZE_CAPSULE = 2331000;
     public static final int GLAZE_CAPSULE = 2332000;
 
+    /**
+     * allBulletIds 相关查询或判定。
+     */
     public static int[] allBulletIds() {
         return IntStream.range(BULLET_MIN, BULLET_MAX + 1).toArray();
     }
@@ -170,6 +197,9 @@ public class ItemId {
     private static final int CARNIVAL_PARTY_ALL_CURE = 2022163;
     public static final int WHITE_ELIXIR = 2022544;
 
+    /**
+     * 判断PartyAllCure相关条件是否成立。
+     */
     public static boolean isPartyAllCure(int itemId) {
         return itemId == DOJO_PARTY_ALL_CURE || itemId == CARNIVAL_PARTY_ALL_CURE;
     }
@@ -189,6 +219,9 @@ public class ItemId {
     public static final int ITEM_POUCH = 1812001;
     public static final int ITEM_IGNORE = 1812007;
 
+    /**
+     * 判断物品是否为宠物。
+     */
     public static boolean isPet(int itemId) {
         return itemId / 1000 == 5000;
     }
@@ -202,6 +235,9 @@ public class ItemId {
     private static final int PERMA_WHITE_TIGER = 5000101;
     private static final int PERMA_MINI_YETI = 5000102;
 
+    /**
+     * 返回永久宠物物品 ID 列表。
+     */
     public static int[] getPermaPets() {
         return new int[]{PERMA_PINK_BEAN, PERMA_KINO, PERMA_WHITE_TIGER, PERMA_MINI_YETI};
     }
@@ -239,6 +275,9 @@ public class ItemId {
     public static final int EMPTY_ENGAGEMENT_BOX_SILVER = 4031363;
     public static final int ENGAGEMENT_RING_SILVER = 4031364;
 
+    /**
+     * 判断WeddingToken相关条件是否成立。
+     */
     public static boolean isWeddingToken(int itemId) {
         return itemId >= ItemId.EMPTY_ENGAGEMENT_BOX_MOONSTONE && itemId <= ItemId.ENGAGEMENT_RING_SILVER;
     }
@@ -279,6 +318,9 @@ public class ItemId {
     public static final int WEDDING_RING_GOLDEN = 1112807;
     public static final int WEDDING_RING_SILVER = 1112809;
 
+    /**
+     * 判断物品是否为结婚戒指。
+     */
     public static boolean isWeddingRing(int itemId) {
         return itemId == WEDDING_RING_MOONSTONE || itemId == WEDDING_RING_STAR ||
                 itemId == WEDDING_RING_GOLDEN || itemId == WEDDING_RING_SILVER;
@@ -308,10 +350,16 @@ public class ItemId {
     public static final int NX_CARD_100 = 4031865;
     public static final int NX_CARD_250 = 4031866;
 
+    /**
+     * 判断NxCard相关条件是否成立。
+     */
     public static boolean isNxCard(int itemId) {
         return itemId == NX_CARD_100 || itemId == NX_CARD_250;
     }
 
+    /**
+     * 判断CashPackage相关条件是否成立。
+     */
     public static boolean isCashPackage(int itemId) {
         return itemId / 10000 == 910;
     }
@@ -320,6 +368,9 @@ public class ItemId {
     private static final int FACE_EXPRESSION_MIN = 5160000;
     private static final int FACE_EXPRESSION_MAX = 5160014;
 
+    /**
+     * 判断FaceExpression相关条件是否成立。
+     */
     public static boolean isFaceExpression(int itemId) {
         return itemId >= FACE_EXPRESSION_MIN && itemId <= FACE_EXPRESSION_MAX;
     }
@@ -340,6 +391,9 @@ public class ItemId {
     private static final int MAPLE_SHIELD = 1092030;
     private static final int GLOVES_ATT_60_SCROLL = 2040804;
 
+    /**
+     * 获取OwlItems相关数据。
+     */
     public static int[] getOwlItems() {
         return new int[]{WORK_GLOVES, STEELY_THROWING_KNIVES, ILBI_THROWING_STARS, OWL_BALL_MASK, PINK_ADVENTURER_CAPE,
                 CLAW_30_SCROLL, WHITE_SCROLL, HELMET_60_ACC_SCROLL, MAPLE_SHIELD, GLOVES_ATT_60_SCROLL};
@@ -381,6 +435,9 @@ public class ItemId {
     private static final int RED_DRACO = 1902002;
     private static final int EXPLORER_SADDLE = 1912000;
 
+    /**
+     * 判断ExplorerMount相关条件是否成立。
+     */
     public static boolean isExplorerMount(int itemId) {
         return itemId >= HOG && itemId <= RED_DRACO || itemId == EXPLORER_SADDLE;
     }
@@ -391,6 +448,9 @@ public class ItemId {
     private static final int SHINJOU = 1902007;
     private static final int CYGNUS_SADDLE = 1912005;
 
+    /**
+     * 判断CygnusMount相关条件是否成立。
+     */
     public static boolean isCygnusMount(int itemId) {
         return itemId >= MIMIANA && itemId <= SHINJOU || itemId == CYGNUS_SADDLE;
     }

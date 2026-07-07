@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 游戏服务器生命周期控制器，提供启停、重启、状态查询及大区/频道列表接口。
+ * 直接调用 Server 单例与 ServerService，属于运维级 REST 入口。
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/server")
@@ -26,6 +30,9 @@ public class ServerController {
     private final ApplicationContext applicationContext;
     private final ServerService serverService;
 
+    /**
+     * 停止所有。
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "停止所有")
     @GetMapping("/" + ApiConstant.LATEST + "/shutdown")
@@ -36,6 +43,10 @@ public class ServerController {
         System.exit(0);
     }
 
+    /**
+     * 停止服务。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "停止服务")
     @GetMapping("/" + ApiConstant.LATEST + "/stopServer")
@@ -44,6 +55,12 @@ public class ServerController {
         return ResultBody.success();
     }
 
+    /**
+     * 自定义停止服务。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "自定义停止服务")
     @PostMapping("/" + ApiConstant.LATEST + "/stopServerWithMsgAndInternal")
@@ -58,6 +75,10 @@ public class ServerController {
         return ResultBody.success();
     }
 
+    /**
+     * 启动服务。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "启动服务")
     @GetMapping("/" + ApiConstant.LATEST + "/startServer")
@@ -66,6 +87,10 @@ public class ServerController {
         return ResultBody.success();
     }
 
+    /**
+     * 重启服务。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "重启服务")
     @GetMapping("/" + ApiConstant.LATEST + "/restartServer")
@@ -74,6 +99,10 @@ public class ServerController {
         return ResultBody.success();
     }
 
+    /**
+     * 查询服务状态。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "查询服务状态")
     @GetMapping("/" + ApiConstant.LATEST + "/online")
@@ -81,6 +110,10 @@ public class ServerController {
         return ResultBody.success(Server.getInstance().isOnline());
     }
 
+    /**
+     * 大区列表。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "大区列表")
     @GetMapping("/" + ApiConstant.LATEST + "/world/list")
@@ -88,6 +121,12 @@ public class ServerController {
         return ResultBody.success(serverService.worldList());
     }
 
+    /**
+     * 频道列表。
+     *
+     * @param worldId 大区（世界）ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "频道列表")
     @GetMapping("/" + ApiConstant.LATEST + "/channel/list")
@@ -95,6 +134,10 @@ public class ServerController {
         return ResultBody.success(serverService.channelList(worldId));
     }
 
+    /**
+     * 查询版本号。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/server/" + ApiConstant.LATEST)
     @Operation(summary = "查询版本号")
     @GetMapping("/" + ApiConstant.LATEST + "/version")

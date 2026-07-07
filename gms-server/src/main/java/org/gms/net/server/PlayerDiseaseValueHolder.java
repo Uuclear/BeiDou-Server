@@ -22,12 +22,22 @@ package org.gms.net.server;
 
 import org.gms.client.Disease;
 
+/**
+ * 玩家异常状态（Debuff）持续时间持有者，记录开始时间、持续时长与状态类型。
+ */
 public class PlayerDiseaseValueHolder {//Thanks Celino
 
     public long startTime;
     public long length;
     public Disease disease;
 
+    /**
+     * 构造异常状态持有者。
+     *
+     * @param disease   异常状态类型
+     * @param startTime 生效开始时间戳
+     * @param length    持续时长（毫秒）
+     */
     public PlayerDiseaseValueHolder(final Disease disease, final long startTime, final long length) {
         this.disease = disease;
         this.startTime = startTime;

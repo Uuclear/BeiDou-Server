@@ -16,6 +16,10 @@ import org.gms.util.Randomizer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 处理客户端 VIEW_ALL_WITH_PIC（查看所有带图片） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#VIEW_ALL_WITH_PIC}</p>
+ */
 public class ViewAllCharSelectedWithPicHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ViewAllCharSelectedWithPicHandler.class);
 
@@ -29,6 +33,7 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractPacketHandler {
         };
     }
 
+    /** 处理 查看所有带图片 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
 

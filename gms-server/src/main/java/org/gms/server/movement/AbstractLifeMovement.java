@@ -23,12 +23,22 @@ package org.gms.server.movement;
 
 import java.awt.*;
 
+/**
+ * 生命体移动抽象基类。
+ */
 public abstract class AbstractLifeMovement implements LifeMovement {
     private final Point position;
     private final int duration;
     private final int newstate;
     private final int type;
 
+    /**
+     * 构造 AbstractLifeMovement 实例。
+     * @param type 类型
+     * @param position 坐标
+     * @param duration duration
+     * @param newstate newstate
+     */
     public AbstractLifeMovement(int type, Point position, int duration, int newstate) {
         super();
         this.type = type;
@@ -37,21 +47,37 @@ public abstract class AbstractLifeMovement implements LifeMovement {
         this.newstate = newstate;
     }
 
+    /**
+     * 获取类型。
+     * @return int 类型结果
+     */
     @Override
     public int getType() {
         return this.type;
     }
 
+    /**
+     * 获取持续时间。
+     * @return int 类型结果
+     */
     @Override
     public int getDuration() {
         return duration;
     }
 
+    /**
+     * 获取新状态。
+     * @return int 类型结果
+     */
     @Override
     public int getNewstate() {
         return newstate;
     }
 
+    /**
+     * 获取位置。
+     * @return Point 类型结果
+     */
     @Override
     public Point getPosition() {
         return position;

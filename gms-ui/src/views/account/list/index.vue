@@ -1,4 +1,5 @@
 <template>
+  <!-- 游戏账户列表页：分页查询、筛选、封禁/解封、编辑与新增账户。 -->
   <div class="container" :loading="true">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.account.list')">
@@ -233,6 +234,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 账户管理列表页，集成搜索、表格操作及新增/编辑弹窗。
+   */
   import useLoading from '@/hooks/loading';
   import { ref } from 'vue';
   import { AccountState } from '@/store/modules/account/types';

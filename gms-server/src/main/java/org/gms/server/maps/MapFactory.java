@@ -46,6 +46,9 @@ import java.util.List;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 地图工厂，从 WZ 与数据库加载地图数据（ foothold、传送门、生命体刷新点、区域等）并构建 MapleMap 实例。
+ */
 public class MapFactory {
     private static final Data nameData = DataProviderFactory.getDataProvider(WZFiles.STRING).getData("Map.img");
     private static final DataProvider mapSource = DataProviderFactory.getDataProvider(WZFiles.MAP);
@@ -57,6 +60,7 @@ public class MapFactory {
             String type = DataTool.getString(life.getChildByPath("type"));
             int team = DataTool.getInt("team", life, -1);
             if (map.isCPQMap2() && type.equals("m")) {
+                // 嘉年华第二地图：按 life 节点名奇偶分配阵营（0/1）
                 if ((Integer.parseInt(life.getName()) % 2) == 0) {
                     team = 0;
                 } else {
@@ -140,6 +144,14 @@ public class MapFactory {
         }
     }
 
+    /**
+     * 加载地图来自Wz。
+     * @param mapid 地图 ID
+     * @param world world
+     * @param channel 频道号
+     * @param event event
+     * @return MapleMap 类型结果
+     */
     public static MapleMap loadMapFromWz(int mapid, int world, int channel, EventInstanceManager event) {
         MapleMap map;
 
@@ -410,6 +422,11 @@ public class MapFactory {
         return builder.toString();
     }
 
+    /**
+     * 加载Place、名称。
+     * @param mapid 地图 ID
+     * @return String 类型结果
+     */
     public static String loadPlaceName(int mapid) {
         try {
             return DataTool.getString("mapName", nameData.getChildByPath(getMapStringName(mapid)), "");
@@ -418,6 +435,11 @@ public class MapFactory {
         }
     }
 
+    /**
+     * 加载街道名称。
+     * @param mapid 地图 ID
+     * @return String 类型结果
+     */
     public static String loadStreetName(int mapid) {
         try {
             return DataTool.getString("streetName", nameData.getChildByPath(getMapStringName(mapid)), "");
@@ -426,6 +448,11 @@ public class MapFactory {
         }
     }
 
+    /**
+     * 获取地图ID按生命体ID。
+     * @param lifeId lifeId
+     * @return String 类型结果
+     */
     public static String getMapIdByLifeId(int lifeId) {
         return resolveDir(mapSource.getRoot(), lifeId);
     }

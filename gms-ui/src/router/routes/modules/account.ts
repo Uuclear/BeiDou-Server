@@ -1,3 +1,7 @@
+/**
+ * 账户管理模块路由
+ * 包含账户列表、在线玩家等子页面。
+ */
 import { DEFAULT_LAYOUT } from '../base';
 import { AppRouteRecordRaw } from '../types';
 

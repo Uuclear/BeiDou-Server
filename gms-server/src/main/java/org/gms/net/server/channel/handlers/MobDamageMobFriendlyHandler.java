@@ -32,10 +32,11 @@ import org.gms.util.PacketCreator;
 import org.gms.util.Randomizer;
 
 /**
- * @author Xotic (XoticStory) & BubblesDev
+ * 处理客户端 MOB_DAMAGE_MOB_FRIENDLY（怪物对友好怪物造成伤害） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MOB_DAMAGE_MOB_FRIENDLY}</p>
  */
-
 public final class MobDamageMobFriendlyHandler extends AbstractPacketHandler {
+    /** 处理 怪物对友好怪物造成伤害 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int attacker = p.readInt();

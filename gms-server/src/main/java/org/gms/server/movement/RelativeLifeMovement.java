@@ -25,11 +25,25 @@ import org.gms.net.packet.OutPacket;
 
 import java.awt.*;
 
+/**
+ * 相对坐标移动（基于偏移量）。
+ */
 public class RelativeLifeMovement extends AbstractLifeMovement {
+    /**
+     * 构造 RelativeLifeMovement 实例。
+     * @param type 类型
+     * @param position 坐标
+     * @param duration duration
+     * @param newstate newstate
+     */
     public RelativeLifeMovement(int type, Point position, int duration, int newstate) {
         super(type, position, duration, newstate);
     }
 
+    /**
+     * 执行 serialize 操作。
+     * @param p p
+     */
     @Override
     public void serialize(OutPacket p) {
         p.writeByte(getType());

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `playerdiseases` 的实体类（DO）。
+ * <p>
+ * 角色异常状态表，记录中毒、诅咒等负面状态及其剩余持续时间。
  */
 @Data
 @Builder

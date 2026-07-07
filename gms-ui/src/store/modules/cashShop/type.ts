@@ -1,3 +1,8 @@
+/**
+ * 商城（Cash Shop）相关类型定义
+ */
+
+/** 商城分类信息 */
 export interface categoryState {
   id: number;
   name: string;
@@ -10,6 +15,7 @@ export interface categoryState {
   notPage?: number;
 }
 
+/** 商城商品记录（含默认值字段用于对比修改） */
 export interface cashShopState {
   categoryId?: number;
   categoryName?: string;

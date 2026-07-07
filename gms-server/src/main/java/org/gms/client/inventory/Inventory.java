@@ -18,33 +18,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.inventory;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.inventory.manipulator.InventoryManipulator;
-import org.gms.constants.inventory.ItemConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.gms.server.ItemInformationProvider;
-import org.gms.server.ThreadManager;
-import org.gms.util.Pair;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
- * @author Matze, Ronan
+ * 背包管理类，管理某一类型背包栏的物品存取、排序、扩容及槽位限制。
  */
 public class Inventory implements Iterable<Item> {
     private static final Logger log = LoggerFactory.getLogger(Inventory.class);
@@ -56,6 +31,12 @@ public class Inventory implements Iterable<Item> {
     protected byte slotLimit;
     protected boolean checked = false;
 
+    /**
+     * 背包
+     * @param mc mc
+     * @param type 类型
+     * @param slotLimit slotLimit
+     */
     public Inventory(Character mc, InventoryType type, byte slotLimit) {
         this.owner = mc;
         this.inventory = new LinkedHashMap<>();
@@ -63,14 +44,25 @@ public class Inventory implements Iterable<Item> {
         this.slotLimit = slotLimit;
     }
 
+    /**
+     * 判断是否为Extendable背包
+     * @return 返回值
+     */
     public boolean isExtendableInventory() { // not sure about cash, basing this on the previous one.
-        return !(type.equals(InventoryType.UNDEFINED) || type.equals(InventoryType.EQUIPPED) || type.equals(InventoryType.CASH));
     }
 
+    /**
+     * 判断是否为Equip背包
+     * @return 返回值
+     */
     public boolean isEquipInventory() {
         return type.equals(InventoryType.EQUIP) || type.equals(InventoryType.EQUIPPED);
     }
 
+    /**
+     * 获取槽位上限
+     * @return 返回值
+     */
     public byte getSlotLimit() {
         lock.lock();
         try {
@@ -80,6 +72,10 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 设置槽位上限
+     * @param newLimit newLimit
+     */
     public void setSlotLimit(int newLimit) {
         lock.lock();
         try {
@@ -102,6 +98,14 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * list
+     * @return 返回值
+     */
+    /**
+     * list
+     * @return 返回值
+     */
     public Collection<Item> list() {
         lock.lock();
         try {
@@ -111,6 +115,11 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 查找按ID
+     * @param itemId 物品ID
+     * @return 返回值
+     */
     public Item findById(int itemId) {
         for (Item item : list()) {
             if (item.getItemId() == itemId) {
@@ -120,6 +129,11 @@ public class Inventory implements Iterable<Item> {
         return null;
     }
 
+    /**
+     * 查找按名称
+     * @param name 名称
+     * @return 返回值
+     */
     public Item findByName(String name) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         for (Item item : list()) {
@@ -136,6 +150,11 @@ public class Inventory implements Iterable<Item> {
         return null;
     }
 
+    /**
+     * count按ID
+     * @param itemId 物品ID
+     * @return 返回值
+     */
     public int countById(int itemId) {
         int qty = 0;
         for (Item item : list()) {
@@ -146,6 +165,11 @@ public class Inventory implements Iterable<Item> {
         return qty;
     }
 
+    /**
+     * countNotOwned按ID
+     * @param itemId 物品ID
+     * @return 返回值
+     */
     public int countNotOwnedById(int itemId) {
         int qty = 0;
         for (Item item : list()) {
@@ -156,6 +180,12 @@ public class Inventory implements Iterable<Item> {
         return qty;
     }
 
+    /**
+     * free槽位数量按ID
+     * @param itemId 物品ID
+     * @param required required
+     * @return 返回值
+     */
     public int freeSlotCountById(int itemId, int required) {
         List<Item> itemList = listById(itemId);
         int openSlot = 0;
@@ -191,6 +221,11 @@ public class Inventory implements Iterable<Item> {
         return -1;
     }
 
+    /**
+     * list按ID
+     * @param itemId 物品ID
+     * @return 返回值
+     */
     public List<Item> listById(int itemId) {
         List<Item> ret = new ArrayList<>();
         for (Item item : list()) {
@@ -206,6 +241,11 @@ public class Inventory implements Iterable<Item> {
         return ret;
     }
 
+    /**
+     * linked列表按ID
+     * @param itemId 物品ID
+     * @return 返回值
+     */
     public List<Item> linkedListById(int itemId) {
         List<Item> ret = new LinkedList<>();
         for (Item item : list()) {
@@ -221,6 +261,11 @@ public class Inventory implements Iterable<Item> {
         return ret;
     }
 
+    /**
+     * 添加物品
+     * @param item 物品
+     * @return 返回值
+     */
     public short addItem(Item item) {
         short slotId = addSlot(item);
         if (slotId == -1) {
@@ -230,6 +275,10 @@ public class Inventory implements Iterable<Item> {
         return slotId;
     }
 
+    /**
+     * 添加物品从DB
+     * @param item 物品
+     */
     public void addItemFromDB(Item item) {
         if (item.getPosition() < 0 && !type.equals(InventoryType.EQUIPPED)) {
             return;
@@ -241,6 +290,12 @@ public class Inventory implements Iterable<Item> {
         return source.getOwner().equals(target.getOwner());
     }
 
+    /**
+     * 移动
+     * @param sSlot sSlot
+     * @param dSlot dSlot
+     * @param slotMax slotMax
+     */
     public void move(short sSlot, short dSlot, short slotMax) {
         lock.lock();
         try {
@@ -282,6 +337,11 @@ public class Inventory implements Iterable<Item> {
         inventory.put(target.getPosition(), target);
     }
 
+    /**
+     * 获取物品
+     * @param slot 槽位
+     * @return 返回值
+     */
     public Item getItem(short slot) {
         lock.lock();
         try {
@@ -291,10 +351,20 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 移除物品
+     * @param slot 槽位
+     */
     public void removeItem(short slot) {
         removeItem(slot, (short) 1, false);
     }
 
+    /**
+     * 移除物品
+     * @param slot 槽位
+     * @param quantity 数量
+     * @param allowZero allowZero
+     */
     public void removeItem(short slot, short quantity, boolean allowZero) {
         Item item = getItem(slot);
         if (item == null) {// TODO is it ok not to throw an exception here?
@@ -348,6 +418,10 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 移除槽位
+     * @param slot 槽位
+     */
     public void removeSlot(short slot) {
         Item item;
         lock.lock();
@@ -362,6 +436,10 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 判断是否为Full
+     * @return 返回值
+     */
     public boolean isFull() {
         lock.lock();
         try {
@@ -371,6 +449,11 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 判断是否为Full
+     * @param margin margin
+     * @return 返回值
+     */
     public boolean isFull(int margin) {
         lock.lock();
         try {
@@ -381,6 +464,12 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 判断是否为FullAfterSomeItems
+     * @param margin margin
+     * @param used used
+     * @return 返回值
+     */
     public boolean isFullAfterSomeItems(int margin, int used) {
         lock.lock();
         try {
@@ -391,6 +480,10 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 获取NextFree槽位
+     * @return 返回值
+     */
     public short getNextFreeSlot() {
         if (isFull()) {
             return -1;
@@ -409,6 +502,10 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 获取NumFree槽位
+     * @return 返回值
+     */
     public short getNumFreeSlot() {
         if (isFull()) {
             return 0;
@@ -442,10 +539,21 @@ public class Inventory implements Iterable<Item> {
         return true;
     }
 
+    /**
+     * 检查Spot
+     * @param chr 角色
+     * @param item 物品
+     * @return 返回值
+     */
     public static boolean checkSpot(Character chr, Item item) {    // thanks Vcoc for noticing pshops not checking item stacks when taking item back
-        return checkSpot(chr, Collections.singletonList(item));
     }
 
+    /**
+     * 检查Spot
+     * @param chr 角色
+     * @param items items
+     * @return 返回值
+     */
     public static boolean checkSpot(Character chr, List<Item> items) {
         List<Pair<Item, InventoryType>> listItems = new LinkedList<>();
         for (Item item : items) {
@@ -455,10 +563,23 @@ public class Inventory implements Iterable<Item> {
         return checkSpotsAndOwnership(chr, listItems);
     }
 
+    /**
+     * 检查Spots
+     * @param chr 角色
+     * @param items items
+     * @return 返回值
+     */
     public static boolean checkSpots(Character chr, List<Pair<Item, InventoryType>> items) {
         return checkSpots(chr, items, false);
     }
 
+    /**
+     * 检查Spots
+     * @param chr 角色
+     * @param items items
+     * @param useProofInv useProofInv
+     * @return 返回值
+     */
     public static boolean checkSpots(Character chr, List<Pair<Item, InventoryType>> items, boolean useProofInv) {
         int invTypesSize = InventoryType.values().length;
         List<Integer> zeroedList = new ArrayList<>(invTypesSize);
@@ -469,6 +590,14 @@ public class Inventory implements Iterable<Item> {
         return checkSpots(chr, items, zeroedList, useProofInv);
     }
 
+    /**
+     * 检查Spots
+     * @param chr 角色
+     * @param items items
+     * @param typesSlotsUsed typesSlotsUsed
+     * @param useProofInv useProofInv
+     * @return 返回值
+     */
     public static boolean checkSpots(Character chr, List<Pair<Item, InventoryType>> items, List<Integer> typesSlotsUsed, boolean useProofInv) {
         // assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0.
 
@@ -536,10 +665,23 @@ public class Inventory implements Iterable<Item> {
         return (itemId.longValue() << 32L) + fnvHash32(owner);
     }
 
+    /**
+     * 检查SpotsAndOwnership
+     * @param chr 角色
+     * @param items items
+     * @return 返回值
+     */
     public static boolean checkSpotsAndOwnership(Character chr, List<Pair<Item, InventoryType>> items) {
         return checkSpotsAndOwnership(chr, items, false);
     }
 
+    /**
+     * 检查SpotsAndOwnership
+     * @param chr 角色
+     * @param items items
+     * @param useProofInv useProofInv
+     * @return 返回值
+     */
     public static boolean checkSpotsAndOwnership(Character chr, List<Pair<Item, InventoryType>> items, boolean useProofInv) {
         List<Integer> zeroedList = new ArrayList<>(5);
         for (byte i = 0; i < 5; i++) {
@@ -549,6 +691,14 @@ public class Inventory implements Iterable<Item> {
         return checkSpotsAndOwnership(chr, items, zeroedList, useProofInv);
     }
 
+    /**
+     * 检查SpotsAndOwnership
+     * @param chr 角色
+     * @param items items
+     * @param typesSlotsUsed typesSlotsUsed
+     * @param useProofInv useProofInv
+     * @return 返回值
+     */
     public static boolean checkSpotsAndOwnership(Character chr, List<Pair<Item, InventoryType>> items, List<Integer> typesSlotsUsed, boolean useProofInv) {
         //assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0 and item list to be checked is a legal one.
 
@@ -605,15 +755,28 @@ public class Inventory implements Iterable<Item> {
         return true;
     }
 
+    /**
+     * 获取类型
+     * @return 返回值
+     */
     public InventoryType getType() {
         return type;
     }
 
+    /**
+     * 返回迭代器
+     * @return 返回值
+     */
     @Override
     public Iterator<Item> iterator() {
         return Collections.unmodifiableCollection(list()).iterator();
     }
 
+    /**
+     * 查找按现金ID
+     * @param cashId cashId
+     * @return 返回值
+     */
     public Item findByCashId(int cashId) {
         boolean isRing = false;
         Equip equip = null;
@@ -630,6 +793,14 @@ public class Inventory implements Iterable<Item> {
         return null;
     }
 
+    /**
+     * checked
+     * @return 返回值
+     */
+    /**
+     * checked
+     * @return 返回值
+     */
     public boolean checked() {
         lock.lock();
         try {
@@ -639,6 +810,18 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * checked
+     * @param yes yes
+     */
+    /**
+     * checked
+     * @param yes yes
+     */
+    /**
+     * 标记背包已检查状态
+     * @param yes 是否
+     */
     public void checked(boolean yes) {
         lock.lock();
         try {
@@ -648,14 +831,29 @@ public class Inventory implements Iterable<Item> {
         }
     }
 
+    /**
+     * 加锁背包
+     */
     public void lockInventory() {
         lock.lock();
     }
 
+    /**
+     * 解锁背包
+     */
     public void unlockInventory() {
         lock.unlock();
     }
 
+    /**
+     * dispose
+     */
+    /**
+     * dispose
+     */
+    /**
+     * 销毁并清空背包内容
+     */
     public void dispose() {
         owner = null;
     }

@@ -25,22 +25,54 @@ import org.gms.client.Client;
 
 import java.awt.*;
 
+/**
+ * 传送门接口，定义进入/离开地图的传送行为。
+ */
 public interface Portal {
     int TELEPORT_PORTAL = 1;
     int MAP_PORTAL = 2;
     int DOOR_PORTAL = 6;
     boolean OPEN = true;
     boolean CLOSED = false;
+    /**
+     * 获取传送门类型。
+     * @return int
+     */
     int getType();
+    /**
+     * 获取传送门 ID。
+     * @return int
+     */
     int getId();
+    /**
+     * 获取传送门坐标。
+     * @return Point
+     */
     Point getPosition();
+    /**
+     * 获取传送门名称。
+     * @return String
+     */
     String getName();
+    /**
+     * 获取目标传送门名称。
+     * @return String
+     */
     String getTarget();
     String getScriptName();
     void setScriptName(String newName);
     void setPortalStatus(boolean newStatus);
     boolean getPortalStatus();
+    /**
+     * 获取目标地图 ID。
+     * @return int
+     */
     int getTargetMapId();
+    /**
+     * 角色进入传送门，执行传送逻辑。
+     * @param c 参数
+     * @return boolean
+     */
     void enterPortal(Client c);
     void setPortalState(boolean state);
     boolean getPortalState();

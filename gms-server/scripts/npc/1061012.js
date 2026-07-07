@@ -1,9 +1,11 @@
-/*
-	NPC Name: 		Insiginificant Being
-	Map(s): 		Dungeon : Another Entrance
-	Description: 		Takes you to another Dimension
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1061012
+ * 功能描述：Insiginificant Being，Takes you to another Dimension（原版描述）。
+ */
 function start() {
     if (cm.getQuestStatus(6107) == 1 || cm.getQuestStatus(6108) == 1) {
         var ret = checkJob();

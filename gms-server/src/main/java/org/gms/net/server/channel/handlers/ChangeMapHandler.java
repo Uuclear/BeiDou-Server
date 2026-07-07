@@ -45,11 +45,13 @@ import java.util.List;
 import java.util.StringJoiner;
 
 /**
- * 玩家通过光圈切换地图触发
+ * 处理玩家通过传送点/光圈切换地图，以及从商城返回频道。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHANGE_MAP}</p>
  */
 public final class ChangeMapHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ChangeMapHandler.class);
 
+    /** 解析目标地图、传送点与复活选项，执行地图切换或商城返回频道。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2030011
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /* Ali
  * Adobis's Mission I: The Room of Tragedy (280090000)
  * Zakum Quest NPC Exit

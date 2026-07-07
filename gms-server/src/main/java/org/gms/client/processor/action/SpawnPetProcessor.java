@@ -16,30 +16,18 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.processor.action;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.SkillFactory;
-import org.gms.client.inventory.InventoryType;
-import org.gms.client.inventory.Pet;
-import org.gms.client.inventory.manipulator.InventoryManipulator;
-import org.gms.constants.id.ItemId;
-import org.gms.provider.DataProvider;
-import org.gms.provider.DataProviderFactory;
-import org.gms.provider.DataTool;
-import org.gms.provider.wz.WZFiles;
-import org.gms.util.PacketCreator;
-
-import java.awt.*;
-
 /**
- * @author RonanLana - just added locking on OdinMS' SpawnPetHandler method body
+ * 召唤宠物处理器，处理玩家召唤/收回宠物的请求。
  */
 public class SpawnPetProcessor {
     private static final DataProvider dataRoot = DataProviderFactory.getDataProvider(WZFiles.ITEM);
 
+    /**
+     * processSpawn宠物
+     * @param c 客户端会话
+     * @param slot 槽位
+     * @param lead lead
+     */
     public static void processSpawnPet(Client c, byte slot, boolean lead) {
         if (c.tryacquireClient()) {
             try {

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `responses` 的实体类（DO）。
+ * <p>
+ * GM 自动回复/工单回复记录，用于客服或管理端的应答模板与历史。
  */
 @Data
 @Builder

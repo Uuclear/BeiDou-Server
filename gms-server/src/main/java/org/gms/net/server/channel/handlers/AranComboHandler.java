@@ -29,8 +29,13 @@ import org.gms.constants.skills.Aran;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 ARAN_COMBO_COUNTER（Aran连击计数器） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ARAN_COMBO_COUNTER}</p>
+ */
 public class AranComboHandler extends AbstractPacketHandler {
 
+    /** 处理 Aran连击计数器 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         final Character player = c.getPlayer();

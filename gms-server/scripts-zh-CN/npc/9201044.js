@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201044
+ * 功能描述：Used to find the combo to unlock the next door. Players stand on 5 different crates to guess the combo.（原版描述）。
+ */
 /*
 @       Author : Ronan
 @

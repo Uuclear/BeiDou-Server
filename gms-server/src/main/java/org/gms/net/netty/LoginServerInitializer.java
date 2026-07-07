@@ -9,9 +9,18 @@ import org.gms.util.RateLimitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 登录服子 Channel 初始化器。
+ * <p>
+ * 对新连接执行速率限制、会话协调检查，创建 {@link Client#createLoginClient} 并装配加密 Pipeline。
+ * </p>
+ */
 public class LoginServerInitializer extends ServerChannelInitializer {
     private static final Logger log = LoggerFactory.getLogger(LoginServerInitializer.class);
 
+    /**
+     * 初始化登录服客户端连接：限流 → 会话检查 → Hello 握手 → Pipeline 装配。
+     */
     @Override
     public void initChannel(SocketChannel socketChannel) {
         final String clientIp = socketChannel.remoteAddress().getHostString();

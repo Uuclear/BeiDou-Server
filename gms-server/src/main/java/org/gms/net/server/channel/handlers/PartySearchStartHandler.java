@@ -30,11 +30,11 @@ import org.gms.net.server.world.World;
 import org.gms.util.PacketCreator;
 
 /**
- * @author XoticStory
- * @author BubblesDev
- * @author Ronan
+ * 处理客户端 PARTY_SEARCH_START（开始组队搜索） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PARTY_SEARCH_START}</p>
  */
 public class PartySearchStartHandler extends AbstractPacketHandler {
+    /** 处理 开始组队搜索 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         int min = p.readInt();

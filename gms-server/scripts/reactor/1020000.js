@@ -18,11 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Ronan
- * 
- * 1020000.js: relic room next floor
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：1020000
+ * 功能描述：反应堆触发后传送玩家。
+ * 原作者：Ronan
+ */
 function act() {
     rm.warp(910200000, "pt00");
 }

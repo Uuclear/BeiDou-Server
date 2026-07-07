@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `macfilters` 的实体类（DO）。
+ * <p>
+ * MAC 地址过滤/白名单表，用于限制或放行特定设备的登录。
  */
 @Data
 @Builder

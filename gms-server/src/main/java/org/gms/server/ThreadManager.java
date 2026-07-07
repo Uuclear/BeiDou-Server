@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * @author Ronan
+ * 全局线程任务管理器（单例），使用虚拟线程执行器（VirtualThreadPerTaskExecutor）异步执行轻量任务。
  */
 public class ThreadManager {
     @Getter
@@ -37,15 +37,25 @@ public class ThreadManager {
 
     private ThreadManager() {}
 
+    /**
+     * 将 Runnable 提交到虚拟线程执行器异步执行。
+     * @param r Runnable 任务
+     */
     public void newTask(Runnable r) {
         executorService.execute(r);
     }
 
+    /**
+     * 初始化虚拟线程执行器（每任务一线程，无需池化）。
+     */
     public void start() {
         // 注意，虚拟线程不建议池化，所以也不需要拒绝策略
         executorService = Executors.newVirtualThreadPerTaskExecutor();
     }
 
+    /**
+     * 关闭执行器并最多等待 5 分钟让任务完成。
+     */
     public void stop() {
         executorService.shutdown();
         try {

@@ -24,15 +24,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+/**
+ * 点券商城业务服务，管理商城分类、商品查询及上下架状态变更。
+ */
 @Service
 @AllArgsConstructor
 public class CashShopService {
     private final ModifiedCashItemMapper modifiedCashItemMapper;
 
+    /**
+     * 执行 loadAllModifiedCashItems 相关业务逻辑。
+     * @return List<ModifiedCashItemDO> 类型结果
+     */
     public List<ModifiedCashItemDO> loadAllModifiedCashItems() {
         return modifiedCashItemMapper.selectAll();
     }
 
+    /**
+     * 执行 getAllCategoryList 相关业务逻辑。
+     * @return List<CashCategory> 类型结果
+     */
     public List<CashCategory> getAllCategoryList() {
         DataProvider etc = DataProviderFactory.getDataProvider(WZFiles.ETC);
         List<CashCategory> cashCategoryList = new ArrayList<>();
@@ -46,6 +57,12 @@ public class CashShopService {
         return cashCategoryList;
     }
 
+    /**
+     * 执行 getCommodityByCategory 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @return Page<CashShopSearchRtnDTO> 类型结果
+     */
     public Page<CashShopSearchRtnDTO> getCommodityByCategory(CashCategory data) {
         RequireUtil.requireNotNull(data.getId(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "id"));
         RequireUtil.requireNotNull(data.getSubId(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "subId"));
@@ -93,6 +110,12 @@ public class CashShopService {
                 .page();
     }
 
+    /**
+     * 执行 getCommodityBySn 相关业务逻辑。
+     *
+     * @param sn sn
+     * @return CashShopSearchRtnDTO 类型结果
+     */
     public CashShopSearchRtnDTO getCommodityBySn(Integer sn) {
         RequireUtil.requireNotNull(sn, I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "sn"));
         String snStr = String.valueOf(sn);
@@ -109,6 +132,11 @@ public class CashShopService {
         return rtnDTO;
     }
 
+    /**
+     * 执行 changeOnSale 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     */
     @Transactional(rollbackFor = Exception.class)
     public void changeOnSale(ModifiedCashItemDO data) {
         RequireUtil.requireNotNull(data.getSn(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "sn"));
@@ -215,6 +243,11 @@ public class CashShopService {
         rtnDTO.setPackageSn(Optional.ofNullable(dbCashItem.getPackageSn()).orElse(rtnDTO.getPackageSn()));
     }
 
+    /**
+     * 执行 batchChangeOnSale 相关业务逻辑。
+     *
+     * @param submit submit
+     */
     @Transactional
     public void batchChangeOnSale(CashShopBatchOnSaleReqDTO submit) {
         for (ModifiedCashItemDO data : submit.getData()) {

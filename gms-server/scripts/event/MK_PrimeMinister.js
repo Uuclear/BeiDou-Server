@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：MK_PrimeMinister
+ * 功能描述：组队任务（PQ）事件实例，管理队伍、地图与奖励。
+ */
 var eventTime = 10 * 60 * 1000;     // 10 minutes
 var entryMap = 106021600;
 var exitMap = 106021402;

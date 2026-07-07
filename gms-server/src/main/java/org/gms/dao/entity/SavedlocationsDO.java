@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `savedlocations` 的实体类（DO）。
+ * <p>
+ * 角色保存传送点表，记录自定义传送石/传送门的目标地图与坐标。
  */
 @Data
 @Builder

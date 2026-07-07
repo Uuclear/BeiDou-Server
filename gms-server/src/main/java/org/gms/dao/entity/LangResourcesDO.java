@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- * 数据库i18n表 实体类。
- *
- * @author CN
- * @since 2024-11-22
+ * 数据库表 `lang_resources` 的实体类（DO）。
+ * <p>
+ * 多语言资源表，存储界面与提示文本的国际化键值对。
  */
 @Data
 @Builder

@@ -1,3 +1,9 @@
+/**
+ * 游戏账户数据类型定义
+ * 用于账户列表展示，字段与数据库 accounts 表对应。
+ */
+
+/** 游戏账户完整信息 */
 export interface AccountState {
   id: number;
   name?: string;

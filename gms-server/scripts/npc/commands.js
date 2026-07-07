@@ -1,11 +1,12 @@
-/* @Author Ronan
- * @Author Vcoc
-        Name: Steward
-        Map(s): Foyer
-        Info: Commands
-        Script: commands.js
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：commands
+ * 功能描述：服务器指令查询与说明。
+ * 原作者：Ronan
+ */
 var status;
 
 var common_heading = "@";

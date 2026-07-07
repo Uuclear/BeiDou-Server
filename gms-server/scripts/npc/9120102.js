@@ -21,6 +21,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9120102
+ * 功能描述：NPC脚本，提供美容（发型/脸型/肤色）、物品发放。
+ */
 /* Hikekuro the Owner
 	Showa VIP Face & Eye Change.
 

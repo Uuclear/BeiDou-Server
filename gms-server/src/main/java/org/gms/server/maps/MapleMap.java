@@ -104,6 +104,9 @@ import java.util.function.Predicate;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 单张地图的运行时实例。管理地图对象（怪物、NPC、掉落物、反应堆、传送门）、玩家进出、怪物刷新、掉落计算、伤害处理及各类地图事件，使用读写锁保护并发访问。
+ */
 public class MapleMap {
     private static final Logger log = LoggerFactory.getLogger(MapleMap.class);
     private static final List<MapObjectType> rangedMapobjectTypes = Arrays.asList(MapObjectType.SHOP, MapObjectType.ITEM, MapObjectType.NPC, MapObjectType.MONSTER, MapObjectType.DOOR, MapObjectType.SUMMON, MapObjectType.REACTOR);
@@ -126,7 +129,7 @@ public class MapleMap {
     private final List<Runnable> statUpdateRunnables = new ArrayList(50);
     private final List<Rectangle> areas = new ArrayList<>();
     private FootholdTree footholds = null;
-    private Pair<Integer, Integer> xLimits;  // caches the min and max x's with available footholds
+    private Pair<Integer, Integer> xLimits;  // 缓存有落脚点可用的最小/最大 X 坐标
     private final Rectangle mapArea = new Rectangle();
     private final int mapid;
     private final AtomicInteger runningOid = new AtomicInteger(1000000001);
@@ -194,6 +197,14 @@ public class MapleMap {
     // due to the nature of loadMapFromWz (synchronized), sole function that calls 'generateMapDropRangeCache', this lock remains optional.
     private static final Lock bndLock = new ReentrantLock(true);
 
+    /**
+     * 构造 MapleMap 实例。
+     * @param mapid 地图 ID
+     * @param world world
+     * @param channel 频道号
+     * @param returnMapId returnMapId
+     * @param monsterRate monsterRate
+     */
     public MapleMap(int mapid, int world, int channel, int returnMapId, float monsterRate) {
         this.mapid = mapid;
         this.channel = channel;
@@ -215,26 +226,52 @@ public class MapleMap {
         aggroMonitor = new MonsterAggroCoordinator();
     }
 
+    /**
+     * 设置事件实例。
+     * @param eim 事件实例管理器
+     */
     public void setEventInstance(EventInstanceManager eim) {
         event = eim;
     }
 
+    /**
+     * 获取事件实例。
+     * @return EventInstanceManager 类型结果
+     */
     public EventInstanceManager getEventInstance() {
         return event;
     }
 
+    /**
+     * 获取地图区域。
+     * @return Rectangle 类型结果
+     */
     public Rectangle getMapArea() {
         return mapArea;
     }
 
+    /**
+     * 获取世界。
+     * @return int 类型结果
+     */
     public int getWorld() {
         return world;
     }
 
+    /**
+     * 向地图广播数据包。
+     * @param source 来源角色
+     * @param packet 网络数据包
+     */
     public void broadcastPacket(Character source, Packet packet) {
         broadcastPacket(packet, chr -> chr != null && chr.getClient() != null && chr != source);
     }
 
+    /**
+     * 向地图广播GM数据包。
+     * @param source 来源角色
+     * @param packet 网络数据包
+     */
     public void broadcastGMPacket(Character source, Packet packet) {
         broadcastPacket(packet, chr -> chr != null && chr.getClient() != null && chr != source && chr.gmLevel() >= source.gmLevel());
     }
@@ -250,6 +287,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 切换掉落开关状态。
+     */
     public void toggleDrops() {
         this.dropsOn = !dropsOn;
     }
@@ -258,6 +298,12 @@ public class MapleMap {
         return GameConfig.getServerBoolean("use_max_range") ? Double.POSITIVE_INFINITY : 722500;
     }
 
+    /**
+     * 获取地图、对象、在、矩形区域。
+     * @param box 矩形区域
+     * @param types 对象类型列表（MapObjectType 列表/集合）
+     * @return List<MapObject> 类型结果
+     */
     public List<MapObject> getMapObjectsInRect(Rectangle box, List<MapObjectType> types) {
         objectRLock.lock();
         final List<MapObject> ret = new LinkedList<>();
@@ -275,18 +321,34 @@ public class MapleMap {
         return ret;
     }
 
+    /**
+     * 获取ID。
+     * @return int 类型结果
+     */
     public int getId() {
         return mapid;
     }
 
+    /**
+     * 获取频道、Server。
+     * @return Channel 类型结果
+     */
     public Channel getChannelServer() {
         return Server.getInstance().getWorld(world).getChannel(channel);
     }
 
+    /**
+     * 获取世界、Server。
+     * @return World 类型结果
+     */
     public World getWorldServer() {
         return Server.getInstance().getWorld(world);
     }
 
+    /**
+     * 获取返回地图。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getReturnMap() {
         if (returnMapId == MapId.NONE) {
             return this;
@@ -294,34 +356,65 @@ public class MapleMap {
         return getChannelServer().getMapFactory().getMap(returnMapId);
     }
 
+    /**
+     * 获取返回地图ID。
+     * @return int 类型结果
+     */
     public int getReturnMapId() {
         return returnMapId;
     }
 
+    /**
+     * 获取强制返回地图。
+     * @return MapleMap 类型结果
+     */
     public MapleMap getForcedReturnMap() {
         return getChannelServer().getMapFactory().getMap(forcedReturnMap);
     }
 
+    /**
+     * 获取强制返回ID。
+     * @return int 类型结果
+     */
     public int getForcedReturnId() {
         return forcedReturnMap;
     }
 
+    /**
+     * 设置强制返回地图。
+     * @param map 地图名称
+     */
     public void setForcedReturnMap(int map) {
         this.forcedReturnMap = map;
     }
 
+    /**
+     * 获取时间限制。
+     * @return int 类型结果
+     */
     public int getTimeLimit() {
         return timeLimit;
     }
 
+    /**
+     * 设置时间限制。
+     * @param timeLimit 时间限制（秒）
+     */
     public void setTimeLimit(int timeLimit) {
         this.timeLimit = timeLimit;
     }
 
+    /**
+     * 获取时间剩余。
+     * @return int 类型结果
+     */
     public int getTimeLeft() {
         return (int) ((mapTimer - System.currentTimeMillis()) / 1000);
     }
 
+    /**
+     * 设置反应堆状态。
+     */
     public void setReactorState() {
         for (MapObject o : getMapObjects()) {
             if (o.getType() == MapObjectType.REACTOR) {
@@ -339,6 +432,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 限制反应堆。
+     * @param rid 反应堆 ID
+     * @param num 数量
+     */
     public final void limitReactor(final int rid, final int num) {
         List<Reactor> toDestroy = new ArrayList<>();
         Map<Integer, Integer> contained = new LinkedHashMap<>();
@@ -361,6 +459,12 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 判断是否为所有反应堆状态。
+     * @param reactorId 反应堆 ID
+     * @param state 状态值
+     * @return boolean 类型结果
+     */
     public boolean isAllReactorState(final int reactorId, final int state) {
         for (MapObject mo : getReactors()) {
             Reactor r = (Reactor) mo;
@@ -372,6 +476,10 @@ public class MapleMap {
         return true;
     }
 
+    /**
+     * 获取当前队伍ID。
+     * @return int 类型结果
+     */
     public int getCurrentPartyId() {
         for (Character chr : this.getCharacters()) {
             if (chr.getPartyId() != -1) {
@@ -381,6 +489,10 @@ public class MapleMap {
         return -1;
     }
 
+    /**
+     * 添加玩家NPC地图对象。
+     * @param pnpcobject 玩家 NPC 对象
+     */
     public void addPlayerNPCMapObject(PlayerNPC pnpcobject) {
         objectWLock.lock();
         try {
@@ -390,6 +502,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 添加地图对象。
+     * @param mapobject 地图对象
+     */
     public void addMapObject(MapObject mapobject) {
         int curOID = getUsableOID();
 
@@ -402,12 +518,21 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 添加自身自爆。
+     * @param mob 怪物
+     */
     public void addSelfDestructive(Monster mob) {
         if (mob.getStats().selfDestruction() != null) {
             this.selfDestructives.add(mob.getObjectId());
         }
     }
 
+    /**
+     * 移除自身自爆。
+     * @param mapobjectid mapobjectid
+     * @return boolean 类型结果
+     */
     public boolean removeSelfDestructive(int mapobjectid) {
         return this.selfDestructives.remove(mapobjectid);
     }
@@ -485,6 +610,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 移除地图对象。
+     * @param num 数量
+     */
     public void removeMapObject(int num) {
         objectWLock.lock();
         try {
@@ -494,6 +623,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 移除地图对象。
+     * @param obj 地图对象
+     */
     public void removeMapObject(final MapObject obj) {
         removeMapObject(obj.getObjectId());
     }
@@ -517,6 +650,9 @@ public class MapleMap {
         return new Point(initial.x, dropY);
     }
 
+    /**
+     * 生成地图、掉落、范围、Cache。
+     */
     public void generateMapDropRangeCache() {
         bndLock.lock();
         try {
@@ -565,6 +701,12 @@ public class MapleMap {
         return (dropPos != null) ? dropPos : fallback;
     }
 
+    /**
+     * 计算掉落位置。
+     * @param initial 初始坐标
+     * @param fallback 回退坐标
+     * @return Point 类型结果
+     */
     public Point calcDropPos(Point initial, Point fallback) {
         if (initial.x < xLimits.left) {
             initial.x = xLimits.left;
@@ -584,6 +726,11 @@ public class MapleMap {
         return ret;
     }
 
+    /**
+     * 判断是否可以部署传送门。
+     * @param pos 坐标
+     * @return boolean 类型结果
+     */
     public boolean canDeployDoor(Point pos) {
         Point toStep = calcPointBelow(pos);
         return toStep != null && toStep.distance(pos) <= 42;
@@ -615,16 +762,20 @@ public class MapleMap {
     }
 
     /**
-     * Converts angle in degrees to rounded cardinal coordinate.
-     *
-     * @param angle
-     * @return correspondent coordinate.
+     * 获取取整坐标。
+     * @param angle angle
+     * @return String 类型结果
      */
     public static String getRoundedCoordinate(double angle) {
         String[] directions = {"E", "SE", "S", "SW", "W", "NW", "N", "NE", "E"};
         return directions[(int) Math.round(((angle % 360) / 45))];
     }
 
+    /**
+     * 获取传送门位置状态。
+     * @param pos 坐标
+     * @return Pair<String, Integer> 类型结果
+     */
     public Pair<String, Integer> getDoorPositionStatus(Point pos) {
         Portal portal = findClosestPlayerSpawnpoint(pos);
 
@@ -772,6 +923,12 @@ public class MapleMap {
         registerMobItemDrops(droptype, mobpos, chRate, pos, dropEntry, visibleQuestEntry, otherQuestEntry, globalEntry, chr, mob);
     }
 
+    /**
+     * 掉落物品来自怪物。
+     * @param list 掉落条目列表（MonsterDropEntry 列表/集合）
+     * @param chr 角色
+     * @param mob 怪物
+     */
     public void dropItemsFromMonster(List<MonsterDropEntry> list, final Character chr, final Monster mob) {
         if (mob.dropsDisabled() || !dropsOn) {
             return;
@@ -786,10 +943,23 @@ public class MapleMap {
         dropItemsFromMonsterOnMap(list, pos, d, chRate, droptype, mobpos, chr, mob);
     }
 
+    /**
+     * 掉落来自友好怪物。
+     * @param chr 角色
+     * @param mob 怪物
+     */
     public void dropFromFriendlyMonster(final Character chr, final Monster mob) {
         dropFromMonster(chr, mob, true);
     }
 
+    /**
+     * 掉落来自反应堆。
+     * @param chr 角色
+     * @param reactor 反应堆
+     * @param drop 掉落物品
+     * @param dropPos 掉落坐标
+     * @param questid 任务 ID
+     */
     public void dropFromReactor(final Character chr, final Reactor reactor, Item drop, Point dropPos, short questid) {
         spawnDrop(drop, this.calcDropPos(dropPos, reactor.getPosition()), reactor, chr, (byte) (chr.getParty() != null ? 1 : 0), questid);
     }
@@ -890,6 +1060,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取已掉落物品数量。
+     * @return int 类型结果
+     */
     public int getDroppedItemCount() {
         return droppedItemCount.get();
     }
@@ -1035,6 +1209,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取已掉落物品数量按ID。
+     * @param itemid 物品 ID
+     * @return int 类型结果
+     */
     public int getDroppedItemsCountById(int itemid) {
         int count = 0;
         for (MapItem mmi : getDroppedItems()) {
@@ -1046,6 +1225,10 @@ public class MapleMap {
         return count;
     }
 
+    /**
+     * 拾取物品掉落。
+     * @param pickupPacket 拾取数据包
+     */
     public void pickItemDrop(Packet pickupPacket, MapItem mdrop) { // mdrop must be already locked and not-pickedup checked at this point
         broadcastMessage(pickupPacket, mdrop.getPosition());
 
@@ -1055,6 +1238,14 @@ public class MapleMap {
         unregisterItemDrop(mdrop);
     }
 
+    /**
+     * 更新玩家物品掉落到队伍。
+     * @param partyid 队伍 ID
+     * @param charid 角色 ID
+     * @param partyMembers 队伍成员（Character 列表/集合）
+     * @param partyLeaver 离开队伍的角色
+     * @return List<MapItem> 类型结果
+     */
     public List<MapItem> updatePlayerItemDropsToParty(int partyid, int charid, List<Character> partyMembers, Character partyLeaver) {
         List<MapItem> partyDrops = new LinkedList<>();
 
@@ -1101,6 +1292,11 @@ public class MapleMap {
         return partyDrops;
     }
 
+    /**
+     * 更新队伍、物品、掉落、到、新加入者。
+     * @param newcomer 新加入角色
+     * @param partyItems 队伍掉落物列表（MapItem 列表/集合）
+     */
     public void updatePartyItemDropsToNewcomer(Character newcomer, List<MapItem> partyItems) {
         for (MapItem mdrop : partyItems) {
             mdrop.lockItem();
@@ -1147,6 +1343,15 @@ public class MapleMap {
         activateItemReactors(mdrop, chr.getClient());
     }
 
+    /**
+     * 生成金币掉落。
+     * @param meso 金币数量
+     * @param position 坐标
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param playerDrop 是否玩家丢弃
+     * @param droptype 掉落类型
+     */
     public final void spawnMesoDrop(final int meso, final Point position, final MapObject dropper, final Character owner, final boolean playerDrop, final byte droptype) {
         final Point droppos = calcDropPos(position, position);
         final MapItem mdrop = new MapItem(meso, droppos, dropper, owner, owner.getClient(), droptype, playerDrop);
@@ -1164,6 +1369,13 @@ public class MapleMap {
         instantiateItemDrop(mdrop);
     }
 
+    /**
+     * 执行 disappearing、物品、掉落 操作。
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param item item
+     * @param pos 坐标
+     */
     public final void disappearingItemDrop(final MapObject dropper, final Character owner, final Item item, final Point pos) {
         final Point droppos = calcDropPos(pos, pos);
         final MapItem mdrop = new MapItem(item, droppos, dropper, owner, owner.getClient(), (byte) 1, false);
@@ -1176,6 +1388,13 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 disappearing、金币、掉落 操作。
+     * @param meso 金币数量
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param pos 坐标
+     */
     public final void disappearingMesoDrop(final int meso, final MapObject dropper, final Character owner, final Point pos) {
         final Point droppos = calcDropPos(pos, pos);
         final MapItem mdrop = new MapItem(meso, droppos, dropper, owner, owner.getClient(), (byte) 1, false);
@@ -1188,6 +1407,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取怪物按ID。
+     * @param id ID
+     * @return Monster 类型结果
+     */
     public Monster getMonsterById(int id) {
         objectRLock.lock();
         try {
@@ -1204,10 +1428,21 @@ public class MapleMap {
         return null;
     }
 
+    /**
+     * 统计怪物数量。
+     * @param id ID
+     * @return int 类型结果
+     */
     public int countMonster(int id) {
         return countMonster(id, id);
     }
 
+    /**
+     * 统计怪物数量。
+     * @param minid 最小 ID
+     * @param maxid 最大 ID
+     * @return int 类型结果
+     */
     public int countMonster(int minid, int maxid) {
         int count = 0;
         for (MapObject m : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.MONSTER))) {
@@ -1219,22 +1454,42 @@ public class MapleMap {
         return count;
     }
 
+    /**
+     * 统计怪物数量。
+     * @return int 类型结果
+     */
     public int countMonsters() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.MONSTER)).size();
     }
 
+    /**
+     * 统计反应堆数量。
+     * @return int 类型结果
+     */
     public int countReactors() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.REACTOR)).size();
     }
 
+    /**
+     * 获取反应堆。
+     * @return List<MapObject> 类型结果
+     */
     public final List<MapObject> getReactors() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.REACTOR));
     }
 
+    /**
+     * 获取怪物。
+     * @return List<MapObject> 类型结果
+     */
     public final List<MapObject> getMonsters() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.MONSTER));
     }
 
+    /**
+     * 获取所有反应堆。
+     * @return List<Reactor> 类型结果
+     */
     public final List<Reactor> getAllReactors() {
         List<Reactor> list = new LinkedList<>();
         for (MapObject mmo : getReactors()) {
@@ -1244,6 +1499,10 @@ public class MapleMap {
         return list;
     }
 
+    /**
+     * 获取所有怪物。
+     * @return List<Monster> 类型结果
+     */
     public final List<Monster> getAllMonsters() {
         List<Monster> list = new LinkedList<>();
         for (MapObject mmo : getMonsters()) {
@@ -1253,22 +1512,42 @@ public class MapleMap {
         return list;
     }
 
+    /**
+     * 统计物品数量。
+     * @return int 类型结果
+     */
     public int countItems() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.ITEM)).size();
     }
 
+    /**
+     * 获取物品。
+     * @return List<MapObject> 类型结果
+     */
     public final List<MapObject> getItems() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.ITEM));
     }
 
+    /**
+     * 统计玩家数量。
+     * @return int 类型结果
+     */
     public int countPlayers() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.PLAYER)).size();
     }
 
+    /**
+     * 获取玩家。
+     * @return List<MapObject> 类型结果
+     */
     public List<MapObject> getPlayers() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.PLAYER));
     }
 
+    /**
+     * 获取所有玩家。
+     * @return List<Character> 类型结果
+     */
     public List<Character> getAllPlayers() {
         List<Character> character;
         chrRLock.lock();
@@ -1281,6 +1560,10 @@ public class MapleMap {
         return character;
     }
 
+    /**
+     * 获取地图所有玩家。
+     * @return Map<Integer, Character> 类型结果
+     */
     public Map<Integer, Character> getMapAllPlayers() {
         Map<Integer, Character> pchars = new HashMap<>();
         for (Character chr : this.getAllPlayers()) {
@@ -1290,6 +1573,11 @@ public class MapleMap {
         return pchars;
     }
 
+    /**
+     * 获取玩家在范围。
+     * @param box 矩形区域
+     * @return List<Character> 类型结果
+     */
     public List<Character> getPlayersInRange(Rectangle box) {
         List<Character> character = new LinkedList<>();
         chrRLock.lock();
@@ -1306,6 +1594,10 @@ public class MapleMap {
         return character;
     }
 
+    /**
+     * 统计存活玩家数量。
+     * @return int 类型结果
+     */
     public int countAlivePlayers() {
         int count = 0;
 
@@ -1318,6 +1610,10 @@ public class MapleMap {
         return count;
     }
 
+    /**
+     * 统计Boss数量。
+     * @return int 类型结果
+     */
     public int countBosses() {
         int count = 0;
 
@@ -1330,6 +1626,13 @@ public class MapleMap {
         return count;
     }
 
+    /**
+     * 对怪物造成伤害。
+     * @param chr 角色
+     * @param monster 怪物
+     * @param damage 伤害值
+     * @return boolean 类型结果
+     */
     public boolean damageMonster(final Character chr, final Monster monster, final int damage) {
         if (monster.getId() == MobId.ZAKUM_1) {
             for (MapObject object : chr.getMap().getMapObjects()) {
@@ -1360,21 +1663,35 @@ public class MapleMap {
     }
 
     // 巴洛古(Balrog)讨伐胜利广播
+    /**
+     * 向地图广播蝙蝠魔胜利。
+     * @param leaderName 队长名称
+     */
     public void broadcastBalrogVictory(String leaderName) {
         getWorldServer().dropMessage(6,"[远征凯旋] " + leaderName + "的远征队成功讨伐了火焰魔神巴洛古！" + "让我们歌颂这支队伍，他们以" + countAlivePlayers() + "名幸存者的战绩完成了壮举！");
     }
 
     // 暗黑龙王(Horntail)讨伐胜利广播
+    /**
+     * 向地图广播黑龙胜利。
+     */
     public void broadcastHorntailVictory() {
         getWorldServer().dropMessage(6,"[远征凯旋] 致历经无数次挑战最终征服暗黑龙王的勇士们：" + "谨以此礼赞献给真正的神木村英雄！");
     }
 
     // 扎昆(Zakum)讨伐胜利广播
+    /**
+     * 向地图广播扎昆胜利。
+     */
     public void broadcastZakumVictory() {
         getWorldServer().dropMessage(6,"[远征凯旋] 长久笼罩天空之城的邪恶之树终于倾倒！" +"致那些历经无数次尝试最终征服扎昆的远征队，胜利属于你们！" +"你们是天空之城真正的传说！");
     }
 
     // 品克缤(PinkBean)讨伐胜利广播
+    /**
+     * 向地图广播Pink、Bean、胜利。
+     * @param channel 频道号
+     */
     public void broadcastPinkBeanVictory(int channel) {
         getWorldServer().dropMessage(6,"[远征凯旋] 在" + channel + "频道挑战品克缤的远征队，" +  "以雷霆之势完成了终极讨伐！时间神殿重现璀璨光辉，" + "当英雄们从战场凯旋之时，被夺走的白昼终于归来！"
         );
@@ -1401,10 +1718,23 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 击杀怪物。
+     * @param monster 怪物
+     * @param chr 角色
+     * @param withDrops 是否产生掉落
+     */
     public void killMonster(final Monster monster, final Character chr, final boolean withDrops) {
         killMonster(monster, chr, withDrops, 1);
     }
 
+    /**
+     * 击杀怪物。
+     * @param monster 怪物
+     * @param chr 角色
+     * @param withDrops 是否产生掉落
+     * @param animation 死亡动画类型
+     */
     public void killMonster(final Monster monster, final Character chr, final boolean withDrops, int animation) {
         if (monster == null) {
             return;
@@ -1500,10 +1830,18 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 击杀Friendlies。
+     * @param mob 怪物
+     */
     public void killFriendlies(Monster mob) {
         this.killMonster(mob, (Character) getPlayers().get(0), false);
     }
 
+    /**
+     * 击杀怪物。
+     * @param mobId mobId
+     */
     public void killMonster(int mobId) {
         Character chr = (Character) getPlayers().get(0);
         List<Monster> mobList = getAllMonsters();
@@ -1515,6 +1853,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 击杀怪物带掉落。
+     * @param mobId mobId
+     */
     public void killMonsterWithDrops(int mobId) {
         Map<Integer, Character> mapChars = this.getMapPlayers();
 
@@ -1535,6 +1877,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 soft、击杀、所有、怪物 操作。
+     */
     public void softKillAllMonsters() {
         closeMapSpawnPoints();
 
@@ -1550,6 +1895,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 击杀所有怪物非友好。
+     */
     public void killAllMonstersNotFriendly() {
         closeMapSpawnPoints();
 
@@ -1563,6 +1911,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 击杀所有怪物。
+     */
     public void killAllMonsters() {
         closeMapSpawnPoints();
 
@@ -1573,6 +1924,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 销毁反应堆。
+     * @param first 起始编号
+     * @param last 结束编号
+     */
     public final void destroyReactors(final int first, final int last) {
         List<Reactor> toDestroy = new ArrayList<>();
         List<MapObject> reactors = getReactors();
@@ -1589,6 +1945,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 销毁反应堆。
+     * @param oid 对象 ID
+     */
     public void destroyReactor(int oid) {
         final Reactor reactor = getReactorByOid(oid);
 
@@ -1599,6 +1959,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 重置反应堆。
+     */
     public void resetReactors() {
         List<Reactor> list = new ArrayList<>();
 
@@ -1617,6 +1980,10 @@ public class MapleMap {
         resetReactors(list);
     }
 
+    /**
+     * 重置反应堆。
+     * @param list 掉落条目列表（Reactor 列表/集合）
+     */
     public final void resetReactors(List<Reactor> list) {
         for (Reactor r : list) {
             if (r.forceDelayedRespawn()) {  // thanks Conrad for suggesting reactor with delay respawning immediately
@@ -1634,6 +2001,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 shuffle、反应堆 操作。
+     */
     public void shuffleReactors() {
         List<Point> points = new ArrayList<>();
         objectRLock.lock();
@@ -1654,6 +2024,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 shuffle、反应堆 操作。
+     * @param first 起始编号
+     * @param last 结束编号
+     */
     public final void shuffleReactors(int first, int last) {
         List<Point> points = new ArrayList<>();
         List<MapObject> reactors = getReactors();
@@ -1673,6 +2048,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 shuffle、反应堆 操作。
+     * @param list 掉落条目列表（Object 列表/集合）
+     */
     public final void shuffleReactors(List<Object> list) {
         List<Point> points = new ArrayList<>();
         List<MapObject> listObjects = new ArrayList<>();
@@ -1714,6 +2093,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取地图对象。
+     * @return List<MapObject> 类型结果
+     */
     public List<MapObject> getMapObjects() {
         objectRLock.lock();
         try {
@@ -1723,6 +2106,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取NPC按ID。
+     * @param id ID
+     * @return NPC 类型结果
+     */
     public NPC getNPCById(int id) {
         for (MapObject obj : getMapObjects()) {
             if (obj.getType() == MapObjectType.NPC) {
@@ -1736,6 +2124,11 @@ public class MapleMap {
         return null;
     }
 
+    /**
+     * 执行 contains、N、P、C 操作。
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     public boolean containsNPC(int npcid) {
         objectRLock.lock();
         try {
@@ -1752,6 +2145,9 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 销毁NPC。
+     */
     public void destroyNPC(int npcid) {     // assumption: there's at most one of the same NPC in a map.
         List<MapObject> npcs = getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.NPC));
 
@@ -1772,6 +2168,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取地图对象。
+     * @param oid 对象 ID
+     * @return MapObject 类型结果
+     */
     public MapObject getMapObject(int oid) {
         objectRLock.lock();
         try {
@@ -1782,22 +2183,30 @@ public class MapleMap {
     }
 
     /**
-     * returns a monster with the given oid, if no such monster exists returns
-     * null
-     *
-     * @param oid
-     * @return
+     * 获取怪物、按、对象 ID。
+     * @param oid 对象 ID
+     * @return Monster 类型结果
      */
     public Monster getMonsterByOid(int oid) {
         MapObject mmo = getMapObject(oid);
         return (mmo != null && mmo.getType() == MapObjectType.MONSTER) ? (Monster) mmo : null;
     }
 
+    /**
+     * 获取反应堆、按、对象 ID。
+     * @param oid 对象 ID
+     * @return Reactor 类型结果
+     */
     public Reactor getReactorByOid(int oid) {
         MapObject mmo = getMapObject(oid);
         return (mmo != null && mmo.getType() == MapObjectType.REACTOR) ? (Reactor) mmo : null;
     }
 
+    /**
+     * 获取反应堆按ID。
+     * @param Id Id
+     * @return Reactor 类型结果
+     */
     public Reactor getReactorById(int Id) {
         objectRLock.lock();
         try {
@@ -1814,6 +2223,12 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取反应堆按ID范围。
+     * @param first 起始编号
+     * @param last 结束编号
+     * @return List<Reactor> 类型结果
+     */
     public List<Reactor> getReactorsByIdRange(final int first, final int last) {
         List<Reactor> list = new LinkedList<>();
 
@@ -1835,6 +2250,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取反应堆按名称。
+     * @param name name
+     * @return Reactor 类型结果
+     */
     public Reactor getReactorByName(String name) {
         objectRLock.lock();
         try {
@@ -1851,11 +2271,22 @@ public class MapleMap {
         return null;
     }
 
+    /**
+     * 生成怪物、在、Ground、Below。
+     * @param id ID
+     * @param x x
+     * @param y y
+     */
     public void spawnMonsterOnGroundBelow(int id, int x, int y) {
         Monster mob = LifeFactory.getMonster(id);
         spawnMonsterOnGroundBelow(mob, new Point(x, y));
     }
 
+    /**
+     * 生成怪物、在、Ground、Below。
+     * @param mob 怪物
+     * @param pos 坐标
+     */
     public void spawnMonsterOnGroundBelow(Monster mob, Point pos) {
         Point spos = new Point(pos.x, pos.y - 1);
         spos = calcPointBelow(spos);
@@ -1864,6 +2295,12 @@ public class MapleMap {
         spawnMonster(mob);
     }
 
+    /**
+     * 生成CPQ怪物。
+     * @param mob 怪物
+     * @param pos 坐标
+     * @param team team
+     */
     public void spawnCPQMonster(Monster mob, Point pos, int team) {
         Point spos = new Point(pos.x, pos.y - 1);
         spos = calcPointBelow(spos);
@@ -1877,12 +2314,22 @@ public class MapleMap {
         m.dropFromFriendlyMonster(delay);
     }
 
+    /**
+     * 生成Fake、怪物、在、Ground、Below。
+     * @param mob 怪物
+     * @param pos 坐标
+     */
     public void spawnFakeMonsterOnGroundBelow(Monster mob, Point pos) {
         Point spos = getGroundBelow(pos);
         mob.setPosition(spos);
         spawnFakeMonster(mob);
     }
 
+    /**
+     * 获取Ground、Below。
+     * @param pos 坐标
+     * @return Point 类型结果
+     */
     public Point getGroundBelow(Point pos) {
         Point spos = new Point(pos.x, pos.y - 14); // Using -14 fixes spawning pets causing a lot of issues.
         spos = calcPointBelow(spos);
@@ -1890,10 +2337,19 @@ public class MapleMap {
         return spos;
     }
 
+    /**
+     * 获取坐标、Below。
+     * @param pos 坐标
+     * @return Point 类型结果
+     */
     public Point getPointBelow(Point pos) {
         return calcPointBelow(pos);
     }
 
+    /**
+     * 生成Revives。
+     * @param monster 怪物
+     */
     public void spawnRevives(final Monster monster) {
         monster.setMap(this);
         if (getEventInstance() != null) {
@@ -1929,6 +2385,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 dismiss、移除、After 操作。
+     * @param monster 怪物
+     */
     public void dismissRemoveAfter(final Monster monster) {
         Runnable removeAfterAction = monster.popRemoveAfterAction();
         if (removeAfterAction != null) {
@@ -1949,10 +2409,20 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 生成所有、怪物、ID、来自、地图、刷新、List。
+     * @param id ID
+     */
     public void spawnAllMonsterIdFromMapSpawnList(int id) {
         spawnAllMonsterIdFromMapSpawnList(id, 1, false);
     }
 
+    /**
+     * 生成所有、怪物、ID、来自、地图、刷新、List。
+     * @param id ID
+     * @param difficulty difficulty
+     * @param isPq isPq
+     */
     public void spawnAllMonsterIdFromMapSpawnList(int id, int difficulty, boolean isPq) {
         for (SpawnPoint sp : getAllMonsterSpawn()) {
             if (sp.getMonsterId() == id && sp.shouldForceSpawn()) {
@@ -1961,20 +2431,38 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 生成所有、怪物、来自、地图、刷新、List。
+     */
     public void spawnAllMonstersFromMapSpawnList() {
         spawnAllMonstersFromMapSpawnList(1, false);
     }
 
+    /**
+     * 生成所有、怪物、来自、地图、刷新、List。
+     * @param difficulty difficulty
+     * @param isPq isPq
+     */
     public void spawnAllMonstersFromMapSpawnList(int difficulty, boolean isPq) {
         for (SpawnPoint sp : getAllMonsterSpawn()) {
             spawnMonster(sp.getMonster(), difficulty, isPq);
         }
     }
 
+    /**
+     * 生成怪物。
+     * @param monster 怪物
+     */
     public void spawnMonster(final Monster monster) {
         spawnMonster(monster, 1, false);
     }
 
+    /**
+     * 生成怪物。
+     * @param monster 怪物
+     * @param difficulty difficulty
+     * @param isPq isPq
+     */
     public void spawnMonster(final Monster monster, int difficulty, boolean isPq) {
         if (mobCapacity != -1 && mobCapacity == spawnedMonstersOnMap.get()) {
             return;//PyPQ
@@ -2027,11 +2515,21 @@ public class MapleMap {
         applyRemoveAfter(monster);  // thanks LightRyuzaki for pointing issues with spawned CWKPQ mobs not applying this
     }
 
+    /**
+     * 生成Dojo、怪物。
+     * @param monster 怪物
+     */
     public void spawnDojoMonster(final Monster monster) {
         Point[] pts = {new Point(140, 0), new Point(190, 7), new Point(187, 7)};
         spawnMonsterWithEffect(monster, 15, pts[Randomizer.nextInt(3)]);
     }
 
+    /**
+     * 生成怪物带效果。
+     * @param monster 怪物
+     * @param effect effect
+     * @param pos 坐标
+     */
     public void spawnMonsterWithEffect(final Monster monster, final int effect, Point pos) {
         monster.setMap(this);
         Point spos = new Point(pos.x, pos.y - 1);
@@ -2058,6 +2556,10 @@ public class MapleMap {
         applyRemoveAfter(monster);
     }
 
+    /**
+     * 生成Fake、怪物。
+     * @param monster 怪物
+     */
     public void spawnFakeMonster(final Monster monster) {
         monster.setMap(this);
         monster.setFake(true);
@@ -2067,6 +2569,10 @@ public class MapleMap {
         addSelfDestructive(monster);
     }
 
+    /**
+     * 执行 make、怪物、Real 操作。
+     * @param monster 怪物
+     */
     public void makeMonsterReal(final Monster monster) {
         monster.setFake(false);
         broadcastMessage(PacketCreator.makeMonsterReal(monster));
@@ -2074,11 +2580,19 @@ public class MapleMap {
         updateBossSpawn(monster);
     }
 
+    /**
+     * 生成反应堆。
+     * @param reactor 反应堆
+     */
     public void spawnReactor(final Reactor reactor) {
         reactor.setMap(this);
         spawnAndAddRangedMapObject(reactor, c -> c.sendPacket(reactor.makeSpawnData()));
     }
 
+    /**
+     * 生成传送门。
+     * @param door door
+     */
     public void spawnDoor(final DoorObject door) {
         spawnAndAddRangedMapObject(door, c -> {
             Character chr = c.getPlayer();
@@ -2089,6 +2603,11 @@ public class MapleMap {
         }, chr -> chr.getMapId() == door.getFrom().getId());
     }
 
+    /**
+     * 获取传送门传送门。
+     * @param doorid doorid
+     * @return Portal 类型结果
+     */
     public Portal getDoorPortal(int doorid) {
         Portal doorPortal = portals.get(0x80 + doorid);
         if (doorPortal == null) {
@@ -2099,10 +2618,22 @@ public class MapleMap {
         return doorPortal;
     }
 
+    /**
+     * 生成召唤兽。
+     * @param summon summon
+     */
     public void spawnSummon(final Summon summon) {
         spawnAndAddRangedMapObject(summon, c -> c.sendPacket(PacketCreator.spawnSummon(summon, true)), null);
     }
 
+    /**
+     * 生成迷雾。
+     * @param mist mist
+     * @param duration duration
+     * @param poison poison
+     * @param fake fake
+     * @param recovery recovery
+     */
     public void spawnMist(final Mist mist, final int duration, boolean poison, boolean fake, boolean recovery) {
         addMapObject(mist);
         broadcastMessage(fake ? mist.makeFakeSpawnData(30) : mist.makeSpawnData());
@@ -2148,6 +2679,10 @@ public class MapleMap {
         service.registerMobMistCancelAction(mapid, mistSchedule, duration);
     }
 
+    /**
+     * 生成风筝。
+     * @param kite kite
+     */
     public void spawnKite(final Kite kite) {
         addMapObject(kite);
         broadcastMessage(kite.makeSpawnData());
@@ -2160,10 +2695,28 @@ public class MapleMap {
         getWorldServer().registerTimedMapObject(expireKite, GameConfig.getServerLong("kite_expire_time"));
     }
 
+    /**
+     * 生成物品掉落。
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param item item
+     * @param pos 坐标
+     * @param ffaDrop ffaDrop
+     * @param playerDrop 是否玩家丢弃
+     */
     public final void spawnItemDrop(final MapObject dropper, final Character owner, final Item item, Point pos, final boolean ffaDrop, final boolean playerDrop) {
         spawnItemDrop(dropper, owner, item, pos, (byte) (ffaDrop ? 2 : 0), playerDrop);
     }
 
+    /**
+     * 生成物品掉落。
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param item item
+     * @param pos 坐标
+     * @param dropType dropType
+     * @param playerDrop 是否玩家丢弃
+     */
     public final void spawnItemDrop(final MapObject dropper, final Character owner, final Item item, Point pos, final byte dropType, final boolean playerDrop) {
         if (FieldLimit.DROP_LIMIT.check(this.getFieldLimit())) { // thanks Conrad for noticing some maps shouldn't have loots available
             this.disappearingItemDrop(dropper, owner, item, pos);
@@ -2194,15 +2747,42 @@ public class MapleMap {
         activateItemReactors(mdrop, owner.getClient());
     }
 
+    /**
+     * 生成物品、掉落、List。
+     * @param list 掉落条目列表（Integer 列表/集合）
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param pos 坐标
+     */
     public final void spawnItemDropList(List<Integer> list, final MapObject dropper, final Character owner, Point pos) {
         spawnItemDropList(list, 1, 1, dropper, owner, pos, true, false);
     }
 
+    /**
+     * 生成物品、掉落、List。
+     * @param list 掉落条目列表（Integer 列表/集合）
+     * @param minCopies minCopies
+     * @param maxCopies maxCopies
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param pos 坐标
+     */
     public final void spawnItemDropList(List<Integer> list, int minCopies, int maxCopies, final MapObject dropper, final Character owner, Point pos) {
         spawnItemDropList(list, minCopies, maxCopies, dropper, owner, pos, true, false);
     }
 
     // spawns item instances of all defined item ids on a list
+    /**
+     * 生成物品、掉落、List。
+     * @param list 掉落条目列表（Integer 列表/集合）
+     * @param minCopies minCopies
+     * @param maxCopies maxCopies
+     * @param dropper 掉落来源
+     * @param owner 归属角色
+     * @param pos 坐标
+     * @param ffaDrop ffaDrop
+     * @param playerDrop 是否玩家丢弃
+     */
     public final void spawnItemDropList(List<Integer> list, int minCopies, int maxCopies, final MapObject dropper, final Character owner, Point pos, final boolean ffaDrop, final boolean playerDrop) {
         int copies = (maxCopies - minCopies) + 1;
         if (copies < 1) {
@@ -2260,6 +2840,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 搜索物品反应堆。
+     * @param react react
+     */
     public void searchItemReactors(final Reactor react) {
         if (react.getReactorType() == 100) {
             Pair<Integer, Integer> reactProp = react.getReactItem(react.getEventState());
@@ -2296,14 +2880,30 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 change、环境 操作。
+     * @param mapObj mapObj
+     * @param newState newState
+     */
     public void changeEnvironment(String mapObj, int newState) {
         broadcastMessage(PacketCreator.environmentChange(mapObj, newState));
     }
 
+    /**
+     * 执行 start、地图、效果 操作。
+     * @param msg msg
+     * @param itemId 物品 ID
+     */
     public void startMapEffect(String msg, int itemId) {
         startMapEffect(msg, itemId, 30000);
     }
 
+    /**
+     * 执行 start、地图、效果 操作。
+     * @param msg msg
+     * @param itemId 物品 ID
+     * @param time time
+     */
     public void startMapEffect(String msg, int itemId, long time) {
         if (mapEffect != null) {
             return;
@@ -2319,6 +2919,11 @@ public class MapleMap {
         registerMapSchedule(r, time);
     }
 
+    /**
+     * 获取Any角色来自队伍。
+     * @param partyid 队伍 ID
+     * @return Character 类型结果
+     */
     public Character getAnyCharacterFromParty(int partyid) {
         for (Character chr : this.getAllPlayers()) {
             if (chr.getPartyId() == partyid) {
@@ -2360,6 +2965,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 添加队伍成员。
+     * @param chr 角色
+     * @param partyid 队伍 ID
+     */
     public void addPartyMember(Character chr, int partyid) {
         chrWLock.lock();
         try {
@@ -2369,6 +2979,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 移除队伍成员。
+     * @param chr 角色
+     * @param partyid 队伍 ID
+     */
     public void removePartyMember(Character chr, int partyid) {
         chrWLock.lock();
         try {
@@ -2378,6 +2993,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 移除队伍。
+     * @param partyid 队伍 ID
+     */
     public void removeParty(int partyid) {
         chrWLock.lock();
         try {
@@ -2387,6 +3006,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 添加玩家。
+     * @param chr 角色
+     */
     public void addPlayer(final Character chr) {
         int chrSize;
         Party party = chr.getParty();
@@ -2624,6 +3247,10 @@ public class MapleMap {
         Server.getInstance().registerAnnouncePlayerDiseases(c);
     }
 
+    /**
+     * 获取Random、玩家、Spawnpoint。
+     * @return Portal 类型结果
+     */
     public Portal getRandomPlayerSpawnpoint() {
         List<Portal> spawnPoints = new ArrayList<>();
         for (Portal portal : portals.values()) {
@@ -2635,6 +3262,11 @@ public class MapleMap {
         return portal != null ? portal : getPortal(0);
     }
 
+    /**
+     * 查找Closest、传送、传送门。
+     * @param from from
+     * @return Portal 类型结果
+     */
     public Portal findClosestTeleportPortal(Point from) {
         Portal closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
@@ -2648,6 +3280,11 @@ public class MapleMap {
         return closest;
     }
 
+    /**
+     * 查找Closest、玩家、Spawnpoint。
+     * @param from from
+     * @return Portal 类型结果
+     */
     public Portal findClosestPlayerSpawnpoint(Point from) {
         Portal closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
@@ -2661,6 +3298,11 @@ public class MapleMap {
         return closest;
     }
 
+    /**
+     * 查找Closest、传送门。
+     * @param from from
+     * @return Portal 类型结果
+     */
     public Portal findClosestPortal(Point from) {
         Portal closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
@@ -2674,6 +3316,10 @@ public class MapleMap {
         return closest;
     }
 
+    /**
+     * 查找Market、传送门。
+     * @return Portal 类型结果
+     */
     public Portal findMarketPortal() {
         for (Portal portal : portals.values()) {
             String ptScript = portal.getScriptName();
@@ -2685,6 +3331,10 @@ public class MapleMap {
     }
 
     /*
+    /**
+     * 获取Portals。
+     * @return Collection<Portal> 类型结果
+     */
     public Collection<Portal> getPortals() {
         return Collections.unmodifiableCollection(portals.values());
     }
@@ -2696,12 +3346,20 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 移除玩家、Puppet。
+     * @param player 玩家
+     */
     public void removePlayerPuppet(Character player) {
         for (Monster mm : this.getAllMonsters()) {
             mm.aggroRemovePuppet(player);
         }
     }
 
+    /**
+     * 移除玩家。
+     * @param chr 角色
+     */
     public void removePlayer(Character chr) {
         Channel cserv = chr.getClient().getChannelServer();
         chr.unregisterChairBuff();
@@ -2888,10 +3546,23 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 向地图广播Boss、HP、Message。
+     * @param mm mm
+     * @param bossHash bossHash
+     * @param packet 网络数据包
+     */
     public void broadcastBossHpMessage(Monster mm, int bossHash, Packet packet) {
         broadcastBossHpMessage(mm, bossHash, null, packet, Double.POSITIVE_INFINITY, null);
     }
 
+    /**
+     * 向地图广播Boss、HP、Message。
+     * @param mm mm
+     * @param bossHash bossHash
+     * @param packet 网络数据包
+     * @param rangedFrom rangedFrom
+     */
     public void broadcastBossHpMessage(Monster mm, int bossHash, Packet packet, Point rangedFrom) {
         broadcastBossHpMessage(mm, bossHash, null, packet, getRangedDistance(), rangedFrom);
     }
@@ -2947,10 +3618,22 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 向地图广播刷新、玩家、地图、对象、Message。
+     * @param source 来源角色
+     * @param player 玩家
+     * @param enteringField enteringField
+     */
     public void broadcastSpawnPlayerMapObjectMessage(Character source, Character player, boolean enteringField) {
         broadcastSpawnPlayerMapObjectMessage(source, player, enteringField, false);
     }
 
+    /**
+     * 向地图广播G、M、刷新、玩家、地图、对象、Message。
+     * @param source 来源角色
+     * @param player 玩家
+     * @param enteringField enteringField
+     */
     public void broadcastGMSpawnPlayerMapObjectMessage(Character source, Character player, boolean enteringField) {
         broadcastSpawnPlayerMapObjectMessage(source, player, enteringField, true);
     }
@@ -2988,6 +3671,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 向地图广播更新、Char、Look、Message。
+     * @param source 来源角色
+     * @param player 玩家
+     */
     public void broadcastUpdateCharLookMessage(Character source, Character player) {
         chrRLock.lock();
         try {
@@ -3006,10 +3694,20 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 掉落Message。
+     * @param type 类型
+     * @param message message
+     */
     public void dropMessage(int type, String message) {
         broadcastStringMessage(type, message);
     }
 
+    /**
+     * 向地图广播String、Message。
+     * @param type 类型
+     * @param message message
+     */
     public void broadcastStringMessage(int type, String message) {
         broadcastMessage(PacketCreator.serverNotice(type, message));
     }
@@ -3079,6 +3777,13 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取地图对象在范围。
+     * @param from from
+     * @param rangeSq rangeSq
+     * @param types 对象类型列表（MapObjectType 列表/集合）
+     * @return List<MapObject> 类型结果
+     */
     public List<MapObject> getMapObjectsInRange(Point from, double rangeSq, List<MapObjectType> types) {
         List<MapObject> ret = new LinkedList<>();
         objectRLock.lock();
@@ -3096,6 +3801,12 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取地图对象在区域。
+     * @param box 矩形区域
+     * @param types 对象类型列表（MapObjectType 列表/集合）
+     * @return List<MapObject> 类型结果
+     */
     public List<MapObject> getMapObjectsInBox(Rectangle box, List<MapObjectType> types) {
         List<MapObject> ret = new LinkedList<>();
         objectRLock.lock();
@@ -3113,10 +3824,19 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 添加传送门。
+     * @param myPortal myPortal
+     */
     public void addPortal(Portal myPortal) {
         portals.put(myPortal.getId(), myPortal);
     }
 
+    /**
+     * 获取传送门。
+     * @param portalname portalname
+     * @return Portal 类型结果
+     */
     public Portal getPortal(String portalname) {
         for (Portal port : portals.values()) {
             if (port.getName().equals(portalname)) {
@@ -3126,47 +3846,91 @@ public class MapleMap {
         return null;
     }
 
+    /**
+     * 获取传送门。
+     * @param portalid portalid
+     * @return Portal 类型结果
+     */
     public Portal getPortal(int portalid) {
         return portals.get(portalid);
     }
 
+    /**
+     * 添加冒险岛区域。
+     * @param rec rec
+     */
     public void addMapleArea(Rectangle rec) {
         areas.add(rec);
     }
 
+    /**
+     * 获取Areas。
+     * @return List<Rectangle> 类型结果
+     */
     public List<Rectangle> getAreas() {
         return new ArrayList<>(areas);
     }
 
+    /**
+     * 获取区域。
+     * @param index index
+     * @return Rectangle 类型结果
+     */
     public Rectangle getArea(int index) {
         return areas.get(index);
     }
 
+    /**
+     * 设置落脚点。
+     * @param footholds footholds
+     */
     public void setFootholds(FootholdTree footholds) {
         this.footholds = footholds;
     }
 
+    /**
+     * 获取落脚点。
+     * @return FootholdTree 类型结果
+     */
     public FootholdTree getFootholds() {
         return footholds;
     }
 
+    /**
+     * 设置地图、坐标、Boundings。
+     * @param px px
+     * @param py py
+     * @param h h
+     * @param w w
+     */
     public void setMapPointBoundings(int px, int py, int h, int w) {
         mapArea.setBounds(px, py, w, h);
     }
 
+    /**
+     * 设置地图、Line、Boundings。
+     * @param vrTop vrTop
+     * @param vrBottom vrBottom
+     * @param vrLeft vrLeft
+     * @param vrRight vrRight
+     */
     public void setMapLineBoundings(int vrTop, int vrBottom, int vrLeft, int vrRight) {
         mapArea.setBounds(vrLeft, vrTop, vrRight - vrLeft, vrBottom - vrTop);
     }
 
+    /**
+     * 获取仇恨、Coordinator。
+     * @return MonsterAggroCoordinator 类型结果
+     */
     public MonsterAggroCoordinator getAggroCoordinator() {
         return aggroMonitor;
     }
 
     /**
-     * it's threadsafe, gtfo :D
-     *
-     * @param monster
-     * @param mobTime
+     * 添加怪物刷新。
+     * @param monster 怪物
+     * @param mobTime mobTime
+     * @param team team
      */
     public void addMonsterSpawn(Monster monster, int mobTime, int team) {
         Point newpos = calcPointBelow(monster.getPosition());
@@ -3178,6 +3942,12 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 添加所有怪物刷新。
+     * @param monster 怪物
+     * @param mobTime mobTime
+     * @param team team
+     */
     public void addAllMonsterSpawn(Monster monster, int mobTime, int team) {
         Point newpos = calcPointBelow(monster.getPosition());
         newpos.y -= 1;
@@ -3185,6 +3955,12 @@ public class MapleMap {
         allMonsterSpawn.add(sp);
     }
 
+    /**
+     * 移除怪物刷新。
+     * @param mobId mobId
+     * @param x x
+     * @param y y
+     */
     public void removeMonsterSpawn(int mobId, int x, int y) {
         // assumption: spawn points identifies by tuple (lifeid, x, y)
 
@@ -3208,6 +3984,12 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 移除所有怪物刷新。
+     * @param mobId mobId
+     * @param x x
+     * @param y y
+     */
     public void removeAllMonsterSpawn(int mobId, int x, int y) {
         // assumption: spawn points identifies by tuple (lifeid, x, y)
 
@@ -3231,6 +4013,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 report、怪物、刷新、Points 操作。
+     * @param chr 角色
+     */
     public void reportMonsterSpawnPoints(Character chr) {
         // 输出地图刷怪点统计信息头
         chr.dropMessage(6, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -3247,6 +4033,10 @@ public class MapleMap {
         chr.dropMessage(6, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     }
 
+    /**
+     * 获取地图玩家。
+     * @return Map<Integer, Character> 类型结果
+     */
     public Map<Integer, Character> getMapPlayers() {
         chrRLock.lock();
         try {
@@ -3262,6 +4052,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取Characters。
+     * @return Collection<Character> 类型结果
+     */
     public Collection<Character> getCharacters() {
         chrRLock.lock();
         try {
@@ -3271,6 +4065,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取角色按ID。
+     * @param id ID
+     * @return Character 类型结果
+     */
     public Character getCharacterById(int id) {
         chrRLock.lock();
         try {
@@ -3297,6 +4096,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 move、怪物 操作。
+     * @param monster 怪物
+     * @param reportedPos reportedPos
+     */
     public void moveMonster(Monster monster, Point reportedPos) {
         monster.setPosition(reportedPos);
         for (Character chr : getAllPlayers()) {
@@ -3304,6 +4108,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 move、玩家 操作。
+     * @param player 玩家
+     * @param newPosition newPosition
+     */
     public void movePlayer(Character player, Point newPosition) {
         player.setPosition(newPosition);
 
@@ -3332,6 +4141,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 切换环境开关状态。
+     * @param ms ms
+     */
     public final void toggleEnvironment(final String ms) {
         Map<String, Integer> env = getEnvironment();
 
@@ -3342,6 +4155,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 move、环境 操作。
+     * @param ms ms
+     * @param type 类型
+     */
     public final void moveEnvironment(final String ms, final int type) {
         broadcastMessage(PacketCreator.environmentMove(ms, type));
 
@@ -3353,6 +4171,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取环境。
+     * @return Map<String, Integer> 类型结果
+     */
     public final Map<String, Integer> getEnvironment() {
         objectRLock.lock();
         try {
@@ -3362,67 +4184,131 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取地图名称。
+     * @return String 类型结果
+     */
     public String getMapName() {
         return mapName;
     }
 
+    /**
+     * 设置地图名称。
+     * @param mapName mapName
+     */
     public void setMapName(String mapName) {
         this.mapName = mapName;
     }
 
+    /**
+     * 获取街道名称。
+     * @return String 类型结果
+     */
     public String getStreetName() {
         return streetName;
     }
 
+    /**
+     * 设置时钟。
+     * @param hasClock hasClock
+     */
     public void setClock(boolean hasClock) {
         this.clock = hasClock;
     }
 
+    /**
+     * 判断是否拥有时钟。
+     * @return boolean 类型结果
+     */
     public boolean hasClock() {
         return clock;
     }
 
+    /**
+     * 设置Town。
+     * @param isTown isTown
+     */
     public void setTown(boolean isTown) {
         this.town = isTown;
     }
 
+    /**
+     * 判断是否为Town。
+     * @return boolean 类型结果
+     */
     public boolean isTown() {
         return town;
     }
 
+    /**
+     * 判断是否为Muted。
+     * @return boolean 类型结果
+     */
     public boolean isMuted() {
         return isMuted;
     }
 
+    /**
+     * 设置Muted。
+     * @param mute mute
+     */
     public void setMuted(boolean mute) {
         isMuted = mute;
     }
 
+    /**
+     * 设置街道名称。
+     * @param streetName streetName
+     */
     public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
 
+    /**
+     * 设置Everlast。
+     * @param everlast everlast
+     */
     public void setEverlast(boolean everlast) {
         this.everlast = everlast;
     }
 
+    /**
+     * 获取Everlast。
+     * @return boolean 类型结果
+     */
     public boolean getEverlast() {
         return everlast;
     }
 
+    /**
+     * 获取Spawned、怪物、在、地图。
+     * @return int 类型结果
+     */
     public int getSpawnedMonstersOnMap() {
         return spawnedMonstersOnMap.get();
     }
 
+    /**
+     * 设置怪物、Capacity。
+     * @param capacity capacity
+     */
     public void setMobCapacity(int capacity) {
         this.mobCapacity = capacity;
     }
 
+    /**
+     * 设置背景、Types。
+     * @param backTypes backTypes
+     */
     public void setBackgroundTypes(HashMap<Integer, Integer> backTypes) {
         backgroundTypes.putAll(backTypes);
     }
 
     // not really costly to keep generating imo
+    /**
+     * 执行 send、Night、效果 操作。
+     * @param chr 角色
+     */
     public void sendNightEffect(Character chr) {
         for (Entry<Integer, Integer> types : backgroundTypes.entrySet()) {
             if (types.getValue() >= 3) { // 3 is a special number
@@ -3431,6 +4317,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 向地图广播Night、效果。
+     */
     public void broadcastNightEffect() {
         chrRLock.lock();
         try {
@@ -3447,6 +4336,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取角色按名称。
+     * @param name name
+     * @return Character 类型结果
+     */
     public Character getCharacterByName(String name) {
         chrRLock.lock();
         try {
@@ -3461,6 +4355,11 @@ public class MapleMap {
         return null;
     }
 
+    /**
+     * 执行 make、Disappear、物品、来自、地图 操作。
+     * @param mapobj mapobj
+     * @return boolean 类型结果
+     */
     public boolean makeDisappearItemFromMap(MapObject mapobj) {
         if (mapobj instanceof MapItem) {
             return makeDisappearItemFromMap((MapItem) mapobj);
@@ -3469,6 +4368,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 make、Disappear、物品、来自、地图 操作。
+     * @param mapitem mapitem
+     * @return boolean 类型结果
+     */
     public boolean makeDisappearItemFromMap(MapItem mapitem) {
         if (mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
             mapitem.lockItem();
@@ -3513,11 +4417,14 @@ public class MapleMap {
             this.mob = mob;
         }
 
+        /**
+         * 执行动作逻辑。
+         */
         @Override
         public void run() {
             byte d = 1;
 
-            // Normal Drops
+            // 普通掉落
             d = dropItemsFromMonsterOnMap(dropEntry, pos, d, chRate, droptype, mobpos, chr, mob);
 
             // Global Drops
@@ -3535,12 +4442,22 @@ public class MapleMap {
         private final Reactor reactor;
         private final Client c;
 
+        /**
+         * 执行 Activate、物品、反应堆 操作。
+         * @param mapitem mapitem
+         * @param reactor 反应堆
+         * @param c c
+         * @return ActivateItemReactor 类型结果
+         */
         public ActivateItemReactor(MapItem mapitem, Reactor reactor, Client c) {
             this.mapitem = mapitem;
             this.reactor = reactor;
             this.c = c;
         }
 
+        /**
+         * 执行动作逻辑。
+         */
         @Override
         public void run() {
             reactor.hitLockReactor();
@@ -3589,6 +4506,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 instance、地图、First、刷新 操作。
+     * @param difficulty difficulty
+     * @param isPq isPq
+     */
     public void instanceMapFirstSpawn(int difficulty, boolean isPq) {
         for (SpawnPoint spawnPoint : getAllMonsterSpawn()) {
             if (spawnPoint.getMobTime() == -1) {   //just those allowed to be spawned only once
@@ -3597,6 +4519,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 instance、地图、Respawn 操作。
+     */
     public void instanceMapRespawn() {
         if (!allowSummons) {
             return;
@@ -3619,6 +4544,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 instance、地图、Force、Respawn 操作。
+     */
     public void instanceMapForceRespawn() {
         if (!allowSummons) {
             return;
@@ -3641,18 +4569,29 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 close、地图、刷新、Points 操作。
+     */
     public void closeMapSpawnPoints() {
         for (SpawnPoint spawnPoint : getMonsterSpawn()) {
             spawnPoint.setDenySpawn(true);
         }
     }
 
+    /**
+     * 执行 restore、地图、刷新、Points 操作。
+     */
     public void restoreMapSpawnPoints() {
         for (SpawnPoint spawnPoint : getMonsterSpawn()) {
             spawnPoint.setDenySpawn(false);
         }
     }
 
+    /**
+     * 设置Allow、刷新、坐标、在、区域。
+     * @param allow allow
+     * @param box 矩形区域
+     */
     public void setAllowSpawnPointInBox(boolean allow, Rectangle box) {
         for (SpawnPoint sp : getMonsterSpawn()) {
             if (box.contains(sp.getPosition())) {
@@ -3661,6 +4600,12 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 设置Allow、刷新、坐标、在、范围。
+     * @param allow allow
+     * @param from from
+     * @param rangeSq rangeSq
+     */
     public void setAllowSpawnPointInRange(boolean allow, Point from, double rangeSq) {
         for (SpawnPoint sp : getMonsterSpawn()) {
             if (from.distanceSq(sp.getPosition()) <= rangeSq) {
@@ -3669,6 +4614,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 查找Closest、Spawnpoint。
+     * @param from from
+     * @return SpawnPoint 类型结果
+     */
     public SpawnPoint findClosestSpawnpoint(Point from) {
         SpawnPoint closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
@@ -3704,6 +4654,9 @@ public class MapleMap {
         return maxNumShouldSpawn - spawnedMonstersOnMap.get();
     }
 
+    /**
+     * 执行 respawn 操作。
+     */
     public void respawn() {
         if (!allowSummons) {
             return;
@@ -3739,6 +4692,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 mob、MP、Recovery 操作。
+     */
     public void mobMpRecovery() {
         for (Monster mob : this.getAllMonsters()) {
             if (mob.isAlive()) {
@@ -3747,10 +4703,20 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取Num玩家在区域。
+     * @param index index
+     * @return int 类型结果
+     */
     public final int getNumPlayersInArea(final int index) {
         return getNumPlayersInRect(getArea(index));
     }
 
+    /**
+     * 获取Num、玩家、在、矩形区域。
+     * @param rect rect
+     * @return int 类型结果
+     */
     public final int getNumPlayersInRect(final Rectangle rect) {
         int ret = 0;
 
@@ -3768,10 +4734,20 @@ public class MapleMap {
         return ret;
     }
 
+    /**
+     * 获取Num玩家物品在区域。
+     * @param index index
+     * @return int 类型结果
+     */
     public final int getNumPlayersItemsInArea(final int index) {
         return getNumPlayersItemsInRect(getArea(index));
     }
 
+    /**
+     * 获取Num、玩家、物品、在、矩形区域。
+     * @param rect rect
+     * @return int 类型结果
+     */
     public final int getNumPlayersItemsInRect(final Rectangle rect) {
         int retP = getNumPlayersInRect(rect);
         int retI = getMapObjectsInBox(rect, Arrays.asList(MapObjectType.ITEM)).size();
@@ -3789,26 +4765,50 @@ public class MapleMap {
         boolean canSpawn(Character chr);
     }
 
+    /**
+     * 获取HPDec。
+     * @return int 类型结果
+     */
     public int getHPDec() {
         return decHP;
     }
 
+    /**
+     * 设置HPDec。
+     * @param delta delta
+     */
     public void setHPDec(int delta) {
         decHP = delta;
     }
 
+    /**
+     * 获取H、P、Dec、Protect。
+     * @return int 类型结果
+     */
     public int getHPDecProtect() {
         return protectItem;
     }
 
+    /**
+     * 设置H、P、Dec、Protect。
+     * @param delta delta
+     */
     public void setHPDecProtect(int delta) {
         this.protectItem = delta;
     }
 
+    /**
+     * 获取Recovery。
+     * @return float 类型结果
+     */
     public float getRecovery() {
         return recovery;
     }
 
+    /**
+     * 设置Recovery。
+     * @param recRate recRate
+     */
     public void setRecovery(float recRate) {
         recovery = recRate;
     }
@@ -3817,26 +4817,52 @@ public class MapleMap {
         return !boat ? 0 : (docked ? 1 : 2);
     }
 
+    /**
+     * 设置船只。
+     * @param hasBoat hasBoat
+     */
     public void setBoat(boolean hasBoat) {
         this.boat = hasBoat;
     }
 
+    /**
+     * 设置停靠。
+     * @param isDocked isDocked
+     */
     public void setDocked(boolean isDocked) {
         this.docked = isDocked;
     }
 
+    /**
+     * 获取停靠。
+     * @return boolean 类型结果
+     */
     public boolean getDocked() {
         return this.docked;
     }
 
+    /**
+     * 设置座位。
+     * @param seats seats
+     */
     public void setSeats(int seats) {
         this.seats = seats;
     }
 
+    /**
+     * 获取座位。
+     * @return int 类型结果
+     */
     public int getSeats() {
         return seats;
     }
 
+    /**
+     * 向地图广播G、M、Message。
+     * @param source 来源角色
+     * @param packet 网络数据包
+     * @param repeatToSource repeatToSource
+     */
     public void broadcastGMMessage(Character source, Packet packet, boolean repeatToSource) {
         broadcastGMMessage(repeatToSource ? null : source, packet, Double.POSITIVE_INFINITY, source.getPosition());
     }
@@ -3865,6 +4891,12 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 向地图广播N、O、N、G、M、Message。
+     * @param source 来源角色
+     * @param packet 网络数据包
+     * @param repeatToSource repeatToSource
+     */
     public void broadcastNONGMMessage(Character source, Packet packet, boolean repeatToSource) {
         chrRLock.lock();
         try {
@@ -3883,34 +4915,66 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取OX。
+     * @return OxQuiz 类型结果
+     */
     public OxQuiz getOx() {
         return ox;
     }
 
+    /**
+     * 设置OX。
+     * @param set set
+     */
     public void setOx(OxQuiz set) {
         this.ox = set;
     }
 
+    /**
+     * 设置OX问答。
+     * @param b b
+     */
     public void setOxQuiz(boolean b) {
         this.isOxQuiz = b;
     }
 
+    /**
+     * 判断是否为OX问答。
+     * @return boolean 类型结果
+     */
     public boolean isOxQuiz() {
         return isOxQuiz;
     }
 
+    /**
+     * 设置在、User、进入。
+     * @param onUserEnter onUserEnter
+     */
     public void setOnUserEnter(String onUserEnter) {
         this.onUserEnter = onUserEnter;
     }
 
+    /**
+     * 获取在、User、进入。
+     * @return String 类型结果
+     */
     public String getOnUserEnter() {
         return onUserEnter;
     }
 
+    /**
+     * 设置在、First、User、进入。
+     * @param onFirstUserEnter onFirstUserEnter
+     */
     public void setOnFirstUserEnter(String onFirstUserEnter) {
         this.onFirstUserEnter = onFirstUserEnter;
     }
 
+    /**
+     * 获取在、First、User、进入。
+     * @return String 类型结果
+     */
     public String getOnFirstUserEnter() {
         return onFirstUserEnter;
     }
@@ -3919,10 +4983,18 @@ public class MapleMap {
         return fieldType == 81 || fieldType == 82;
     }
 
+    /**
+     * 设置地图类型。
+     * @param fieldType fieldType
+     */
     public void setFieldType(int fieldType) {
         this.fieldType = fieldType;
     }
 
+    /**
+     * 执行 clear、掉落 操作。
+     * @param player 玩家
+     */
     public void clearDrops(Character player) {
         for (MapObject i : getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.ITEM))) {
             droppedItemCount.decrementAndGet();
@@ -3931,6 +5003,9 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 clear、掉落 操作。
+     */
     public void clearDrops() {
         for (MapObject i : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.ITEM))) {
             droppedItemCount.decrementAndGet();
@@ -3939,22 +5014,42 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 设置地图限制。
+     * @param fieldLimit fieldLimit
+     */
     public void setFieldLimit(int fieldLimit) {
         this.fieldLimit = fieldLimit;
     }
 
+    /**
+     * 获取地图限制。
+     * @return int 类型结果
+     */
     public int getFieldLimit() {
         return fieldLimit;
     }
 
+    /**
+     * 执行 allow、召唤兽、状态 操作。
+     * @param b b
+     */
     public void allowSummonState(boolean b) {
         MapleMap.this.allowSummons = b;
     }
 
+    /**
+     * 获取召唤兽状态。
+     * @return boolean 类型结果
+     */
     public boolean getSummonState() {
         return MapleMap.this.allowSummons;
     }
 
+    /**
+     * 传送Everyone。
+     * @param to to
+     */
     public void warpEveryone(int to) {
         List<Character> players = new ArrayList<>(getCharacters());
 
@@ -3963,6 +5058,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 传送Everyone。
+     * @param to to
+     * @param pto pto
+     */
     public void warpEveryone(int to, int pto) {
         List<Character> players = new ArrayList<>(getCharacters());
 
@@ -3972,6 +5072,11 @@ public class MapleMap {
     }
 
     // BEGIN EVENTS
+    /**
+     * 设置雪球。
+     * @param team team
+     * @param ball ball
+     */
     public void setSnowball(int team, Snowball ball) {
         switch (team) {
             case 0:
@@ -3985,6 +5090,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取雪球。
+     * @param team team
+     * @return Snowball 类型结果
+     */
     public Snowball getSnowball(int team) {
         switch (team) {
             case 0:
@@ -4000,14 +5110,27 @@ public class MapleMap {
         return fieldType == 4 || fieldType == 19;
     }
 
+    /**
+     * 设置椰子。
+     * @param nut nut
+     */
     public void setCoconut(Coconut nut) {
         this.coconut = nut;
     }
 
+    /**
+     * 获取椰子。
+     * @return Coconut 类型结果
+     */
     public Coconut getCoconut() {
         return coconut;
     }
 
+    /**
+     * 传送Out按队伍。
+     * @param team team
+     * @param mapid 地图 ID
+     */
     public void warpOutByTeam(int team, int mapid) {
         List<Character> chars = new ArrayList<>(getCharacters());
         for (Character chr : chars) {
@@ -4019,6 +5142,10 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 start、事件 操作。
+     * @param chr 角色
+     */
     public void startEvent(final Character chr) {
         if (this.mapid == MapId.EVENT_COCONUT_HARVEST && getCoconut() == null) {
             setCoconut(new Coconut(this));
@@ -4041,18 +5168,33 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 event、Started 操作。
+     * @return boolean 类型结果
+     */
     public boolean eventStarted() {
         return eventstarted;
     }
 
+    /**
+     * 执行 start、事件 操作。
+     */
     public void startEvent() {
         this.eventstarted = true;
     }
 
+    /**
+     * 设置事件、Started。
+     * @param event event
+     */
     public void setEventStarted(boolean event) {
         this.eventstarted = event;
     }
 
+    /**
+     * 获取事件NPC。
+     * @return String 类型结果
+     */
     public String getEventNPC() {
         StringBuilder sb = new StringBuilder();
         sb.append("请与 "+ mapName + " 的 ");
@@ -4071,27 +5213,52 @@ public class MapleMap {
         return sb.toString();
     }
 
+    /**
+     * 判断是否拥有事件NPC。
+     * @return boolean 类型结果
+     */
     public boolean hasEventNPC() {
         return this.mapid == 60000 || this.mapid == MapId.LITH_HARBOUR || this.mapid == MapId.ORBIS || this.mapid == MapId.LUDIBRIUM;
     }
 
+    /**
+     * 判断是否为Starting、事件、地图。
+     * @return boolean 类型结果
+     */
     public boolean isStartingEventMap() {
         return this.mapid == MapId.EVENT_PHYSICAL_FITNESS || this.mapid == MapId.EVENT_OX_QUIZ ||
                 this.mapid == MapId.EVENT_FIND_THE_JEWEL || this.mapid == MapId.EVENT_OLA_OLA_0 || this.mapid == MapId.EVENT_OLA_OLA_1;
     }
 
+    /**
+     * 判断是否为事件地图。
+     * @return boolean 类型结果
+     */
     public boolean isEventMap() {
         return this.mapid >= MapId.EVENT_FIND_THE_JEWEL && this.mapid < MapId.EVENT_WINNER || this.mapid > MapId.EVENT_EXIT && this.mapid <= 109090000;
     }
 
+    /**
+     * 设置时间怪物。
+     * @param id ID
+     * @param msg msg
+     */
     public void setTimeMob(int id, String msg) {
         timeMob = new Pair<>(id, msg);
     }
 
+    /**
+     * 获取时间怪物。
+     * @return Pair<Integer, String> 类型结果
+     */
     public Pair<Integer, String> getTimeMob() {
         return timeMob;
     }
 
+    /**
+     * 切换Hidden、N、P、C开关状态。
+     * @param id ID
+     */
     public void toggleHiddenNPC(int id) {
         chrRLock.lock();
         objectRLock.lock();
@@ -4114,36 +5281,65 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 设置怪物间隔。
+     * @param interval interval
+     */
     public void setMobInterval(short interval) {
         this.mobInterval = interval;
     }
 
+    /**
+     * 获取怪物间隔。
+     * @return short 类型结果
+     */
     public short getMobInterval() {
         return mobInterval;
     }
 
+    /**
+     * 执行 clear、地图、对象 操作。
+     */
     public void clearMapObjects() {
         clearDrops();
         killAllMonsters();
         resetReactors();
     }
 
+    /**
+     * 重置Fully。
+     */
     public final void resetFully() {
         resetMapObjects();
     }
 
+    /**
+     * 重置地图对象。
+     */
     public void resetMapObjects() {
         resetMapObjects(1, false);
     }
 
+    /**
+     * 重置PQ。
+     */
     public void resetPQ() {
         resetPQ(1);
     }
 
+    /**
+     * 重置PQ。
+     * @param difficulty difficulty
+     */
     public void resetPQ(int difficulty) {
         resetMapObjects(difficulty, true);
     }
 
+    /**
+     * 重置地图对象。
+     * @param difficulty difficulty
+     * @param isPq isPq
+     */
     public void resetMapObjects(int difficulty, boolean isPq) {
         clearMapObjects();
 
@@ -4151,16 +5347,28 @@ public class MapleMap {
         instanceMapFirstSpawn(difficulty, isPq);
     }
 
+    /**
+     * 向地图广播Ship。
+     * @param state 状态值
+     */
     public void broadcastShip(final boolean state) {
         broadcastMessage(PacketCreator.boatPacket(state));
         this.setDocked(state);
     }
 
+    /**
+     * 向地图广播Enemy、Ship。
+     * @param state 状态值
+     */
     public void broadcastEnemyShip(final boolean state) {
         broadcastMessage(PacketCreator.crogBoatPacket(state));
         this.setDocked(state);
     }
 
+    /**
+     * 判断是否为黑龙、Defeated。
+     * @return boolean 类型结果
+     */
     public boolean isHorntailDefeated() {   // all parts of dead horntail can be found here?
         for (int i = MobId.DEAD_HORNTAIL_MIN; i <= MobId.DEAD_HORNTAIL_MAX; i++) {
             if (getMonsterById(i) == null) {
@@ -4171,6 +5379,9 @@ public class MapleMap {
         return true;
     }
 
+    /**
+     * 生成黑龙、在、Ground、Below。
+     */
     public void spawnHorntailOnGroundBelow(final Point targetPoint) {   // ayy lmao
         Monster htIntro = LifeFactory.getMonster(MobId.SUMMON_HORNTAIL);
         spawnMonsterOnGroundBelow(htIntro, targetPoint);    // htintro spawn animation converting into horntail detected thanks to Arnah
@@ -4178,15 +5389,28 @@ public class MapleMap {
         final Monster ht = LifeFactory.getMonster(MobId.HORNTAIL);
         ht.setParentMobOid(htIntro.getObjectId());
         ht.addListener(new MonsterListener() {
+            /**
+             * 执行 monster、Killed 操作。
+             * @param aniTime aniTime
+             */
             @Override
             public void monsterKilled(int aniTime) {
             }
 
+            /**
+             * 执行 monster、Damaged 操作。
+             * @param from from
+             * @param trueDmg trueDmg
+             */
             @Override
             public void monsterDamaged(Character from, int trueDmg) {
                 ht.addHp(trueDmg);
             }
 
+            /**
+             * 执行 monster、Healed 操作。
+             * @param trueHeal trueHeal
+             */
             @Override
             public void monsterHealed(int trueHeal) {
                 ht.addHp(-trueHeal);
@@ -4199,16 +5423,29 @@ public class MapleMap {
             m.setParentMobOid(htIntro.getObjectId());
 
             m.addListener(new MonsterListener() {
+                /**
+                 * 执行 monster、Killed 操作。
+                 * @param aniTime aniTime
+                 */
                 @Override
                 public void monsterKilled(int aniTime) {
                 }
 
+                /**
+                 * 执行 monster、Damaged 操作。
+                 * @param from from
+                 * @param trueDmg trueDmg
+                 */
                 @Override
                 public void monsterDamaged(Character from, int trueDmg) {
-                    // thanks Halcyon for noticing HT not dropping loots due to propagated damage not registering attacker
+                    // 感谢 Halcyon：修复黑龙因传播伤害未登记攻击者导致不掉落的问题
                     ht.applyFakeDamage(from, trueDmg, true);
                 }
 
+                /**
+                 * 执行 monster、Healed 操作。
+                 * @param trueHeal trueHeal
+                 */
                 @Override
                 public void monsterHealed(int trueHeal) {
                     ht.addHp(trueHeal);
@@ -4219,6 +5456,11 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 claim、Ownership 操作。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean claimOwnership(Character chr) {
         if (mapOwner == null) {
             this.mapOwner = chr;
@@ -4233,11 +5475,20 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 执行 unclaim、Ownership 操作。
+     * @return Character 类型结果
+     */
     public Character unclaimOwnership() {
         Character lastOwner = this.mapOwner;
         return unclaimOwnership(lastOwner) ? lastOwner : null;
     }
 
+    /**
+     * 执行 unclaim、Ownership 操作。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean unclaimOwnership(Character chr) {
         if (chr != null && mapOwner == chr) {
             this.mapOwner = null;
@@ -4256,6 +5507,11 @@ public class MapleMap {
         mapOwnerLastActivityTime = Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * 判断是否为Ownership、Restricted。
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public boolean isOwnershipRestricted(Character chr) {
         Character owner = mapOwner;
 
@@ -4271,6 +5527,9 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 检查地图、归属者、Activity。
+     */
     public void checkMapOwnerActivity() {
         long timeNow = Server.getInstance().getCurrentTime();
         if (timeNow - mapOwnerLastActivityTime > 60000) {
@@ -4287,23 +5546,42 @@ public class MapleMap {
     private final List<Integer> skillIds = new ArrayList();
     private final List<Pair<Integer, Integer>> mobsToSpawn = new ArrayList();
 
+    /**
+     * 获取Blue、队伍、Buffs。
+     * @return List<MCSkill> 类型结果
+     */
     public List<MCSkill> getBlueTeamBuffs() {
         return blueTeamBuffs;
     }
 
+    /**
+     * 获取Red、队伍、Buffs。
+     * @return List<MCSkill> 类型结果
+     */
     public List<MCSkill> getRedTeamBuffs() {
         return redTeamBuffs;
     }
 
+    /**
+     * 执行 clear、Buff、List 操作。
+     */
     public void clearBuffList() {
         redTeamBuffs.clear();
         blueTeamBuffs.clear();
     }
 
+    /**
+     * 获取所有玩家。
+     * @return List<MapObject> 类型结果
+     */
     public List<MapObject> getAllPlayer() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.PLAYER));
     }
 
+    /**
+     * 判断是否为CPQ地图。
+     * @return boolean 类型结果
+     */
     public boolean isCPQMap() {
         switch (this.getId()) {
             case 980000101:
@@ -4320,6 +5598,10 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 判断是否为C、P、Q、Map2。
+     * @return boolean 类型结果
+     */
     public boolean isCPQMap2() {
         switch (this.getId()) {
             case 980031100:
@@ -4330,6 +5612,10 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 判断是否为C、P、Q、Lobby。
+     * @return boolean 类型结果
+     */
     public boolean isCPQLobby() {
         switch (this.getId()) {
             case 980000100:
@@ -4343,6 +5629,10 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 判断是否为Blue、C、P、Q、地图。
+     * @return boolean 类型结果
+     */
     public boolean isBlueCPQMap() {
         switch (this.getId()) {
             case 980000501:
@@ -4355,6 +5645,10 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 判断是否为Purple、C、P、Q、地图。
+     * @return boolean 类型结果
+     */
     public boolean isPurpleCPQMap() {
         switch (this.getId()) {
             case 980000301:
@@ -4367,6 +5661,11 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 获取Random、S、P。
+     * @param team team
+     * @return Point 类型结果
+     */
     public Point getRandomSP(int team) {
         if (takenSpawns.size() > 0) {
             for (SpawnPoint sp : monsterSpawn) {
@@ -4390,6 +5689,11 @@ public class MapleMap {
         return null;
     }
 
+    /**
+     * 获取Random、守护者、刷新。
+     * @param team team
+     * @return GuardianSpawnPoint 类型结果
+     */
     public GuardianSpawnPoint getRandomGuardianSpawn(int team) {
         boolean alltaken = true;
         for (GuardianSpawnPoint a : this.guardianSpawns) {
@@ -4413,10 +5717,20 @@ public class MapleMap {
         return null;
     }
 
+    /**
+     * 添加守护者刷新坐标。
+     * @param a a
+     */
     public void addGuardianSpawnPoint(GuardianSpawnPoint a) {
         this.guardianSpawns.add(a);
     }
 
+    /**
+     * 生成守护者。
+     * @param team team
+     * @param num 数量
+     * @return int 类型结果
+     */
     public int spawnGuardian(int team, int num) {
         try {
             if (team == 0 && redTeamBuffs.size() >= 4 || team == 1 && blueTeamBuffs.size() >= 4) {
@@ -4448,6 +5762,11 @@ public class MapleMap {
         return 1;
     }
 
+    /**
+     * 执行 buff、怪物 操作。
+     * @param team team
+     * @param skill skill
+     */
     public void buffMonsters(int team, MCSkill skill) {
         if (skill == null) {
             return;
@@ -4468,22 +5787,43 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取技能Ids。
+     * @return List<Integer> 类型结果
+     */
     public final List<Integer> getSkillIds() {
         return skillIds;
     }
 
+    /**
+     * 添加技能ID。
+     * @param z z
+     */
     public final void addSkillId(int z) {
         this.skillIds.add(z);
     }
 
+    /**
+     * 添加怪物刷新。
+     * @param mobId mobId
+     * @param spendCP spendCP
+     */
     public final void addMobSpawn(int mobId, int spendCP) {
         this.mobsToSpawn.add(new Pair<>(mobId, spendCP));
     }
 
+    /**
+     * 获取Mobs、到、刷新。
+     * @return List<Pair<Integer, Integer>> 类型结果
+     */
     public final List<Pair<Integer, Integer>> getMobsToSpawn() {
         return mobsToSpawn;
     }
 
+    /**
+     * 判断是否为C、P、Q、Winner、地图。
+     * @return boolean 类型结果
+     */
     public boolean isCPQWinnerMap() {
         switch (this.getId()) {
             case 980000103:
@@ -4500,6 +5840,10 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 判断是否为C、P、Q、Loser、地图。
+     * @return boolean 类型结果
+     */
     public boolean isCPQLoserMap() {
         switch (this.getId()) {
             case 980000104:
@@ -4516,6 +5860,9 @@ public class MapleMap {
         return false;
     }
 
+    /**
+     * 执行 run、角色、Stat、更新 操作。
+     */
     public void runCharacterStatUpdate() {
         if (!statUpdateRunnables.isEmpty()) {
             List<Runnable> toRun = new ArrayList<>(statUpdateRunnables);
@@ -4527,10 +5874,17 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 注册角色、Stat、更新。
+     * @param r Runnable 任务
+     */
     public void registerCharacterStatUpdate(Runnable r) {
         statUpdateRunnables.add(r);
     }
 
+    /**
+     * 执行 dispose 操作。
+     */
     public void dispose() {
         for (Monster mm : this.getAllMonsters()) {
             mm.dispose();
@@ -4572,42 +5926,82 @@ public class MapleMap {
         }
     }
 
+    /**
+     * 获取Max、Mobs。
+     * @return int 类型结果
+     */
     public int getMaxMobs() {
         return maxMobs;
     }
 
+    /**
+     * 设置Max、Mobs。
+     * @param maxMobs maxMobs
+     */
     public void setMaxMobs(int maxMobs) {
         this.maxMobs = maxMobs;
     }
 
+    /**
+     * 获取Max反应堆。
+     * @return int 类型结果
+     */
     public int getMaxReactors() {
         return maxReactors;
     }
 
+    /**
+     * 设置Max反应堆。
+     * @param maxReactors maxReactors
+     */
     public void setMaxReactors(int maxReactors) {
         this.maxReactors = maxReactors;
     }
 
+    /**
+     * 获取Death、C、P。
+     * @return int 类型结果
+     */
     public int getDeathCP() {
         return deathCP;
     }
 
+    /**
+     * 设置Death、C、P。
+     * @param deathCP deathCP
+     */
     public void setDeathCP(int deathCP) {
         this.deathCP = deathCP;
     }
 
+    /**
+     * 获取时间、Default。
+     * @return int 类型结果
+     */
     public int getTimeDefault() {
         return timeDefault;
     }
 
+    /**
+     * 设置时间、Default。
+     * @param timeDefault timeDefault
+     */
     public void setTimeDefault(int timeDefault) {
         this.timeDefault = timeDefault;
     }
 
+    /**
+     * 获取时间、Expand。
+     * @return int 类型结果
+     */
     public int getTimeExpand() {
         return timeExpand;
     }
 
+    /**
+     * 设置时间、Expand。
+     * @param timeExpand timeExpand
+     */
     public void setTimeExpand(int timeExpand) {
         this.timeExpand = timeExpand;
     }

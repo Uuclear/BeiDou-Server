@@ -19,14 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* 	
-	NPC Name: 		Big Headward
-        Map(s): 		Victoria Road : Henesys Hair Salon (100000104)
-	Description: 		Random haircut
 
-        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
-*/
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1012117
+ * 功能描述：Big Headward，发型更换。
+ */
 var status = 0;
 
 var mhair_r = Array(30010, 30070, 30080, 30090, 30100, 30690, 30760, 33000);

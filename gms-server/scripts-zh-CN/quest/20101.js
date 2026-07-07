@@ -1,10 +1,14 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20101
+ * 功能描述：骑士团转职通用脚本
+ * 原作者：Magical-H
+ */
 /* 
  * Cygnus 1st Job advancement - Dawn Warrior
  */
-/*
-    Author:         Magical-H
-    Description:    骑士团转职通用脚本
- */
+
 var job = {
     1 : "DAWNWARRIOR",				// 魂骑士
     2 : "BLAZEWIZARD",				// 炎术士

@@ -19,12 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* 	Author: 		Blue
-	Name:	 		Garnox
-	Map(s): 		New Leaf City : Town Center
-	Description: 		Quest - Pet Evolution2
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：8185
+ * 功能描述：Garnox，任务相关对话与奖励。
+ * 原作者：Blue
+ */
 var status = -1;
 
 function end(mode, type, selection) {

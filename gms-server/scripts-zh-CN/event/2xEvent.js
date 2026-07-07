@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：2xEvent
+ * 功能描述：双倍经验/掉落活动事件。
+ */
 /**
  -- Odin JavaScript --------------------------------------------------------------------------------
  2x EXP Event Script

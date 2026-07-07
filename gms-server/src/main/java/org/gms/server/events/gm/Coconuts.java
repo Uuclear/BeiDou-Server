@@ -22,7 +22,7 @@
 package org.gms.server.events.gm;
 
 /**
- * @author kevintjuh93
+ * 椰子活动（多人）。
  */
 public class Coconuts {
     private final int id;
@@ -30,31 +30,57 @@ public class Coconuts {
     private boolean hittable = false;
     private long hittime = System.currentTimeMillis();
 
+    /**
+     * 构造 Coconuts 实例。
+     * @param id ID
+     */
     public Coconuts(int id) {
         this.id = id;
     }
 
+    /**
+     * 执行 hit 操作。
+     */
     public void hit() {
         this.hittime = System.currentTimeMillis() + 750;
         hits++;
     }
 
+    /**
+     * 获取Hits。
+     * @return int 类型结果
+     */
     public int getHits() {
         return hits;
     }
 
+    /**
+     * 重置Hits。
+     */
     public void resetHits() {
         hits = 0;
     }
 
+    /**
+     * 判断是否为Hittable。
+     * @return boolean 类型结果
+     */
     public boolean isHittable() {
         return hittable;
     }
 
+    /**
+     * 设置Hittable。
+     * @param hittable hittable
+     */
     public void setHittable(boolean hittable) {
         this.hittable = hittable;
     }
 
+    /**
+     * 获取Hit时间。
+     * @return long 类型结果
+     */
     public long getHitTime() {
         return hittime;
     }

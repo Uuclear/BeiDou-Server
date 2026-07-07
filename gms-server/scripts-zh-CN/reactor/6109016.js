@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：6109016
+ * 功能描述：地图反应堆交互脚本。
+ */
 function act() {
     var eim = rm.getEventInstance();
     if (eim != null) {

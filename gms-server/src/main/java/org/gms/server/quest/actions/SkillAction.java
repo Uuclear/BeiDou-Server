@@ -36,18 +36,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务奖励技能动作。
  */
 public class SkillAction extends AbstractQuestAction {
     int itemEffect;
     Map<Integer, SkillData> skillData = new HashMap<>();
 
+    /**
+     * 构造 SkillAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public SkillAction(Quest quest, Data data) {
         super(QuestActionType.SKILL, quest);
         processData(data);
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         for (Data sEntry : data) {
@@ -71,6 +80,11 @@ public class SkillAction extends AbstractQuestAction {
         }
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         for (SkillData skill : skillData.values()) {
@@ -94,6 +108,14 @@ public class SkillAction extends AbstractQuestAction {
         protected int id, level, masterLevel;
         List<Integer> jobs = new ArrayList<>();
 
+        /**
+         * 执行 技能数据 操作。
+         * @param id ID
+         * @param level level
+         * @param masterLevel masterLevel
+         * @param jobs jobs（Integer 列表/集合）
+         * @return SkillData 类型结果
+         */
         public SkillData(int id, int level, int masterLevel, List<Integer> jobs) {
             this.id = id;
             this.level = level;
@@ -101,18 +123,35 @@ public class SkillAction extends AbstractQuestAction {
             this.jobs = jobs;
         }
 
+        /**
+         * 获取ID。
+         * @return int 类型结果
+         */
         public int getId() {
             return id;
         }
 
+        /**
+         * 获取等级。
+         * @return int 类型结果
+         */
         public int getLevel() {
             return level;
         }
 
+        /**
+         * 获取Master、等级。
+         * @return int 类型结果
+         */
         public int getMasterLevel() {
             return masterLevel;
         }
 
+        /**
+         * 执行 jobs、Contains 操作。
+         * @param job job
+         * @return boolean 类型结果
+         */
         public boolean jobsContains(Job job) {
             return jobs.contains(job.getId());
         }

@@ -117,8 +117,10 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.gms.dao.entity.table.PlayernpcsFieldDOTableDef.PLAYERNPCS_FIELD_D_O;
 
 /**
+ * 游戏世界运行时实体，管理本世界频道、玩家、公会、组队、家族、结婚及世界级定时任务。
+ *
  * @author kevintjuh93
- * @author Ronan - thread-oriented (world schedules + guild queue + marriages + party chars)
+ * @author Ronan
  */
 public class World {
     private static final Logger log = LoggerFactory.getLogger(World.class);

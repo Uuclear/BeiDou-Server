@@ -19,10 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : Ronan Lana
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2127
+ * 功能描述：任务脚本（ID: 2127）。
+ * 原作者：Ronan Lana
+ */
 var status = -1;
 
 function end(mode, type, selection) {

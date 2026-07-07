@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `hwidbans` 的实体类（DO）。
+ * <p>
+ * 硬件 ID（HWID）封禁表，记录被封禁的设备指纹及封禁期限。
  */
 @Data
 @Builder

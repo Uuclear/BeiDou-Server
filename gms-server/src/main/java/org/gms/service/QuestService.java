@@ -21,6 +21,9 @@ import static org.gms.dao.entity.table.MedalmapsDOTableDef.MEDALMAPS_D_O;
 import static org.gms.dao.entity.table.QuestprogressDOTableDef.QUESTPROGRESS_D_O;
 import static org.gms.dao.entity.table.QueststatusDOTableDef.QUESTSTATUS_D_O;
 
+/**
+ * 任务业务服务，管理任务配置及与游戏任务系统的交互。
+ */
 @Service
 @AllArgsConstructor
 public class QuestService {
@@ -28,6 +31,11 @@ public class QuestService {
     private final QuestprogressMapper questprogressMapper;
     private final QueststatusMapper queststatusMapper;
 
+    /**
+     * 执行 deleteQuestProgressByCharacter 相关业务逻辑。
+     *
+     * @param cid cid
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteQuestProgressByCharacter(int cid) {
         medalmapsMapper.deleteByQuery(QueryWrapper.create().where(MEDALMAPS_D_O.CHARACTERID.eq(cid)));
@@ -35,6 +43,12 @@ public class QuestService {
         queststatusMapper.deleteByQuery(QueryWrapper.create().where(QUESTSTATUS_D_O.CHARACTERID.eq(cid)));
     }
 
+    /**
+     * 执行 getQuestStatusByCharacter 相关业务逻辑。
+     *
+     * @param cid cid
+     * @return List<QuestStatus> 类型结果
+     */
     public List<QuestStatus> getQuestStatusByCharacter(int cid) {
         List<QueststatusDO> queststatusDOList = queststatusMapper.selectListByQuery(QueryWrapper.create().where(QUESTSTATUS_D_O.CHARACTERID.eq(cid)));
         List<QuestprogressDO> questprogressDOList = questprogressMapper.selectListByQuery(QueryWrapper.create().where(QUESTPROGRESS_D_O.CHARACTERID.eq(cid)));

@@ -27,6 +27,10 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
+ * 整数区间集合构建器，支持合并重叠区间并高效查询点或子区间是否被覆盖。
+ * <p>
+ * 使用读写锁保证并发安全，适用于地图阻挡、活动时间段等区间判定场景。
+ *
  * @author Ronan
  */
 public class IntervalBuilder {
@@ -34,6 +38,9 @@ public class IntervalBuilder {
     private final Lock intervalRlock;
     private final Lock intervalWlock;
 
+    /**
+     * 构造空的区间构建器。
+     */
     public IntervalBuilder() {
         ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
         this.intervalRlock = readWriteLock.readLock();
@@ -82,6 +89,12 @@ public class IntervalBuilder {
         return en;
     }
 
+    /**
+     * 添加闭区间 {@code [from, to]}，自动与已有重叠区间合并。
+     *
+     * @param from 区间起点（含）
+     * @param to   区间终点（含）
+     */
     public void addInterval(int from, int to) {
         intervalWlock.lock();
         try {
@@ -103,10 +116,23 @@ public class IntervalBuilder {
         }
     }
 
+    /**
+     * 判断单个整型点是否落在已添加的任一区间内。
+     *
+     * @param point 待查询的点
+     * @return 在区间内返回 {@code true}
+     */
     public boolean inInterval(int point) {
         return inInterval(point, point);
     }
 
+    /**
+     * 判断闭区间 {@code [from, to]} 是否完全落在已添加的某一区间内。
+     *
+     * @param from 子区间起点（含）
+     * @param to   子区间终点（含）
+     * @return 完全被覆盖返回 {@code true}
+     */
     public boolean inInterval(int from, int to) {
         intervalRlock.lock();
         try {
@@ -117,6 +143,9 @@ public class IntervalBuilder {
         }
     }
 
+    /**
+     * 清空所有已添加的区间。
+     */
     public void clear() {
         intervalWlock.lock();
         try {

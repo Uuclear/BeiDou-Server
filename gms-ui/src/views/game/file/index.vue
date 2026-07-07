@@ -1,4 +1,5 @@
 <template>
+  <!-- 服务端文件管理页：目录树浏览、Monaco 编辑与保存文件。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.file')">
@@ -37,6 +38,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 文件树管理页，调用 fileTree API 读写服务端脚本与配置。
+   */
   import { ref, shallowRef, onUnmounted } from 'vue';
   import {
     Editor,

@@ -32,11 +32,19 @@ import org.gms.server.maps.MiniDungeonInfo;
 import org.gms.util.I18nUtil;
 import org.gms.server.maps.Portal;
 
+/**
+ * GM2命令：传送到指定地图
+ */
 public class WarpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WarpCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

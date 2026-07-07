@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `reactordrops` 的实体类（DO）。
+ * <p>
+ * 地图反应堆掉落配置表，定义反应堆被破坏后产出的物品与概率。
  */
 @Data
 @Builder

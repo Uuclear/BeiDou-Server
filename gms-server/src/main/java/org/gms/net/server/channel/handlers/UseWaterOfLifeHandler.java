@@ -26,8 +26,13 @@ import org.gms.constants.id.NpcId;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 WATER_OF_LIFE（生命之水） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#WATER_OF_LIFE}</p>
+ */
 public final class UseWaterOfLifeHandler extends AbstractPacketHandler {
 
+    /** 处理 生命之水 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         c.getAbstractPlayerInteraction().openNpc(NpcId.MAR_THE_FAIRY, "waterOfLife");

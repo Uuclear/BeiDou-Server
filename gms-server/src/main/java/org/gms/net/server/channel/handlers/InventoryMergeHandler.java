@@ -34,8 +34,13 @@ import org.gms.net.server.Server;
 import org.gms.server.ItemInformationProvider;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理背包物品整理合并（ITEM_SORT）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ITEM_SORT}</p>
+ */
 public final class InventoryMergeHandler extends AbstractPacketHandler {
 
+    /** 处理 整理物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

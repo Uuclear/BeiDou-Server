@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `allianceguilds` 的实体类（DO）。
+ * <p>
+ * 联盟-公会关联表，描述联盟下辖公会成员关系。
  */
 @Data
 @Builder

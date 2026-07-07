@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21736
+ * 功能描述：rmation in places outside Victoria Island as well, so I've begun investigating in Ossyria. I began with #bOrbis#k and immediately hit the jackpot.");（原版描述）。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

@@ -52,6 +52,9 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 公会运行时实体，管理成员、职位、徽章、GP、联盟及公会公告等数据与数据库同步。
+ */
 public class Guild {
     private static final Logger log = LoggerFactory.getLogger(Guild.class);
 

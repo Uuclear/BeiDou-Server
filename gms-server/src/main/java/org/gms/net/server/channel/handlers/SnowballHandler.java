@@ -29,10 +29,12 @@ import org.gms.server.events.gm.Snowball;
 import org.gms.server.maps.MapleMap;
 
 /**
- * @author kevintjuh93
+ * 处理客户端 SNOWBALL（雪球） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SNOWBALL}</p>
  */
 public final class SnowballHandler extends AbstractPacketHandler {
 
+    /** 处理雪球活动中的推球与攻击操作。 */
     public void handlePacket(InPacket p, Client c) {
         //D3 00 02 00 00 A5 01
         Character chr = c.getPlayer();

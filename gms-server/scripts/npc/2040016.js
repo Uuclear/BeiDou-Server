@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040016
+ * 功能描述：通过输入数字执行管理或兑换操作。
+ */
 /* Pi
 	Ludibrium Village (220000300)
 	

@@ -55,6 +55,10 @@ import java.util.Objects;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 
+/**
+ * 处理商城购买、赠送、购物车等操作（CASHSHOP_OPERATION）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CASHSHOP_OPERATION}</p>
+ */
 public final class CashOperationHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CashOperationHandler.class);
 
@@ -83,6 +87,7 @@ public final class CashOperationHandler extends AbstractPacketHandler {
         return false;
     }
 
+    /** 处理 现金商店操作 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

@@ -1,8 +1,11 @@
-/*
-	NPC Name: 		Kinu
-	Description: 		Quest - Cygnus tutorial helper
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20012
+ * 功能描述：Kinu，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

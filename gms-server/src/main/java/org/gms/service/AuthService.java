@@ -11,6 +11,10 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 认证业务服务，校验账号密码并签发/刷新 JWT 令牌。
+ * 被 AuthController 调用，依赖 AccountService 与 JwtUtils。
+ */
 @Service
 @AllArgsConstructor
 public class AuthService {

@@ -16,6 +16,9 @@ import java.util.*;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * 文件树业务服务，在受控目录内浏览、读取与写入脚本/配置文件。
+ */
 @Slf4j
 @Service
 public class FileTreeService {
@@ -34,6 +37,13 @@ public class FileTreeService {
         FILE_TREE_LIMITED_PATTERNS.add("wz-zh-CN");
     }
 
+    /**
+     * 执行 readFile 相关业务逻辑。
+     *
+     * @param currentKey currentKey
+     * @param filename filename
+     * @return String 类型结果
+     */
     public String readFile(String currentKey, String filename) {
         File file = resolveByTreeKey(currentKey);
         if (!filename.equals(file.getName())) throw new BizException("文件目录发生变动，请重新读取");
@@ -53,6 +63,13 @@ public class FileTreeService {
         }
     }
 
+    /**
+     * 执行 writeFile 相关业务逻辑。
+     *
+     * @param currentKey currentKey
+     * @param filename filename
+     * @param content content
+     */
     public void writeFile(String currentKey, String filename, String content) {
         File file = resolveByTreeKey(currentKey);
         if (!filename.equals(file.getName())) throw new BizException("文件目录发生变动，请重新写入");
@@ -65,6 +82,12 @@ public class FileTreeService {
     }
 
 
+    /**
+     * 执行 tree 相关业务逻辑。
+     *
+     * @param currentKey currentKey
+     * @return List<FileTreeNodeDTO> 类型结果
+     */
     public List<FileTreeNodeDTO> tree(String currentKey) {
         // 入参为空表示在根目录
         boolean root = !StringUtils.hasText(currentKey);
@@ -90,6 +113,12 @@ public class FileTreeService {
         return nodes;
     }
 
+    /**
+     * 执行 resolveByTreeKey 相关业务逻辑。
+     *
+     * @param currentKey currentKey
+     * @return File 类型结果
+     */
     public File resolveByTreeKey(String currentKey) {
         @SuppressWarnings("UnnecessaryLocalVariable")
         File base = FILE_TREE_BASE_DIR_PATH.toFile();

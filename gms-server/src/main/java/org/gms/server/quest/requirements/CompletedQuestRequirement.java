@@ -28,23 +28,38 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 已完成指定任务需求。
  */
 public class CompletedQuestRequirement extends AbstractQuestRequirement {
     private int reqQuest;
 
 
+    /**
+     * 构造 CompletedQuestRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public CompletedQuestRequirement(Quest quest, Data data) {
         super(QuestRequirementType.COMPLETED_QUEST);
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         reqQuest = DataTool.getInt(data);
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return chr.getCompletedQuests().size() >= reqQuest;

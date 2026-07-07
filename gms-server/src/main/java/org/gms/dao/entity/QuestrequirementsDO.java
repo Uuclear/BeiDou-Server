@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `questrequirements` 的实体类（DO）。
+ * <p>
+ * 任务需求条件表，定义完成任务所需的前置任务、物品或等级等条件。
  */
 @Data
 @Builder

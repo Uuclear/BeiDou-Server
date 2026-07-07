@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：910510000
+ * 功能描述：地图脚本（910510000），控制地图内特殊逻辑。
+ */
 function start(ms) {
     var player = ms.getPlayer();
     var map = player.getMap();

@@ -48,7 +48,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @author Matze
+ * 角色仓库，管理仓库存取与扩容。
  */
 public class Storage {
     private static final Logger log = LoggerFactory.getLogger(Storage.class);
@@ -80,6 +80,12 @@ public class Storage {
         return loadOrCreateFromDB(id, world);
     }
 
+    /**
+     * 加载或、Create、来自、D、B。
+     * @param id ID
+     * @param world world
+     * @return Storage 类型结果
+     */
     public static Storage loadOrCreateFromDB(int id, int world) {
         Storage ret;
         try (Connection con = DatabaseConnection.getConnection();
@@ -105,15 +111,29 @@ public class Storage {
         }
     }
 
+    /**
+     * 获取Slots。
+     * @return byte 类型结果
+     */
     public byte getSlots() {
         return slots;
     }
 
+    /**
+     * 判断是否可以Gain、Slots。
+     * @param slots slots
+     * @return boolean 类型结果
+     */
     public boolean canGainSlots(int slots) {
         slots += this.slots;
         return slots <= 48;
     }
 
+    /**
+     * 执行 gain、Slots 操作。
+     * @param slots slots
+     * @return boolean 类型结果
+     */
     public boolean gainSlots(int slots) {
         lock.lock();
         try {
@@ -129,6 +149,10 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 save、到、D、B 操作。
+     * @param con con
+     */
     public void saveToDB(Connection con) {
         try {
             try (PreparedStatement ps = con.prepareStatement("UPDATE storages SET slots = ?, meso = ? WHERE storageid = ?")) {
@@ -150,6 +174,11 @@ public class Storage {
         }
     }
 
+    /**
+     * 获取物品。
+     * @param slot slot
+     * @return Item 类型结果
+     */
     public Item getItem(byte slot) {
         lock.lock();
         try {
@@ -159,6 +188,11 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 take、Out 操作。
+     * @param item item
+     * @return boolean 类型结果
+     */
     public boolean takeOut(Item item) {
         lock.lock();
         try {
@@ -173,6 +207,11 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 store 操作。
+     * @param item item
+     * @return boolean 类型结果
+     */
     public boolean store(Item item) {
         lock.lock();
         try {
@@ -191,6 +230,10 @@ public class Storage {
         }
     }
 
+    /**
+     * 获取物品。
+     * @return List<Item> 类型结果
+     */
     public List<Item> getItems() {
         lock.lock();
         try {
@@ -212,6 +255,12 @@ public class Storage {
         return ret;
     }
 
+    /**
+     * 获取Slot。
+     * @param type 类型
+     * @param slot slot
+     * @return byte 类型结果
+     */
     public byte getSlot(InventoryType type, byte slot) {
         lock.lock();
         try {
@@ -229,6 +278,11 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 send、Storage 操作。
+     * @param c c
+     * @param npcId NPC ID
+     */
     public void sendStorage(Client c, int npcId) {
         if (c.getPlayer().getLevel() < 15) {
             c.getPlayer().dropMessage(1, "15级以后才可以使用仓库服务");
@@ -259,6 +313,11 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 send、Stored 操作。
+     * @param c c
+     * @param type 类型
+     */
     public void sendStored(Client c, InventoryType type) {
         lock.lock();
         try {
@@ -268,6 +327,11 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 send、Taken、Out 操作。
+     * @param c c
+     * @param type 类型
+     */
     public void sendTakenOut(Client c, InventoryType type) {
         lock.lock();
         try {
@@ -277,6 +341,10 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 arrange、物品 操作。
+     * @param c c
+     */
     public void arrangeItems(Client c) {
         lock.lock();
         try {
@@ -294,10 +362,18 @@ public class Storage {
         }
     }
 
+    /**
+     * 获取金币。
+     * @return int 类型结果
+     */
     public int getMeso() {
         return meso;
     }
 
+    /**
+     * 设置金币。
+     * @param meso 金币数量
+     */
     public void setMeso(int meso) {
         if (meso < 0) {
             throw new RuntimeException();
@@ -305,10 +381,18 @@ public class Storage {
         this.meso = meso;
     }
 
+    /**
+     * 执行 send、金币 操作。
+     * @param c c
+     */
     public void sendMeso(Client c) {
         c.sendPacket(PacketCreator.mesoStorage(slots, meso));
     }
 
+    /**
+     * 获取Store、Fee。
+     * @return int 类型结果
+     */
     public int getStoreFee() {  // thanks to GabrielSin
         int npcId = currentNpcid;
         Integer fee = trunkPutCache.get(npcId);
@@ -327,6 +411,10 @@ public class Storage {
         return fee;
     }
 
+    /**
+     * 获取Take、Out、Fee。
+     * @return int 类型结果
+     */
     public int getTakeOutFee() {
         int npcId = currentNpcid;
         Integer fee = trunkGetCache.get(npcId);
@@ -345,6 +433,10 @@ public class Storage {
         return fee;
     }
 
+    /**
+     * 判断是否为Full。
+     * @return boolean 类型结果
+     */
     public boolean isFull() {
         lock.lock();
         try {
@@ -354,6 +446,9 @@ public class Storage {
         }
     }
 
+    /**
+     * 执行 close 操作。
+     */
     public void close() {
         lock.lock();
         try {

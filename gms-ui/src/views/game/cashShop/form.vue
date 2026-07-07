@@ -1,4 +1,5 @@
 <template>
+  <!-- 商城商品编辑/上架表单。 -->
   <a-modal
     v-model:visible="visible"
     :ok-loading="loading"
@@ -156,6 +157,9 @@
 </template>
 
 <script setup lang="ts">
+  /**
+   * 商城商品表单组件，编辑价格、数量、上架状态等字段。
+   */
   import { ref } from 'vue';
   import { cashShopState } from '@/store/modules/cashShop/type';
   import { cashShopFormState, offSale, onSale } from '@/api/cashShop';

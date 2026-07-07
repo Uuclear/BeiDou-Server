@@ -25,12 +25,21 @@ import java.util.Objects;
 import static org.gms.dao.entity.table.ShopitemsDOTableDef.SHOPITEMS_D_O;
 import static org.gms.dao.entity.table.ShopsDOTableDef.SHOPS_D_O;
 
+/**
+ * NPC 商店业务服务，维护游戏币商店及商品配置的查询与 CRUD。
+ */
 @Service
 @AllArgsConstructor
 public class ShopService {
     private final ShopsMapper shopsMapper;
     private final ShopitemsMapper shopitemsMapper;
 
+    /**
+     * 执行 getShopList 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @return Page<ShopSearchRtnDTO> 类型结果
+     */
     public Page<ShopSearchRtnDTO> getShopList(ShopSearchReqDTO data) {
         QueryWrapper queryWrapper = QueryWrapper.create().select().from(SHOPS_D_O)
                 .leftJoin(SHOPITEMS_D_O).on(SHOPS_D_O.SHOPID.eq(SHOPITEMS_D_O.SHOPID));
@@ -73,6 +82,12 @@ public class ShopService {
         return BasePageUtil.create(matchedShopsDOList.stream().distinct().toList(), data).page();
     }
 
+    /**
+     * 执行 getShopItemList 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @return Page<ShopItemSearchRtnDTO> 类型结果
+     */
     public Page<ShopItemSearchRtnDTO> getShopItemList(ShopSearchReqDTO data) {
         QueryWrapper queryWrapper = QueryWrapper.create(ShopitemsDO.builder()
                 .shopid(data.getShopId())
@@ -86,10 +101,23 @@ public class ShopService {
         );
     }
 
+    /**
+     * 执行 getShopItem 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     * @return ShopItemSearchRtnDTO 类型结果
+     */
     public ShopItemSearchRtnDTO getShopItem(Long id) {
         return fromShopItemDO(shopitemsMapper.selectOneById(id));
     }
 
+    /**
+     * 执行 modifyShopItem 相关业务逻辑。
+     *
+     * @param data 业务数据载荷
+     * @param isDelete isDelete
+     * @return Long 类型结果
+     */
     public Long modifyShopItem(ShopItemSearchRtnDTO data, boolean isDelete) {
         Long shopItemId;
         if (isDelete) {

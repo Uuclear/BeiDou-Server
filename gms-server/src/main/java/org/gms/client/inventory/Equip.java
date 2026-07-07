@@ -40,9 +40,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 装备类，继承 Item，额外包含攻击力、防御力、强化等级等装备专属属性。
+ */
 public class Equip extends Item {
     private static final Logger log = LoggerFactory.getLogger(Equip.class);
 
+    /**
+     * ScrollResult枚举，定义相关常量值
+     */
     public enum ScrollResult {
 
         FAIL(0), SUCCESS(1), CURSE(2);
@@ -52,11 +58,18 @@ public class Equip extends Item {
             this.value = value;
         }
 
+        /**
+         * 获取值
+         * @return 返回值
+         */
         public int getValue() {
             return value;
         }
     }
 
+    /**
+     * StatUpgrade枚举，定义相关常量值
+     */
     public enum StatUpgrade {
 
         incDEX(0), incSTR(1), incINT(2), incLUK(3),
@@ -81,10 +94,21 @@ public class Equip extends Item {
     private boolean isUpgradeable, isElemental = false;    // timeless or reverse, or any equip that could levelup on GMS for all effects
     private static ItemInformationProvider ii = ItemInformationProvider.getInstance();
 
+    /**
+     * Equip
+     * @param id ID
+     * @param position 位置
+     */
     public Equip(int id, short position) {
         this(id, position, 0);
     }
 
+    /**
+     * Equip
+     * @param id ID
+     * @param position 位置
+     * @param slots slots
+     */
     public Equip(int id, short position, int slots) {
         super(id, position, (short) 1);
         this.upgradeSlots = (byte) slots;
@@ -94,6 +118,10 @@ public class Equip extends Item {
         this.isElemental = (ii.getEquipLevel(id, false) > 1);
     }
 
+    /**
+     * 复制
+     * @return 返回值
+     */
     @Override
     public Item copy() {
         Equip ret = new Equip(getItemId(), getPosition(), getUpgradeSlots());
@@ -126,161 +154,317 @@ public class Equip extends Item {
         return ret;
     }
 
+    /**
+     * 获取标记
+     * @return 返回值
+     */
     @Override
     public short getFlag() {
         return flag;
     }
 
+    /**
+     * 获取物品类型
+     * @return 返回值
+     */
     @Override
     public byte getItemType() {
         return 1;
     }
 
+    /**
+     * 获取升级Slots
+     * @return 返回值
+     */
     public byte getUpgradeSlots() {
         return upgradeSlots;
     }
 
+    /**
+     * 获取力量
+     * @return 返回值
+     */
     public short getStr() {
         return str;
     }
 
+    /**
+     * 获取敏捷
+     * @return 返回值
+     */
     public short getDex() {
         return dex;
     }
 
+    /**
+     * 获取智力
+     * @return 返回值
+     */
     public short getInt() {
         return _int;
     }
 
+    /**
+     * 获取运气
+     * @return 返回值
+     */
     public short getLuk() {
         return luk;
     }
 
+    /**
+     * 获取HP
+     * @return 返回值
+     */
     public short getHp() {
         return hp;
     }
 
+    /**
+     * 获取MP
+     * @return 返回值
+     */
     public short getMp() {
         return mp;
     }
 
+    /**
+     * 获取Watk
+     * @return 返回值
+     */
     public short getWatk() {
         return watk;
     }
 
+    /**
+     * 获取Matk
+     * @return 返回值
+     */
     public short getMatk() {
         return matk;
     }
 
+    /**
+     * 获取Wdef
+     * @return 返回值
+     */
     public short getWdef() {
         return wdef;
     }
 
+    /**
+     * 获取Mdef
+     * @return 返回值
+     */
     public short getMdef() {
         return mdef;
     }
 
+    /**
+     * 获取Acc
+     * @return 返回值
+     */
     public short getAcc() {
         return acc;
     }
 
+    /**
+     * 获取回避
+     * @return 返回值
+     */
     public short getAvoid() {
         return avoid;
     }
 
+    /**
+     * 获取Hands
+     * @return 返回值
+     */
     public short getHands() {
         return hands;
     }
 
+    /**
+     * 获取速度
+     * @return 返回值
+     */
     public short getSpeed() {
         return speed;
     }
 
+    /**
+     * 获取跳跃
+     * @return 返回值
+     */
     public short getJump() {
         return jump;
     }
 
+    /**
+     * 获取Vicious
+     * @return 返回值
+     */
     public short getVicious() {
         return vicious;
     }
 
+    /**
+     * 设置标记
+     * @param flag 标记
+     */
     @Override
     public void setFlag(short flag) {
         this.flag = flag;
     }
 
+    /**
+     * 设置力量
+     * @param str str
+     */
     public void setStr(short str) {
         this.str = str;
     }
 
+    /**
+     * 设置敏捷
+     * @param dex dex
+     */
     public void setDex(short dex) {
         this.dex = dex;
     }
 
+    /**
+     * 设置智力
+     * @param _int _int
+     */
     public void setInt(short _int) {
         this._int = _int;
     }
 
+    /**
+     * 设置运气
+     * @param luk luk
+     */
     public void setLuk(short luk) {
         this.luk = luk;
     }
 
+    /**
+     * 设置HP
+     * @param hp hp
+     */
     public void setHp(short hp) {
         this.hp = hp;
     }
 
+    /**
+     * 设置MP
+     * @param mp mp
+     */
     public void setMp(short mp) {
         this.mp = mp;
     }
 
+    /**
+     * 设置Watk
+     * @param watk watk
+     */
     public void setWatk(short watk) {
         this.watk = watk;
     }
 
+    /**
+     * 设置Matk
+     * @param matk matk
+     */
     public void setMatk(short matk) {
         this.matk = matk;
     }
 
+    /**
+     * 设置Wdef
+     * @param wdef wdef
+     */
     public void setWdef(short wdef) {
         this.wdef = wdef;
     }
 
+    /**
+     * 设置Mdef
+     * @param mdef mdef
+     */
     public void setMdef(short mdef) {
         this.mdef = mdef;
     }
 
+    /**
+     * 设置Acc
+     * @param acc acc
+     */
     public void setAcc(short acc) {
         this.acc = acc;
     }
 
+    /**
+     * 设置回避
+     * @param avoid avoid
+     */
     public void setAvoid(short avoid) {
         this.avoid = avoid;
     }
 
+    /**
+     * 设置Hands
+     * @param hands hands
+     */
     public void setHands(short hands) {
         this.hands = hands;
     }
 
+    /**
+     * 设置速度
+     * @param speed speed
+     */
     public void setSpeed(short speed) {
         this.speed = speed;
     }
 
+    /**
+     * 设置跳跃
+     * @param jump jump
+     */
     public void setJump(short jump) {
         this.jump = jump;
     }
 
+    /**
+     * 设置Vicious
+     * @param vicious vicious
+     */
     public void setVicious(short vicious) {
         this.vicious = vicious;
     }
 
+    /**
+     * 设置升级Slots
+     * @param upgradeSlots upgradeSlots
+     */
     public void setUpgradeSlots(byte upgradeSlots) {
         this.upgradeSlots = upgradeSlots;
     }
 
+    /**
+     * 获取等级
+     * @return 返回值
+     */
     public byte getLevel() {
         return level;
     }
 
+    /**
+     * 设置等级
+     * @param level 等级
+     */
     public void setLevel(byte level) {
         this.level = level;
     }
@@ -444,6 +628,10 @@ public class Equip extends Item {
         }
     }
 
+    /**
+     * 获取Stats
+     * @return 返回值
+     */
     public Map<StatUpgrade, Short> getStats() {
         Map<StatUpgrade, Short> stats = new HashMap<>(5);
 
@@ -663,6 +851,10 @@ public class Equip extends Item {
         c.getPlayer().forceUpdateItem(this); // 强制更新装备状态
     }
 
+    /**
+     * 获取物品经验
+     * @return 返回值
+     */
     public int getItemExp() {
         return (int) itemExp;
     }
@@ -744,6 +936,11 @@ public class Equip extends Item {
         return itemLevel >= GameConfig.getServerInt("use_equipment_level_up");
     }
 
+    /**
+     * showEquipFeatures
+     * @param c 客户端会话
+     * @return 返回值
+     */
     public String showEquipFeatures(Client c) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         if (!ii.isUpgradeable(this.getItemId())) {
@@ -756,14 +953,26 @@ public class Equip extends Item {
         return "'" + eqpName + "' -> LV: #e#b" + itemLevel + "#k#n    " + eqpInfo + "\r\n";
     }
 
+    /**
+     * 设置物品经验
+     * @param exp exp
+     */
     public void setItemExp(int exp) {
         this.itemExp = exp;
     }
 
+    /**
+     * 设置物品等级
+     * @param level 等级
+     */
     public void setItemLevel(byte level) {
         this.itemLevel = level;
     }
 
+    /**
+     * 设置数量
+     * @param quantity 数量
+     */
     @Override
     public void setQuantity(short quantity) {
         if (quantity < 0 || quantity > 1) {
@@ -772,26 +981,58 @@ public class Equip extends Item {
         super.setQuantity(quantity);
     }
 
+    /**
+     * 设置升级Slots
+     * @param i i
+     */
     public void setUpgradeSlots(int i) {
         this.upgradeSlots = (byte) i;
     }
 
+    /**
+     * 设置Vicious
+     * @param i i
+     */
     public void setVicious(int i) {
         this.vicious = (short) i;
     }
 
+    /**
+     * 获取戒指ID
+     * @return 返回值
+     */
     public int getRingId() {
         return ringid;
     }
 
+    /**
+     * 设置戒指ID
+     * @param id ID
+     */
     public void setRingId(int id) {
         this.ringid = id;
     }
 
+    /**
+     * 判断是否为Wearing
+     * @return 返回值
+     */
     public boolean isWearing() {
         return wear;
     }
 
+    /**
+     * wear
+     * @param yes yes
+     */
+    /**
+     * wear
+     * @param yes yes
+     */
+    /**
+     * 设置装备穿戴状态
+     * @param yes 是否
+     */
     public void wear(boolean yes) {
         wear = yes;
     }

@@ -4,10 +4,9 @@ import com.mybatisflex.core.BaseMapper;
 import org.gms.dao.entity.StoragesDO;
 
 /**
- *  映射层。
- *
- * @author sleep
- * @since 2024-05-24
+ * `storages` 表 / {@link org.gms.dao.entity.StoragesDO} 的 MyBatis Mapper 接口。
+ * <p>
+ * 仓库物品表，存储角色仓库中非装备类物品的堆叠与位置信息。
  */
 public interface StoragesMapper extends BaseMapper<StoragesDO> {
 

@@ -54,9 +54,14 @@ import org.gms.util.Randomizer;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 
+/**
+ * 处理远程攻击（RANGED_ATTACK）伤害计算与广播。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#RANGED_ATTACK}</p>
+ */
 public final class RangedAttackHandler extends AbstractDealDamageHandler {
     private static final Logger log = LoggerFactory.getLogger(RangedAttackHandler.class);
 
+    /** 处理 远程攻击 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

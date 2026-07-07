@@ -26,6 +26,9 @@ import org.gms.server.life.MobSkillType;
 
 import java.util.Arrays;
 
+/**
+ * 异常状态（减益）枚举，定义角色可受到的各类负面效果。
+ */
 public enum Disease {
     NULL(0x0),
     SLOW(0x1, MobSkillType.SLOW),
@@ -52,18 +55,40 @@ public enum Disease {
         this.mobSkillType = skill;
     }
 
+    /**
+     * 获取值
+     * @return 返回值
+     */
     public long getValue() {
         return i;
     }
 
+    /**
+     * 判断是否为First
+     * @return 返回值
+     */
     public boolean isFirst() {
         return false;
     }
 
+    /**
+     * 获取Mob技能类型
+     * @return 返回值
+     */
     public MobSkillType getMobSkillType() {
         return mobSkillType;
     }
 
+    /**
+     * ordinal
+     * @param ord ord
+     * @return 返回值
+     */
+    /**
+     * ordinal
+     * @param ord ord
+     * @return 返回值
+     */
     public static Disease ordinal(int ord) {
         try {
             return Disease.values()[ord];
@@ -72,11 +97,20 @@ public enum Disease {
         }
     }
 
+    /**
+     * 获取Random
+     * @return 返回值
+     */
     public static final Disease getRandom() {
         Disease[] diseases = GameConstants.CPQ_DISEASES;
         return diseases[(int) (Math.random() * diseases.length)];
     }
 
+    /**
+     * 获取按技能
+     * @param skill 技能
+     * @return 返回值
+     */
     public static final Disease getBySkill(MobSkillType skill) {
         if (skill == null) {
             return null;

@@ -24,10 +24,9 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
 
 /**
- * 商城物品修改表 实体类。
- *
- * @author CN
- * @since 2024-08-08
+ * 数据库表 `modified_cash_item` 的实体类（DO）。
+ * <p>
+ * 修改版现金商城道具表，覆盖或扩展官方商城道具的售卖参数。
  */
 @Data
 @Builder

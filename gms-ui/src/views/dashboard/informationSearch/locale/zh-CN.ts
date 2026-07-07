@@ -1,3 +1,6 @@
+/**
+ * 资料查询页面中文文案。
+ */
 export default {
   'informationSearch.placeholder.type': '请选择资料类型',
   'informationSearch.placeholder.filter': '请输入搜索文本',

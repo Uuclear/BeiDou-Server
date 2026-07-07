@@ -34,7 +34,8 @@ import org.gms.util.I18nUtil;
 import java.awt.*;
 
 /**
- * @author Matze
+ * 处理客户端 QUEST_ACTION（任务操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#QUEST_ACTION}</p>
  */
 public final class QuestActionHandler extends AbstractPacketHandler {
 
@@ -68,6 +69,7 @@ public final class QuestActionHandler extends AbstractPacketHandler {
         return true;
     }
 
+    /** 处理 任务操作 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         byte action = p.readByte();

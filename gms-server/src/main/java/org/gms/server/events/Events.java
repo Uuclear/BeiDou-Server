@@ -23,12 +23,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package org.gms.server.events;
 
 /**
- * @author kevintjuh93
+ * 活动事件注册与调度入口。
  */
 public abstract class Events {
+    /**
+     * 构造 Events 实例。
+     */
     public Events() {
 
     }
 
+    /**
+     * 获取信息。
+     * @return abstract int 类型结果
+     */
     public abstract int getInfo();
 }

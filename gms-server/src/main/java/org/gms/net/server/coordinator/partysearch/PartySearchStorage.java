@@ -32,6 +32,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
+ * 组队搜索队列存储，按职业维护待匹配玩家列表与空闲时段。
+ *
  * @author Ronan
  */
 public class PartySearchStorage {

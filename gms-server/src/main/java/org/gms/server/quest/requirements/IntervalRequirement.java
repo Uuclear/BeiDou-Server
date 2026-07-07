@@ -32,22 +32,35 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务重复间隔时间需求。
  */
 public class IntervalRequirement extends AbstractQuestRequirement {
     private long interval = -1;
     private final int questID;
 
+    /**
+     * 构造 IntervalRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public IntervalRequirement(Quest quest, Data data) {
         super(QuestRequirementType.INTERVAL);
         questID = quest.getId();
         processData(data);
     }
 
+    /**
+     * 获取间隔。
+     * @return long 类型结果
+     */
     public long getInterval() {
         return interval;
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         interval = MINUTES.toMillis(DataTool.getInt(data));
@@ -85,6 +98,12 @@ public class IntervalRequirement extends AbstractQuestRequirement {
         return str.toString();
     }
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         boolean check = !chr.getQuest(Quest.getInstance(questID)).getStatus().equals(QuestStatus.Status.COMPLETED);

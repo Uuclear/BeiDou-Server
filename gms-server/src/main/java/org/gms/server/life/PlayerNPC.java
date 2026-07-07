@@ -62,6 +62,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 // TODO: remove dependency on custom Npc.wz. All NPCs with id 9901910 and above are custom additions for player npcs.
 // In summary: NPCs 9901910-9906599 and 9977777 are custom additions to HeavenMS that should be removed.
+/**
+ * 玩家形象 NPC（自由市场排名展示等）。
+ */
 public class PlayerNPC extends AbstractMapObject {
     private static final Logger log = LoggerFactory.getLogger(PlayerNPC.class);
     private static final Map<Byte, List<Integer>> availablePlayerNpcScriptIds = new HashMap<>();
@@ -98,6 +101,23 @@ public class PlayerNPC extends AbstractMapObject {
     private int CY;
     private int worldRank, overallRank, worldJobRank, overallJobRank;
 
+    /**
+     * 构造 PlayerNPC 实例。
+     * @param name name
+     * @param scriptId scriptId
+     * @param face face
+     * @param hair hair
+     * @param gender gender
+     * @param skin skin
+     * @param equips equips（Short, Integer 列表/集合）
+     * @param dir dir
+     * @param FH FH
+     * @param RX0 RX0
+     * @param RX1 RX1
+     * @param CX CX
+     * @param CY CY
+     * @param oid 对象 ID
+     */
     public PlayerNPC(String name, int scriptId, int face, int hair, int gender, byte skin, Map<Short, Integer> equips, int dir, int FH, int RX0, int RX1, int CX, int CY, int oid) {
         this.equips = equips;
         this.scriptId = scriptId;
@@ -117,6 +137,11 @@ public class PlayerNPC extends AbstractMapObject {
         setObjectId(oid);
     }
 
+    /**
+     * 构造 PlayerNPC 实例。
+     * @param npcDO npcDO
+     * @param equipDOList equipDOList（PlayernpcsEquipDO 列表/集合）
+     */
     public PlayerNPC(PlayernpcsDO npcDO, List<PlayernpcsEquipDO> equipDOList) {
         CY = Optional.ofNullable(npcDO.getCy()).orElse(0);
         name = Optional.ofNullable(npcDO.getName()).orElse("");
@@ -140,6 +165,10 @@ public class PlayerNPC extends AbstractMapObject {
         equipDOList.forEach(equipDO -> equips.put(Optional.ofNullable(equipDO.getEquippos()).orElse((short) 0), equipDO.getEquipid()));
     }
 
+    /**
+     * 加载Running、Rank、数据。
+     * @param worlds worlds
+     */
     public static void loadRunningRankData(int worlds) {
         List<PlayernpcsDO> playernpcsDOList = npcService.getPlayerNpcDOs(new PlayernpcsDO());
         runningOverallRank.set(playernpcsDOList.size() + 1);
@@ -163,33 +192,61 @@ public class PlayerNPC extends AbstractMapObject {
         });
     }
 
+    /**
+     * 获取世界、Rank。
+     * @return int 类型结果
+     */
     public int getWorldRank() {
         return worldRank;
     }
 
+    /**
+     * 获取Overall、Rank。
+     * @return int 类型结果
+     */
     public int getOverallRank() {
         return overallRank;
     }
 
+    /**
+     * 获取世界、职业、Rank。
+     * @return int 类型结果
+     */
     public int getWorldJobRank() {
         return worldJobRank;
     }
 
+    /**
+     * 获取Overall、职业、Rank。
+     * @return int 类型结果
+     */
     public int getOverallJobRank() {
         return overallJobRank;
     }
 
+    /**
+     * 获取类型。
+     * @return MapObjectType 类型结果
+     */
     @Override
     public MapObjectType getType() {
         return MapObjectType.PLAYER_NPC;
     }
 
+    /**
+     * 执行 send、刷新、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendSpawnData(Client client) {
         client.sendPacket(PacketCreator.spawnPlayerNPC(this));
         client.sendPacket(PacketCreator.getPlayerNPC(this));
     }
 
+    /**
+     * 执行 send、Destroy、数据 操作。
+     * @param client client
+     */
     @Override
     public void sendDestroyData(Client client) {
         client.sendPacket(PacketCreator.removeNPCController(this.getObjectId()));
@@ -201,11 +258,22 @@ public class PlayerNPC extends AbstractMapObject {
         return wjr.getAndIncrement();
     }
 
+    /**
+     * 判断是否可以刷新玩家NPC。
+     * @param name name
+     * @param mapid 地图 ID
+     * @return boolean 类型结果
+     */
     public static boolean canSpawnPlayerNpc(String name, int mapid) {
         List<PlayernpcsDO> playerNpcDOs = npcService.getPlayerNpcDOs(PlayernpcsDO.builder().name(name).map(mapid).build());
         return playerNpcDOs.isEmpty();
     }
 
+    /**
+     * 更新玩家NPC位置。
+     * @param map 地图名称
+     * @param newPos newPos
+     */
     public void updatePlayerNPCPosition(MapleMap map, Point newPos) {
         setPosition(newPos);
         RX0 = newPos.x + 50;
@@ -397,10 +465,23 @@ public class PlayerNPC extends AbstractMapObject {
         }
     }
 
+    /**
+     * 生成玩家NPC。
+     * @param mapid 地图 ID
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public static boolean spawnPlayerNPC(int mapid, Character chr) {
         return spawnPlayerNPC(mapid, null, chr);
     }
 
+    /**
+     * 生成玩家NPC。
+     * @param mapid 地图 ID
+     * @param pos 坐标
+     * @param chr 角色
+     * @return boolean 类型结果
+     */
     public static boolean spawnPlayerNPC(int mapid, Point pos, Character chr) {
         if (chr == null) {
             return false;
@@ -435,6 +516,10 @@ public class PlayerNPC extends AbstractMapObject {
         return null;
     }
 
+    /**
+     * 移除玩家NPC。
+     * @param chr 角色
+     */
     public static void removePlayerNPC(Character chr) {
         if (chr == null) {
             return;
@@ -458,6 +543,11 @@ public class PlayerNPC extends AbstractMapObject {
         }
     }
 
+    /**
+     * 执行 multicast、刷新、玩家、N、P、C 操作。
+     * @param mapid 地图 ID
+     * @param world world
+     */
     public static void multicastSpawnPlayerNPC(int mapid, int world) {
         World wserv = Server.getInstance().getWorld(world);
         if (wserv == null) {
@@ -474,6 +564,9 @@ public class PlayerNPC extends AbstractMapObject {
         }
     }
 
+    /**
+     * 移除所有玩家NPC。
+     */
     public static void removeAllPlayerNPC() {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement("SELECT DISTINCT world, map FROM playernpcs");
@@ -517,6 +610,10 @@ public class PlayerNPC extends AbstractMapObject {
         }
     }
 
+    /**
+     * 添加玩家NPC地图对象。
+     * @param map 地图名称
+     */
     public static void addPlayerNPCMapObject(MapleMap map) {
         List<PlayerNPC> playerNPCList = npcService.getPlayerNPC(PlayernpcsDO.builder().map(map.getId()).world(map.getWorld()).build());
         playerNPCList.forEach(map::addPlayerNPCMapObject);

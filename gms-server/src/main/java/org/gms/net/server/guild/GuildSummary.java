@@ -21,6 +21,9 @@
 */
 package org.gms.net.server.guild;
 
+/**
+ * 公会摘要信息，用于在地图上展示公会名称与徽章等简要数据。
+ */
 public class GuildSummary {
     private final String name;
     private final short logoBG;
@@ -29,6 +32,11 @@ public class GuildSummary {
     private final byte logoColor;
     private final int allianceId;
 
+    /**
+     * 从公会实体构造摘要信息。
+     *
+     * @param g 公会实体
+     */
     public GuildSummary(Guild g) {
         this.name = g.getName();
         this.logoBG = (short) g.getLogoBG();
@@ -38,26 +46,32 @@ public class GuildSummary {
         this.allianceId = g.getAllianceId();
     }
 
+    /** 返回公会名称。 */
     public String getName() {
         return name;
     }
 
+    /** 返回徽章背景图案 ID。 */
     public short getLogoBG() {
         return logoBG;
     }
 
+    /** 返回徽章背景颜色。 */
     public byte getLogoBGColor() {
         return logoBGColor;
     }
 
+    /** 返回徽章图案 ID。 */
     public short getLogo() {
         return logo;
     }
 
+    /** 返回徽章图案颜色。 */
     public byte getLogoColor() {
         return logoColor;
     }
 
+    /** 返回所属联盟 ID。 */
     public int getAllianceId() {
         return allianceId;
     }

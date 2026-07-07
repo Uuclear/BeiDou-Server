@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * 北斗动态参数计划，结构
- * {"world":{"0":{"server_message":{"clazz":"java.lang.String","value":"Welcome to Scania!"},"exp_rate":{"clazz":"java.lang.Float","value":"1.0"}}},"server":{"global":{"WORLDS":{"clazz":"java.lang.Integer","value":"1"}},"npc":{"NPCS_SCRIPTABLE":{"clazz":"java.util.Map","value":"{9001105:\"Rescue Gaga!\"}"}}}}
+ * 游戏运行时动态配置中心，从数据库加载参数并以分层 JSON 结构（type/subType/code）提供类型化读取。
+ * 被游戏核心模块广泛引用，update 方法可热更新部分 World 运行时状态。
  */
 public class GameConfig {
     private static final GameConfig config = new GameConfig();
@@ -28,6 +28,10 @@ public class GameConfig {
         gameConfigDOS.forEach(gameConfigDO -> add(this, gameConfigDO));
     }
 
+    /**
+     * 将配置项写入 GameConfig 内存缓存。
+     * @param gameConfigDO 游戏配置实体
+     */
     public static void add(GameConfigDO gameConfigDO) {
         add(config, gameConfigDO);
     }
@@ -52,6 +56,10 @@ public class GameConfig {
         valueProp.put("clazz", gameConfigDO.getConfigClazz());
     }
 
+    /**
+     * 从 GameConfig 内存缓存移除配置项。
+     * @param gameConfigDO 游戏配置实体
+     */
     public static void remove(GameConfigDO gameConfigDO) {
         JSONObject typeProp = config.properties.getJSONObject(gameConfigDO.getConfigType());
         if (typeProp == null) {
@@ -70,6 +78,10 @@ public class GameConfig {
         }
     }
 
+    /**
+     * 更新配置项并热加载可运行时生效的参数。
+     * @param gameConfigDO 游戏配置实体
+     */
     public static void update(GameConfigDO gameConfigDO) {
         JSONObject valueProp = getValueProp(gameConfigDO.getConfigType(), gameConfigDO.getConfigSubType(), gameConfigDO.getConfigCode());
         if (valueProp == null) {
@@ -126,6 +138,12 @@ public class GameConfig {
         }
     }
 
+    /**
+     * 执行 getObject 相关业务逻辑。
+     *
+     * @param key key
+     * @return Object 类型结果
+     */
     public static Object getObject(String key) {
         return get(key, null);
     }
@@ -200,6 +218,13 @@ public class GameConfig {
         return subProp.getJSONObject(key.toLowerCase());
     }
 
+    /**
+     * 执行 getValueProp 相关业务逻辑。
+     *
+     * @param type type
+     * @param key key
+     * @return JSONObject 类型结果
+     */
     public static JSONObject getValueProp(String type, String key) {
         JSONObject typeProp = config.properties.getJSONObject(type);
         if (typeProp == null) {
@@ -218,66 +243,162 @@ public class GameConfig {
         return null;
     }
 
+    /**
+     * 执行 getInteger 相关业务逻辑。
+     *
+     * @param key key
+     * @return Integer 类型结果
+     */
     public static Integer getInteger(String key) {
         return getValue(key, null, valueProp -> valueProp.getInteger("value"));
     }
 
+    /**
+     * 执行 getIntValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return int 类型结果
+     */
     public static int getIntValue(String key) {
         return getValue(key, 0, valueProp -> valueProp.getIntValue("value"));
     }
 
+    /**
+     * 执行 getLong 相关业务逻辑。
+     *
+     * @param key key
+     * @return Long 类型结果
+     */
     public static Long getLong(String key) {
         return getValue(key, null, valueProp -> valueProp.getLong("value"));
     }
 
+    /**
+     * 执行 getLongValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return long 类型结果
+     */
     public static long getLongValue(String key) {
         return getValue(key, 0L, valueProp -> valueProp.getLongValue("value"));
     }
 
+    /**
+     * 执行 getShort 相关业务逻辑。
+     *
+     * @param key key
+     * @return Short 类型结果
+     */
     public static Short getShort(String key) {
         return getValue(key, null, valueProp -> valueProp.getShort("value"));
     }
 
+    /**
+     * 执行 getShortValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return short 类型结果
+     */
     public static short getShortValue(String key) {
         return getValue(key, (short) 0, valueProp -> valueProp.getShortValue("value"));
     }
 
+    /**
+     * 执行 getByte 相关业务逻辑。
+     *
+     * @param key key
+     * @return Byte 类型结果
+     */
     public static Byte getByte(String key) {
         return getValue(key, null, valueProp -> valueProp.getByte("value"));
     }
 
+    /**
+     * 执行 getByteValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return byte 类型结果
+     */
     public static byte getByteValue(String key) {
         return getValue(key, (byte) 0, valueProp -> valueProp.getByteValue("value"));
     }
 
+    /**
+     * 执行 getFloat 相关业务逻辑。
+     *
+     * @param key key
+     * @return float 类型结果
+     */
     public static float getFloat(String key) {
         return getValue(key, null, valueProp -> valueProp.getFloat("value"));
     }
 
+    /**
+     * 执行 getFloatValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return float 类型结果
+     */
     public static float getFloatValue(String key) {
         return getValue(key, 0F, valueProp -> valueProp.getFloatValue("value"));
     }
 
+    /**
+     * 执行 getDouble 相关业务逻辑。
+     *
+     * @param key key
+     * @return Double 类型结果
+     */
     public static Double getDouble(String key) {
         return getValue(key, null, valueProp -> valueProp.getDouble("value"));
     }
 
+    /**
+     * 执行 getDoubleValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return double 类型结果
+     */
     public static double getDoubleValue(String key) {
         return getValue(key, 0D, valueProp -> valueProp.getDoubleValue("value"));
     }
 
+    /**
+     * 执行 getBoolean 相关业务逻辑。
+     *
+     * @param key key
+     * @return Boolean 类型结果
+     */
     public static Boolean getBoolean(String key) {
         return getValue(key, null, valueProp -> valueProp.getBoolean("value"));
     }
 
+    /**
+     * 执行 getBooleanValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return boolean 类型结果
+     */
     public static boolean getBooleanValue(String key) {
         return getValue(key, false, valueProp -> valueProp.getBooleanValue("value"));
     }
 
+    /**
+     * 执行 getString 相关业务逻辑。
+     *
+     * @param key key
+     * @return String 类型结果
+     */
     public static String getString(String key) {
         return getValue(key, null, valueProp -> valueProp.getString("value"));
     }
 
+    /**
+     * 执行 getStringValue 相关业务逻辑。
+     *
+     * @param key key
+     * @return String 类型结果
+     */
     public static String getStringValue(String key) {
         return getValue(key, "", valueProp -> valueProp.getString("value") == null ? "" : valueProp.getString("value"));
     }
@@ -311,6 +432,13 @@ public class GameConfig {
         return get("server", key);
     }
 
+    /**
+     * 执行 getWorldInt 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return int 类型结果
+     */
     public static int getWorldInt(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -319,6 +447,12 @@ public class GameConfig {
         return valueProp.getIntValue("value");
     }
 
+    /**
+     * 执行 getServerInt 相关业务逻辑。
+     *
+     * @param key key
+     * @return int 类型结果
+     */
     public static int getServerInt(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -327,6 +461,13 @@ public class GameConfig {
         return valueProp.getIntValue("value");
     }
 
+    /**
+     * 执行 getWorldByte 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return byte 类型结果
+     */
     public static byte getWorldByte(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -335,6 +476,12 @@ public class GameConfig {
         return valueProp.getByteValue("value");
     }
 
+    /**
+     * 执行 getServerByte 相关业务逻辑。
+     *
+     * @param key key
+     * @return byte 类型结果
+     */
     public static byte getServerByte(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -343,6 +490,13 @@ public class GameConfig {
         return valueProp.getByteValue("value");
     }
 
+    /**
+     * 执行 getWorldLong 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return long 类型结果
+     */
     public static long getWorldLong(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -351,6 +505,12 @@ public class GameConfig {
         return valueProp.getLongValue("value");
     }
 
+    /**
+     * 执行 getServerLong 相关业务逻辑。
+     *
+     * @param key key
+     * @return long 类型结果
+     */
     public static long getServerLong(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -359,6 +519,13 @@ public class GameConfig {
         return valueProp.getLongValue("value");
     }
 
+    /**
+     * 执行 getWorldShort 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return short 类型结果
+     */
     public static short getWorldShort(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -367,6 +534,12 @@ public class GameConfig {
         return valueProp.getShortValue("value");
     }
 
+    /**
+     * 执行 getServerShort 相关业务逻辑。
+     *
+     * @param key key
+     * @return short 类型结果
+     */
     public static short getServerShort(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -375,6 +548,13 @@ public class GameConfig {
         return valueProp.getShortValue("value");
     }
 
+    /**
+     * 执行 getWorldFloat 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return float 类型结果
+     */
     public static float getWorldFloat(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -383,6 +563,12 @@ public class GameConfig {
         return valueProp.getFloatValue("value");
     }
 
+    /**
+     * 执行 getServerFloat 相关业务逻辑。
+     *
+     * @param key key
+     * @return float 类型结果
+     */
     public static float getServerFloat(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -391,6 +577,13 @@ public class GameConfig {
         return valueProp.getFloatValue("value");
     }
 
+    /**
+     * 执行 getWorldDouble 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return double 类型结果
+     */
     public static double getWorldDouble(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -399,6 +592,12 @@ public class GameConfig {
         return valueProp.getDoubleValue("value");
     }
 
+    /**
+     * 执行 getServerDouble 相关业务逻辑。
+     *
+     * @param key key
+     * @return double 类型结果
+     */
     public static double getServerDouble(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -407,6 +606,13 @@ public class GameConfig {
         return valueProp.getDoubleValue("value");
     }
 
+    /**
+     * 执行 getWorldString 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return String 类型结果
+     */
     public static String getWorldString(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -415,6 +621,12 @@ public class GameConfig {
         return valueProp.getString("value");
     }
 
+    /**
+     * 执行 getServerString 相关业务逻辑。
+     *
+     * @param key key
+     * @return String 类型结果
+     */
     public static String getServerString(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -423,6 +635,13 @@ public class GameConfig {
         return valueProp.getString("value");
     }
 
+    /**
+     * 执行 getWorldBoolean 相关业务逻辑。
+     *
+     * @param worldId 大区 ID
+     * @param key key
+     * @return boolean 类型结果
+     */
     public static boolean getWorldBoolean(int worldId, String key) {
         JSONObject valueProp = getValueProp("world", String.valueOf(worldId), key);
         if (valueProp == null) {
@@ -431,6 +650,12 @@ public class GameConfig {
         return valueProp.getBooleanValue("value");
     }
 
+    /**
+     * 执行 getServerBoolean 相关业务逻辑。
+     *
+     * @param key key
+     * @return boolean 类型结果
+     */
     public static boolean getServerBoolean(String key) {
         JSONObject valueProp = getValueProp("server", key);
         if (valueProp == null) {
@@ -499,6 +724,10 @@ public class GameConfig {
         }
     }
 
+    /**
+     * 执行 getConfig 相关业务逻辑。
+     * @return JSONObject 类型结果
+     */
     public static JSONObject getConfig() {
         return config.properties;
     }

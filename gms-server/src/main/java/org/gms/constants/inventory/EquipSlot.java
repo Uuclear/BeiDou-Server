@@ -1,8 +1,8 @@
 package org.gms.constants.inventory;
-
 /**
- * @author The Spookster (The Real Spookster)
+ * 装备栏位索引常量，对应角色纸娃娃各装备槽。
  */
+
 public enum EquipSlot {
 
     HAT("Cp", -1),

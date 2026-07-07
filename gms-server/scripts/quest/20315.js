@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: 		ThreeStep
-	NPC Name: 		Hawkeye (1101007)
-	Description: 	Thunder breaker 3rd job advancement
-	Quest: 			Shinsoo's Teardrop
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20315
+ * 功能描述：Hawkeye (1101007)，职业转职。
+ * 原作者：ThreeStep
+ */
 /*
     Author:         Magical-H
     Description:    Swan Knights be current job advancement

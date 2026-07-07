@@ -32,6 +32,9 @@ import java.awt.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 通用传送门实现，支持脚本触发与目标地图跳转。
+ */
 public class GenericPortal implements Portal {
     private String name;
     private String target;
@@ -44,75 +47,139 @@ public class GenericPortal implements Portal {
     private boolean portalState;
     private Lock scriptLock = null;
 
+    /**
+     * 构造 GenericPortal 实例。
+     * @param type 类型
+     */
     public GenericPortal(int type) {
         this.type = type;
     }
 
+    /**
+     * 获取ID。
+     * @return int 类型结果
+     */
     @Override
     public int getId() {
         return id;
     }
 
+    /**
+     * 设置ID。
+     * @param id ID
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * 获取名称。
+     * @return String 类型结果
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * 获取位置。
+     * @return Point 类型结果
+     */
     @Override
     public Point getPosition() {
         return position;
     }
 
+    /**
+     * 获取Target。
+     * @return String 类型结果
+     */
     @Override
     public String getTarget() {
         return target;
     }
 
+    /**
+     * 设置传送门状态。
+     * @param newStatus newStatus
+     */
     @Override
     public void setPortalStatus(boolean newStatus) {
         this.status = newStatus;
     }
 
+    /**
+     * 获取传送门状态。
+     * @return boolean 类型结果
+     */
     @Override
     public boolean getPortalStatus() {
         return status;
     }
 
+    /**
+     * 获取Target、地图、ID。
+     * @return int 类型结果
+     */
     @Override
     public int getTargetMapId() {
         return targetmap;
     }
 
+    /**
+     * 获取类型。
+     * @return int 类型结果
+     */
     @Override
     public int getType() {
         return type;
     }
 
+    /**
+     * 获取脚本名称。
+     * @return String 类型结果
+     */
     @Override
     public String getScriptName() {
         return scriptName;
     }
 
+    /**
+     * 设置名称。
+     * @param name name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 设置位置。
+     * @param position 坐标
+     */
     public void setPosition(Point position) {
         this.position = position;
     }
 
+    /**
+     * 设置Target。
+     * @param target target
+     */
     public void setTarget(String target) {
         this.target = target;
     }
 
+    /**
+     * 设置Target、地图、ID。
+     * @param targetmapid targetmapid
+     */
     public void setTargetMapId(int targetmapid) {
         this.targetmap = targetmapid;
     }
 
+    /**
+     * 设置脚本名称。
+     * @param scriptName scriptName
+     */
     @Override
     public void setScriptName(String scriptName) {
         this.scriptName = scriptName;
@@ -126,6 +193,10 @@ public class GenericPortal implements Portal {
         }
     }
 
+    /**
+     * 进入传送门。
+     * @param c c
+     */
     @Override
     public void enterPortal(Client c) {
         boolean changed = false;
@@ -159,11 +230,19 @@ public class GenericPortal implements Portal {
         }
     }
 
+    /**
+     * 设置传送门状态。
+     * @param state 状态值
+     */
     @Override
     public void setPortalState(boolean state) {
         this.portalState = state;
     }
 
+    /**
+     * 获取传送门状态。
+     * @return boolean 类型结果
+     */
     @Override
     public boolean getPortalState() {
         return portalState;

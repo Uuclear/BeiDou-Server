@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * 
- * 2111000.js: Zakum Party Quest Chest - summons 3 "Mimics"
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2111000
+ * 功能描述：反应堆触发后召唤怪物。
+ * 原作者：Lerk
+ */
 function act() {
     rm.playerMessage(5, "Oh noes! Monsters in the chest!");
     rm.spawnMonster(9300004, 3);

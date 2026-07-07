@@ -1,4 +1,7 @@
 <script setup lang="ts">
+  /**
+   * 角色选择组件，查询角色列表并向上传递选中角色。
+   */
   import { ref } from 'vue';
   import { getCharacterList, InventoryCondition } from '@/api/inventory';
   import { useI18n } from 'vue-i18n';
@@ -17,18 +20,21 @@
   const cOnlineStatus = ref<boolean | undefined>(false);
 
   const visible = ref(false);
+  /** 打开角色选择弹窗 */
   const openSelector = () => {
     visible.value = true;
   };
 
   const tableData = ref<any>([]);
 
+  /** 按角色 ID/名称查询角色列表 */
   const searchClick = async () => {
     const { data } = await getCharacterList(condition.value);
     tableData.value = data.records;
   };
 
   const emit = defineEmits(['useCharacter']);
+  /** 选中角色后向父组件抛出 characterId、名称及在线状态 */
   const selectClick = (cid: number, cName: string, onlineStatus: boolean) => {
     ccId.value = cid;
     ccName.value = cName;
@@ -45,6 +51,7 @@
 </script>
 
 <template>
+  <!-- 背包管理角色选择器：按账户/角色名筛选在线或离线角色。 -->
   <a-space>
     <a-input-search
       :placeholder="

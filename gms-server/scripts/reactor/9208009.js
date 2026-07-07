@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：9208009
+ * 功能描述：地图反应堆交互脚本。
+ */
 // Opened GPQ boss room, players may now revive and stay on the GPQ
 
 function act() {

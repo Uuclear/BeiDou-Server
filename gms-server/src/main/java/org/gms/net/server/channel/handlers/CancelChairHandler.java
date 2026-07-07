@@ -26,8 +26,13 @@ import org.gms.client.Client;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 处理客户端 CANCEL_CHAIR（取消椅子） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CANCEL_CHAIR}</p>
+ */
 public final class CancelChairHandler extends AbstractPacketHandler {
 
+    /** 处理 取消椅子 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int id = p.readShort();

@@ -32,11 +32,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * GM0（所有玩家可用）命令：展示当前服务器时间
+ */
 public class TimeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("TimeCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param client 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client client, String[] params) {
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");

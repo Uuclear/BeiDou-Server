@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20600
+ * 功能描述：任务脚本（ID: 20600）。
+ */
 /*
  * Cygnus Skill - Training Never ends
  */

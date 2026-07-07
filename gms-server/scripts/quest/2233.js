@@ -1,3 +1,8 @@
+/**
+ * 脚本类型：任务
+ * 对象 ID：2233
+ * 功能描述：提升声望！Master Al 的任务：达到 1000 声望；需通过领导与关怀晚辈、帮助晚辈获得经验升级来实现。
+ */
 /*
  * Quest ID : 2233
  * Quest Name : Let's Raise Reputation!

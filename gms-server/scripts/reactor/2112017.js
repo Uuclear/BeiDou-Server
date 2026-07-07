@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * 
- * 2112017.js: Frostprey Egg in El Nath Mountains - part of the Frostprey quest (4th job Marksman)
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2112017
+ * 功能描述：反应堆触发后掉落地图物品。
+ * 原作者：Lerk
+ */
 function act() {
     rm.dropItems();
 }

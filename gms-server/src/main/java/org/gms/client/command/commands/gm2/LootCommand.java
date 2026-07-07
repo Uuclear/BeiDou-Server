@@ -33,12 +33,20 @@ import org.gms.util.I18nUtil;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * GM2命令：展示您拥有的所有物品
+ */
 public class LootCommand extends Command {
 
     {
         setDescription(I18nUtil.getMessage("LootCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         List<MapObject> items = c.getPlayer().getMap().getMapObjectsInRange(c.getPlayer().getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapObjectType.ITEM));

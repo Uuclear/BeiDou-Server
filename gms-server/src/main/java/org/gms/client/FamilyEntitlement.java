@@ -2,6 +2,9 @@ package org.gms.client;
 
 import org.gms.util.I18nUtil;
 
+/**
+ * 家族特权枚举，定义家族等级解锁的各类特权。
+ */
 public enum FamilyEntitlement {
     FAMILY_REUINION(1, 300, I18nUtil.getMessage("FamilyEntitlement.message1"), I18nUtil.getMessage("FamilyEntitlement.message2")),
     SUMMON_FAMILY(1, 500, I18nUtil.getMessage("FamilyEntitlement.message3"), I18nUtil.getMessage("FamilyEntitlement.message4")),
@@ -25,18 +28,34 @@ public enum FamilyEntitlement {
         this.description = description;
     }
 
+    /**
+     * 获取Usage上限
+     * @return 返回值
+     */
     public int getUsageLimit() {
         return usageLimit;
     }
 
+    /**
+     * 获取RepCost
+     * @return 返回值
+     */
     public int getRepCost() {
         return repCost;
     }
 
+    /**
+     * 获取名称
+     * @return 返回值
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 获取Description
+     * @return 返回值
+     */
     public String getDescription() {
         return description;
     }

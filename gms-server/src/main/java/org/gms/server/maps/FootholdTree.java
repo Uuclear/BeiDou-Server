@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Matze
+ * Foothold 树结构，按 X 坐标索引所有落脚点以加速查找。
  */
 public class FootholdTree {
     private FootholdTree nw = null;
@@ -43,12 +43,23 @@ public class FootholdTree {
     private int maxDropX;
     private int minDropX;
 
+    /**
+     * 构造 FootholdTree 实例。
+     * @param p1 p1
+     * @param p2 p2
+     */
     public FootholdTree(Point p1, Point p2) {
         this.p1 = p1;
         this.p2 = p2;
         center = new Point((p2.x - p1.x) / 2, (p2.y - p1.y) / 2);
     }
 
+    /**
+     * 构造 FootholdTree 实例。
+     * @param p1 p1
+     * @param p2 p2
+     * @param depth depth
+     */
     public FootholdTree(Point p1, Point p2, int depth) {
         this.p1 = p1;
         this.p2 = p2;
@@ -56,6 +67,10 @@ public class FootholdTree {
         center = new Point((p2.x - p1.x) / 2, (p2.y - p1.y) / 2);
     }
 
+    /**
+     * 执行 insert 操作。
+     * @param f f
+     */
     public void insert(Foothold f) {
         if (depth == 0) {
             if (f.getX1() > maxDropX) {
@@ -149,6 +164,12 @@ public class FootholdTree {
         return null;
     }
 
+    /**
+     * 查找Wall。
+     * @param p1 p1
+     * @param p2 p2
+     * @return Foothold 类型结果
+     */
     public Foothold findWall(Point p1, Point p2) {
         if (p1.y != p2.y) {
             throw new IllegalArgumentException();
@@ -156,6 +177,11 @@ public class FootholdTree {
         return findWallR(p1, p2);
     }
 
+    /**
+     * 查找Below。
+     * @param p p
+     * @return Foothold 类型结果
+     */
     public Foothold findBelow(Point p) {
         List<Foothold> relevants = getRelevants(p);
         List<Foothold> xMatches = new LinkedList<>();
@@ -193,26 +219,50 @@ public class FootholdTree {
         return null;
     }
 
+    /**
+     * 获取X1。
+     * @return int 类型结果
+     */
     public int getX1() {
         return p1.x;
     }
 
+    /**
+     * 获取X2。
+     * @return int 类型结果
+     */
     public int getX2() {
         return p2.x;
     }
 
+    /**
+     * 获取Y1。
+     * @return int 类型结果
+     */
     public int getY1() {
         return p1.y;
     }
 
+    /**
+     * 获取Y2。
+     * @return int 类型结果
+     */
     public int getY2() {
         return p2.y;
     }
 
+    /**
+     * 获取Max掉落X。
+     * @return int 类型结果
+     */
     public int getMaxDropX() {
         return maxDropX;
     }
 
+    /**
+     * 获取Min掉落X。
+     * @return int 类型结果
+     */
     public int getMinDropX() {
         return minDropX;
     }

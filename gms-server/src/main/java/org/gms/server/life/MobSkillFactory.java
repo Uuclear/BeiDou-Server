@@ -40,7 +40,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * @author Danny (Leifde)
+ * 怪物技能工厂，从 WZ 加载 MobSkill 模板。
  */
 public class MobSkillFactory {
     private static final Map<String, MobSkill> mobSkills = new HashMap<>();
@@ -50,12 +50,24 @@ public class MobSkillFactory {
     private static final Lock readLock = readWriteLock.readLock();
     private static final Lock writeLock = readWriteLock.writeLock();
 
+    /**
+     * 获取怪物、技能、或、Throw。
+     * @param type 类型
+     * @param level level
+     * @return MobSkill 类型结果
+     */
     public static MobSkill getMobSkillOrThrow(MobSkillType type, int level) {
         return getMobSkill(type, level).orElseThrow(
                 () -> new IllegalArgumentException("No MobSkill exists for type %s, level %d".formatted(type, level))
         );
     }
 
+    /**
+     * 获取怪物技能。
+     * @param type 类型
+     * @param level level
+     * @return Optional<MobSkill> 类型结果
+     */
     public static Optional<MobSkill> getMobSkill(final MobSkillType type, final int level) {
         readLock.lock();
         try {

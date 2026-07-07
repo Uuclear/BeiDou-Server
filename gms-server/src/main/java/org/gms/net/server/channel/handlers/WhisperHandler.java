@@ -33,7 +33,8 @@ import org.gms.util.PacketCreator;
 import org.gms.util.PacketCreator.WhisperFlag;
 
 /**
- * @author Chronos
+ * 处理密语聊天、好友定位与玩家查找请求。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#WHISPER}</p>
  */
 public final class WhisperHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(WhisperHandler.class);
@@ -44,6 +45,7 @@ public final class WhisperHandler extends AbstractPacketHandler {
     public static final byte RT_CASH_SHOP = 0x02;
     public static final byte RT_DIFFERENT_CHANNEL = 0x03;
 
+    /** 解析密语类型与目标角色名，执行私聊或定位查找。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         byte request = p.readByte();

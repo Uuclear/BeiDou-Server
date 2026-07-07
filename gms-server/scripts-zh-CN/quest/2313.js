@@ -1,13 +1,11 @@
-/* ===========================================================
-        @author Resonance
-	NPC Name: 		Head Patrol Officer
-	Map(s): 		Mushroom Castle: Corner of Mushroom Forest(106020000)
-	Description: 	Quest -  The Story Behind the Case
-=============================================================
-Version 1.0 - Script Done.(18/7/2010)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2313
+ * 功能描述：Head Patrol Officer，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

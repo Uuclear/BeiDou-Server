@@ -45,7 +45,7 @@ import java.util.concurrent.ScheduledFuture;
 import static java.util.concurrent.TimeUnit.HOURS;
 
 /**
- * @author Ronan - credits to Eric for showing the New Year opcodes and handler layout
+ * 新年贺卡运行时记录 POJO，在内存中维护贺卡收发双方、留言内容及定时推送任务，并与 newyear 表同步。
  */
 @Slf4j
 @Data
@@ -68,6 +68,9 @@ public class NewYearCardRecord {
     private ScheduledFuture<?> sendTask;
     private static final NewYearCardService newYearCardService = ServerManager.getApplicationContext().getBean(NewYearCardService.class);
 
+    /**
+     * 创建待发送的新年贺卡，初始化发送时间与未接收状态。
+     */
     public NewYearCardRecord(int senderId, String senderName, int receiverId, String receiverName, String message) {
         this.id = -1;
 
@@ -86,6 +89,9 @@ public class NewYearCardRecord {
         this.dateReceived = 0;
     }
 
+    /**
+     * 从数据库加载后补充贺卡 ID、丢弃标记及收发时间戳。
+     */
     public void setExtraNewYearCardRecord(int id, boolean senderDiscardCard, boolean receiverDiscardCard, boolean receiverReceivedCard, long dateSent, long dateReceived) {
         this.id = id;
         this.senderDiscardCard = senderDiscardCard;
@@ -96,6 +102,9 @@ public class NewYearCardRecord {
         this.dateReceived = dateReceived;
     }
 
+    /**
+     * 将新贺卡持久化至 newyear 表并回填自增 ID。
+     */
     public static void saveNewYearCard(NewYearCardRecord newyear) {
         try (Connection con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("INSERT INTO newyear VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
@@ -124,6 +133,9 @@ public class NewYearCardRecord {
         }
     }
 
+    /**
+     * 标记贺卡已被接收并更新接收时间。
+     */
     public static void updateNewYearCard(NewYearCardRecord newyear) {
         newyear.receiverReceivedCard = true;
         newyear.dateReceived = System.currentTimeMillis();
@@ -140,6 +152,9 @@ public class NewYearCardRecord {
         }
     }
 
+    /**
+     * 按贺卡 ID 从缓存或数据库加载完整记录。
+     */
     public static NewYearCardRecord loadNewYearCard(int cardid) {
         NewYearCardRecord nyc = Server.getInstance().getNewYearCard(cardid);
         if (nyc != null) {
@@ -166,6 +181,9 @@ public class NewYearCardRecord {
         return null;
     }
 
+    /**
+     * 加载指定角色相关的全部新年贺卡至角色内存。
+     */
     public static void loadPlayerNewYearCards(Character chr) {
         try {
             List<NewyearDO> newyearDOList = newYearCardService.loadPlayerNewYearCards(chr);
@@ -181,6 +199,9 @@ public class NewYearCardRecord {
         }
     }
 
+    /**
+     * 向角色聊天栏打印其持有的新年贺卡调试信息。
+     */
     public static void printNewYearRecords(Character chr) {
         chr.dropMessage(5, "New Years: " + chr.getNewYearRecords().size());
 
@@ -204,6 +225,9 @@ public class NewYearCardRecord {
         }
     }
 
+    /**
+     * 启动定时任务，在接收方在线时推送贺卡通知包。
+     */
     public void startNewYearCardTask() {
         if (sendTask != null) {
             return;
@@ -227,6 +251,9 @@ public class NewYearCardRecord {
         }, HOURS.toMillis(1));
     }
 
+    /**
+     * 取消贺卡推送定时任务。
+     */
     public void stopNewYearCardTask() {
         if (sendTask != null) {
             sendTask.cancel(false);
@@ -247,6 +274,9 @@ public class NewYearCardRecord {
         }
     }
 
+    /**
+     * 批量丢弃角色作为发送方或接收方的全部贺卡并同步数据库。
+     */
     public static void removeAllNewYearCard(boolean send, Character chr) {
         int cid = chr.getId();
         

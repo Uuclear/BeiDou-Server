@@ -21,19 +21,35 @@
 */
 package org.gms.client.keybind;
 
+/**
+ * 键盘按键绑定数据模型，存储按键类型与对应的功能 ID。
+ */
 public class KeyBinding {
     private final int type;
     private final int action;
 
+    /**
+     * 按键绑定
+     * @param type 类型
+     * @param action action
+     */
     public KeyBinding(int type, int action) {
         this.type = type;
         this.action = action;
     }
 
+    /**
+     * 获取类型
+     * @return 返回值
+     */
     public int getType() {
         return type;
     }
 
+    /**
+     * 获取Action
+     * @return 返回值
+     */
     public int getAction() {
         return action;
     }

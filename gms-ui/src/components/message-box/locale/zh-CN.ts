@@ -1,3 +1,6 @@
+/**
+ * 消息盒子组件中文文案。
+ */
 export default {
   'messageBox.tab.title.message': '消息',
   'messageBox.tab.title.notice': '通知',

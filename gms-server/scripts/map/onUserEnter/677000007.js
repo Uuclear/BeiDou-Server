@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：地图
+ * 对象 ID：677000007
+ * 功能描述：地图脚本（677000007），控制地图内特殊逻辑。
+ */
 function start(ms) {
     const Point = Java.type('java.awt.Point');
     var pos = new Point(171, 50);

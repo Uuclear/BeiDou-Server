@@ -19,12 +19,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+/**
+ * 游戏动态参数配置控制器，支持参数的增删改查及 YAML 导入导出。
+ * 对应 ConfigService 与 GameConfig 运行时配置体系。
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/config")
 public class ConfigController {
     private final ConfigService configService;
 
+    /**
+     * 获取参数大类和参数类型。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "获取参数大类和参数类型")
     @GetMapping("/" + ApiConstant.LATEST + "/getConfigTypeList")
@@ -32,6 +40,10 @@ public class ConfigController {
         return ResultBody.success(configService.getConfigTypeList());
     }
 
+    /**
+     * 获取全部自动封禁配置列表。
+     * @return 配置 DTO 列表
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "分页获取参数列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getConfigList")
@@ -39,6 +51,12 @@ public class ConfigController {
         return ResultBody.success(request, configService.getConfigList(request.getData()));
     }
 
+    /**
+     * 新增参数。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "新增参数")
     @PostMapping("/" + ApiConstant.LATEST + "/addConfig")
@@ -47,6 +65,12 @@ public class ConfigController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 修改参数。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "修改参数")
     @PostMapping("/" + ApiConstant.LATEST + "/updateConfig")
@@ -55,6 +79,12 @@ public class ConfigController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 删除参数。
+     *
+     * @param id 记录主键 ID
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "删除参数")
     @DeleteMapping("/" + ApiConstant.LATEST + "/deleteConfig/{id}")
@@ -63,6 +93,12 @@ public class ConfigController {
         return ResultBody.success(null);
     }
 
+    /**
+     * 批量删除参数。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "批量删除参数")
     @PostMapping("/" + ApiConstant.LATEST + "/deleteConfigList")
@@ -71,6 +107,12 @@ public class ConfigController {
         return ResultBody.success(null);
     }
 
+    /**
+     * 从yml导入参数。
+     *
+     * @param file 上传文件
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "从yml导入参数")
     @PostMapping(value = "/" + ApiConstant.LATEST + "/importYml", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -78,6 +120,10 @@ public class ConfigController {
         return ResultBody.success(configService.importYml(file));
     }
 
+    /**
+     * 从yml导入参数。
+     * @return ResponseEntity<Resource> 类型结果
+     */
     @Tag(name = "/config/" + ApiConstant.LATEST)
     @Operation(summary = "从yml导入参数")
     @GetMapping("/" + ApiConstant.LATEST + "/exportYml")

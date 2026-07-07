@@ -37,10 +37,11 @@ import org.gms.util.PacketCreator;
 import java.util.Objects;
 
 /**
- * @author Moogra
- * @author Ubaware
+ * 处理客户端 USE_FAMILY（使用家族功能） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_FAMILY}</p>
  */
 public final class FamilyUseHandler extends AbstractPacketHandler {
+    /** 处理 使用家族功能 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_family_system")) {

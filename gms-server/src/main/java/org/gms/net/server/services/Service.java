@@ -20,6 +20,8 @@
 package org.gms.net.server.services;
 
 /**
+ * 服务实例包装类，通过反射创建并持有具体 {@link BaseService} 实现。
+ *
  * @author Ronan
  */
 public class Service<T extends BaseService> {

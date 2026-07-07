@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2101014
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /*2101014.js - Lobby and Entrance
  * @author Jvlaple
  * For Jvlaple's AriantPQ

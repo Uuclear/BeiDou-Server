@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 /**
- * @author Traitor
+ * 拍卖行（MTS）物品信息数据结构。
  */
 public class MTSItemInfo {
     private final int price;
@@ -39,6 +39,15 @@ public class MTSItemInfo {
     private final int month;
     private int day = 1;
 
+    /**
+     * 构造 MTSItemInfo 实例。
+     * @param item item
+     * @param price price
+     * @param id ID
+     * @param cid cid
+     * @param seller seller
+     * @param date date
+     */
     public MTSItemInfo(Item item, int price, int id, int cid, String seller, String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate sellEnd = LocalDate.parse(date, formatter);
@@ -52,28 +61,52 @@ public class MTSItemInfo {
         this.day = sellEnd.getDayOfMonth();
     }
 
+    /**
+     * 获取物品。
+     * @return Item 类型结果
+     */
     public Item getItem() {
         return item;
     }
 
+    /**
+     * 获取Price。
+     * @return int 类型结果
+     */
     public int getPrice() {
         return price;
     }
 
+    /**
+     * 获取Taxes。
+     * @return int 类型结果
+     */
     public int getTaxes() {
         return 100 + price / 10;
     }
 
+    /**
+     * 获取ID。
+     * @return int 类型结果
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * 获取Ending、日期。
+     * @return long 类型结果
+     */
     public long getEndingDate() {
         Calendar now = Calendar.getInstance();
         now.set(year, month - 1, day);
         return now.getTimeInMillis();
     }
 
+    /**
+     * 获取Seller。
+     * @return String 类型结果
+     */
     public String getSeller() {
         return seller;
     }

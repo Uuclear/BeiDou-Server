@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1022101_old
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /* Rooney
 	Map Name (Map ID)
 	Used to exchange VP for Maple Leaves, and Maple Leaves for rewards.

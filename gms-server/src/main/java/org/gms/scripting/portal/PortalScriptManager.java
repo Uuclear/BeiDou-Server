@@ -34,12 +34,20 @@ import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 传送门脚本管理器（单例），加载并缓存 {@code scripts/portal/*.js}。
+ * <p>
+ * 通过 GraalJS {@code getInterface(PortalScript.class)} 将脚本映射为 Java 接口，
+ * 玩家使用传送门时调用 {@link #executePortalScript} 执行 {@link PortalScript#enter}。
+ * </p>
+ */
 public class PortalScriptManager extends AbstractScriptManager {
     private static final Logger log = LoggerFactory.getLogger(PortalScriptManager.class);
     private static final PortalScriptManager instance = new PortalScriptManager();
 
     private final Map<String, PortalScript> scripts = new HashMap<>();
 
+/** 获取单例实例 */
     public static PortalScriptManager getInstance() {
         return instance;
     }
@@ -56,6 +64,7 @@ public class PortalScriptManager extends AbstractScriptManager {
             return null;
         }
 
+        // GraalJS：将已执行脚本转为 Java 接口代理，脚本中需实现 enter(ppi) 函数
         script = iv.getInterface(PortalScript.class);
         if (script == null) {
             throw new ScriptException(String.format("Portal script \"%s\" fails to implement the PortalScript interface", scriptName));
@@ -65,6 +74,7 @@ public class PortalScriptManager extends AbstractScriptManager {
         return script;
     }
 
+/** 执行传送门脚本 */
     public boolean executePortalScript(Portal portal, Client c) {
         try {
             String strPortalName = portal.getScriptName();
@@ -83,6 +93,7 @@ public class PortalScriptManager extends AbstractScriptManager {
         return false;
     }
 
+/** 清空传送门脚本缓存 */
     public void reloadPortalScripts() {
         scripts.clear();
     }

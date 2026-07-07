@@ -1,3 +1,8 @@
+/**
+ * HTTP 请求拦截器
+ * 配置 axios 默认 baseURL，统一注入 JWT Token、请求 ID 包装，
+ * 并处理响应错误、Blob 文件下载及 401 登录过期跳转。
+ */
 import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Message } from '@arco-design/web-vue';
@@ -5,6 +10,7 @@ import { useUserStore } from '@/store';
 import { getToken } from '@/utils/auth';
 
 /* eslint-disable no-bitwise */
+/** 生成 RFC 4122 风格的 UUID，用作请求唯一标识 requestId */
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
@@ -13,6 +19,7 @@ function generateUUID() {
   });
 }
 
+/** 后端统一 HTTP 响应体结构 */
 export interface HttpResponse<T = unknown> {
   status: string;
   message: string;

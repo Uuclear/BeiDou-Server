@@ -44,6 +44,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
+ * 会话协调器单例，负责 HWID 校验、防多开检测及远程主机会话初始化。
+ *
  * @author Ronan
  */
 public class SessionCoordinator {

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `playernpcs_field` 的实体类（DO）。
+ * <p>
+ * 玩家 NPC 外形字段表，保存脸型、发型、肤色等外观属性。
  */
 @Data
 @Builder

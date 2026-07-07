@@ -1,10 +1,13 @@
-/*
-	Author: DietStory v1.02 dev team
-	NPC: Matthias
-	Quest: Hidden Inside the Trash Can
-*/
 
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20710
+ * 功能描述：任务脚本（ID: 20710）。
+ * 原作者：DietStory v1.02 dev team
+ */
 var status = -1;
 
 function start(mode, type, selection) {

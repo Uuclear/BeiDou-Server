@@ -46,12 +46,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 怪物信息提供者（单例），缓存掉落表、全局掉落及有效掉落计算。
+ */
 public class MonsterInformationProvider {
     private static final Logger log = LoggerFactory.getLogger(MonsterInformationProvider.class);
     // Author : LightPepsi
 
     private static final MonsterInformationProvider instance = new MonsterInformationProvider();
 
+    /**
+     * 获取单例实例。
+     * @return MonsterInformationProvider 类型结果
+     */
     public static MonsterInformationProvider getInstance() {
         return instance;
     }
@@ -76,6 +83,11 @@ public class MonsterInformationProvider {
         retrieveGlobal();
     }
 
+    /**
+     * 获取相关全局掉落。
+     * @param mapid 地图 ID
+     * @return List<MonsterGlobalDropEntry> 类型结果
+     */
     public final List<MonsterGlobalDropEntry> getRelevantGlobalDrops(int mapid) {
         int continentid = mapid / 100000000;
 
@@ -113,6 +125,11 @@ public class MonsterInformationProvider {
         }
     }
 
+    /**
+     * 检索有效掉落。
+     * @param monsterId 怪物 ID
+     * @return List<MonsterDropEntry> 类型结果
+     */
     public List<MonsterDropEntry> retrieveEffectiveDrop(final int monsterId) {
         // this reads the drop entries searching for multi-equip, properly processing them
 
@@ -156,6 +173,11 @@ public class MonsterInformationProvider {
         return ret;
     }
 
+    /**
+     * 检索掉落。
+     * @param monsterId 怪物 ID
+     * @return List<MonsterDropEntry> 类型结果
+     */
     public final List<MonsterDropEntry> retrieveDrop(final int monsterId) {
         if (drops.containsKey(monsterId)) {
             return drops.get(monsterId);
@@ -180,6 +202,10 @@ public class MonsterInformationProvider {
         return ret;
     }
 
+    /**
+     * 检索掉落、Pool。
+     * @return List<Integer> 类型结果
+     */
     public final List<Integer> retrieveDropPool(final int monsterId) {  // ignores Quest and Party Quest items
         if (dropsChancePool.containsKey(monsterId)) {
             return dropsChancePool.get(monsterId);
@@ -208,28 +234,63 @@ public class MonsterInformationProvider {
         return ret;
     }
 
+    /**
+     * 设置怪物攻击动画时间。
+     * @param monsterId 怪物 ID
+     * @param attackPos attackPos
+     * @param animationTime animationTime
+     */
     public final void setMobAttackAnimationTime(int monsterId, int attackPos, int animationTime) {
         mobAttackAnimationTime.put(new Pair<>(monsterId, attackPos), animationTime);
     }
 
+    /**
+     * 获取怪物攻击动画时间。
+     * @param monsterId 怪物 ID
+     * @param attackPos attackPos
+     * @return Integer 类型结果
+     */
     public final Integer getMobAttackAnimationTime(int monsterId, int attackPos) {
         Integer time = mobAttackAnimationTime.get(new Pair<>(monsterId, attackPos));
         return time == null ? 0 : time;
     }
 
+    /**
+     * 设置怪物技能动画时间。
+     * @param skill skill
+     * @param animationTime animationTime
+     */
     public final void setMobSkillAnimationTime(MobSkill skill, int animationTime) {
         mobSkillAnimationTime.put(skill, animationTime);
     }
 
+    /**
+     * 获取怪物技能动画时间。
+     * @param skill skill
+     * @return Integer 类型结果
+     */
     public final Integer getMobSkillAnimationTime(MobSkill skill) {
         Integer time = mobSkillAnimationTime.get(skill);
         return time == null ? 0 : time;
     }
 
+    /**
+     * 设置怪物攻击信息。
+     * @param monsterId 怪物 ID
+     * @param attackPos attackPos
+     * @param mpCon mpCon
+     * @param coolTime coolTime
+     */
     public final void setMobAttackInfo(int monsterId, int attackPos, int mpCon, int coolTime) {
         mobAttackInfo.put((monsterId << 3) + attackPos, new Pair<>(mpCon, coolTime));
     }
 
+    /**
+     * 获取怪物攻击信息。
+     * @param monsterId 怪物 ID
+     * @param attackPos attackPos
+     * @return Pair<Integer, Integer> 类型结果
+     */
     public final Pair<Integer, Integer> getMobAttackInfo(int monsterId, int attackPos) {
         if (attackPos < 0 || attackPos > 7) {
             return null;
@@ -237,6 +298,11 @@ public class MonsterInformationProvider {
         return mobAttackInfo.get((monsterId << 3) + attackPos);
     }
 
+    /**
+     * 获取Mobs、I、Ds、来自、名称。
+     * @param search search
+     * @return ArrayList<Pair<Integer, String>> 类型结果
+     */
     public static ArrayList<Pair<Integer, String>> getMobsIDsFromName(String search) {
         DataProvider dataProvider = DataProviderFactory.getDataProvider(WZFiles.STRING);
         ArrayList<Pair<Integer, String>> retMobs = new ArrayList<>();
@@ -255,6 +321,11 @@ public class MonsterInformationProvider {
         return retMobs;
     }
 
+    /**
+     * 判断是否为Boss。
+     * @param id ID
+     * @return boolean 类型结果
+     */
     public boolean isBoss(int id) {
         Boolean boss = mobBossCache.get(id);
         if (boss == null) {
@@ -274,6 +345,11 @@ public class MonsterInformationProvider {
         return boss;
     }
 
+    /**
+     * 获取怪物名称来自ID。
+     * @param id ID
+     * @return String 类型结果
+     */
     public String getMobNameFromId(int id) {
         String mobName = mobNameCache.get(id);
         if (mobName == null) {
@@ -287,6 +363,9 @@ public class MonsterInformationProvider {
         return mobName;
     }
 
+    /**
+     * 执行 clear、掉落 操作。
+     */
     public final void clearDrops() {
         drops.clear();
         hasNoMultiEquipDrops.clear();

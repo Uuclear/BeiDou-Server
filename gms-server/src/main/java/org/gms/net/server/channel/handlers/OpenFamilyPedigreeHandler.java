@@ -27,9 +27,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Ubaware
+ * 处理客户端 OPEN_FAMILY_PEDIGREE（打开家族谱系） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#OPEN_FAMILY_PEDIGREE}</p>
  */
 public final class OpenFamilyPedigreeHandler extends AbstractPacketHandler {
+    /** 处理 打开家族谱系 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!GameConfig.getServerBoolean("use_family_system")) {

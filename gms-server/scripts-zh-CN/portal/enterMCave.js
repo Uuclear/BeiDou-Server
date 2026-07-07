@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：enterMCave
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 function enter(pi) {
     if (pi.isQuestStarted(21201)) { // 二转
         for (var i = 108000700; i < 108000709; i++) {

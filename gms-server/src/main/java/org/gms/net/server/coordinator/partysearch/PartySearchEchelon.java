@@ -31,6 +31,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
+ * 组队搜索候补梯队，记录近期参与搜索的玩家弱引用以便快速召回。
+ *
  * @author Ronan
  */
 public class PartySearchEchelon {

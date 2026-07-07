@@ -24,12 +24,22 @@ package org.gms.client.inventory;
 /*
  * @author Leifde
  */
+/**
+ * 宠物指令枚举，定义玩家可对宠物发出的各类指令。
+ */
 public class PetCommand {
     private final int petId;
     private final int skillId;
     private final int prob;
     private final int inc;
 
+    /**
+     * 宠物Command
+     * @param petId petId
+     * @param skillId 技能ID
+     * @param prob prob
+     * @param inc inc
+     */
     public PetCommand(int petId, int skillId, int prob, int inc) {
         this.petId = petId;
         this.skillId = skillId;
@@ -37,18 +47,34 @@ public class PetCommand {
         this.inc = inc;
     }
 
+    /**
+     * 获取宠物ID
+     * @return 返回值
+     */
     public int getPetId() {
         return petId;
     }
 
+    /**
+     * 获取技能ID
+     * @return 返回值
+     */
     public int getSkillId() {
         return skillId;
     }
 
+    /**
+     * 获取Probability
+     * @return 返回值
+     */
     public int getProbability() {
         return prob;
     }
 
+    /**
+     * 获取Increase
+     * @return 返回值
+     */
     public int getIncrease() {
         return inc;
     }

@@ -28,10 +28,12 @@ import org.gms.scripting.reactor.ReactorScriptManager;
 import org.gms.server.maps.Reactor;
 
 /**
- * @author Generic
+ * 处理客户端 TOUCHING_REACTOR（触碰反应堆） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#TOUCHING_REACTOR}</p>
  */
 public final class TouchReactorHandler extends AbstractPacketHandler {
 
+    /** 处理 触碰反应堆 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int oid = p.readInt();

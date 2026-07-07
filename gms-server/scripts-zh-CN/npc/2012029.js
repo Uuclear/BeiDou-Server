@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2012029
+ * 功能描述：NPC脚本（ID: 2012029）。
+ */
 /* Harp String E
 	Hidden Street - Eliza’s Garden (200010303)
  */

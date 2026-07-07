@@ -1,4 +1,5 @@
 <template>
+  <!-- ECharts 图表封装容器，自动 resize 并绑定 chartOption。 -->
   <VCharts
     v-if="renderChart"
     :option="options"
@@ -8,6 +9,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * ECharts 图表组件，监听窗口尺寸变化并调用 chart.resize()。
+   */
   import { ref, nextTick } from 'vue';
   import VCharts from 'vue-echarts';
   // import { useAppStore } from '@/store';

@@ -19,6 +19,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201135
+ * 功能描述：NPC脚本，提供地图传送、金币奖励。
+ * 地图：S
+ */
 var inMap = [540000000, 550000000, 551000000];
 var toMap = [550000000, [551000000, 541000000], 550000000];
 var cost = [42000, [10000, 0], 10000];

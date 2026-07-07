@@ -23,6 +23,9 @@ package org.gms.net.server.world;
 
 import org.gms.client.Character;
 
+/**
+ * 聊天室成员快照，记录角色 ID、频道、座位与在线状态。
+ */
 public class MessengerCharacter {
     private final String name;
     private final int id;

@@ -15,6 +15,11 @@ public final class VeteranHunterMedal {
     private VeteranHunterMedal() {
     }
 
+    /**
+     * 获取Progress。
+     * @param player 玩家
+     * @return int 类型结果
+     */
     public static int getProgress(Character player) {
         QuestStatus status = player.getQuest(Quest.getInstance(QUEST_ID));
         try {
@@ -24,10 +29,20 @@ public final class VeteranHunterMedal {
         }
     }
 
+    /**
+     * 判断是否为Complete。
+     * @param player 玩家
+     * @return boolean 类型结果
+     */
     public static boolean isComplete(Character player) {
         return getProgress(player) >= REQUIRED_KILLS;
     }
 
+    /**
+     * 执行 on、怪物、Killed 操作。
+     * @param player 玩家
+     * @param monster 怪物
+     */
     public static void onMonsterKilled(Character player, Monster monster) {
         Quest quest = Quest.getInstance(QUEST_ID);
         QuestStatus status = player.getQuest(quest);

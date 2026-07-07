@@ -20,10 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*@author Ronan
- *Nependeath Pot - Spawns Nependeath or Dark Nependeath
- */
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2001000
+ * 功能描述：反应堆触发后召唤怪物。
+ * 原作者：Ronan
+ */
 function act() {
     if (rm.getMap().getSummonState()) {
         var count = Number(rm.getEventInstance().getIntProperty("statusStg7_c"));

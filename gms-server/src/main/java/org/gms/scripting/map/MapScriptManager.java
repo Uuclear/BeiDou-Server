@@ -32,20 +32,30 @@ import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 地图脚本管理器（单例），执行 {@code scripts/map/} 下用户进入/离开等脚本。
+ * <p>
+ * 脚本需实现 {@code start(MapScriptMethods)} 入口；已加载脚本缓存在内存中。
+ * {@code firstUser} 为 true 时同一地图仅首个进入玩家触发一次（记录于角色 enteredScript）。
+ * </p>
+ */
 public class MapScriptManager extends AbstractScriptManager {
     private static final Logger log = LoggerFactory.getLogger(MapScriptManager.class);
     private static final MapScriptManager instance = new MapScriptManager();
 
     private final Map<String, Invocable> scripts = new HashMap<>();
 
+/** 获取单例实例 */
     public static MapScriptManager getInstance() {
         return instance;
     }
 
+/** 清空地图脚本缓存 */
     public void reloadScripts() {
         scripts.clear();
     }
 
+/** 执行地图脚本 */
     public boolean runMapScript(Client c, String mapScriptPath, boolean firstUser) {
         if (firstUser) {
             Character chr = c.getPlayer();

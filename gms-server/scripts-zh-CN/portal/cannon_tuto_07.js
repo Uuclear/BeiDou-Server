@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：cannon_tuto_07
+ * 功能描述：("fly", "579711");（原版描述）。
+ */
 function enter(pi) {
     pi.setDirectionStatus(true);
     pi.lockUI2();

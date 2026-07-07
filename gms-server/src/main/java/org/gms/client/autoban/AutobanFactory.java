@@ -18,31 +18,8 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-package org.gms.client.autoban;
-
-import lombok.Getter;
-import org.gms.client.Character;
-import org.gms.config.GameConfig;
-import org.gms.dao.entity.AutobanConfigDO;
-import org.gms.net.server.Server;
-import org.gms.util.I18nUtil;
-import org.gms.util.PacketCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 /**
- * @author kevintjuh93
+ * 自动封禁类型枚举，定义各类作弊检测项及其积分阈值和过期时间。
  */
 public enum AutobanFactory {
     MOB_COUNT(I18nUtil.getMessage("autoban.name.MOB_COUNT")),
@@ -95,10 +72,18 @@ public enum AutobanFactory {
         this.expiretime = expire;
     }
 
+    /**
+     * 获取Maximum
+     * @return 返回值
+     */
     public int getMaximum() {
         return points;
     }
 
+    /**
+     * 获取Expire
+     * @return 返回值
+     */
     public long getExpire() {
         return expiretime;
     }
@@ -160,10 +145,20 @@ public enum AutobanFactory {
         return config != null && Boolean.TRUE.equals(config.getDisabled());
     }
 
+    /**
+     * 添加Point
+     * @param ban ban
+     * @param reason 原因
+     */
     public void addPoint(AutobanManager ban, String reason) {
         ban.addPoint(this, reason);
     }
 
+    /**
+     * alert
+     * @param chr 角色
+     * @param reason 原因
+     */
     public void alert(Character chr, String reason) {
         if (GameConfig.getServerBoolean("use_auto_ban")) {
             if (chr != null && isIgnored(chr.getId())) {
@@ -177,6 +172,11 @@ public enum AutobanFactory {
         }
     }
 
+    /**
+     * autoban
+     * @param chr 角色
+     * @param value 值
+     */
     public void autoban(Character chr, String value) {
         if (GameConfig.getServerBoolean("use_auto_ban")) {
             chr.autoBan("Autobanned for (" + this.name() + ": " + value + ")");
@@ -189,6 +189,11 @@ public enum AutobanFactory {
      * An ignored character will not trigger GM alerts.
      *
      * @return new status. true if the chrId is now ignored, otherwise false.
+     */
+    /**
+     * 切换Ignored
+     * @param chrId chrId
+     * @return 返回值
      */
     public static boolean toggleIgnored(int chrId) {
         if (ignoredChrIds.contains(chrId)) {
@@ -204,6 +209,10 @@ public enum AutobanFactory {
         return ignoredChrIds.contains(chrId);
     }
 
+    /**
+     * 获取IgnoredChrIds
+     * @return 返回值
+     */
     public static Collection<Integer> getIgnoredChrIds() {
         return ignoredChrIds;
     }

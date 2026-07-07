@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 装备详情查询响应 DTO，返回装备的强化、四维、攻防等完整属性数值。
+ */
 @Setter
 @Getter
 public class EquipmentInfoRtnDTO {

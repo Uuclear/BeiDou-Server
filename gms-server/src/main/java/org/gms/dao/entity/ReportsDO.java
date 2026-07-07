@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `reports` 的实体类（DO）。
+ * <p>
+ * 玩家举报记录表，保存被举报者、举报原因及处理状态。
  */
 @Data
 @Builder

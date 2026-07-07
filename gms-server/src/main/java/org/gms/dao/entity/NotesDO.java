@@ -12,10 +12,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `notes` 的实体类（DO）。
+ * <p>
+ * 角色备忘录/便签表，保存玩家在游戏内记录的文本便签。
  */
 @Data
 @Builder

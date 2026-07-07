@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*  Author:         Xterminator
-	NPC Name: 		Second Eos Rock
-	Map(s): 		Ludibrium : Eos Tower 71st Floor (221022900)
-	Description: 	Brings you to 100th Floor or 71st Floor
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040025
+ * 功能描述：Second Eos Rock，Brings you to 100th Floor or 71st Floor（原版描述）。
+ * 原作者：Xterminator
+ */
 var status = 0;
 var map = 221024400;
 

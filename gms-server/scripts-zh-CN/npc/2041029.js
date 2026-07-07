@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2041029
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ */
 function start() {
     cm.sendOk("前方是神秘的#b埃林#k森林。如果你准备好揭开金银岛过去的一些神秘，就穿过#b时间之门#k。这将展现金银岛黎明时的模样。");
     cm.dispose();

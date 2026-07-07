@@ -16,20 +16,23 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.inventory;
-
-import org.gms.client.Character;
-
 /**
- * @author Ronan
+ * 背包验证类，继承 Inventory，用于验证背包数据完整性。
  */
 public class InventoryProof extends Inventory {
 
+    /**
+     * 背包验证
+     * @param mc mc
+     */
     public InventoryProof(Character mc) {
         super(mc, InventoryType.CANHOLD, (byte) 0);
     }
 
+    /**
+     * 克隆Contents
+     * @param inv inv
+     */
     public void cloneContents(Inventory inv) {
         inv.lockInventory();
         lock.lock();
@@ -47,6 +50,15 @@ public class InventoryProof extends Inventory {
         }
     }
 
+    /**
+     * flushContents
+     */
+    /**
+     * flushContents
+     */
+    /**
+     * 刷新并清空背包内容
+     */
     public void flushContents() {
         lock.lock();
         try {
@@ -86,6 +98,10 @@ public class InventoryProof extends Inventory {
         }
     }
 
+    /**
+     * 移除槽位
+     * @param slot 槽位
+     */
     @Override
     public void removeSlot(short slot) {
         lock.lock();

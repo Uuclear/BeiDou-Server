@@ -1,3 +1,7 @@
+<!--
+  默认后台布局：顶栏、侧栏菜单、标签页、内容区与页脚；
+  移动端下侧栏改为抽屉，并响应式折叠菜单宽度。
+-->
 <template>
   <a-layout class="layout" :class="{ mobile: appStore.hideMenu }">
     <div v-if="navbar" class="layout-navbar">
@@ -45,6 +49,11 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 后台主布局组件
+   * 组合导航栏、侧边菜单、Tab 栏、页脚与 PageLayout 内容区，
+   * 并根据应用设置与设备类型控制各区域显隐与尺寸。
+   */
   import { ref, computed, watch, provide, onMounted } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
   import { useAppStore, useUserStore } from '@/store';
@@ -65,7 +74,9 @@
   useResponsive(true);
   const navbarHeight = `60px`;
   const navbar = computed(() => appStore.navbar);
+  /** 是否渲染侧边栏菜单（非顶栏菜单模式时） */
   const renderMenu = computed(() => appStore.menu && !appStore.topMenu);
+  /** 移动端是否隐藏固定侧栏（改用抽屉） */
   const hideMenu = computed(() => appStore.hideMenu);
   const footer = computed(() => appStore.footer);
   const menuWidth = computed(() => {
@@ -75,6 +86,7 @@
     return appStore.menuCollapse;
   });
   const paddingStyle = computed(() => {
+    /** 根据侧栏宽度与顶栏高度计算内容区 padding */
     const paddingLeft =
       renderMenu.value && !hideMenu.value
         ? { paddingLeft: `${menuWidth.value}px` }
@@ -82,6 +94,7 @@
     const paddingTop = navbar.value ? { paddingTop: navbarHeight } : {};
     return { ...paddingLeft, ...paddingTop };
   });
+  /** 侧栏折叠回调，初始化完成前忽略避免覆盖默认状态 */
   const setCollapsed = (val: boolean) => {
     if (!isInit.value) return; // for page initialization menu state problem
     appStore.updateSettings({ menuCollapse: val });

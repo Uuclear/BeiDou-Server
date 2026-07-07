@@ -18,11 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Ronan
- * 
- * 1200000.js: Bart reactor, Aerial Strike skill
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：1200000
+ * 功能描述：反应堆触发后传送玩家。
+ * 原作者：Ronan
+ */
 function act() {    // string visibility thanks to ProXAIMeRx & Glvelturall
     rm.message("Failed to find Bart. Returning to the original location.");
     rm.warp(120000102);

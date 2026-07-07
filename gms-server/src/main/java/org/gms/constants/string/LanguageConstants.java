@@ -3,7 +3,7 @@ package org.gms.constants.string;
 import org.gms.client.Character;
 
 /**
- * @author Drago (Dragohe4rt)
+ * 多语言支持常量，定义支持的语言代码与默认语言。
  */
 public class LanguageConstants {
 

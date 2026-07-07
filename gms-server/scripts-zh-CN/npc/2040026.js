@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*      Author: Xterminator, Moogra
-	NPC Name: 		Third Eos Rock
-	Map(s): 		Ludibrium : Eos Tower 41st Floor (221021700)
-	Description: 		Brings you to 71st Floor or 1st Floor
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040026
+ * 功能描述：Third Eos Rock，Brings you to 71st Floor or 1st Floor（原版描述）。
+ * 原作者：Xterminator, Moogra
+ */
 var status = 0;
 var map;
 

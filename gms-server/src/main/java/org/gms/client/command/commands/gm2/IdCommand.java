@@ -21,6 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * GM2命令：根据ID在手册中查询
+ */
 public class IdCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("IdCommand.message1"));
@@ -42,6 +45,18 @@ public class IdCommand extends Command {
     private static class HandbookFileItems {
         private final List<HandbookItem> items;
 
+        /**
+         * HandbookFileItems
+         * @param fileLines fileLines
+         */
+        /**
+         * HandbookFileItems
+         * @param fileLines fileLines
+         */
+        /**
+         * 从手册文件行构造物品列表
+         * @param fileLines 文件行列表
+         */
         public HandbookFileItems(List<String> fileLines) {
             this.items = fileLines.stream()
                     .map(this::parseLine)
@@ -61,6 +76,11 @@ public class IdCommand extends Command {
             return new HandbookItem(splitLine[0], splitLine[1]);
         }
 
+        /**
+         * 搜索
+         * @param query query
+         * @return 返回值
+         */
         public List<HandbookItem> search(String query) {
             if (query == null || query.isBlank()) {
                 return Collections.emptyList();
@@ -78,6 +98,11 @@ public class IdCommand extends Command {
             Objects.requireNonNull(name);
         }
 
+        /**
+         * matches
+         * @param query query
+         * @return 返回值
+         */
         public boolean matches(String query) {
             if (query == null) {
                 return false;
@@ -86,6 +111,11 @@ public class IdCommand extends Command {
         }
     }
 
+    /**
+     * 执行命令逻辑
+     * @param client 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client client, final String[] params) {
         final Character chr = client.getPlayer();

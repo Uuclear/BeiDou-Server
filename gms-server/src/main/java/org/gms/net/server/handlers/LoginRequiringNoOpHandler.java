@@ -25,6 +25,10 @@ import org.gms.client.Client;
 import org.gms.net.PacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 登录后空操作处理器，忽略 STRANGE_DATA 等无需处理的封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#STRANGE_DATA}</p>
+ */
 public final class LoginRequiringNoOpHandler implements PacketHandler {
     private static final LoginRequiringNoOpHandler instance = new LoginRequiringNoOpHandler();
 
@@ -32,9 +36,11 @@ public final class LoginRequiringNoOpHandler implements PacketHandler {
         return instance;
     }
 
+    /** 忽略封包内容，不做任何处理。 */
     public void handlePacket(InPacket p, Client c) {
     }
 
+    /** 仅在客户端已登录时处理该封包。 */
     public boolean validateState(Client c) {
         return c.isLoggedIn();
     }

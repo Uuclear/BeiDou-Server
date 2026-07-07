@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1091003
+ * 功能描述：NPC脚本，提供物品发放、金币奖励。
+ */
 /*
 	Serryl (1091003)
 	Location: The Nautilus

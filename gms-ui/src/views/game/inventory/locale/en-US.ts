@@ -1,3 +1,6 @@
+/**
+ * 背包管理页英文文案。
+ */
 export default {
   'inventory.placeholder.itemId': 'itemId',
   'inventory.placeholder.itemName': 'itemName',

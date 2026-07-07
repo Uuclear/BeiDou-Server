@@ -26,12 +26,20 @@ import org.springframework.stereotype.Service;
 import static java.util.concurrent.TimeUnit.DAYS;
 
 
+/**
+ * 资源发放业务服务，向在线或离线玩家分发道具、金币等资源。
+ */
 @Service
 @Slf4j
 public class GiveService {
     @Autowired
     CharacterService characterService;
 
+    /**
+     * 执行 give 相关业务逻辑。
+     *
+     * @param submitData submitData
+     */
     public void give(GiveResourceReqDTO submitData) {
         if (submitData.getPlayerId() == 0) {
             giveAllOnlineChr(submitData);

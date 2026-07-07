@@ -18,26 +18,8 @@
     GNU Affero General Public License for more details.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.processor.action;
-
-import org.gms.client.Character;
-import org.gms.client.Client;
-import org.gms.client.inventory.Inventory;
-import org.gms.client.inventory.InventoryType;
-import org.gms.client.inventory.Item;
-import org.gms.client.inventory.manipulator.InventoryManipulator;
-import org.gms.config.GameConfig;
-import org.gms.manager.ServerManager;
-import org.gms.server.ItemInformationProvider;
-import org.gms.server.StatEffect;
-import org.gms.service.HpMpAlertService;
-import org.gms.util.PacketCreator;
-
-import java.util.List;
-
 /**
- * @author Ronan - multi-pot consumption feature
+ * 宠物自动吃药处理器，处理宠物自动使用药水的逻辑。
  */
 public class PetAutopotProcessor {
 
@@ -74,12 +56,27 @@ public class PetAutopotProcessor {
             return false;
         }
 
+        /**
+         * AutopotAction
+         * @param c 客户端会话
+         * @param slot 槽位
+         * @param itemId 物品ID
+         */
         public AutopotAction(Client c, short slot, int itemId) {
             this.c = c;
             this.slot = slot;
             this.itemId = itemId;
         }
 
+        /**
+         * run
+         */
+        /**
+         * run
+         */
+        /**
+         * 定时任务执行入口
+         */
         public void run() {
             Client c = this.c;
             HpMpAlertService hpMpAlertService = ServerManager.getApplicationContext().getBean(HpMpAlertService.class);
@@ -208,6 +205,12 @@ public class PetAutopotProcessor {
         }
     }
 
+    /**
+     * runAutopotAction
+     * @param c 客户端会话
+     * @param slot 槽位
+     * @param itemid itemid
+     */
     public static void runAutopotAction(Client c, short slot, int itemid) {
         AutopotAction action = new AutopotAction(c, slot, itemid);
         action.run();

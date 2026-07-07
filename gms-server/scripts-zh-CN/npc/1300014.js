@@ -1,15 +1,11 @@
-/*
-===========================================================
-			GitHub：@Magical-H
-	NPC Name: 		SELF
-	Map(s): 		Mushroom Castle: Deep inside Mushroom Forest(106020300) 蘑菇森林深处
-	Description: 	Upon reaching the magic barrier.    到达魔法孢子结界之后往回走即可触发
-	仅北·斗 Bei-dou服务端或其他支持NextLevel函数的服务端可用
-=============================================================
-Version 1.0 - Script Done.(2024-10-23)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1300014
+ * 功能描述：SELF，Upon reaching the magic barrier. 到达魔法孢子结界之后往回走即可触发
+ */
 function start() {
     var MapId = cm.getMapId();
     cm.setQuestProgress(2322,0);

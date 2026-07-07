@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author kevintjuh93
+ * 自动封禁管理器，跟踪玩家可疑行为积分并在超阈值时触发自动封禁。
  */
 public class AutobanManager {
     private static final Logger log = LoggerFactory.getLogger(AutobanManager.class);
@@ -31,10 +31,21 @@ public class AutobanManager {
     private final byte[] timestampcounter = new byte[20];
 
 
+    /**
+     * 构造自动封禁管理器。
+     *
+     * @param chr 被监控的角色
+     */
     public AutobanManager(Character chr) {
         this.chr = chr;
     }
 
+    /**
+     * 为指定封禁类型累加可疑积分，达到阈值时触发自动封禁。
+     *
+     * @param fac 封禁检测类型
+     * @param reason 触发原因描述
+     */
     public void addPoint(AutobanFactory fac, String reason) {
         if (GameConfig.getServerBoolean("use_auto_ban")) {
             if (chr.isGM() || chr.isBanned()) {
@@ -76,10 +87,16 @@ public class AutobanManager {
         }
     }
 
+    /**
+     * 记录一次未命中（疑似无敌作弊）。
+     */
     public void addMiss() {
         this.misses++;
     }
 
+    /**
+     * 重置未命中计数，连续多次未命中时断开连接。
+     */
     public void resetMisses() {
         if (lastmisses == misses && misses > 6) {
             samemisscount++;
@@ -95,34 +112,45 @@ public class AutobanManager {
     }
 
     //Don't use the same type for more than 1 thing
+    /**
+     * 记录指定类型的刷屏时间戳（使用当前服务器时间）。
+     *
+     * @param type 刷屏检测类型索引
+     */
     public void spam(int type) {
         this.spam[type] = Server.getInstance().getCurrentTime();
     }
 
+    /**
+     * 记录指定类型的刷屏时间戳（使用给定时间值）。
+     *
+     * @param type 刷屏检测类型索引
+     * @param timestamp 时间戳
+     */
     public void spam(int type, int timestamp) {
         this.spam[type] = timestamp;
     }
 
+    /**
+     * 获取指定类型最近一次刷屏的时间戳。
+     *
+     * @param type 刷屏检测类型索引
+     * @return 最近一次刷屏时间戳
+     */
     public long getLastSpam(int type) {
         return spam[type];
     }
 
     /**
-     * Timestamp checker
+     * 时间戳刷屏检测器，同一秒内重复操作超过阈值则断开连接。
+     * <p>
+     * type 含义：<br>
+     * 1: 宠物喂食 &nbsp; 2: 背包合并 &nbsp; 3: 背包排序 &nbsp; 4: 特殊移动<br>
+     * 5: 捕捉道具 &nbsp; 6: 物品丢弃 &nbsp; 7: 聊天 &nbsp; 8: HP 持续恢复 &nbsp; 9: MP 持续恢复
      *
-     * <code>type</code>:<br>
-     * 1: Pet Food<br>
-     * 2: InventoryMerge<br>
-     * 3: InventorySort<br>
-     * 4: SpecialMove<br>
-     * 5: UseCatchItem<br>
-     * 6: Item Drop<br>
-     * 7: Chat<br>
-     * 8: HealOverTimeHP<br>
-     * 9: HealOverTimeMP<br>
-     *
-     * @param type type
-     * @return Timestamp checker
+     * @param type 检测类型索引
+     * @param time 当前时间戳（秒）
+     * @param times 允许的最大重复次数
      */
     public void setTimestamp(int type, int time, int times) {
         if (this.timestamp[type] == time) {

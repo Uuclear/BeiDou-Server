@@ -1,12 +1,11 @@
-/* ===========================================================
-			Ronan Lana
-	NPC Name: 		Jack, John
-	Description: 	Quest - Lost in Translation
-=============================================================
-Version 1.0 - Script Done.(10/7/2017)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：8227
+ * 功能描述：Jack, John，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

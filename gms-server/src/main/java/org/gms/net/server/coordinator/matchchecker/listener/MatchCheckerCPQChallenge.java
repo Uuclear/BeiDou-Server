@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * CPQ 挑战匹配监听器，处理怪物嘉年华挑战的组队确认与 NPC 脚本触发。
+ *
  * @author Ronan
  */
 public class MatchCheckerCPQChallenge implements MatchCheckerListenerRecipe {

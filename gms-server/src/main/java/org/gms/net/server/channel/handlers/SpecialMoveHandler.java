@@ -44,8 +44,13 @@ import java.awt.*;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 处理客户端 SPECIAL_MOVE（特殊移动） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SPECIAL_MOVE}</p>
+ */
 public final class SpecialMoveHandler extends AbstractPacketHandler {
 
+    /** 处理 特殊移动 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

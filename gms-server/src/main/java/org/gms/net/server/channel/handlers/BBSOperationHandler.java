@@ -35,6 +35,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 处理客户端 BBS_OPERATION（论坛操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#BBS_OPERATION}</p>
+ */
 public final class BBSOperationHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(BBSOperationHandler.class);
 
@@ -42,6 +46,7 @@ public final class BBSOperationHandler extends AbstractPacketHandler {
         return in.length() > maxSize ? in.substring(0, maxSize) : in;
     }
 
+    /** 处理 论坛操作 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (c.getPlayer().getGuildId() < 1) {

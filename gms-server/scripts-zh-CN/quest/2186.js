@@ -1,8 +1,12 @@
-/*
-    Author: BubblesDev
-    Quest: Abel Glasses Quest
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2186
+ * 功能描述：任务脚本，完成任务后发放经验与物品奖励。
+ * 原作者：BubblesDev
+ */
 var status = -1;    // thanks IxianMace for noticing missing status declaration
 
 function end(mode, type, selection) {

@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * 怪物掉落配置搜索请求 DTO，支持按掉落者、大陆、道具、任务等条件分页查询 drop_data。
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor

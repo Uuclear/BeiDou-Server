@@ -19,19 +19,31 @@ import org.gms.property.ServiceProperty;
 
 import java.nio.charset.Charset;
 import java.util.Locale;
+/**
+ * 字符集与编码常量，按客户端语言选择 GBK/UTF-8 等编码。
+ */
 
 public class CharsetConstants {
     // 保证只加载一次
     private static final Language SERVICE_LANGUAGE = loadServiceLanguage();
 
+    /**
+     * 根据语言代码获取对应字符集。
+     */
     public static Charset getCharset(int language) {
         return Charset.forName(Language.fromLang(language).getCharset());
     }
 
+    /**
+     * 根据语言代码获取 Locale。
+     */
     public static Locale getLanguageLocale(int language) {
         return Locale.forLanguageTag(Language.fromLang(language).getLanguageTag());
     }
 
+    /**
+     * 判断ZhCN相关条件是否成立。
+     */
     public static boolean isZhCN() {
         return Language.LANGUAGE_CN == SERVICE_LANGUAGE;
     }
@@ -67,6 +79,9 @@ public class CharsetConstants {
             this.languageTag = languageTag;
         }
 
+        /**
+         * fromLang 相关查询或判定。
+         */
         public static Language fromLang(int lang) {
             for (Language value : values()) {
                 if (value.getLang() == lang) {

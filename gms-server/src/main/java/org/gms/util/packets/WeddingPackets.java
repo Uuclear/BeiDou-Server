@@ -22,11 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CField_Wedding, CField_WeddingPhoto, CWeddingMan, OnMarriageResult, and all Wedding/Marriage enum/structs.
+ * 婚礼与结婚系统出站数据包构造类，继承 {@link PacketCreator} 以复用角色/物品编码方法。
+ * <p>
+ * 涵盖求婚、结婚结果、婚礼进度、合影、请柬、心愿单等 CField_Wedding / CWeddingMan 相关协议。
  *
  * @author Eric
- * <p>
- * Wishlists edited by Drago (Dragohe4rt)
+ * @author Drago (Dragohe4rt) - wishlists
  */
 public class WeddingPackets extends PacketCreator {
     private static final Logger log = LoggerFactory.getLogger(WeddingPackets.class);
@@ -366,6 +367,11 @@ public class WeddingPackets extends PacketCreator {
         return p;
     }
 
+    /**
+     * 请求打开婚礼心愿单界面。
+     *
+     * @return 心愿单请求数据包
+     */
     public static Packet sendWishList() { // fuck my life
         OutPacket p = OutPacket.create(SendOpcode.MARRIAGE_REQUEST);
         p.writeByte(9);

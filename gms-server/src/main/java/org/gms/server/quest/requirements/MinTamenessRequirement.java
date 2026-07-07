@@ -29,19 +29,24 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 宠物最低亲密度需求。
  */
 public class MinTamenessRequirement extends AbstractQuestRequirement {
     private int minTameness;
 
 
+    /**
+     * 构造 MinTamenessRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public MinTamenessRequirement(Quest quest, Data data) {
         super(QuestRequirementType.MIN_PET_TAMENESS);
         processData(data);
     }
-
     /**
-     * @param data
+     * 处理数据。
+     * @param data WZ 数据节点
      */
     @Override
     public void processData(Data data) {
@@ -49,6 +54,12 @@ public class MinTamenessRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         int curTameness = 0;

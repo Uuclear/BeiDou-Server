@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator 
-	NPC Name: 		Neinheart
-	Map(s): 		Empress' Road : Ereve (130000000)
-	Description: 		Quest - The End of Knight-in-Training
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20200
+ * 功能描述：Neinheart，任务相关对话与奖励。
+ * 原作者：Xterminator
+ */
 var status = -1;
 
 function start(mode, type, selection) {

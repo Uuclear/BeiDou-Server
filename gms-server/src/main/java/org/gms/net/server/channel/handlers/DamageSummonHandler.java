@@ -30,7 +30,12 @@ import org.gms.server.maps.MapObject;
 import org.gms.server.maps.Summon;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 DAMAGE_SUMMON（召唤兽受到伤害） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#DAMAGE_SUMMON}</p>
+ */
 public final class DamageSummonHandler extends AbstractPacketHandler {
+    /** 处理 召唤兽受到伤害 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int oid = p.readInt();

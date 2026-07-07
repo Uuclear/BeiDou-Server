@@ -24,6 +24,8 @@ import org.gms.client.Character;
 import java.util.Set;
 
 /**
+ * 匹配检测事件监听器接口，在匹配创建、接受、拒绝或解散时回调。
+ *
  * @author Ronan
  */
 public interface AbstractMatchCheckerListener {

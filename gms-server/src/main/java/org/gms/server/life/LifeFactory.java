@@ -41,6 +41,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 生命体工厂，从 WZ 加载怪物/NPC 模板数据（属性、技能、掉落、碰撞盒等）并创建实例。
+ */
 public class LifeFactory {
     private static final Logger log = LoggerFactory.getLogger(LifeFactory.class);
     private static final DataProvider data = DataProviderFactory.getDataProvider(WZFiles.MOB);
@@ -62,6 +65,12 @@ public class LifeFactory {
         return ret;
     }
 
+    /**
+     * 按类型创建生命体实例。
+     * @param id 生命体模板 ID
+     * @param type 类型标识："n" 为 NPC，"m" 为怪物
+     * @return 对应的生命体实例，未知类型返回 null
+     */
     public static AbstractLoadedLife getLife(int id, String type) {
         if (type.equalsIgnoreCase("n")) {
             return getNPC(id);
@@ -111,22 +120,42 @@ public class LifeFactory {
             valid = true;
         }
 
+        /**
+         * 判断是否为Valid。
+         * @return boolean 类型结果
+         */
         public boolean isValid() {
             return valid;
         }
 
+        /**
+         * 获取MinX。
+         * @return int 类型结果
+         */
         public int getMinX() {
             return minX;
         }
 
+        /**
+         * 获取MinY。
+         * @return int 类型结果
+         */
         public int getMinY() {
             return minY;
         }
 
+        /**
+         * 获取MaxX。
+         * @return int 类型结果
+         */
         public int getMaxX() {
             return maxX;
         }
 
+        /**
+         * 获取MaxY。
+         * @return int 类型结果
+         */
         public int getMaxY() {
             return maxY;
         }
@@ -549,6 +578,11 @@ public class LifeFactory {
         return new Pair<>(stats, attackInfos);
     }
 
+    /**
+     * 获取怪物。
+     * @param mid mid
+     * @return Monster 类型结果
+     */
     public static Monster getMonster(int mid) {
         try {
             MonsterStats stats = monsterStats.get(mid);
@@ -566,6 +600,11 @@ public class LifeFactory {
         }
     }
 
+    /**
+     * 获取怪物等级。
+     * @param mid mid
+     * @return int 类型结果
+     */
     public static int getMonsterLevel(int mid) {
         try {
             MonsterStats stats = monsterStats.get(mid);
@@ -592,6 +631,11 @@ public class LifeFactory {
         }
     }
 
+    /**
+     * 获取NPC。
+     * @param nid nid
+     * @return NPC 类型结果
+     */
     public static NPC getNPC(int nid) {
         String name = npcNames.get(nid);
         if (RequireUtil.isEmpty(name)) {
@@ -601,10 +645,20 @@ public class LifeFactory {
         return new NPC(nid, new NPCStats(name));
     }
 
+    /**
+     * 获取NPC名称。
+     * @param nid nid
+     * @return String 类型结果
+     */
     public static String getNPCName(int nid) {
         return getNPC(nid).getName();
     }
 
+    /**
+     * 获取N、P、C、Default、Talk。
+     * @param nid nid
+     * @return String 类型结果
+     */
     public static String getNPCDefaultTalk(int nid) {
         return DataTool.getString(nid + "/d0", npcStringData, "(...)");
     }
@@ -615,20 +669,39 @@ public class LifeFactory {
         private final String portal;
         private final String msg;
 
+        /**
+         * 执行 Banish、信息 操作。
+         * @param msg msg
+         * @param map 地图名称
+         * @param portal portal
+         * @return BanishInfo 类型结果
+         */
         public BanishInfo(String msg, int map, String portal) {
             this.msg = msg;
             this.map = map;
             this.portal = portal;
         }
 
+        /**
+         * 获取地图。
+         * @return int 类型结果
+         */
         public int getMap() {
             return map;
         }
 
+        /**
+         * 获取传送门。
+         * @return String 类型结果
+         */
         public String getPortal() {
             return portal;
         }
 
+        /**
+         * 获取Msg。
+         * @return String 类型结果
+         */
         public String getMsg() {
             return msg;
         }
@@ -640,20 +713,39 @@ public class LifeFactory {
         private final byte chance;
         private final byte x;
 
+        /**
+         * 执行 lose、物品 操作。
+         * @param id ID
+         * @param chance chance
+         * @param x x
+         * @return loseItem 类型结果
+         */
         public loseItem(int id, byte chance, byte x) {
             this.id = id;
             this.chance = chance;
             this.x = x;
         }
 
+        /**
+         * 获取ID。
+         * @return int 类型结果
+         */
         public int getId() {
             return id;
         }
 
+        /**
+         * 获取Chance。
+         * @return byte 类型结果
+         */
         public byte getChance() {
             return chance;
         }
 
+        /**
+         * 获取X。
+         * @return byte 类型结果
+         */
         public byte getX() {
             return x;
         }
@@ -665,20 +757,39 @@ public class LifeFactory {
         private final int removeAfter;
         private final int hp;
 
+        /**
+         * 执行 self、Destruction 操作。
+         * @param action 动作类型
+         * @param removeAfter removeAfter
+         * @param hp hp
+         * @return selfDestruction 类型结果
+         */
         public selfDestruction(byte action, int removeAfter, int hp) {
             this.action = action;
             this.removeAfter = removeAfter;
             this.hp = hp;
         }
 
+        /**
+         * 获取HP。
+         * @return int 类型结果
+         */
         public int getHp() {
             return hp;
         }
 
+        /**
+         * 获取动作。
+         * @return byte 类型结果
+         */
         public byte getAction() {
             return action;
         }
 
+        /**
+         * 移除After。
+         * @return int 类型结果
+         */
         public int removeAfter() {
             return removeAfter;
         }

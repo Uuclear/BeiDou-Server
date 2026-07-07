@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*      Author: Xterminator, Moogra
-	NPC Name: 		First Eos Rock
-	Map(s): 		Ludibrium : Eos Tower 100th Floor (221024400)
-	Description: 		Brings you to 71st Floor
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2040024
+ * 功能描述：First Eos Rock，Brings you to 71st Floor（原版描述）。
+ * 原作者：Xterminator, Moogra
+ */
 function start() {
     if (cm.haveItem(4001020)) {
         cm.sendYesNo("You can use #bEos Rock Scroll#k to activate #bFirst Eos Rock#k. Will you teleport to #bSecond Eos Rock#k at the 71st floor?");

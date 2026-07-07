@@ -44,6 +44,10 @@ import org.gms.util.PacketCreator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 处理召唤兽攻击（SUMMON_ATTACK）。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SUMMON_ATTACK}</p>
+ */
 public final class SummonDamageHandler extends AbstractDealDamageHandler {
     private static final Logger log = LoggerFactory.getLogger(SummonDamageHandler.class);
 
@@ -67,6 +71,7 @@ public final class SummonDamageHandler extends AbstractDealDamageHandler {
 
     }
 
+    /** 处理 召唤兽攻击 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         int oid = p.readInt();

@@ -1,4 +1,5 @@
 <template>
+  <!-- 全局掉落管理页：配置全服通用掉落规则。 -->
   <div class="container">
     <Breadcrumb />
     <a-card class="general-card" :title="$t('menu.game.drop.global')">
@@ -211,6 +212,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 全局掉落配置页，逻辑与普通掉落类似但调用全局掉落 API。
+   */
   import { ref } from 'vue';
   import {
     deleteGlobalDrop,

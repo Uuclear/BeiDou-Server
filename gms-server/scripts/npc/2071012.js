@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2071012
+ * 功能描述：NPC脚本，提供物品发放。
+ */
 /* A Familiar Lady
     Hidden Street : Gloomy Forest (922220000)
  */

@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：自定义NPC
+ * 对象 ID：Salon
+ * 功能描述：美容院NPC，提供发型、脸型、发色、脸色与肤色更换服务。
+ */
 function start() {
     status = -1;
     action(1, 0, 0);

@@ -1,3 +1,6 @@
+/**
+ * 全局通用 TypeScript 类型定义
+ */
 export interface AnyObject {
   [key: string]: unknown;
 }
@@ -23,6 +26,7 @@ export interface PostData {
   url: string;
 }
 
+/** 分页组件通用参数 */
 export interface Pagination {
   current: number;
   pageSize: number;
@@ -31,6 +35,7 @@ export interface Pagination {
 
 export type TimeRanger = [string, string];
 
+/** 通用图表数据结构 */
 export interface GeneralChart {
   xAxis: string[];
   data: Array<{ name: string; value: number[] }>;

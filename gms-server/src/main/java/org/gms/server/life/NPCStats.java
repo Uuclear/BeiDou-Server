@@ -22,19 +22,31 @@
 package org.gms.server.life;
 
 /**
- * @author Matze
+ * NPC 静态属性（名称、脚本、功能标志等）。
  */
 public class NPCStats {
     private String name;
 
+    /**
+     * 构造 NPCStats 实例。
+     * @param name name
+     */
     public NPCStats(String name) {
         this.name = name;
     }
 
+    /**
+     * 获取名称。
+     * @return String 类型结果
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 设置名称。
+     * @param name name
+     */
     public void setName(String name) {
         this.name = name;
     }

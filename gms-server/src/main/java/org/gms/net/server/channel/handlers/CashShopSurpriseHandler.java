@@ -29,11 +29,12 @@ import org.gms.util.PacketCreator;
 import java.util.Optional;
 
 /**
- * @author RonanLana
- * @author Ponk
+ * 处理客户端 CASHSHOP_SURPRISE（现金商店惊喜） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CASHSHOP_SURPRISE}</p>
  */
 public class CashShopSurpriseHandler extends AbstractPacketHandler {
 
+    /** 处理 现金商店惊喜 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         CashShop cs = c.getPlayer().getCashShop();

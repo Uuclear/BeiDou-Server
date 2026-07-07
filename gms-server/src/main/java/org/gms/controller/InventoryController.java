@@ -11,12 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 玩家背包管理控制器，支持按条件查询背包物品及修改、删除背包条目。
+ * 委托 InventoryService 操作角色背包数据。
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/inventory")
 public class InventoryController {
     private final InventoryService inventoryService;
 
+    /**
+     * 获取所有背包分类。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/inventory/" + ApiConstant.LATEST)
     @Operation(summary = "获取所有背包分类")
     @GetMapping("/" + ApiConstant.LATEST + "/getInventoryTypeList")
@@ -24,6 +32,12 @@ public class InventoryController {
         return ResultBody.success(inventoryService.getInventoryTypeList());
     }
 
+    /**
+     * 根据条件获取背包玩家列表。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/inventory/" + ApiConstant.LATEST)
     @Operation(summary = "根据条件获取背包玩家列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getCharacterList")
@@ -31,6 +45,12 @@ public class InventoryController {
         return ResultBody.success(inventoryService.getCharacterList(request.getData()));
     }
 
+    /**
+     * 获取指定玩家背包分类下的所有物品。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/inventory/" + ApiConstant.LATEST)
     @Operation(summary = "获取指定玩家背包分类下的所有物品")
     @PostMapping("/" + ApiConstant.LATEST + "/getInventoryList")
@@ -38,6 +58,12 @@ public class InventoryController {
         return ResultBody.success(inventoryService.getInventoryList(request.getData()));
     }
 
+    /**
+     * 根据条件修改玩家背包。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/inventory/" + ApiConstant.LATEST)
     @Operation(summary = "根据条件修改玩家背包")
     @PostMapping("/" + ApiConstant.LATEST + "/updateInventory")
@@ -45,6 +71,12 @@ public class InventoryController {
         inventoryService.updateInventory(request.getData());
         return ResultBody.success();
     }
+    /**
+     * 根据条件删除玩家背包。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/inventory/" + ApiConstant.LATEST)
     @Operation(summary = "根据条件删除玩家背包")
     @PostMapping("/" + ApiConstant.LATEST + "/deleteInventory")

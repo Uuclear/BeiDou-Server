@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2020010
+ * 功能描述：NPC脚本，提供职业转职、物品发放。
+ */
 //** Archer 3rd Job Instructor Rene
 
 status = -1;

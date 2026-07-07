@@ -32,18 +32,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tyler (Twdtwd)
+ * 携带宠物需求。
  */
 public class PetRequirement extends AbstractQuestRequirement {
     List<Integer> petIDs = new ArrayList<>();
 
 
+    /**
+     * 构造 PetRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public PetRequirement(Quest quest, Data data) {
         super(QuestRequirementType.PET);
         processData(data);
     }
 
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         for (Data petData : data.getChildren()) {
@@ -52,6 +61,12 @@ public class PetRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         for (Pet pet : chr.getPets()) {

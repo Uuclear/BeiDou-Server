@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 现金商城道具搜索响应 DTO，返回商城条目 ID、道具信息及上下架状态等。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

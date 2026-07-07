@@ -27,8 +27,13 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 CHECK_CHAR_NAME（检查角色名称） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHECK_CHAR_NAME}</p>
+ */
 public final class CheckCharNameHandler extends AbstractPacketHandler {
 
+    /** 处理 检查角色名称 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         String name = p.readString();

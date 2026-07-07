@@ -1,3 +1,8 @@
+/**
+ * 应用入口文件
+ * 负责创建 Vue 应用实例，注册 Arco Design、路由、状态管理、国际化、
+ * 全局组件、自定义指令，并配置 Monaco Editor 资源路径后挂载到 DOM。
+ */
 import { createApp } from 'vue';
 import ArcoVue from '@arco-design/web-vue';
 import ArcoVueIcon from '@arco-design/web-vue/es/icon';

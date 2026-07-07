@@ -1,4 +1,5 @@
 <template>
+  <!-- 扭蛋奖池新增/编辑表单。 -->
   <a-modal
     v-model:visible="visible"
     :ok-loading="loading"
@@ -141,6 +142,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 奖池配置表单组件，编辑权重、概率、时间范围等。
+   */
   import useLoading from '@/hooks/loading';
   import { ref } from 'vue';
   import { GachaponPoolState } from '@/store/modules/gachapon/type';

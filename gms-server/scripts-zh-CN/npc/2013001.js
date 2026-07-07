@@ -1,3 +1,10 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2013001
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ * 地图：S
+ */
 /**
  * @author: Ronan
  * @npc: Chamberlain Eak

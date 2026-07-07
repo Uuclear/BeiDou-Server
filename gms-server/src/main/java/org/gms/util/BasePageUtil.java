@@ -54,14 +54,40 @@ public class BasePageUtil<T> {
         return new BasePageUtil<>(data);
     }
 
+    /**
+     * 使用自定义分页参数创建内存分页工具。
+     *
+     * @param data         列表数据
+     * @param basePageDTO  分页参数（页码、页大小等）
+     * @param <T>          元素类型
+     * @return 分页工具实例
+     */
     public static <T> BasePageUtil<T> create(Collection<T> data, BasePageDTO basePageDTO) {
         return new BasePageUtil<>(data, basePageDTO);
     }
 
+    /**
+     * 使用页码与页大小创建内存分页工具。
+     *
+     * @param data     列表数据
+     * @param pageNo   页码（从 1 开始）
+     * @param pageSize 每页条数
+     * @param <T>      元素类型
+     * @return 分页工具实例
+     */
     public static <T> BasePageUtil<T> create(Collection<T> data, Integer pageNo, Integer pageSize) {
         return new BasePageUtil<>(data, BasePageDTO.builder().pageNo(pageNo).pageSize(pageSize).build());
     }
 
+    /**
+     * 创建仅统计总数或不分页的分页工具。
+     *
+     * @param data      列表数据
+     * @param onlyTotal 为 {@code true} 时只返回总条数
+     * @param notPage   为 {@code true} 时不分页，返回全部数据
+     * @param <T>       元素类型
+     * @return 分页工具实例
+     */
     public static <T> BasePageUtil<T> create(Collection<T> data, boolean onlyTotal, boolean notPage) {
         return new BasePageUtil<>(data, BasePageDTO.builder().onlyTotal(onlyTotal).notPage(notPage).build());
     }
@@ -77,6 +103,12 @@ public class BasePageUtil<T> {
         return this;
     }
 
+    /**
+     * 按比较器对数据排序（链式调用）。
+     *
+     * @param comparator 排序比较器
+     * @return 当前分页工具实例
+     */
     public BasePageUtil<T> sorted(Comparator<? super T> comparator) {
         this.data = this.data.sorted(comparator);
         return this;

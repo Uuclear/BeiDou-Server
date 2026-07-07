@@ -24,7 +24,11 @@ package org.gms.net;
 import org.gms.client.Client;
 import org.gms.net.server.Server;
 
+/**
+ * 入站封包处理器抽象基类，默认要求客户端已登录，并提供服务器当前时间访问。
+ */
 public abstract class AbstractPacketHandler implements PacketHandler {
+    /** 默认要求客户端已登录才允许处理封包。 */
     @Override
     public boolean validateState(Client c) {
         return c.isLoggedIn();

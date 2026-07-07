@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：s4aWorld
+ * 功能描述：组队任务（PQ）事件实例，管理队伍、地图与奖励。
+ */
 /*
  * 4th Job Snipe / Concentration
  */

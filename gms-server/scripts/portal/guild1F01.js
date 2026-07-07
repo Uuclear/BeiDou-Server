@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：guild1F01
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ */
 /*
 Warp to Sharen III's Grave - Guild Quest
 Give guild points if holding appropriate item and not gained already

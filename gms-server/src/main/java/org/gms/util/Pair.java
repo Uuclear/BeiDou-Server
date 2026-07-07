@@ -21,10 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package org.gms.util;
 
 /**
- * Represents a pair of values.
+ * 二元组容器，用于将两个异构或同构值绑定在一起传递。
+ * <p>
+ * 常用于统计更新、键值对等需要成对返回的场景。
  *
- * @param <E> The type of the left value.
- * @param <F> The type of the right value.
+ * @param <E> 左侧元素的类型
+ * @param <F> 右侧元素的类型
  * @author Frz
  * @version 1.0
  * @since Revision 333
@@ -35,10 +37,10 @@ public class Pair<E, F> {
     public F right;
 
     /**
-     * Class constructor - pairs two objects together.
+     * 构造一个二元组。
      *
-     * @param left  The left object.
-     * @param right The right object.
+     * @param left  左侧元素
+     * @param right 右侧元素
      */
     public Pair(E left, F right) {
         this.left = left;
@@ -46,27 +48,27 @@ public class Pair<E, F> {
     }
 
     /**
-     * Gets the left value.
+     * 获取左侧元素。
      *
-     * @return The left value.
+     * @return 左侧元素
      */
     public E getLeft() {
         return left;
     }
 
     /**
-     * Gets the right value.
+     * 获取右侧元素。
      *
-     * @return The right value.
+     * @return 右侧元素
      */
     public F getRight() {
         return right;
     }
 
     /**
-     * Turns the pair into a string.
+     * 将二元组格式化为字符串，左右值以冒号分隔。
      *
-     * @return Each value of the pair as a string joined with a colon.
+     * @return 形如 {@code left:right} 的字符串
      */
     @Override
     public String toString() {
@@ -74,7 +76,7 @@ public class Pair<E, F> {
     }
 
     /**
-     * Gets the hash code of this pair.
+     * 计算二元组的哈希值。
      */
     @Override
     public int hashCode() {
@@ -86,7 +88,7 @@ public class Pair<E, F> {
     }
 
     /**
-     * Checks to see if two pairs are equal.
+     * 判断两个二元组是否相等（左右元素均相同）。
      */
     @SuppressWarnings("unchecked")
     @Override

@@ -44,6 +44,10 @@ public final class OxQuiz {
     private final int expGain = 200;
     private static final DataProvider stringData = DataProviderFactory.getDataProvider(WZFiles.ETC);
 
+    /**
+     * 构造 OxQuiz 实例。
+     * @param map 地图名称
+     */
     public OxQuiz(MapleMap map) {
         this.map = map;
         this.round = Randomizer.nextInt(9);
@@ -60,6 +64,9 @@ public final class OxQuiz {
         return false;
     }
 
+    /**
+     * 执行 send、Question 操作。
+     */
     public void sendQuestion() {
         int gm = 0;
         for (Character mc : map.getCharacters()) {

@@ -13,11 +13,17 @@ import java.util.List;
 
 import static org.gms.dao.entity.table.NewyearDOTableDef.NEWYEAR_D_O;
 
+/**
+ * 新年贺卡业务服务，管理节日贺卡活动的数据与发放逻辑。
+ */
 @Service
 @AllArgsConstructor
 public class NewYearCardService {
     private final NewyearMapper newyearMapper;
 
+    /**
+     * 执行 startPendingNewYearCardRequests 相关业务逻辑。
+     */
     public void startPendingNewYearCardRequests() {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select()
@@ -35,6 +41,12 @@ public class NewYearCardService {
         }
     }
 
+    /**
+     * 执行 loadPlayerNewYearCards 相关业务逻辑。
+     *
+     * @param chr chr
+     * @return List<NewyearDO> 类型结果
+     */
     public List<NewyearDO> loadPlayerNewYearCards(Character chr) {
         return newyearMapper.selectListByQuery(QueryWrapper.create().where(NEWYEAR_D_O.SENDERID.eq(chr.getId())).or(NEWYEAR_D_O.RECEIVERID.eq(chr.getId())));
     }

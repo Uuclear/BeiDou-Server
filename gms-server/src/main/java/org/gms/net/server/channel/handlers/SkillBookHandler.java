@@ -36,7 +36,12 @@ import org.gms.util.PacketCreator;
 
 import java.util.Map;
 
+/**
+ * 处理客户端 USE_SKILL_BOOK（使用技能书） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_SKILL_BOOK}</p>
+ */
 public final class SkillBookHandler extends AbstractPacketHandler {
+    /** 处理 使用技能书 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         if (!c.getPlayer().isAlive()) {

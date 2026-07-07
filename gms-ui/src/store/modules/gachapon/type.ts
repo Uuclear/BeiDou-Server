@@ -1,3 +1,8 @@
+/**
+ * 扭蛋（Gachapon）相关类型定义
+ */
+
+/** 扭蛋奖池配置 */
 export interface GachaponPoolState {
   id?: number;
   name?: string;
@@ -12,6 +17,7 @@ export interface GachaponPoolState {
   comment?: string;
 }
 
+/** 奖池中的单个奖品 */
 export interface GachaponRewardState {
   id?: number;
   poolId?: number;

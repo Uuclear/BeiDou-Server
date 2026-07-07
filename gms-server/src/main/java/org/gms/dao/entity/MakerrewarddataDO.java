@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `makerrewarddata` 的实体类（DO）。
+ * <p>
+ * 制作人系统产出奖励表，定义制作成功后的额外奖励物品。
  */
 @Data
 @Builder

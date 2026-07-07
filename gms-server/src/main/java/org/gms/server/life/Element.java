@@ -21,6 +21,9 @@
 */
 package org.gms.server.life;
 
+/**
+ * 元素属性枚举（火、冰、雷、毒、圣、暗等）。
+ */
 public enum Element {
     NEUTRAL(0), PHYSICAL(1), FIRE(2, true), ICE(3, true), LIGHTING(4), POISON(5), HOLY(6, true), DARKNESS(7);
 
@@ -36,10 +39,19 @@ public enum Element {
         this.special = special;
     }
 
+    /**
+     * 判断是否为Special。
+     * @return boolean 类型结果
+     */
     public boolean isSpecial() {
         return special;
     }
 
+    /**
+     * 获取来自、Char。
+     * @param c c
+     * @return Element 类型结果
+     */
     public static Element getFromChar(char c) {
         switch (Character.toUpperCase(c)) {
             case 'F':
@@ -60,6 +72,10 @@ public enum Element {
         throw new IllegalArgumentException("unknown elemnt char " + c);
     }
 
+    /**
+     * 获取Value。
+     * @return int 类型结果
+     */
     public int getValue() {
         return value;
     }

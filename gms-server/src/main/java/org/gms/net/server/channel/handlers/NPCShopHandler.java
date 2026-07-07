@@ -30,11 +30,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Matze
+ * 处理客户端 NPC_SHOP（NPC商店） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#NPC_SHOP}</p>
  */
 public final class NPCShopHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(NPCShopHandler.class);
 
+    /** 处理 NPC商店 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         byte bmode = p.readByte();

@@ -1,3 +1,6 @@
+/**
+ * 自动封禁配置页英文文案。
+ */
 export default {
   'autoban.column.type': 'Type',
   'autoban.column.disabled': 'Disabled',

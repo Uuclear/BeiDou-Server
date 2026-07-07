@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2112011
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /* Yulete
 	Traces of Yulete (926110500)
 	Talking

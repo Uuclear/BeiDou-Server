@@ -20,13 +20,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	NPC Name: 		Adonis
-	Map(s): 		El Nath
-	Description: 		Quest - Lost Spirits
-	Quest ID: 		8255
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：8255
+ * 功能描述：Adonis，任务相关对话与奖励。
+ */
 function start(mode, type, selection) {
     qm.forceStartQuest();
     qm.forceCompleteQuest();

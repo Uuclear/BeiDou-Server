@@ -31,12 +31,16 @@ import org.gms.server.ItemInformationProvider;
 import org.gms.util.Randomizer;
 
 /**
- * @author Alan (SharpAceX)
+ * 扭蛋机主类（单例），按 NPC 类型抽取稀有度分层奖品。
  */
 public class Gachapon {
     private static final Logger log = LoggerFactory.getLogger(Gachapon.class);
     private static final Gachapon instance = new Gachapon();
 
+    /**
+     * 获取单例实例。
+     * @return Gachapon 类型结果
+     */
     public static Gachapon getInstance() {
         return instance;
     }
@@ -85,10 +89,20 @@ public class Gachapon {
             }
         }
 
+        /**
+         * 获取物品。
+         * @param tier 稀有度层级
+         * @return int[] 类型结果
+         */
         public int[] getItems(int tier) {
             return gachapon.getItems(tier);
         }
 
+        /**
+         * 获取物品。
+         * @param tier 稀有度层级
+         * @return int 类型结果
+         */
         public int getItem(int tier) {
             int[] gacha = getItems(tier);
             int[] global = GLOBAL.getItems(tier);
@@ -96,6 +110,11 @@ public class Gachapon {
             return chance < gacha.length ? gacha[chance] : global[chance - gacha.length];
         }
 
+        /**
+         * 获取按NPCID。
+         * @param npcId NPC ID
+         * @return GachaponType 类型结果
+         */
         public static GachaponType getByNpcId(int npcId) {
             for (GachaponType gacha : values) {
                 if (npcId == gacha.npcId) {
@@ -105,6 +124,10 @@ public class Gachapon {
             return null;
         }
 
+        /**
+         * 获取战利品、Names。
+         * @return String[] 类型结果
+         */
         public static String[] getLootNames() {
             return new String[]{
                     I18nUtil.getMessage("GachaCommand.message2"),
@@ -120,6 +143,10 @@ public class Gachapon {
             };
         }
 
+        /**
+         * 获取战利品Ids。
+         * @return int[] 类型结果
+         */
         public static int[] getLootIds() {
             return new int[]{
                     NpcId.GACHAPON_HENESYS,
@@ -136,6 +163,11 @@ public class Gachapon {
         }
     }
 
+    /**
+     * 执行 process 操作。
+     * @param npcId NPC ID
+     * @return GachaponItem 类型结果
+     */
     public GachaponItem process(int npcId) {
         GachaponType gacha = GachaponType.getByNpcId(npcId);
         int tier = gacha.getTier();
@@ -147,20 +179,40 @@ public class Gachapon {
         private final int id;
         private final int tier;
 
+        /**
+         * 执行 扭蛋物品 操作。
+         * @param t 稀有度层级
+         * @param i 物品 ID
+         * @return GachaponItem 类型结果
+         */
         public GachaponItem(int t, int i) {
             id = i;
             tier = t;
         }
 
+        /**
+         * 获取层级。
+         * @return int 类型结果
+         */
         public int getTier() {
             return tier;
         }
 
+        /**
+         * 获取ID。
+         * @return int 类型结果
+         */
         public int getId() {
             return id;
         }
     }
 
+    /**
+     * 记录日志。
+     * @param player 玩家
+     * @param itemId 物品 ID
+     * @param map 地图名称
+     */
     public static void log(Character player, int itemId, String map) {
         String itemName = ItemInformationProvider.getInstance().getName(itemId);
         log.info(I18nUtil.getLogMessage("Gachapon.log.info"), player.getName(), itemName, itemId, map);

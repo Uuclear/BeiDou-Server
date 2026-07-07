@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：6033
+ * 功能描述：任务脚本，完成任务后发放经验奖励。
+ */
 /* Maker Skill
 	Moren's Second round of teaching
 	2nd skill level

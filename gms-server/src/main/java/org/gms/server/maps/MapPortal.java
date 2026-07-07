@@ -21,7 +21,13 @@
 */
 package org.gms.server.maps;
 
+/**
+ * 地图内传送门（同地图或跨地图），含可见名称与脚本。
+ */
 public class MapPortal extends GenericPortal {
+    /**
+     * 构造 MapPortal 实例。
+     */
     public MapPortal() {
         super(Portal.MAP_PORTAL);
     }

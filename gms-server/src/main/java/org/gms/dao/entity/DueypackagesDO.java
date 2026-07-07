@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `dueypackages` 的实体类（DO）。
+ * <p>
+ * Duey 快递包裹主表，描述寄送给角色的邮件包裹元信息。
  */
 @Data
 @Builder

@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator, Moogra
-	NPC Name: 		Trainer Bartos
-	Map(s): 		Victoria Road : Pet-Walking Road (100000202)
-	Description: 		Pet Trainer
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1012006
+ * 功能描述：Trainer Bartos，技能训练师。
+ * 原作者：Xterminator, Moogra
+ */
 var status = 0;
 
 function start() {

@@ -26,10 +26,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
 /**
- * @author Quasar
+ * 处理客户端 PARTY_SEARCH_REGISTER（注册组队搜索） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PARTY_SEARCH_REGISTER}</p>
  */
 public class PartySearchRegisterHandler extends AbstractPacketHandler {
 
+    /** 处理 注册组队搜索 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {}
 }

@@ -1,8 +1,11 @@
-/*
-        NPC Name:               Nineheart
-        Description:            Quest - Are you sure you can leave?
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20700
+ * 功能描述：Nineheart，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

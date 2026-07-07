@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `alliance` 的实体类（DO）。
+ * <p>
+ * 联盟信息表，存储多个公会组成的联盟名称、等级与公告。
  */
 @Data
 @Builder

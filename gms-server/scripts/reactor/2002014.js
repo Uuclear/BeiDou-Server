@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*@author Ronan
- *Reactor : OrbisPQ Bonus Reactor - 2002014.js
- * Drops all the Bonus Items
- */
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2002014
+ * 功能描述：反应堆触发后掉落地图物品。
+ * 原作者：Ronan
+ */
 function act() {
     rm.dropItems(true, 1, 100, 400, 15);
 

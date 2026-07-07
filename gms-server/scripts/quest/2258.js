@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2258
+ * 功能描述：about the #rMushroom Castle#k. What do you say?");（原版描述）。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

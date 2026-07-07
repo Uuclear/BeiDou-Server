@@ -36,8 +36,7 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
 
 /**
- * @author Conrad
- * @author Ronan
+ * 远征 Boss 通关日志记录。
  */
 public class ExpeditionBossLog {
 
@@ -91,6 +90,9 @@ public class ExpeditionBossLog {
 
     }
 
+    /**
+     * 重置Boss、Log、Table。
+     */
     public static void resetBossLogTable() {
         /*
         Boss logs resets 12am, weekly thursday 12AM - thanks Smitty Werbenjagermanjensen (superadlez) - https://www.reddit.com/r/Maplestory/comments/61tiup/about_reset_time/
@@ -175,6 +177,14 @@ public class ExpeditionBossLog {
         }
     }
 
+    /**
+     * 执行 attempt、Boss 操作。
+     * @param cid cid
+     * @param channel 频道号
+     * @param exped exped
+     * @param log log
+     * @return boolean 类型结果
+     */
     public static boolean attemptBoss(int cid, int channel, Expedition exped, boolean log) {
         if (!GameConfig.getServerBoolean("use_enable_daily_expeditions")) {
             return true;

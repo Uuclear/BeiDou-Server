@@ -19,13 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator
- * Edited by XxOsirisxX
 
-	NPC Name: 		Roger
-	Map(s): 		Maple Road : Lower level of the Training Camp (2)
-	Description: 		Quest - Roger's Apple
-*/
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：1021
+ * 功能描述：Roger，任务相关对话与奖励。
+ * 原作者：Xterminator
+ */
 var status = -1;
 
 function start(mode, type, selection) {

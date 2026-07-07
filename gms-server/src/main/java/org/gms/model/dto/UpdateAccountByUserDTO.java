@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.sql.Date;
 
+/**
+ * 玩家自助修改账号请求 DTO，用于修改密码、PIN、PIC、昵称、邮箱等个人信息。
+ */
 @Data
 public class UpdateAccountByUserDTO implements Serializable {
     private String oldPwd;

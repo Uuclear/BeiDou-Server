@@ -18,26 +18,20 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.gms.client.inventory;
-
-import org.gms.provider.Data;
-import org.gms.provider.DataProvider;
-import org.gms.provider.DataProviderFactory;
-import org.gms.provider.DataTool;
-import org.gms.provider.wz.WZFiles;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * @author Danny (Leifde)
+ * 宠物数据工厂，从 WZ 文件加载宠物模板数据。
  */
 public class PetDataFactory {
     private static final DataProvider dataRoot = DataProviderFactory.getDataProvider(WZFiles.ITEM);
     private static final Map<String, PetCommand> petCommands = new HashMap<>();
     private static final Map<Integer, Integer> petHunger = new HashMap<>();
 
+    /**
+     * 获取宠物Command
+     * @param petId petId
+     * @param skillId 技能ID
+     * @return 返回值
+     */
     public static PetCommand getPetCommand(int petId, int skillId) {
         PetCommand ret = petCommands.get(petId + "" + skillId);
         if (ret != null) {
@@ -60,6 +54,11 @@ public class PetDataFactory {
         }
     }
 
+    /**
+     * 获取Hunger
+     * @param petId petId
+     * @return 返回值
+     */
     public static int getHunger(int petId) {
         Integer ret = petHunger.get(petId);
         if (ret != null) {

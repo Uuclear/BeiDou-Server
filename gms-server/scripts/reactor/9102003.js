@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：9102003
+ * 功能描述：反应堆触发后掉落地图物品。
+ */
 /**
  * @author BubblesDev
  * @purpose Drops Purple Seeds (4001096)

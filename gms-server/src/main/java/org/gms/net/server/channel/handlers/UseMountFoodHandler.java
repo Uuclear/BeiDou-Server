@@ -34,10 +34,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author PurpleMadness
- * @author Ronan
+ * 处理客户端 USE_MOUNT_FOOD（使用坐骑食物） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_MOUNT_FOOD}</p>
  */
 public final class UseMountFoodHandler extends AbstractPacketHandler {
+    /** 处理 使用坐骑食物 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         p.skip(4);

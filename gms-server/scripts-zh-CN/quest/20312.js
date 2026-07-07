@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: 		ThreeStep
-	NPC Name: 		Oz (1101004)
-	Description: 	Blaze Wizard 3rd job advancement
-	Quest: 			Shinsoo's Teardrop
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20312
+ * 功能描述：Oz (1101004)，职业转职。
+ * 原作者：ThreeStep
+ */
 /*
     Author:         Magical-H
     Description:    骑士团转职通用脚本

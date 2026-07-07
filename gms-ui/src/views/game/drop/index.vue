@@ -1,4 +1,5 @@
 <template>
+  <!-- 怪物掉落管理页：按怪物/物品筛选、编辑掉落概率与数量。 -->
   <div class="container">
     <Breadcrumb />
     <a-card
@@ -234,6 +235,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 普通怪物掉落配置页，支持增删改掉落记录。
+   */
   import { ref } from 'vue';
   import {
     deleteDrop,

@@ -21,6 +21,9 @@
 */
 package org.gms.server.maps;
 
+/**
+ * 地图对象类型枚举（怪物、NPC、物品、商店、门、召唤兽、反应堆等）。
+ */
 public enum MapObjectType {
     NPC,
     MONSTER,

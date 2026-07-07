@@ -33,6 +33,10 @@ import static org.gms.client.Client.LOGIN_NOTLOGGEDIN;
 import static org.gms.dao.entity.table.CharactersDOTableDef.CHARACTERS_D_O;
 import static org.gms.dao.entity.table.IpbansDOTableDef.IPBANS_D_O;
 
+/**
+ * 账号业务服务，负责账号 CRUD、密码校验、封禁及当前用户上下文获取。
+ * 衔接数据库 accounts 表与游戏服在线状态。
+ */
 @Service
 @AllArgsConstructor
 public class AccountService {
@@ -42,19 +46,48 @@ public class AccountService {
     private final MacbansMapper macbansMapper;
     private final QuickslotkeymappedMapper quickslotkeymappedMapper;
 
+    /**
+     * 执行 findByName 相关业务逻辑。
+     *
+     * @param name 名称
+     * @return AccountsDO 类型结果
+     */
     public AccountsDO findByName(String name) {
         return accountsMapper.selectOneByName(name);
     }
 
+    /**
+     * 执行 findById 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     * @return AccountsDO 类型结果
+     */
     public AccountsDO findById(int id) {
         return accountsMapper.selectOneById(id);
     }
 
+    /**
+     * 执行 getCurrentUser 相关业务逻辑。
+     * @return AccountsDO 类型结果
+     */
     public AccountsDO getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return findByName(userDetails.getUsername());
     }
 
+    /**
+     * 执行 getAccountList 相关业务逻辑。
+     *
+     * @param page page
+     * @param size size
+     * @param id 记录主键 ID
+     * @param name 名称
+     * @param lastLoginStart lastLoginStart
+     * @param lastLoginEnd lastLoginEnd
+     * @param createdAtStart createdAtStart
+     * @param createdAtEnd createdAtEnd
+     * @return Page<AccountsDO> 类型结果
+     */
     public Page<AccountsDO> getAccountList(Integer page,
                                            Integer size,
                                            Integer id,
@@ -76,10 +109,19 @@ public class AccountService {
         return accountsMapper.paginateWithRelations(page, size, queryWrapper);
     }
 
+    /**
+     * 更新配置项并热加载可运行时生效的参数。
+     * @param gameConfigDO 游戏配置实体
+     */
     public void update(AccountsDO condition) {
         accountsMapper.update(condition);
     }
 
+    /**
+     * 执行 addAccount 相关业务逻辑。
+     *
+     * @param submitData submitData
+     */
     public void addAccount(AddAccountDTO submitData) throws NoSuchAlgorithmException {
         // 防止swagger调用，后续的语言路由都受影响
         RequireUtil.requireNotNull(submitData.getLanguage(), I18nUtil.getExceptionMessage("LANGUAGE_NOT_SUPPORT"));
@@ -96,6 +138,11 @@ public class AccountService {
         accountsMapper.insertSelective(account);
     }
 
+    /**
+     * 执行 updateAccountByUser 相关业务逻辑。
+     *
+     * @param submitData submitData
+     */
     public void updateAccountByUser(UpdateAccountByUserDTO submitData) throws NoSuchAlgorithmException {
         AccountsDO account = getCurrentUser();
         RequireUtil.requireTrue(checkPassword(submitData.getOldPwd(), account), I18nUtil.getExceptionMessage("AccountService.updateAccountByUser.oldPassword"));
@@ -117,6 +164,12 @@ public class AccountService {
         accountsMapper.update(newData);
     }
 
+    /**
+     * 执行 updateAccountByGM 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     * @param submitData submitData
+     */
     public void updateAccountByGM(int id, UpdateAccountByGmDTO submitData) throws NoSuchAlgorithmException {
         AccountsDO account = findById(id);
         RequireUtil.requireNotNull(account, I18nUtil.getExceptionMessage("AccountService.id.NotExist"));
@@ -145,15 +198,33 @@ public class AccountService {
         accountsMapper.update(account);
     }
 
+    /**
+     * 执行 deleteAccountByGM 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     */
     public void deleteAccountByGM(int id) {
         RequireUtil.requireNotNull(findById(id), I18nUtil.getExceptionMessage("AccountService.id.NotExist"));
         accountsMapper.deleteById(id);
     }
 
+    /**
+     * 执行 encryptPassword 相关业务逻辑。
+     *
+     * @param password 密码
+     * @return String 类型结果
+     */
     public String encryptPassword(String password) throws NoSuchAlgorithmException {
         return GameConfig.getServerBoolean("bcrypt_migration") ? BCrypt.hashpw(password, BCrypt.gensalt(12)) : BCrypt.hashpwSHA512(password);
     }
 
+    /**
+     * 执行 checkPassword 相关业务逻辑。
+     *
+     * @param pwd pwd
+     * @param accountsDO accountsDO
+     * @return boolean 类型结果
+     */
     public boolean checkPassword(String pwd, AccountsDO accountsDO) {
         String passHash = accountsDO.getPassword();
         if (passHash.charAt(0) == '$' && passHash.charAt(1) == '2' && BCrypt.checkpw(pwd, passHash)) {
@@ -173,6 +244,11 @@ public class AccountService {
         }
     }
 
+    /**
+     * 执行 resetAllLoggedIn 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     */
     public void resetAllLoggedIn(int id) {
         RequireUtil.requireNotNull(findById(id), I18nUtil.getExceptionMessage("AccountService.id.NotExist"));
 
@@ -182,6 +258,12 @@ public class AccountService {
         accountsMapper.update(account);
     }
 
+    /**
+     * 执行 banAccount 相关业务逻辑。
+     *
+     * @param accountId accountId
+     * @param reason reason
+     */
     public void banAccount(int accountId, String reason) {
         RequireUtil.requireNotNull(findById(accountId), I18nUtil.getExceptionMessage("AccountService.id.NotExist"));
 
@@ -213,6 +295,11 @@ public class AccountService {
         }
     }
 
+    /**
+     * 执行 unbanAccount 相关业务逻辑。
+     *
+     * @param accountId accountId
+     */
     public void unbanAccount(int accountId) {
         RequireUtil.requireNotNull(findById(accountId), I18nUtil.getExceptionMessage("AccountService.id.NotExist"));
 
@@ -227,16 +314,32 @@ public class AccountService {
         ipbansMapper.deleteByQuery(new QueryWrapper().eq(IpbansDO::getAid, accountId));
     }
 
+    /**
+     * 执行 resetAllLoggedIn 相关业务逻辑。
+     */
     public void resetAllLoggedIn() {
         accountsMapper.updateAllLoggedIn(0);
     }
 
+    /**
+     * 执行 ban 相关业务逻辑。
+     *
+     * @param chr chr
+     * @param reason reason
+     */
     public void ban(Character chr, String reason) {
         accountsMapper.update(AccountsDO.builder().banned(true).id(chr.getAccountId()).banreason(reason).build());
         // 更新在线的ban状态
         chr.setBanned(true);
     }
 
+    /**
+     * 执行 ban 相关业务逻辑。
+     *
+     * @param str str
+     * @param reason reason
+     * @param isAccount isAccount
+     */
     public void ban(String str, String reason, boolean isAccount) {
         if (str.matches("[0-9]{1,3}\\..*")) {
             if (isBanned(str)) {
@@ -267,10 +370,22 @@ public class AccountService {
                 .build());
     }
 
+    /**
+     * 执行 isBanned 相关业务逻辑。
+     *
+     * @param ip ip
+     * @return boolean 类型结果
+     */
     public boolean isBanned(String ip) {
         return ipbansMapper.selectCountByQuery(QueryWrapper.create().where(IPBANS_D_O.IP.eq(ip))) > 0;
     }
 
+    /**
+     * 执行 getQuickSlotKeyMap 相关业务逻辑。
+     *
+     * @param accountId accountId
+     * @return QuickslotkeymappedDO 类型结果
+     */
     public QuickslotkeymappedDO getQuickSlotKeyMap(int accountId) {
         return quickslotkeymappedMapper.selectOneById(accountId);
     }

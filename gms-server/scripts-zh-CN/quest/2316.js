@@ -1,13 +1,11 @@
-/* ===========================================================
-        @author Resonance
-	NPC Name: 		Minister of Magic
-	Map(s): 		Mushroom Castle: Corner of Mushroom Forest(106020000)
-	Description: 	Quest -  Exploring Mushroom Forest(3)
-=============================================================
-Version 1.0 - Script Done.(18/7/2010)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2316
+ * 功能描述：Minister of Magic，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

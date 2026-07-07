@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * GM 发放资源请求 DTO，用于向指定世界/角色发放道具或装备，可附带属性与过期时间。
+ */
 @Setter
 @Getter
 public class GiveResourceReqDTO {

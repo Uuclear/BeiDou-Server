@@ -29,7 +29,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 USE_ITEMEFFECT（使用物品效果） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#USE_ITEMEFFECT}</p>
+ */
 public final class UseItemEffectHandler extends AbstractPacketHandler {
+    /** 处理 使用物品效果 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Item toUse;

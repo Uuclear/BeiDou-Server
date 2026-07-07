@@ -1,3 +1,6 @@
+/**
+ * 英文基础通用文案：标题、按钮、操作等全局 UI 文本。
+ */
 export default {
   'title': 'BeiDou',
   'operation': 'Operation',

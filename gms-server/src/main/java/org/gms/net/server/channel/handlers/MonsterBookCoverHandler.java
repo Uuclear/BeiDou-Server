@@ -26,7 +26,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 MONSTER_BOOK_COVER（怪物图鉴封面） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MONSTER_BOOK_COVER}</p>
+ */
 public final class MonsterBookCoverHandler extends AbstractPacketHandler {
+    /** 设置怪物图鉴封面道具并同步给客户端。 */
     public final void handlePacket(InPacket p, Client c) {
         int id = p.readInt();
         if (id == 0 || id / 10000 == 238) {

@@ -31,11 +31,19 @@ import org.gms.util.I18nUtil;
 
 import java.util.Collection;
 
+/**
+ * GM2命令：把当前地图的所有玩家传送到指定的地图
+ */
 public class WarpMapCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WarpMapCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

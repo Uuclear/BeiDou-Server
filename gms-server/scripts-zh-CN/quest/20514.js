@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20514
+ * 功能描述：rmationProvider = Java.type('org.gms.server.ItemInformationProvider');（原版描述）。
+ */
 // @Author Ronan
 
 function raiseOpen() {

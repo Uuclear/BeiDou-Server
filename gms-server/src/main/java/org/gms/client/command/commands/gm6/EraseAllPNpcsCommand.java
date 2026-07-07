@@ -28,11 +28,19 @@ import org.gms.client.command.Command;
 import org.gms.server.life.PlayerNPC;
 import org.gms.util.I18nUtil;
 
+/**
+ * GM6（最高权限）命令：移除所有玩家NPC
+ */
 public class EraseAllPNpcsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("EraseAllPNpcsCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         PlayerNPC.removeAllPlayerNPC();

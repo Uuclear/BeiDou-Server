@@ -30,11 +30,19 @@ import org.gms.net.server.Server;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * GM3命令：发送全服封禁公告
+ */
 public class RipCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("RipCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

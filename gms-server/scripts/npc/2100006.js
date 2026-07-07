@@ -1,11 +1,12 @@
-/* Author: aaroncsn <MapleSea Like>
-	NPC Name: 		Mazra
-	Map(s): 		The Burning Road: Ariant(2600000000)
-	Description: 	Hair Salon Owner
 
-        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
-*/
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2100006
+ * 功能描述：Mazra，发型更换。
+ * 原作者：aaroncsn <MapleSea Like>
+ */
 var status = 0;
 var beauty = 0;
 var mhair_v = Array(30150, 30170, 30180, 30320, 30330, 30410, 30460, 30820, 30900);

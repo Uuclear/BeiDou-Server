@@ -30,9 +30,11 @@ import org.gms.net.server.coordinator.session.SessionCoordinator;
 import org.gms.util.PacketCreator;
 
 /**
- * @author kevintjuh93
+ * 处理客户端 SET_GENDER（设置性别） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#SET_GENDER}</p>
  */
 public class SetGenderHandler extends AbstractPacketHandler {
+    /** 处理 设置性别 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         if (c.getGender() == 10) { //Packet shouldn't come if Gender isn't 10.

@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*      Author:                 Xterminator, Moogra
-	NPC Name: 		Tony
-	Map(s): 		Maple Road: Southperry (60000)
-	Description: 	        Event Assistant
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9000013
+ * 功能描述：Tony，活动助手，引导玩家参与游戏活动。
+ * 原作者：Xterminator, Moogra
+ */
 var status = 0;
 
 function start() {

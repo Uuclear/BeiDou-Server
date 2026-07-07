@@ -40,11 +40,19 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * GM4命令：移除当前地图的永久怪物
+ */
 public class PmobRemoveCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PmobRemoveCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

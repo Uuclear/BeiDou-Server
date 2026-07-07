@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `drop_data_global` 的实体类（DO）。
+ * <p>
+ * 全局掉落配置表，定义不绑定特定怪物的通用掉落规则。
  */
 @Data
 @Builder

@@ -19,11 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator
-	NPC Name: 		Robin
-	Map(s): 		Maple Road : Snail Hunting Ground I (40000)
-	Description: 		Beginner Helper
-*/
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2003
+ * 功能描述：Robin，Beginner Helper（原版描述）。
+ * 原作者：Xterminator
+ */
 var status;
 var sel;
 

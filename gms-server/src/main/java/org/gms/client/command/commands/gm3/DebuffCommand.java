@@ -37,11 +37,19 @@ import org.gms.util.I18nUtil;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * GM3命令：给附近玩家上debuff
+ */
 public class DebuffCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("DebuffCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

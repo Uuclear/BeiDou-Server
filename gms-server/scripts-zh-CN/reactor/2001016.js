@@ -20,10 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*@author Ronan
- *Nependeath Pot - Spawns Papa Pixie
- */
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2001016
+ * 功能描述：反应堆触发后召唤怪物。
+ * 原作者：Ronan
+ */
 function act() {
     rm.getMap().killAllMonsters();
     rm.getMap().allowSummonState(false);

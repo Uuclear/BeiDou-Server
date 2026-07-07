@@ -34,21 +34,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Tyler (Twdtwd)
+ * 击杀怪物数量需求。
  */
 public class MobRequirement extends AbstractQuestRequirement {
     private static final Logger log = LoggerFactory.getLogger(MobRequirement.class);
     Map<Integer, Integer> mobs = new HashMap<>();
     private final int questID;
 
+    /**
+     * 构造 MobRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public MobRequirement(Quest quest, Data data) {
         super(QuestRequirementType.MOB);
         questID = quest.getId();
         processData(data);
     }
-
     /**
-     * @param data
+     * 处理数据。
+     * @param data WZ 数据节点
      */
     @Override
     public void processData(Data data) {
@@ -60,6 +65,12 @@ public class MobRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         QuestStatus status = chr.getQuest(Quest.getInstance(questID));
@@ -81,6 +92,11 @@ public class MobRequirement extends AbstractQuestRequirement {
         return true;
     }
 
+    /**
+     * 获取Required、怪物、数量。
+     * @param mobid mobid
+     * @return int 类型结果
+     */
     public int getRequiredMobCount(int mobid) {
         if (mobs.containsKey(mobid)) {
             return mobs.get(mobid);

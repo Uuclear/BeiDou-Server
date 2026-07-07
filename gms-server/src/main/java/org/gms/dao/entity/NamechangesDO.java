@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `namechanges` 的实体类（DO）。
+ * <p>
+ * 角色改名记录表，跟踪角色名称变更历史与审核状态。
  */
 @Data
 @Builder

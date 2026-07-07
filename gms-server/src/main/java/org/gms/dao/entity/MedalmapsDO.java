@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `medalmaps` 的实体类（DO）。
+ * <p>
+ * 勋章成就地图关联表，定义勋章任务与可完成地图的对应关系。
  */
 @Data
 @Builder

@@ -31,8 +31,13 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 import org.gms.util.Randomizer;
 
+/**
+ * 处理客户端 PET_COMMAND（宠物命令） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#PET_COMMAND}</p>
+ */
 public final class PetCommandHandler extends AbstractPacketHandler {
 
+    /** 处理 宠物命令 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character chr = c.getPlayer();

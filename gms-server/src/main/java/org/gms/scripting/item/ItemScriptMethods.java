@@ -25,9 +25,18 @@ import org.gms.client.Client;
 import org.gms.scripting.AbstractPlayerInteraction;
 
 /**
+ * 物品脚本 API 占位类，继承 {@link AbstractPlayerInteraction}。
+ * <p>
+ * 物品脚本实际由 {@link org.gms.scripting.npc.NPCScriptManager} 以 {@code im} 变量注入
+ * {@link org.gms.scripting.npc.NPCConversationManager} 执行；本类保留供独立物品脚本扩展。
+ * </p>
+ *
  * @author kevintjuh93
  */
 public class ItemScriptMethods extends AbstractPlayerInteraction {
+    /**
+     * @param c 当前玩家客户端
+     */
     public ItemScriptMethods(Client c) {
         super(c);
     }

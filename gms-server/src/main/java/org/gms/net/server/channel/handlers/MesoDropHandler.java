@@ -29,10 +29,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Matze
- * @author Ronan - concurrency protection
+ * 处理客户端 MESO_DROP（金币掉落） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MESO_DROP}</p>
  */
 public final class MesoDropHandler extends AbstractPacketHandler {
+    /** 处理 金币掉落 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         Character player = c.getPlayer();

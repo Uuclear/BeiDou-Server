@@ -29,26 +29,46 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestActionType;
 
 /**
- * @author Tyler (Twdtwd)
+ * 任务施加 Buff 动作。
  */
 public class BuffAction extends AbstractQuestAction {
     int itemEffect;
 
+    /**
+     * 构造 BuffAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public BuffAction(Quest quest, Data data) {
         super(QuestActionType.BUFF, quest);
         processData(data);
     }
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer extSelection) {
         return true;
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         itemEffect = DataTool.getInt(data);
     }
 
+    /**
+     * 执行动作逻辑。
+     * @param chr 角色
+     * @param extSelection 扩展选项
+     */
     @Override
     public void run(Character chr, Integer extSelection) {
         ItemInformationProvider.getInstance().getItemEffect(itemEffect).applyTo(chr);

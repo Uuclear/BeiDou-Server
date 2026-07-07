@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1061010
+ * 功能描述：NPC脚本（ID: 1061010）。
+ */
 var status = 0;
 var summon;
 var nthtext = "bonus";

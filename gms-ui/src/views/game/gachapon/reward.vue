@@ -1,4 +1,5 @@
 <template>
+  <!-- 指定奖池下的奖品列表与编辑面板。 -->
   <a-modal v-model:visible="visible" :width="1000" :ok-loading="loading">
     <template #title> {{ title }} </template>
     <a-row>
@@ -114,6 +115,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 扭蛋奖品管理子组件，维护奖池内各奖品 itemId 与数量。
+   */
   import useLoading from '@/hooks/loading';
   import { getIconUrl } from '@/utils/mapleStoryAPI';
   import { ref } from 'vue';

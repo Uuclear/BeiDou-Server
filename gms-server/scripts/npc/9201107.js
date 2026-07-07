@@ -1,6 +1,12 @@
-/* @Author SharpAceX
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201107
+ * 功能描述：NPC脚本，提供物品发放。
+ * 原作者：SharpAceX
+ */
 function start() {
     if (cm.getPlayer().getMapId() == 610030500) {
         cm.sendOk("Unbelievable strength and power, anyone can be achieve. But what makes a warrior special is their iron will. No matter the odds, a true warrior pushes through until victory is assured. Thus, the Warrior Chamber is a brutal road where the room itself is against you, as well as the ultra-strong monsters within. Use your skills to shake off the effects and defeat the monsters within to reach the Warrior Statue and claim the Master Sword. Good luck!");

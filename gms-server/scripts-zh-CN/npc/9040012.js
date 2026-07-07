@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * Armor Statue - Sharenian: Hall of the Knight (990000400)
- * Guild Quest Stage 2 Info
- */
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9040012
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ * 原作者：Lerk
+ */
 function start() {
     cm.sendOk("这块牌匾的翻译如下：\r\n“沙连尼亚的骑士是自豪的战士。他们的朗基努斯长矛既是强大的武器，也是城堡防御的关键：通过从大厅最高处的平台上移除它们，他们可以封锁入侵者的入口。”\r\n似乎有些东西用英文刻在侧面上，几乎看不清：\r\n“邪恶偷走了长矛，被锁在障碍物后面。返回到塔顶。大长矛，从更高处抓取。”\r\n……显然，找到答案的人没有太多时间活下去。可怜的家伙。");
     cm.dispose();

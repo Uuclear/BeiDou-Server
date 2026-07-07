@@ -20,6 +20,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：highposition
+ * 功能描述：地图传送门入口脚本。
+ * 地图：S
+ */
 // Author: Ronan
 function enter(ms) {
     // thanks kvmba for noticing some issues running this script

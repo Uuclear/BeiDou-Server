@@ -23,33 +23,59 @@ package org.gms.server.maps;
 
 import java.awt.*;
 
+/**
+ * 地图对象抽象基类，提供 OID、位置、地图引用等通用实现。
+ */
 public abstract class AbstractMapObject implements MapObject {
     private Point position = new Point();
     private int objectId;
 
+    /**
+     * 获取类型。
+     * @return abstract MapObjectType 类型结果
+     */
     @Override
     public abstract MapObjectType getType();
 
+    /**
+     * 获取位置。
+     * @return Point 类型结果
+     */
     @Override
     public Point getPosition() {
         return new Point(position);
     }
 
+    /**
+     * 设置位置。
+     * @param position 坐标
+     */
     @Override
     public void setPosition(Point position) {
         this.position.move(position.x, position.y);
     }
 
+    /**
+     * 获取对象ID。
+     * @return int 类型结果
+     */
     @Override
     public int getObjectId() {
         return objectId;
     }
 
+    /**
+     * 设置对象ID。
+     * @param id ID
+     */
     @Override
     public void setObjectId(int id) {
         this.objectId = id;
     }
 
+    /**
+     * 执行 nullify、位置 操作。
+     */
     @Override
     public void nullifyPosition() {
         this.position = null;

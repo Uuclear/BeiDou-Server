@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：Aran_2ndmount
+ * 功能描述：游戏事件脚本（Aran_2ndmount），管理实例生命周期与玩家进出。
+ */
 /**
  * @Author Ronan
  * Event - Scadur's Mount Quest

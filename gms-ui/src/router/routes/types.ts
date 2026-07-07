@@ -1,3 +1,7 @@
+/**
+ * 应用路由记录类型定义
+ * 扩展 vue-router 路由项，支持懒加载组件与导航守卫类型。
+ */
 import { defineComponent } from 'vue';
 import type { RouteMeta, NavigationGuard } from 'vue-router';
 

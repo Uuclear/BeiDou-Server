@@ -20,6 +20,8 @@
 package org.gms.net.server.services;
 
 /**
+ * 服务管理器，按服务类型枚举批量实例化并索引访问各服务。
+ *
  * @author Ronan
  */
 public class ServicesManager {

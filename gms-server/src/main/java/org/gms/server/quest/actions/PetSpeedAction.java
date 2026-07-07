@@ -27,16 +27,25 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestActionType;
 
 /**
- * @author Ronan
+ * 任务变更宠物移动速度动作。
  */
 public class PetSpeedAction extends AbstractQuestAction {
 
+    /**
+     * 构造 PetSpeedAction 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public PetSpeedAction(Quest quest, Data data) {
         super(QuestActionType.PETTAMENESS, quest);
         questID = quest.getId();
     }
 
 
+    /**
+     * 处理数据。
+     * @param extSelection 扩展选项
+     */
     @Override
     public void processData(Data data) {}
 

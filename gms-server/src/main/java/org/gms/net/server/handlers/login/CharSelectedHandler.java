@@ -36,6 +36,10 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 处理客户端 CHAR_SELECT（角色选择） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#CHAR_SELECT}</p>
+ */
 public final class CharSelectedHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CharSelectedHandler.class);
 
@@ -49,6 +53,7 @@ public final class CharSelectedHandler extends AbstractPacketHandler {
         };
     }
 
+    /** 处理 角色选择 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         int charId = p.readInt();

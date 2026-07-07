@@ -16,12 +16,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 点券商城（Cash Shop）管理控制器，负责商城分类、商品查询及上下架操作。
+ * 区别于 NPC 商店（ShopController），管理 modified_cash_item 等点券商品数据。
+ */
 @RestController
 @RequestMapping("/cashShop")
 @AllArgsConstructor
 public class CashShopController {
     private final CashShopService cashShopService;
 
+    /**
+     * 获取商城全部分类。
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/cashShop/" + ApiConstant.LATEST)
     @Operation(summary = "获取商城全部分类")
     @GetMapping("/" + ApiConstant.LATEST + "/getAllCategoryList")
@@ -29,6 +37,12 @@ public class CashShopController {
         return ResultBody.success(cashShopService.getAllCategoryList());
     }
 
+    /**
+     * 分页分类查询商品列表。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/cashShop/" + ApiConstant.LATEST)
     @Operation(summary = "分页分类查询商品列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getCommodityByCategory")
@@ -36,6 +50,12 @@ public class CashShopController {
         return ResultBody.success(cashShopService.getCommodityByCategory(request.getData()));
     }
 
+    /**
+     * 根据sn查询商品明细。
+     *
+     * @param sn sn
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/cashShop/" + ApiConstant.LATEST)
     @Operation(summary = "根据sn查询商品明细")
     @GetMapping("/" + ApiConstant.LATEST + "/getCommodityBySn/{sn}")
@@ -43,6 +63,12 @@ public class CashShopController {
         return ResultBody.success(cashShopService.getCommodityBySn(sn));
     }
 
+    /**
+     * 上架商品。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/cashShop/" + ApiConstant.LATEST)
     @Operation(summary = "上架商品")
     @PostMapping("/" + ApiConstant.LATEST + "/onSale")
@@ -52,6 +78,12 @@ public class CashShopController {
         return ResultBody.success();
     }
 
+    /**
+     * 下架商品。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/cashShop/" + ApiConstant.LATEST)
     @Operation(summary = "下架商品")
     @PostMapping("/" + ApiConstant.LATEST + "/offSale")
@@ -61,6 +93,12 @@ public class CashShopController {
         return ResultBody.success();
     }
 
+    /**
+     * 批量上架商品。
+     *
+     * @param request 请求体封装对象
+     * @return 统一封装的 API 响应体
+     */
     @Tag(name = "/cashShop/" + ApiConstant.LATEST)
     @Operation(summary = "批量上架商品")
     @PostMapping("/" + ApiConstant.LATEST + "/batchOnSale")

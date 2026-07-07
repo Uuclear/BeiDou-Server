@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Crovy
- * 
- * 1050000.js: Berserk 4th job quest rock - drops a shield or punts you from map.
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：1050000
+ * 功能描述：反应堆触发后掉落地图物品。
+ * 原作者：Crovy
+ */
 function act() {
     if (Math.random() > 0.7) {
         rm.dropItems();

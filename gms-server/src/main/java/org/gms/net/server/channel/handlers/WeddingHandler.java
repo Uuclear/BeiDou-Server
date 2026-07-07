@@ -28,11 +28,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Drago (Dragohe4rt)
+ * 处理客户端 WEDDING_ACTION（结婚操作） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#WEDDING_ACTION}</p>
  */
 public final class WeddingHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(WeddingHandler.class);
 
+    /** 处理 结婚操作 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
 

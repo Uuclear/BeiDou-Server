@@ -19,9 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : Biscuit
-*/
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20520
+ * 功能描述：任务对话脚本，推进任务剧情与分支选择。
+ * 原作者：Biscuit
+ */
 var status = -1;
 
 function start(mode, type, selection) {

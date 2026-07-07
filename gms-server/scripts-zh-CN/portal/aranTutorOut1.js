@@ -1,6 +1,11 @@
-/*
-	@Author: kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：aranTutorOut1
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ * 原作者：kevintjuh93
+ */
 function enter(pi) {
     if (pi.isQuestStarted(21000)) {
         //lol nexon does this xD

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `dueyitems` 的实体类（DO）。
+ * <p>
+ * Duey 快递物品表，存储包裹内附带的道具明细。
  */
 @Data
 @Builder

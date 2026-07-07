@@ -33,11 +33,19 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * GM0（所有玩家可用）命令：展示当前服务器已运行时间
+ */
 public class UptimeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("UptimeCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         long milliseconds = System.currentTimeMillis() - Server.uptime;

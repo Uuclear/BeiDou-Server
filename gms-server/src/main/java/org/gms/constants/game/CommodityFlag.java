@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
- * 这个枚举类无需多语言，字段名就是英文的，desc只是作为参考
+ * 现金商城商品（Commodity）标志位枚举，标识商品的销售/展示属性。
+ * <p>
+ * 字段名保持英文，与客户端协议一致，无需多语言；{@code desc} 仅作开发参考。
  */
 @Getter
 public enum CommodityFlag {

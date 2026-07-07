@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 服务器信息查询请求 DTO，指定要获取的世界或频道等服务端运行参数。
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

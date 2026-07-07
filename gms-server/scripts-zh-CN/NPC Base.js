@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：脚本模板
+ * 对象 ID：NPC Base
+ * 功能描述：NPC 脚本模板，供新建 NPC 脚本时复制参考。
+ */
 /* NPC Base
 	Map Name (Map ID)
 	Extra NPC info.

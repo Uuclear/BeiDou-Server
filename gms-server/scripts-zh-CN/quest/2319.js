@@ -1,13 +1,11 @@
-/* ===========================================================
-        @author Resonance
-	NPC Name: 		Scarrs
-	Map(s): 		Mushroom Castle: Corner of Mushroom Forest(106020000)
-	Description: 	Quest -  Killer Mushroom Spores(3)
-=============================================================
-Version 1.0 - Script Done.(18/7/2010)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2319
+ * 功能描述：Scarrs，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

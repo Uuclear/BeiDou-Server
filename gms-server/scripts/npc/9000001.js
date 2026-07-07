@@ -19,6 +19,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9000001
+ * 功能描述：Jean，活动助手，引导玩家参与游戏活动。
+ */
 /* Credits to: kevintjuh93
     NPC Name:         Jean
     Map(s):         Victoria Road : Lith Harbour (104000000)

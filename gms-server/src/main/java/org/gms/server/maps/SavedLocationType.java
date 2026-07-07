@@ -21,6 +21,9 @@
 */
 package org.gms.server.maps;
 
+/**
+ * 保存位置类型枚举（自由市场、世界地图等）。
+ */
 public enum SavedLocationType {
     FREE_MARKET,
     WORLDTOUR,
@@ -35,6 +38,11 @@ public enum SavedLocationType {
     DEVELOPER,
     JAIL;
 
+    /**
+     * 执行 from、String 操作。
+     * @param Str Str
+     * @return SavedLocationType 类型结果
+     */
     public static SavedLocationType fromString(String Str) {
         return valueOf(Str);
     }

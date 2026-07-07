@@ -1,3 +1,6 @@
+/**
+ * 工作台相关接口的 Mock 数据（内容数据、热门列表等，开发环境用）。
+ */
 import Mock from 'mockjs';
 import qs from 'query-string';
 import dayjs from 'dayjs';

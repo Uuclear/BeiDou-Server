@@ -1,3 +1,6 @@
+/**
+ * 游戏参数配置页英文文案。
+ */
 export default {
   'config.search.type.label': 'Choose a type',
   'config.search.subType.label': 'Choose a subType',

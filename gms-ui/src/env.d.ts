@@ -1,3 +1,7 @@
+/**
+ * 全局 TypeScript 类型声明
+ * 声明 .vue 模块导入类型及 Vite 环境变量接口。
+ */
 /// <reference types="vite/client" />
 
 declare module '*.vue' {

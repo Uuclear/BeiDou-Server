@@ -33,10 +33,21 @@ import java.util.List;
  * @author MrXotic (XoticStory)
  * @author Ronan - made MapleTV mechanics synchronous
  */
+/**
+ * 地图 TV 广播特效（全服/地图公告动画）。
+ */
 public class MapleTVEffect {
 
     private final static boolean[] ACTIVE = new boolean[Server.getInstance().getWorldsSize()];
 
+    /**
+     * 向地图广播冒险岛TVIf非活动。
+     * @param player 玩家
+     * @param victim victim
+     * @param messages messages（String 列表/集合）
+     * @param tvType tvType
+     * @return synchronized boolean 类型结果
+     */
     public static synchronized boolean broadcastMapleTVIfNotActive(Character player, Character victim, List<String> messages, int tvType) {
         int w = player.getWorld();
         if (!ACTIVE[w]) {

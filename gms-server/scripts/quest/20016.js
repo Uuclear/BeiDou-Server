@@ -1,8 +1,11 @@
-/*
-	NPC Name: 		Nineheart
-	Description: 		Quest - Do you know the black Magician?
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：20016
+ * 功能描述：Nineheart，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

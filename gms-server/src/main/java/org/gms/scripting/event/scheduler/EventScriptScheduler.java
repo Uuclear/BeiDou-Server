@@ -34,6 +34,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 事件脚本延迟任务调度器。
+ * <p>
+ * 在独立定时轮询中检查到期任务并执行，供 {@link EventManager} 与
+ * {@link EventInstanceManager} 调度 JS 回调（如超时、阶段切换）。
+ * 无待执行任务且空闲超过阈值时自动停止定时器以节省资源。
+ * </p>
+ *
  * @author Ronan
  */
 public class EventScriptScheduler {
@@ -93,6 +100,7 @@ public class EventScriptScheduler {
         }
     }
 
+/** 注册延迟执行的脚本任务 */
     public void registerEntry(final Runnable scheduledAction, final long duration) {
 
         ThreadManager.getInstance().newTask(() -> {
@@ -114,6 +122,7 @@ public class EventScriptScheduler {
         });
     }
 
+/** 取消已注册的脚本任务 */
     public void cancelEntry(final Runnable scheduledAction) {
 
         ThreadManager.getInstance().newTask(() -> {
@@ -126,6 +135,7 @@ public class EventScriptScheduler {
         });
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose() {
 
         ThreadManager.getInstance().newTask(() -> {

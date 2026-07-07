@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * Armor Statue - Sharenian: Hall of the Knight (990000400)
- * Guild Quest Stage 2 Info
- */
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9040012
+ * 功能描述：NPC对话脚本，与玩家交互并提供相关服务。
+ * 原作者：Lerk
+ */
 function start() {
     cm.sendOk("The plaque translates as follows: \r\n\"The knights of Sharenian are proud warriors. Their Longinus Spears are both formidable weapons and the key to the castle's defense: By removing them from their platforms at the highest points of this hall, they block off the entrance from invaders.\"\r\n\r\nSomething seems to be etched in English on the side, barely readable: \r\n\"evil stole spears, chained up behind obstacles. return to top of towers. large spear, grab from higher up.\"\r\n...Obviously whoever figured it out didn't have much time to live. Poor guy.");
     cm.dispose();

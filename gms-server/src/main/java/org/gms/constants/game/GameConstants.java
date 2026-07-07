@@ -16,9 +16,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 
-/*
- * @author kevintjuh93
- * @author Ronan
+/**
+ * 游戏核心数值与规则常量，涵盖世界名、职业升级、掉落/经验倍率、传送命令、字段限制等全局游戏参数。
  */
 public class GameConstants {
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
@@ -47,14 +46,23 @@ public class GameConstants {
 
     public static final int MAX_FIELD_MOB_DAMAGE = getMaxObstacleMobDamageFromWz() * 2;
 
+    /**
+     * 获取玩家奖励槽位对应的额外掉落倍率。
+     */
     public static int getPlayerBonusDropRate(int slot) {
         return (DROP_RATE_GAIN[slot]);
     }
 
+    /**
+     * 获取玩家奖励槽位对应的额外金币倍率。
+     */
     public static int getPlayerBonusMesoRate(int slot) {
         return (MESO_RATE_GAIN[slot]);
     }
 
+    /**
+     * 获取玩家奖励槽位对应的额外经验倍率。
+     */
     public static int getPlayerBonusExpRate(int slot) {
         return (EXP_RATE_GAIN[slot]);
     }
@@ -287,14 +295,23 @@ public class GameConstants {
     private static final int[] CUSTOM_TYPE = {4, 4, 4, 4, 5, 5, 6, 5, 5, 4, 4, 4, 5, 4, 4, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4};
     private static final int[] CUSTOM_ACTION = {1, 0, 3, 2, 53, 54, 100, 52, 51, 19, 5, 9, 50, 7, 22, 101, 102, 103, 104, 105, 106, 8, 17, 26, 20, 4};
 
+    /**
+     * 获取CustomKey相关数据。
+     */
     public static int[] getCustomKey(boolean customKeyset) {
         return (customKeyset ? CUSTOM_KEY : DEFAULT_KEY);
     }
 
+    /**
+     * 获取CustomType相关数据。
+     */
     public static int[] getCustomType(boolean customKeyset) {
         return (customKeyset ? CUSTOM_TYPE : DEFAULT_TYPE);
     }
 
+    /**
+     * 获取CustomAction相关数据。
+     */
     public static int[] getCustomAction(boolean customKeyset) {
         return (customKeyset ? CUSTOM_ACTION : DEFAULT_ACTION);
     }
@@ -310,6 +327,9 @@ public class GameConstants {
             330000, 340000, 350000, 360000, 370000, 380000, 390000, 400000, 410000, 420000, 430000, 440000, 450000, 460000, 470000, 480000, 490000, 500000, 510000, 520000,
             530000, 550000, 570000, 590000, 610000, 630000, 650000, 670000, 690000, 710000, 730000, 750000, 770000, 790000, 810000, 830000, 850000, 870000, 890000, 910000};
 
+    /**
+     * 根据职业 ID 获取职业名称。
+     */
     public static String getJobName(int jobid) {
         String name = jobNames.get(jobid);
 
@@ -330,14 +350,23 @@ public class GameConstants {
         return name;
     }
 
+    /**
+     * 获取JobUpgradeLevelRange相关数据。
+     */
     public static int getJobUpgradeLevelRange(int jobbranch) {
         return jobUpgradeBlob[jobbranch];
     }
 
+    /**
+     * 获取ChangeJobSpUpgrade相关数据。
+     */
     public static int getChangeJobSpUpgrade(int jobbranch) {
         return jobUpgradeSpUp[jobbranch];
     }
 
+    /**
+     * 判断地图是否为名人堂。
+     */
     public static boolean isHallOfFameMap(int mapid) {
         switch (mapid) {
             case MapId.HALL_OF_WARRIORS:     // warrior
@@ -357,6 +386,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 判断PodiumHallOfFameMap相关条件是否成立。
+     */
     public static boolean isPodiumHallOfFameMap(int mapid) {
         switch (mapid) {
             case MapId.HALL_OF_WARRIORS:
@@ -371,6 +403,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 获取HallOfFameBranch相关数据。
+     */
     public static byte getHallOfFameBranch(Job job, int mapid) {
         if (!isHallOfFameMap(mapid)) {
             return (byte) (26 + 4 * (mapid / 100000000));   // custom, 400 pnpcs available per continent
@@ -411,6 +446,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 获取OverallJobRankByScriptId相关数据。
+     */
     public static int getOverallJobRankByScriptId(int scriptId) {
         int branch = (scriptId / 100) % 100;
 
@@ -421,6 +459,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 判断是否可以PnpcBranchUseScriptId。
+     */
     public static boolean canPnpcBranchUseScriptId(byte branch, int scriptId) {
         scriptId /= 100;
         scriptId %= 100;
@@ -432,6 +473,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 获取名人堂地图 ID。
+     */
     public static int getHallOfFameMapid(Job job) {
         int jobid = job.getId();
 
@@ -456,6 +500,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 获取JobBranch相关数据。
+     */
     public static int getJobBranch(Job job) {
         int jobid = job.getId();
 
@@ -468,6 +515,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 获取JobMaxLevel相关数据。
+     */
     public static int getJobMaxLevel(Job job) {
         int jobBranch = getJobBranch(job);
 
@@ -489,6 +539,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 获取SkillBook相关数据。
+     */
     public static int getSkillBook(final int job) {
         if (job >= 2210 && job <= 2218) {
             return job - 2209;
@@ -496,20 +549,32 @@ public class GameConstants {
         return 0;
     }
 
+    /**
+     * 判断AranSkills相关条件是否成立。
+     */
     public static boolean isAranSkills(final int skill) {
         return Aran.FULL_SWING == skill || Aran.OVER_SWING == skill || Aran.COMBO_TEMPEST == skill || Aran.COMBO_FENRIR == skill || Aran.COMBO_DRAIN == skill
                 || Aran.HIDDEN_FULL_DOUBLE == skill || Aran.HIDDEN_FULL_TRIPLE == skill || Aran.HIDDEN_OVER_DOUBLE == skill || Aran.HIDDEN_OVER_TRIPLE == skill
                 || Aran.COMBO_SMASH == skill || Aran.DOUBLE_SWING == skill || Aran.TRIPLE_SWING == skill;
     }
 
+    /**
+     * 判断HiddenSkills相关条件是否成立。
+     */
     public static boolean isHiddenSkills(final int skill) {
         return Aran.HIDDEN_FULL_DOUBLE == skill || Aran.HIDDEN_FULL_TRIPLE == skill || Aran.HIDDEN_OVER_DOUBLE == skill || Aran.HIDDEN_OVER_TRIPLE == skill;
     }
 
+    /**
+     * 判断是否为骑士团职业系。
+     */
     public static boolean isCygnus(final int job) {
         return job / 1000 == 1;
     }
 
+    /**
+     * 判断是否为战神职业。
+     */
     public static boolean isAran(final int job) {
         return job == 2000 || (job >= 2100 && job <= 2112);
     }
@@ -532,6 +597,9 @@ public class GameConstants {
         return skillBranch != jobBranch && skillBranch % 10 != 0;
     }
 
+    /**
+     * 判断InJobTree相关条件是否成立。
+     */
     public static boolean isInJobTree(int skillId, int jobId) {
         int skillJob = skillId / 10000;
 
@@ -551,22 +619,37 @@ public class GameConstants {
         return false;
     }
 
+    /**
+     * 判断PqSkill相关条件是否成立。
+     */
     public static boolean isPqSkill(final int skill) {
         return (skill >= 20000014 && skill <= 20000018) || skill == 10000013 || skill == 20001013 || (skill % 10000000 >= 1009 && skill % 10000000 <= 1011) || skill % 10000000 == 1020;
     }
 
+    /**
+     * bannedBindSkills 相关查询或判定。
+     */
     public static boolean bannedBindSkills(final int skill) {
         return isAranSkills(skill) || isPqSkill(skill);
     }
 
+    /**
+     * 判断GMSkills相关条件是否成立。
+     */
     public static boolean isGMSkills(final int skill) {
         return skill >= 9001000 && skill <= 9101008 || skill >= 8001000 && skill <= 8001001;
     }
 
+    /**
+     * 判断FreeMarketRoom相关条件是否成立。
+     */
     public static boolean isFreeMarketRoom(int mapid) {
         return mapid / 1000000 == 910 && mapid > MapId.FM_ENTRANCE; // FM rooms subset, thanks to shavitush (shavit)
     }
 
+    /**
+     * 判断MerchantLocked相关条件是否成立。
+     */
     public static boolean isMerchantLocked(MapleMap map) {
         if (FieldLimit.CANNOTMIGRATE.check(map.getFieldLimit())) {   // maps that cannot access cash shop cannot access merchants too (except FM rooms).
             return true;
@@ -575,32 +658,53 @@ public class GameConstants {
         return map.getId() == MapId.FM_ENTRANCE;
     }
 
+    /**
+     * 判断DojoBossArea相关条件是否成立。
+     */
     public static boolean isDojoBossArea(int mapid) {
         return MapId.isDojo(mapid) && (((mapid / 100) % 100) % 6) > 0;
     }
 
+    /**
+     * 判断AriantColiseumLobby相关条件是否成立。
+     */
     public static boolean isAriantColiseumLobby(int mapid) {
         int mapbranch = mapid / 1000;
         return mapbranch == 980010 && mapid % 10 == 0;
     }
 
+    /**
+     * 判断AriantColiseumArena相关条件是否成立。
+     */
     public static boolean isAriantColiseumArena(int mapid) {
         int mapbranch = mapid / 1000;
         return mapbranch == 980010 && mapid % 10 == 1;
     }
 
+    /**
+     * 判断PqSkillMap相关条件是否成立。
+     */
     public static boolean isPqSkillMap(int mapid) {
         return MapId.isDojo(mapid) || MapId.isNettsPyramid(mapid);
     }
 
+    /**
+     * 判断FinisherSkill相关条件是否成立。
+     */
     public static boolean isFinisherSkill(int skillId) {
         return skillId > 1111002 && skillId < 1111007 || skillId == 11111002 || skillId == 11111003;
     }
 
+    /**
+     * 判断MedalQuest相关条件是否成立。
+     */
     public static boolean isMedalQuest(short questid) {
         return Quest.getInstance(questid).getMedalRequirement() != -1;
     }
 
+    /**
+     * 判断是否拥有SPTable。
+     */
     public static boolean hasSPTable(Job job) {
         switch (job) {
             case EVAN:
@@ -620,6 +724,9 @@ public class GameConstants {
         }
     }
 
+    /**
+     * 获取MonsterHP相关数据。
+     */
     public static int getMonsterHP(final int level) {
         if (level < 0 || level >= mobHpVal.length) {
             return Integer.MAX_VALUE;
@@ -627,6 +734,9 @@ public class GameConstants {
         return mobHpVal[level];
     }
 
+    /**
+     * ordinal 相关查询或判定。
+     */
     public static String ordinal(int i) {
         String[] sufixes = new String[]{"th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"};
         switch (i % 100) {
@@ -743,6 +853,9 @@ public class GameConstants {
             4001009, 4,
             4280000, 4};
 
+    /**
+     * selectRandomReward 相关查询或判定。
+     */
     public static int selectRandomReward(int[] rewards) {
         List<Integer> weightedRewards = new ArrayList<>();
         for (int i = 0; i < rewards.length; i += 2) {

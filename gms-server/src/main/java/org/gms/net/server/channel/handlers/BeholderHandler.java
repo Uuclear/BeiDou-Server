@@ -30,10 +30,12 @@ import org.gms.server.maps.Summon;
 import java.util.Collection;
 
 /**
- * @author BubblesDev
+ * 处理客户端 BEHOLDER（Beholder（不明用途）） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#BEHOLDER}</p>
  */
 public final class BeholderHandler extends AbstractPacketHandler {//Summon Skills noobs
 
+    /** 处理 Beholder（不明用途） 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         //System.out.println(slea.toString());

@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `trocklocations` 的实体类（DO）。
+ * <p>
+ * 神秘稳居与高级神秘稳居传送点记录，保存角色注册的自定义传送坐标。
  */
 @Data
 @Builder

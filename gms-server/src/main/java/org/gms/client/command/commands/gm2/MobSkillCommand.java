@@ -11,11 +11,19 @@ import org.gms.util.I18nUtil;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * GM2命令：给当前地图的所有怪物应用指定技能
+ */
 public class MobSkillCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("MobSkillCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param client 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client client, String[] params) {
         Character chr = client.getPlayer();

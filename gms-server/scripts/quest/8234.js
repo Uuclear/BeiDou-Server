@@ -1,12 +1,11 @@
-/* ===========================================================
-			Ronan Lana
-	NPC Name: 		Lita Lawless
-	Description: 	Quest - Bounty Hunter - Rags to Riches
-=============================================================
-Version 1.0 - Script Done.(11/7/2017)
-=============================================================
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：8234
+ * 功能描述：Lita Lawless，任务相关对话与奖励。
+ */
 var status = -1;
 
 function start(mode, type, selection) {

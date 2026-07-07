@@ -26,26 +26,45 @@ import org.gms.server.quest.Quest;
 import org.gms.server.quest.QuestRequirementType;
 
 /**
- * @author Ronan
+ * 脚本自定义需求（由任务脚本判定）。
  */
 public class ScriptRequirement extends AbstractQuestRequirement {
     private boolean reqScript;
 
+    /**
+     * 构造 ScriptRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public ScriptRequirement(Quest quest, Data data) {
         super(QuestRequirementType.BUFF);
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         reqScript = !DataTool.getString(data, "").isEmpty();
     }
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return true;
     }
 
+    /**
+     * 执行 get 操作。
+     * @return boolean 类型结果
+     */
     public boolean get() {
         return reqScript;
     }

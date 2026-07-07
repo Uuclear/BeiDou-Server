@@ -1,3 +1,7 @@
+/**
+ * 基础路由配置
+ * 默认布局懒加载、重定向包装路由及 404 兜底路由。
+ */
 import type { RouteRecordRaw } from 'vue-router';
 import { REDIRECT_ROUTE_NAME } from '@/router/constants';
 

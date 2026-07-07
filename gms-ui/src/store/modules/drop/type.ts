@@ -1,3 +1,8 @@
+/**
+ * 怪物掉落数据类型定义
+ */
+
+/** 单条掉落记录（怪物掉落或全局掉落） */
 export interface DropState {
   id?: number;
   dropperId?: number;

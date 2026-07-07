@@ -31,19 +31,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tyler (Twdtwd)
+ * 扩展 info 键值需求。
  */
 public class InfoExRequirement extends AbstractQuestRequirement {
     private final List<String> infoExpected = new ArrayList<>();
     private final int questID;
 
 
+    /**
+     * 构造 InfoExRequirement 实例。
+     * @param quest 任务
+     * @param data WZ 数据节点
+     */
     public InfoExRequirement(Quest quest, Data data) {
         super(QuestRequirementType.INFO_EX);
         questID = quest.getId();
         processData(data);
     }
 
+    /**
+     * 处理数据。
+     * @param data WZ 数据节点
+     */
     @Override
     public void processData(Data data) {
         // Because we have to...
@@ -54,11 +63,21 @@ public class InfoExRequirement extends AbstractQuestRequirement {
     }
 
 
+    /**
+     * 执行 check 操作。
+     * @param chr 角色
+     * @param npcid NPC ID
+     * @return boolean 类型结果
+     */
     @Override
     public boolean check(Character chr, Integer npcid) {
         return true;
     }
 
+    /**
+     * 获取信息。
+     * @return List<String> 类型结果
+     */
     public List<String> getInfo() {
         return infoExpected;
     }

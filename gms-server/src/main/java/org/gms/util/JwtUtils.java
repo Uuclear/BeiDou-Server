@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * JWT（JSON Web Token）工具类，用于生成、解析与校验访问令牌。
+ * <p>
+ * 密钥与过期时间由配置项 {@code jwt.secret}、{@code jwt.duration} 注入。
+ */
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
@@ -18,6 +23,12 @@ public class JwtUtils {
     @Value("${jwt.duration}")
     private int jwtDuration;
 
+    /**
+     * 为指定用户名生成 JWT 令牌。
+     *
+     * @param username 用户名（作为 subject）
+     * @return 签名后的 JWT 字符串
+     */
     public String generateJwtToken(String username) {
         return Jwts.builder()
                 .setSubject((username))
@@ -27,10 +38,22 @@ public class JwtUtils {
                 .compact();
     }
 
+    /**
+     * 从 JWT 令牌中解析用户名（subject）。
+     *
+     * @param token JWT 字符串
+     * @return 用户名
+     */
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
+    /**
+     * 校验 JWT 令牌是否有效（签名正确且未过期）。
+     *
+     * @param authToken JWT 字符串
+     * @return 有效返回 {@code true}，否则返回 {@code false}
+     */
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);

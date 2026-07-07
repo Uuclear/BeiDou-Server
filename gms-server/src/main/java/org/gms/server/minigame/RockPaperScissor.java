@@ -8,15 +8,18 @@ import org.gms.util.PacketCreator;
 import org.gms.util.Randomizer;
 
 /**
- * @Author Arnah
- * @Website http://Vertisy.ca/
- * @since Aug 15, 2016
+ * 剪刀石头布小游戏。
  */
 public class RockPaperScissor {
     private int round = 0;
     private boolean ableAnswer = true;
     private boolean win = false;
 
+    /**
+     * 构造 RockPaperScissor 实例。
+     * @param c c
+     * @param mode mode
+     */
     public RockPaperScissor(final Client c, final byte mode) {
         c.sendPacket(PacketCreator.rpsMode((byte) (9 + mode)));
         if (mode == 0) {
@@ -24,6 +27,12 @@ public class RockPaperScissor {
         }
     }
 
+    /**
+     * 执行 answer 操作。
+     * @param c c
+     * @param answer answer
+     * @return boolean 类型结果
+     */
     public final boolean answer(final Client c, final int answer) {
         if (ableAnswer && !win && answer >= 0 && answer <= 2) {
             final int response = Randomizer.nextInt(3);
@@ -44,6 +53,11 @@ public class RockPaperScissor {
         return false;
     }
 
+    /**
+     * 执行 time、Out 操作。
+     * @param c c
+     * @return boolean 类型结果
+     */
     public final boolean timeOut(final Client c) {
         if (ableAnswer && !win) {
             ableAnswer = false;
@@ -54,6 +68,11 @@ public class RockPaperScissor {
         return false;
     }
 
+    /**
+     * 执行 next、Round 操作。
+     * @param c c
+     * @return boolean 类型结果
+     */
     public final boolean nextRound(final Client c) {
         if (win) {
             round++;
@@ -70,6 +89,10 @@ public class RockPaperScissor {
         return false;
     }
 
+    /**
+     * 执行 reward 操作。
+     * @param c c
+     */
     public final void reward(final Client c) {
         if (win) {
             InventoryManipulator.addFromDrop(c, new Item(ItemId.RPS_CERTIFICATE_BASE + round, (short) 0, (short) 1), true);
@@ -77,6 +100,10 @@ public class RockPaperScissor {
         c.getPlayer().setRPS(null);
     }
 
+    /**
+     * 执行 dispose 操作。
+     * @param c c
+     */
     public final void dispose(final Client c) {
         reward(c);
         c.sendPacket(PacketCreator.rpsMode((byte) 0x0D));

@@ -1,10 +1,12 @@
-/*
-	Author: Kevin
-	Quest: Zombie Mushroom Signal 3 (2251)
-	NPC: The Rememberer (1061011)
-	Item: Recording Charm (4032399)
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2251
+ * 功能描述：任务脚本，完成任务后发放经验与物品奖励。
+ * 原作者：Kevin
+ */
 var status = -1;      // script restored thanks to kvmba
 
 function end(mode, type, selection) {

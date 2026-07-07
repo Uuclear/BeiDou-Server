@@ -31,6 +31,9 @@ import org.gms.constants.id.NpcId;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * GM3命令：在当前地图播放音乐
+ */
 public class MusicCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("MusicCommand.message1"));
@@ -45,6 +48,11 @@ public class MusicCommand extends Command {
         return songList.toString();
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
 

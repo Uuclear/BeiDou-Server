@@ -33,9 +33,14 @@ import org.slf4j.LoggerFactory;
 import org.gms.server.ChatLogger;
 import org.gms.util.PacketCreator;
 
+/**
+ * 处理客户端 MULTI_CHAT（多人聊天） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#MULTI_CHAT}</p>
+ */
 public final class MultiChatHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(MultiChatHandler.class);
 
+    /** 处理 多人聊天 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         Character player = c.getPlayer();

@@ -28,13 +28,18 @@ import org.gms.constants.inventory.ItemConstants;
 import java.util.*;
 
 /**
- * @author RonanLana
+ * 仓库物品栏数据结构。
  */
 public class StorageInventory {
     private final Client c;
     private Map<Short, Item> inventory = new LinkedHashMap<>();
     private final byte slotLimit;
 
+    /**
+     * 构造 StorageInventory 实例。
+     * @param c c
+     * @param toSort toSort（Item 列表/集合）
+     */
     public StorageInventory(Client c, List<Item> toSort) {
         this.inventory = new LinkedHashMap<>();
         this.slotLimit = (byte) toSort.size();
@@ -153,6 +158,9 @@ public class StorageInventory {
         return -1;
     }
 
+    /**
+     * 执行 merge、物品 操作。
+     */
     public void mergeItems() {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
         Item srcItem, dstItem;
@@ -204,6 +212,10 @@ public class StorageInventory {
         }
     }
 
+    /**
+     * 执行 sort、物品 操作。
+     * @return List<Item> 类型结果
+     */
     public List<Item> sortItems() {
         ArrayList<Item> itemarray = new ArrayList<>();
 
@@ -368,6 +380,13 @@ class PairedQuicksort {
         }
     }
 
+    /**
+     * 执行 Paired、Quicksort 操作。
+     * @param A A
+     * @param primarySort primarySort
+     * @param secondarySort secondarySort
+     * @return PairedQuicksort 类型结果
+     */
     public PairedQuicksort(ArrayList<Item> A, int primarySort, int secondarySort) {
         intersect = new ArrayList<>();
 

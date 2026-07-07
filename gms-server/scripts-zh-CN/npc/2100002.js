@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：2100002
+ * 功能描述：NPC脚本，提供打开商店。
+ */
 var status = 0;
 
 function start() {

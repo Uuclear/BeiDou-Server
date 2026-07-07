@@ -1,3 +1,7 @@
+/**
+ * 国际化（i18n）配置入口
+ * 创建 vue-i18n 实例，加载中英文语言包，并从 localStorage 恢复用户语言偏好。
+ */
 import { createI18n } from 'vue-i18n';
 import en from './en-US';
 import cn from './zh-CN';

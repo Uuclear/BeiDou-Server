@@ -12,10 +12,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `buddies` 的实体类（DO）。
+ * <p>
+ * 好友列表表，存储角色间的好友关系、分组及备注信息。
  */
 @Data
 @Builder

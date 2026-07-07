@@ -21,7 +21,7 @@
 package org.gms.server.maps;
 
 /**
- * @author AngelSL
+ * 地图字段限制标志（禁止传送、禁止召唤、限时等）。
  */
 public enum FieldLimit {
     JUMP(0x01),
@@ -58,10 +58,19 @@ public enum FieldLimit {
         this.i = i;
     }
 
+    /**
+     * 获取Value。
+     * @return long 类型结果
+     */
     public long getValue() {
         return i;
     }
 
+    /**
+     * 执行 check 操作。
+     * @param fieldlimit fieldlimit
+     * @return boolean 类型结果
+     */
     public boolean check(int fieldlimit) {
         return (fieldlimit & i) == i;
     }

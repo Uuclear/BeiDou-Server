@@ -36,6 +36,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 玩家匹配检测协调器，管理公会创建、CPQ 挑战等多人确认流程。
+ *
  * @author Ronan
  */
 public class MatchCheckerCoordinator {

@@ -24,12 +24,25 @@ import org.gms.net.packet.OutPacket;
 
 import java.awt.*;
 
+/**
+ * 传送式移动（瞬移到目标点）。
+ */
 public class TeleportMovement extends AbsoluteLifeMovement {
 
+    /**
+     * 构造 TeleportMovement 实例。
+     * @param type 类型
+     * @param position 坐标
+     * @param newstate newstate
+     */
     public TeleportMovement(int type, Point position, int newstate) {
         super(type, position, 0, newstate);
     }
 
+    /**
+     * 执行 serialize 操作。
+     * @param p p
+     */
     @Override
     public void serialize(OutPacket p) {
         p.writeByte(getType());

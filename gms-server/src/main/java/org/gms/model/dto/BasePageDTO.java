@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
- * 仅针对入参，出参统一用mybatis-flex的Page
- * @see com.mybatisflex.core.paginate.Page
+ * 分页查询基类 DTO，封装通用分页参数 pageNo、pageSize、onlyTotal、notPage；出参分页结果统一使用 MyBatis-Flex 的 Page。
  */
 @Data
 @AllArgsConstructor

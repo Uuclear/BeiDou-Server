@@ -40,6 +40,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 处理客户端 BUDDYLIST_MODIFY（修改好友列表） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#BUDDYLIST_MODIFY}</p>
+ */
 public class BuddylistModifyHandler extends AbstractPacketHandler {
     private static class CharacterIdNameBuddyCapacity extends CharacterNameAndId {
         private final int buddyCapacity;
@@ -78,6 +82,7 @@ public class BuddylistModifyHandler extends AbstractPacketHandler {
         return ret;
     }
 
+    /** 处理 修改好友列表 封包的业务逻辑。 */
     @Override
     public void handlePacket(InPacket p, Client c) {
         int mode = p.readByte();

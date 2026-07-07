@@ -1,6 +1,11 @@
+/**
+ * v-permission 权限指令
+ * 根据用户角色控制 DOM 元素显示：无权限时从父节点移除该元素。
+ */
 import { DirectiveBinding } from 'vue';
 import { useUserStore } from '@/store';
 
+/** 校验绑定角色数组是否包含当前用户角色 */
 function checkPermission(el: HTMLElement, binding: DirectiveBinding) {
   const { value } = binding;
   const userStore = useUserStore();

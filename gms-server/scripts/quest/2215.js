@@ -17,14 +17,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Ronan
-	NPC Name: 		Find the Crumpled Piece of Paper Again
-	Map(s): 		Hut in the Swamp
-	Description: 		Quest - The Run-down Huts in the Swamp
-	Quest ID: 		2215
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：2215
+ * 功能描述：Find the Crumpled Piece of Paper Again，任务相关对话与奖励。
+ * 原作者：Ronan
+ */
 var status = -1;
 var canComplete;
 

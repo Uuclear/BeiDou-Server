@@ -1,4 +1,7 @@
 package org.gms.constants.id;
+/**
+ * 游戏地图 ID 常量及地图类型判定方法，涵盖城镇、副本、活动地图、婚礼场景等。
+ */
 
 public class MapId {
     // Special
@@ -64,6 +67,9 @@ public class MapId {
     private static final int MAPLE_ISLAND_MIN = 0;
     private static final int MAPLE_ISLAND_MAX = 2000001;
 
+    /**
+     * 判断MapleIsland相关条件是否成立。
+     */
     public static boolean isMapleIsland(int mapId) {
         return mapId >= MAPLE_ISLAND_MIN && mapId <= MAPLE_ISLAND_MAX;
     }
@@ -90,6 +96,9 @@ public class MapId {
     private static final int BURNING_FOREST_3 = 914000220;
 
     // Aran tutorial
+    /**
+     * 判断GodlyStatMap相关条件是否成立。
+     */
     public static boolean isGodlyStatMap(int mapId) {
         return mapId == BURNING_FOREST_1 || mapId == BURNING_FOREST_2 || mapId == BURNING_FOREST_3;
     }
@@ -110,6 +119,9 @@ public class MapId {
     private static final int CYGNUS_INTRO_LOCATION_MIN = 913040000;
     private static final int CYGNUS_INTRO_LOCATION_MAX = 913040006;
 
+    /**
+     * 判断CygnusIntro相关条件是否成立。
+     */
     public static boolean isCygnusIntro(int mapId) {
         return mapId >= CYGNUS_INTRO_LOCATION_MIN && mapId <= CYGNUS_INTRO_LOCATION_MAX;
     }
@@ -145,6 +157,9 @@ public class MapId {
     private static final int PHYSICAL_FITNESS_MIN = EVENT_PHYSICAL_FITNESS;
     private static final int PHYSICAL_FITNESS_MAX = FITNESS_EVENT_LAST;
 
+    /**
+     * 判断PhysicalFitness相关条件是否成立。
+     */
     public static boolean isPhysicalFitness(int mapId) {
         return mapId >= PHYSICAL_FITNESS_MIN && mapId <= PHYSICAL_FITNESS_MAX;
     }
@@ -152,6 +167,9 @@ public class MapId {
     private static final int OLA_OLA_MIN = EVENT_OLA_OLA_0;
     private static final int OLA_OLA_MAX = 109030403; // OLA_OLA_4 level 3
 
+    /**
+     * 判断OlaOla相关条件是否成立。
+     */
     public static boolean isOlaOla(int mapId) {
         return mapId >= OLA_OLA_MIN && mapId <= OLA_OLA_MAX;
     }
@@ -162,6 +180,9 @@ public class MapId {
     private static final int GPQ_FOUNTAIN_MIN = 990000500;
     private static final int GPQ_FOUNTAIN_MAX = 990000502;
 
+    /**
+     * 判断SelfLootableOnly相关条件是否成立。
+     */
     public static boolean isSelfLootableOnly(int mapId) {
         return (mapId >= HAPPYVILLE_TREE_MIN && mapId <= HAPPYVILLE_TREE_MAX) ||
                 (mapId >= GPQ_FOUNTAIN_MIN && mapId <= GPQ_FOUNTAIN_MAX);
@@ -176,10 +197,16 @@ public class MapId {
     private static final int DOJO_PARTY_MIN = 925030100;
     public static final int DOJO_PARTY_MAX = DOJO_MAX;
 
+    /**
+     * 判断Dojo相关条件是否成立。
+     */
     public static boolean isDojo(int mapId) {
         return mapId >= DOJO_MIN && mapId <= DOJO_MAX;
     }
 
+    /**
+     * 判断PartyDojo相关条件是否成立。
+     */
     public static boolean isPartyDojo(int mapId) {
         return mapId >= DOJO_PARTY_MIN && mapId <= DOJO_PARTY_MAX;
     }
@@ -213,6 +240,9 @@ public class MapId {
     private static final int BOSS_RUSH_MIN = 970030100;
     private static final int BOSS_RUSH_MAX = 970042711;
 
+    /**
+     * 判断BossRush相关条件是否成立。
+     */
     public static boolean isBossRush(int mapId) {
         return mapId >= BOSS_RUSH_MIN && mapId <= BOSS_RUSH_MAX;
     }
@@ -231,6 +261,9 @@ public class MapId {
     private static final int NETTS_PYRAMID_MIN = NETTS_PYRAMID_SOLO_BASE;
     private static final int NETTS_PYRAMID_MAX = 926023500;
 
+    /**
+     * 判断NettsPyramid相关条件是否成立。
+     */
     public static boolean isNettsPyramid(int mapId) {
         return mapId >= NETTS_PYRAMID_MIN && mapId <= NETTS_PYRAMID_MAX;
     }
@@ -240,6 +273,9 @@ public class MapId {
     private static final int PIER_ON_THE_BEACH = 251000100;
     private static final int PEACEFUL_SHIP = 541010110;
 
+    /**
+     * 判断地图 ID 是否为钓鱼区域。
+     */
     public static boolean isFishingArea(int mapId) {
         return mapId == ON_THE_WAY_TO_THE_HARBOR || mapId == PIER_ON_THE_BEACH || mapId == PEACEFUL_SHIP;
     }

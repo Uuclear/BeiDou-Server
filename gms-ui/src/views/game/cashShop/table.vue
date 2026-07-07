@@ -1,4 +1,5 @@
 <template>
+  <!-- 商城商品数据表格，支持行内编辑与批量上架。 -->
   <a-card class="general-card">
     <a-space>
       <a-space>
@@ -201,6 +202,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 商城商品表格组件，展示商品列表及上下架操作。
+   */
   import { reactive, ref } from 'vue';
   import useLoading from '@/hooks/loading';
   import {

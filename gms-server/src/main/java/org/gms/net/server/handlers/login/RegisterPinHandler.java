@@ -30,7 +30,12 @@ import org.gms.util.PacketCreator;
 /*
  * @author Rob
  */
+/**
+ * 处理客户端 REGISTER_PIN（注册PIN码） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#REGISTER_PIN}</p>
+ */
 public final class RegisterPinHandler extends AbstractPacketHandler {
+    /** 处理 注册PIN码 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {
         byte c2 = p.readByte();

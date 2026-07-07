@@ -18,6 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * 脚本类型：脚本模板
+ * 对象 ID：REACT Base
+ * 功能描述：反应堆脚本模板，供新建反应堆脚本时复制参考。
+ */
 /* @Author Ronan
  * 
  * REACTORID.js: sample text

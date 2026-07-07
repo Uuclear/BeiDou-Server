@@ -20,12 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	Author: Traitor
-	Map(s):	So Gong's maps
-	Desc:   doesn't do anything man. ANYTHING.
-*/
 
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：dojang_tuto
+ * 功能描述：传送门脚本，将玩家传送至目标地图。
+ * 原作者：Traitor
+ */
 function enter(pi) {
     if (pi.getPlayer().getMap().getMonsterById(9300216) != null) {
         pi.getPlayer().enteredScript("dojang_Msg", pi.getPlayer().getMap().getId());

@@ -147,10 +147,12 @@ public class EventInstanceManager {
         this.writeLock = readWriteLock.writeLock();
     }
 
+/** 设置事件实例名称 */
     public void setName(String name) {
         this.name = name;
     }
 
+/** 获取所属事件管理器 */
     public EventManager getEm() {
         scriptLock.lock();
         try {
@@ -160,6 +162,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取事件玩家职业位掩码 */
     public int getEventPlayersJobs() {
         //Bits -> 0: BEGINNER 1: WARRIOR 2: MAGICIAN
         //        3: BOWMAN 4: THIEF 5: PIRATE
@@ -172,6 +175,7 @@ public class EventInstanceManager {
         return mask;
     }
 
+/** 对事件内所有玩家应用物品 Buff */
     public void applyEventPlayersItemBuff(int itemId) {
         List<Character> players = getPlayerList();
         StatEffect mse = ItemInformationProvider.getInstance().getItemEffect(itemId);
@@ -183,10 +187,12 @@ public class EventInstanceManager {
         }
     }
 
+/** 对事件内所有玩家应用技能 Buff */
     public void applyEventPlayersSkillBuff(int skillId) {
         applyEventPlayersSkillBuff(skillId, Integer.MAX_VALUE);
     }
 
+/** 对事件内所有玩家应用技能 Buff */
     public void applyEventPlayersSkillBuff(int skillId, int skillLv) {
         List<Character> players = getPlayerList();
         Skill skill = SkillFactory.getSkill(skillId);
@@ -201,10 +207,12 @@ public class EventInstanceManager {
         }
     }
 
+/** 向事件内玩家发放经验 */
     public void giveEventPlayersExp(int gain) {
         giveEventPlayersExp(gain, -1);
     }
 
+/** 向事件内玩家发放经验 */
     public void giveEventPlayersExp(int gain, int mapId) {
         if (gain == 0) {
             return;
@@ -225,10 +233,12 @@ public class EventInstanceManager {
         }
     }
 
+/** 向事件内玩家发放金币 */
     public void giveEventPlayersMeso(int gain) {
         giveEventPlayersMeso(gain, -1);
     }
 
+/** 向事件内玩家发放金币 */
     public void giveEventPlayersMeso(int gain, int mapId) {
         if (gain == 0) {
             return;
@@ -258,6 +268,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 注册玩家到事件实例 */
     public synchronized void registerPlayer(final Character chr) {
         registerPlayer(chr, true);
     }
@@ -293,6 +304,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 玩家退出事件并触发脚本回调 */
     public void exitPlayer(final Character chr) {
         if (chr == null || !chr.isLoggedIn()) {
             return;
@@ -307,17 +319,20 @@ public class EventInstanceManager {
         }
     }
 
+/** 向事件内所有玩家发送消息 */
     public void dropMessage(int type, String message) {
         for (Character chr : getPlayers()) {
             chr.dropMessage(type, message);
         }
     }
 
+/** 重启事件倒计时 */
     public void restartEventTimer(long time) {
         stopEventTimer();
         startEventTimer(time);
     }
 
+/** 启动事件倒计时并同步客户端时钟 */
     public void startEventTimer(long time) {
         timeStarted = System.currentTimeMillis();
         eventTime = time;
@@ -337,6 +352,7 @@ public class EventInstanceManager {
         }, time);
     }
 
+/** 延长事件剩余时间 */
     public void addEventTimer(long time) {
         if (event_schedule != null) {
             if (event_schedule.cancel(false)) {
@@ -368,6 +384,7 @@ public class EventInstanceManager {
         timeStarted = 0;
     }
 
+/** 停止事件倒计时 */
     public void stopEventTimer() {
         if (event_schedule != null) {
             event_schedule.cancel(false);
@@ -377,20 +394,24 @@ public class EventInstanceManager {
         dismissEventTimer();
     }
 
+/** 事件倒计时是否已启动 */
     public boolean isTimerStarted() {
         return eventTime > 0 && timeStarted > 0;
     }
 
+/** 获取事件剩余时间（毫秒） */
     public long getTimeLeft() {
         return eventTime - (System.currentTimeMillis() - timeStarted);
     }
 
+/** 注册队伍成员到事件 */
     public void registerParty(Character chr) {
         if (chr.isPartyLeader()) {
             registerParty(chr.getParty(), chr.getMap());
         }
     }
 
+/** 注册队伍成员到事件 */
     public void registerParty(Party party, MapleMap map) {
         for (PartyCharacter mpc : party.getEligibleMembers()) {
             if (mpc.isOnline()) {   // thanks resinate
@@ -402,6 +423,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 注册远征队到事件 */
     public void registerExpedition(Expedition exped) {
         expedition = exped;
         registerExpeditionTeam(exped, exped.getRecruitingMap().getId());
@@ -417,6 +439,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 从事件注销玩家 */
     public void unregisterPlayer(final Character chr) {
         try {
             invokeScriptFunction("playerUnregistered", EventInstanceManager.this, chr);
@@ -436,6 +459,7 @@ public class EventInstanceManager {
         dropExclusiveItems(chr);
     }
 
+/** 获取事件内玩家数量 */
     public int getPlayerCount() {
         readLock.lock();
         try {
@@ -445,6 +469,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 按角色 ID 获取事件内玩家 */
     public Character getPlayerById(int id) {
         readLock.lock();
         try {
@@ -454,6 +479,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取事件内所有玩家副本列表 */
     public List<Character> getPlayers() {
         readLock.lock();
         try {
@@ -472,12 +498,14 @@ public class EventInstanceManager {
         }
     }
 
+/** 注册事件生成的怪物 */
     public void registerMonster(Monster mob) {
         if (!mob.getStats().isFriendly()) { //We cannot register moon bunny
             mobs.add(mob);
         }
     }
 
+/** 触发玩家移动脚本回调 */
     public void movePlayer(final Character chr) {
         try {
             invokeScriptFunction("moveMap", EventInstanceManager.this, chr);
@@ -486,6 +514,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 玩家切换地图时触发脚本回调 */
     public void changedMap(final Character chr, final int mapId) {
         try {
             invokeScriptFunction("changedMap", EventInstanceManager.this, chr, mapId);
@@ -493,6 +522,7 @@ public class EventInstanceManager {
         } // optional
     }
 
+/** 玩家切换地图完成后触发脚本回调 */
     public void afterChangedMap(final Character chr, final int mapId) {
         try {
             invokeScriptFunction("afterChangedMap", EventInstanceManager.this, chr, mapId);
@@ -500,6 +530,7 @@ public class EventInstanceManager {
         } // optional
     }
 
+/** 队伍队长变更时触发脚本回调 */
     public synchronized void changedLeader(final PartyCharacter ldr) {
         try {
             invokeScriptFunction("changedLeader", EventInstanceManager.this, ldr);
@@ -510,6 +541,7 @@ public class EventInstanceManager {
         leaderId = ldr.getId();
     }
 
+/** 怪物被击杀时触发脚本回调 */
     public void monsterKilled(final Monster mob, final boolean hasKiller) {
         int scriptResult = 0;
 
@@ -545,6 +577,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 友方怪物被击杀时触发脚本回调 */
     public void friendlyKilled(final Monster mob, final boolean hasKiller) {
         try {
             invokeScriptFunction("friendlyKilled", mob, EventInstanceManager.this, hasKiller);
@@ -552,6 +585,7 @@ public class EventInstanceManager {
         } //optional
     }
 
+/** 友方怪物受伤时触发脚本回调 */
     public void friendlyDamaged(final Monster mob) {
         try {
             invokeScriptFunction("friendlyDamaged", EventInstanceManager.this, mob);
@@ -559,6 +593,7 @@ public class EventInstanceManager {
         } // optional
     }
 
+/** 友方怪物掉落物品时触发脚本回调 */
     public void friendlyItemDrop(final Monster mob) {
         try {
             invokeScriptFunction("friendlyItemDrop", EventInstanceManager.this, mob);
@@ -566,6 +601,7 @@ public class EventInstanceManager {
         } // optional
     }
 
+/** 玩家死亡时触发脚本回调 */
     public void playerKilled(final Character chr) {
         ThreadManager.getInstance().newTask(() -> {
             try {
@@ -575,6 +611,7 @@ public class EventInstanceManager {
         });
     }
 
+/** 怪物复活时触发脚本回调 */
     public void reviveMonster(final Monster mob) {
         try {
             invokeScriptFunction("monsterRevive", EventInstanceManager.this, mob);
@@ -582,6 +619,7 @@ public class EventInstanceManager {
         } // optional
     }
 
+/** 玩家复活时触发脚本回调，返回是否允许复活 */
     public boolean revivePlayer(final Character chr) {
         try {
             Object b = invokeScriptFunction("playerRevive", EventInstanceManager.this, chr);
@@ -594,6 +632,7 @@ public class EventInstanceManager {
         return true;
     }
 
+/** 玩家断线时触发脚本回调 */
     public void playerDisconnected(final Character chr) {
         try {
             invokeScriptFunction("playerDisconnected", EventInstanceManager.this, chr);
@@ -604,6 +643,7 @@ public class EventInstanceManager {
         EventRecallCoordinator.getInstance().storeEventInstance(chr.getId(), this);
     }
 
+/** 怪物被击杀时触发脚本回调 */
     public void monsterKilled(Character chr, final Monster mob) {
         try {
             final int inc = (int) invokeScriptFunction("monsterValue", EventInstanceManager.this, mob.getId());
@@ -625,11 +665,13 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取玩家在事件中的击杀计数 */
     public int getKillCount(Character chr) {
         Integer kc = killCount.get(chr);
         return (kc == null) ? 0 : kc;
     }
 
+/** 销毁事件实例并清理资源 */
     public void dispose() {
         readLock.lock();
         try {
@@ -705,10 +747,12 @@ public class EventInstanceManager {
         }, MINUTES.toMillis(1));
     }
 
+/** 获取事件专属地图工厂 */
     public MapManager getMapFactory() {
         return mapManager;
     }
 
+/** 在事件实例内延迟调度脚本函数 */
     public void schedule(final String methodName, long delay) {
         readLock.lock();
         try {
@@ -728,10 +772,12 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取事件实例名称 */
     public String getName() {
         return name;
     }
 
+/** 获取事件地图实例（首次加载可洗牌反应堆） */
     public MapleMap getMapInstance(int mapId) {
         MapleMap map = mapManager.getMap(mapId);
         map.setEventInstance(this);
@@ -749,14 +795,17 @@ public class EventInstanceManager {
         return map;
     }
 
+/** 设置整数类型事件属性 */
     public void setIntProperty(String key, Integer value) {
         setProperty(key, value);
     }
 
+/** 设置字符串类型事件属性 */
     public void setProperty(String key, Integer value) {
         setProperty(key, "" + value);
     }
 
+/** 设置字符串类型事件属性 */
     public void setProperty(String key, String value) {
         propertyLock.lock();
         try {
@@ -766,6 +815,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 设置字符串类型事件属性 */
     public Object setProperty(String key, String value, boolean prev) {
         propertyLock.lock();
         try {
@@ -775,6 +825,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 设置对象类型事件属性 */
     public void setObjectProperty(String key, Object obj) {
         propertyLock.lock();
         try {
@@ -784,6 +835,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取字符串类型事件属性 */
     public String getProperty(String key) {
         propertyLock.lock();
         try {
@@ -793,6 +845,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取整数类型事件属性 */
     public int getIntProperty(String key) {
         propertyLock.lock();
         try {
@@ -802,6 +855,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取对象类型事件属性 */
     public Object getObjectProperty(String key) {
         propertyLock.lock();
         try {
@@ -811,6 +865,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 玩家离开队伍时触发脚本回调 */
     public void leftParty(final Character chr) {
         try {
             invokeScriptFunction("leftParty", EventInstanceManager.this, chr);
@@ -819,6 +874,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 队伍解散时触发脚本回调 */
     public void disbandParty() {
         try {
             invokeScriptFunction("disbandParty", EventInstanceManager.this);
@@ -827,6 +883,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 清除组队任务状态 */
     public void clearPQ() {
         try {
             invokeScriptFunction("clearPQ", EventInstanceManager.this);
@@ -835,6 +892,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 移除玩家并触发退出脚本 */
     public void removePlayer(final Character chr) {
         try {
             invokeScriptFunction("playerExit", EventInstanceManager.this, chr);
@@ -843,14 +901,17 @@ public class EventInstanceManager {
         }
     }
 
+/** 判断玩家是否为队伍队长 */
     public boolean isLeader(Character chr) {
         return (chr.getParty().getLeaderId() == chr.getId());
     }
 
+/** 判断玩家是否为事件队长 */
     public boolean isEventLeader(Character chr) {
         return (chr.getId() == getLeaderId());
     }
 
+/** 获取并记录事件使用的地图实例 */
     public final MapleMap getInstanceMap(final int mapid) {
         if (disposed) {
             return null;
@@ -859,6 +920,7 @@ public class EventInstanceManager {
         return getMapFactory().getMap(mapid);
     }
 
+/** 玩家不足时传送并销毁事件 */
     public final boolean disposeIfPlayerBelow(final byte size, final int towarp) {
         if (disposed) {
             return true;
@@ -897,6 +959,7 @@ public class EventInstanceManager {
         return false;
     }
 
+/** 在事件地图生成 NPC */
     public void spawnNpc(int npcId, Point pos, MapleMap map) {
         NPC npc = LifeFactory.getNPC(npcId);
         if (npc != null) {
@@ -910,6 +973,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 为事件成员更新任务杀怪计数 */
     public void dispatchRaiseQuestMobCount(int mobid, int mapid) {
         Map<Integer, Character> mapChars = getInstanceMap(mapid).getMapPlayers();
         if (!mapChars.isEmpty()) {
@@ -925,6 +989,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取怪物模板 */
     public Monster getMonster(int mid) {
         return (LifeFactory.getMonster(mid));
     }
@@ -939,11 +1004,13 @@ public class EventInstanceManager {
         return intList;
     }
 
+/** 设置各阶段通关经验奖励 */
     public void setEventClearStageExp(List<Object> gain) {
         onMapClearExp.clear();
         onMapClearExp.addAll(convertToIntegerList(gain));
     }
 
+/** 设置各阶段通关金币奖励 */
     public void setEventClearStageMeso(List<Object> gain) {
         onMapClearMeso.clear();
         onMapClearMeso.addAll(convertToIntegerList(gain));
@@ -963,6 +1030,7 @@ public class EventInstanceManager {
         return onMapClearMeso.get(stage - 1);
     }
 
+/** 获取指定阶段经验与金币奖励列表 */
     public List<Integer> getClearStageBonus(int stage) {
         List<Integer> list = new ArrayList<>();
         list.add(getClearStageExp(stage));
@@ -979,10 +1047,12 @@ public class EventInstanceManager {
         }
     }
 
+/** 移除所有玩家的事件专属物品 */
     public void dropAllExclusiveItems() {
         getPlayers().forEach(this::dropExclusiveItems);
     }
 
+/** 设置事件专属物品列表 */
     public final void setExclusiveItems(List<Object> items) {
         List<Integer> exclusive = convertToIntegerList(items);
 
@@ -994,18 +1064,22 @@ public class EventInstanceManager {
         }
     }
 
+/** 配置事件随机奖励池 */
     public final void setEventRewards(List<Object> rwds, List<Object> qtys, int expGiven) {
         setEventRewards(1, rwds, qtys, expGiven);
     }
 
+/** 配置事件随机奖励池 */
     public final void setEventRewards(List<Object> rwds, List<Object> qtys) {
         setEventRewards(1, rwds, qtys);
     }
 
+/** 配置事件随机奖励池 */
     public final void setEventRewards(int eventLevel, List<Object> rwds, List<Object> qtys) {
         setEventRewards(eventLevel, rwds, qtys, 0);
     }
 
+/** 配置事件随机奖励池 */
     public final void setEventRewards(int eventLevel, List<Object> rwds, List<Object> qtys, int expGiven) {
         // fixed EXP will be rewarded at the same time the random item is given
 
@@ -1056,11 +1130,13 @@ public class EventInstanceManager {
         return true;
     }
 
+/** 向玩家发放随机事件奖励 */
     public final boolean giveEventReward(Character player) {
         return giveEventReward(player, 1);
     }
 
     //gives out EXP & a random item in a similar fashion of when clearing KPQ, LPQ, etc.
+/** 向玩家发放随机事件奖励 */
     public final boolean giveEventReward(Character player, int eventLevel) {
         List<Integer> rewardsSet, rewardsQty;
         Integer rewardExp;
@@ -1120,6 +1196,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 正式启动事件（调用 afterSetup 脚本） */
     public final synchronized void startEvent() {
         eventStarted = true;
 
@@ -1130,6 +1207,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 标记事件已通关并发放任务点 */
     public final void setEventCleared() {
         eventCleared = true;
 
@@ -1147,10 +1225,12 @@ public class EventInstanceManager {
         disposeExpedition();
     }
 
+/** 事件是否已通关 */
     public final boolean isEventCleared() {
         return eventCleared;
     }
 
+/** 事件实例是否已销毁 */
     public final boolean isEventDisposed() {
         return disposed;
     }
@@ -1165,6 +1245,7 @@ public class EventInstanceManager {
         return false;
     }
 
+/** 检查事件队伍人数是否不足 */
     public final boolean checkEventTeamLacking(boolean leavingEventMap, int minPlayers) {
         if (eventCleared && getPlayerCount() > 1) {
             return false;
@@ -1176,6 +1257,7 @@ public class EventInstanceManager {
         return getPlayerCount() < minPlayers;
     }
 
+/** 检查远征队人数是否不足（即时） */
     public final boolean isExpeditionTeamLackingNow(boolean leavingEventMap, int minPlayers, Character quitter) {
         if (eventCleared) {
             return leavingEventMap && getPlayerCount() <= 1;
@@ -1185,6 +1267,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 检查事件队伍人数是否不足（即时） */
     public final boolean isEventTeamLackingNow(boolean leavingEventMap, int minPlayers, Character quitter) {
         if (eventCleared) {
             return leavingEventMap && getPlayerCount() <= 1;
@@ -1196,6 +1279,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 检查事件队伍是否在同一地图 */
     public final boolean isEventTeamTogether() {
         readLock.lock();
         try {
@@ -1220,6 +1304,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 将事件队伍成员传送到指定地图 */
     public final void warpEventTeam(int warpFrom, int warpTo) {
         List<Character> players = getPlayerList();
 
@@ -1230,6 +1315,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 将事件队伍成员传送到指定地图 */
     public final void warpEventTeam(int warpTo) {
         List<Character> players = getPlayerList();
 
@@ -1238,6 +1324,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 将事件队伍传送到地图出生点 */
     public final void warpEventTeamToMapSpawnPoint(int warpFrom, int warpTo, int toSp) {
         List<Character> players = getPlayerList();
 
@@ -1248,6 +1335,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 将事件队伍传送到地图出生点 */
     public final void warpEventTeamToMapSpawnPoint(int warpTo, int toSp) {
         List<Character> players = getPlayerList();
 
@@ -1256,6 +1344,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取事件队长角色 ID */
     public final int getLeaderId() {
         readLock.lock();
         try {
@@ -1265,6 +1354,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取事件队长角色对象 */
     public Character getLeader() {
         readLock.lock();
         try {
@@ -1274,6 +1364,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 设置事件队长 */
     public final void setLeader(Character chr) {
         writeLock.lock();
         try {
@@ -1283,20 +1374,24 @@ public class EventInstanceManager {
         }
     }
 
+/** 播放组队任务失败特效 */
     public final void showWrongEffect() {
         showWrongEffect(getLeader().getMapId());
     }
 
+/** 播放组队任务失败特效 */
     public final void showWrongEffect(int mapId) {
         MapleMap map = getMapInstance(mapId);
         map.broadcastMessage(PacketCreator.showEffect("quest/party/wrong_kor"));
         map.broadcastMessage(PacketCreator.playSound("Party1/Failed"));
     }
 
+/** 播放组队任务通关特效 */
     public final void showClearEffect() {
         showClearEffect(false);
     }
 
+/** 播放组队任务通关特效 */
     public final void showClearEffect(boolean hasGate) {
         Character leader = getLeader();
         if (leader != null) {
@@ -1304,18 +1399,22 @@ public class EventInstanceManager {
         }
     }
 
+/** 播放组队任务通关特效 */
     public final void showClearEffect(int mapId) {
         showClearEffect(false, mapId);
     }
 
+/** 播放组队任务通关特效 */
     public final void showClearEffect(boolean hasGate, int mapId) {
         showClearEffect(hasGate, mapId, "gate", 2);
     }
 
+/** 播放组队任务通关特效 */
     public final void showClearEffect(int mapId, String mapObj, int newState) {
         showClearEffect(true, mapId, mapObj, newState);
     }
 
+/** 播放组队任务通关特效 */
     public final void showClearEffect(boolean hasGate, int mapId, String mapObj, int newState) {
         MapleMap map = getMapInstance(mapId);
         map.broadcastMessage(PacketCreator.showEffect("quest/party/clear"));
@@ -1331,6 +1430,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 为重进地图的玩家恢复已开启的门状态 */
     public final void recoverOpenedGate(Character chr, int thisMapId) {
         Pair<String, Integer> gateData = null;
 
@@ -1348,12 +1448,14 @@ public class EventInstanceManager {
         }
     }
 
+/** 发放当前阶段通关奖励 */
     public final void giveEventPlayersStageReward(int thisStage) {
         List<Integer> list = getClearStageBonus(thisStage);     // will give bonus exp & mesos to everyone in the event
         giveEventPlayersExp(list.get(0));
         giveEventPlayersMeso(list.get(1));
     }
 
+/** 链接下一阶段传送门脚本 */
     public final void linkToNextStage(int thisStage, String eventFamily, int thisMapId) {
         giveEventPlayersStageReward(thisStage);
         thisStage--;    //stages counts from ONE, scripts from ZERO
@@ -1365,6 +1467,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 将指定传送门绑定到脚本名 */
     public final void linkPortalToScript(int thisStage, String portalName, String scriptName, int thisMapId) {
         giveEventPlayersStageReward(thisStage);
         thisStage--;    //stages counts from ONE, scripts from ZERO
@@ -1377,6 +1480,7 @@ public class EventInstanceManager {
     }
 
     // registers a player status in an event
+/** 在事件网格中记录玩家状态 */
     public final void gridInsert(Character chr, int newStatus) {
         writeLock.lock();
         try {
@@ -1387,6 +1491,7 @@ public class EventInstanceManager {
     }
 
     // unregisters a player status in an event
+/** 从事件网格移除玩家状态 */
     public final void gridRemove(Character chr) {
         writeLock.lock();
         try {
@@ -1397,6 +1502,7 @@ public class EventInstanceManager {
     }
 
     // checks a player status
+/** 查询玩家在事件网格中的状态 */
     public final int gridCheck(Character chr) {
         readLock.lock();
         try {
@@ -1407,6 +1513,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 获取事件网格记录数量 */
     public final int gridSize() {
         readLock.lock();
         try {
@@ -1416,6 +1523,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 清空事件网格 */
     public final void gridClear() {
         writeLock.lock();
         try {
@@ -1425,10 +1533,12 @@ public class EventInstanceManager {
         }
     }
 
+/** 检查地图上指定 ID 范围反应堆是否全部激活 */
     public boolean activatedAllReactorsOnMap(int mapId, int minReactorId, int maxReactorId) {
         return activatedAllReactorsOnMap(this.getMapInstance(mapId), minReactorId, maxReactorId);
     }
 
+/** 检查地图上指定 ID 范围反应堆是否全部激活 */
     public boolean activatedAllReactorsOnMap(MapleMap map, int minReactorId, int maxReactorId) {
         if (map == null) {
             return true;
@@ -1456,6 +1566,7 @@ public class EventInstanceManager {
         }
     }
 
+/** 累计玩家造成伤害 */
     public void addDamage(Character chr, int damage) {
         if (!recordDamage || chr == null || damage <= 0) return;
 
@@ -1471,6 +1582,7 @@ public class EventInstanceManager {
     }
 
     // 添加通报伤害排名的方法
+/** 广播伤害排名到事件内玩家 */
     public synchronized void broadcastDamageRanking() {
         if (!GameConfig.getServerBoolean("damage_ranking")) {
             log.debug("伤害统计功能已被服务器禁用。");
@@ -1506,6 +1618,7 @@ public class EventInstanceManager {
         }
         dropMessage(6, "==============================");
     }
+/** 清空伤害统计数据 */
     public synchronized void clearDamage() {
         recordDamage = false;
         playerDamage.clear();

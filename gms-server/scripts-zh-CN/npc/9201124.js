@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201124
+ * 功能描述：NPC脚本，提供地图传送。
+ */
 /* 
     9201124 - Bowman Statue, Lith Harbor
     |- Warps you to 100000201 (Bowman School)

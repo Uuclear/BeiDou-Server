@@ -21,9 +21,18 @@
 package org.gms.server.life;
 
 /**
- * @author LightPepsi
+ * 全局掉落条目（所有怪物共享的稀有掉落池）。
  */
 public class MonsterGlobalDropEntry {
+    /**
+     * 构造 MonsterGlobalDropEntry 实例。
+     * @param itemId 物品 ID
+     * @param chance chance
+     * @param continent continent
+     * @param Minimum Minimum
+     * @param Maximum Maximum
+     * @param questid 任务 ID
+     */
     public MonsterGlobalDropEntry(int itemId, int chance, int continent, int Minimum, int Maximum, short questid) {
         this.itemId = itemId;
         this.chance = chance;

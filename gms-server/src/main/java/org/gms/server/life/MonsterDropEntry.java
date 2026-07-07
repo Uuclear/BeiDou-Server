@@ -21,10 +21,17 @@
 package org.gms.server.life;
 
 /**
- * @author LightPepsi
+ * 怪物掉落条目（物品、概率、任务关联、数量范围）。
  */
-
 public class MonsterDropEntry {
+    /**
+     * 构造 MonsterDropEntry 实例。
+     * @param itemId 物品 ID
+     * @param chance chance
+     * @param Minimum Minimum
+     * @param Maximum Maximum
+     * @param questid 任务 ID
+     */
     public MonsterDropEntry(int itemId, int chance, int Minimum, int Maximum, short questid) {
         this.itemId = itemId;
         this.chance = chance;

@@ -31,6 +31,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * 扭蛋业务服务，管理奖池与奖品的数据库 CRUD。
+ */
 @Slf4j
 @Service
 public class GachaponService {
@@ -46,6 +49,11 @@ public class GachaponService {
     private static final Lock wLock = lock.writeLock();
 
 
+    /**
+     * 执行 updatePool 相关业务逻辑。
+     *
+     * @param submit submit
+     */
     public void updatePool(GachaponRewardPoolDO submit) {
         wLock.lock();
         try {
@@ -67,6 +75,11 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行 deletePool 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     */
     @Transactional
     public void deletePool(Integer id) {
         wLock.lock();
@@ -79,6 +92,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行 getPools 相关业务逻辑。
+     *
+     * @param condition condition
+     * @return Page<GachaponPoolSearchRtnDTO> 类型结果
+     */
     public Page<GachaponPoolSearchRtnDTO> getPools(GachaponPoolSearchReqDTO condition) {
         rLock.lock();
         try {
@@ -127,6 +146,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行 getRewards 相关业务逻辑。
+     *
+     * @param poolId poolId
+     * @return List<GachaponRewardDO> 类型结果
+     */
     public List<GachaponRewardDO> getRewards(Integer poolId) {
         rLock.lock();
         try {
@@ -143,6 +168,11 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行 updateReward 相关业务逻辑。
+     *
+     * @param reward reward
+     */
     public void updateReward(GachaponRewardDO reward) {
         wLock.lock();
         try {
@@ -153,6 +183,11 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行 deleteReward 相关业务逻辑。
+     *
+     * @param id 记录主键 ID
+     */
     public void deleteReward(Integer id) {
         wLock.lock();
         try {
@@ -198,6 +233,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行 doGachapon 相关业务逻辑。
+     *
+     * @param player player
+     * @param gachaponId gachaponId
+     */
     public void doGachapon(Character player, int gachaponId) {
         rLock.lock();
         try {
@@ -244,6 +285,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行 getRewardsByNpcId 相关业务逻辑。
+     *
+     * @param npcId npcId
+     * @return List<GachaponRewardDO> 类型结果
+     */
     public List<GachaponRewardDO> getRewardsByNpcId(Integer npcId) {
         List<GachaponRewardPoolDO> activePools = getActivePools(npcId);
         return activePools.stream().flatMap(pool -> getRewards(pool.getId()).stream()).toList();

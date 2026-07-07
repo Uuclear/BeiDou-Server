@@ -20,6 +20,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9040008
+ * 功能描述：NPC脚本（ID: 9040008）。
+ */
 /* Guild Rank Board */
 
 function start() {

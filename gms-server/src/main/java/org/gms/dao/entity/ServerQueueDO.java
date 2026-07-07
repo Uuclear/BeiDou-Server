@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
- *
- * @author sleep
- * @since 2024-05-24
+ * 数据库表 `server_queue` 的实体类（DO）。
+ * <p>
+ * 服务器登录排队队列表，管理高峰时段玩家登录顺序与队列状态。
  */
 @Data
 @Builder

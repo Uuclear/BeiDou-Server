@@ -35,10 +35,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 反应堆工厂，从 WZ 加载反应堆模板数据。
+ */
 public class ReactorFactory {
     private static final DataProvider data = DataProviderFactory.getDataProvider(WZFiles.REACTOR);
     private static final Map<Integer, ReactorStats> reactorStats = new HashMap<>();
 
+    /**
+     * 获取反应堆S。
+     * @param rid 反应堆 ID
+     * @return ReactorStats 类型结果
+     */
     public static final ReactorStats getReactorS(int rid) {
         ReactorStats stats = reactorStats.get(rid);
         if (stats == null) {
@@ -93,6 +101,11 @@ public class ReactorFactory {
         return stats;
     }
 
+    /**
+     * 获取反应堆。
+     * @param rid 反应堆 ID
+     * @return ReactorStats 类型结果
+     */
     public static ReactorStats getReactor(int rid) {
         ReactorStats stats = reactorStats.get(rid);
         if (stats == null) {

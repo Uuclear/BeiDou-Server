@@ -27,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * GM 命令业务服务，维护命令库配置并触发热重载。
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -34,6 +37,12 @@ public class CommandService {
 
     private final CommandInfoMapper commandInfoMapper;
 
+    /**
+     * 执行 loadCommands 相关业务逻辑。
+     *
+     * @param registeredCommands registeredCommands
+     * @param commandsNameDesc commandsNameDesc
+     */
     public void loadCommands(final HashMap<String, Command> registeredCommands,
                              final List<Pair<List<String>, List<String>>> commandsNameDesc) {
         registeredCommands.clear();
@@ -151,6 +160,12 @@ public class CommandService {
         }
     }
 
+    /**
+     * 执行 getCommandListFromDB 相关业务逻辑。
+     *
+     * @param request 请求体封装对象
+     * @return Page<CommandReqDTO> 类型结果
+     */
     public Page<CommandReqDTO> getCommandListFromDB(CommandReqDTO request) {
         QueryWrapper queryWrapper = new QueryWrapper();
         if (request.getLevel() != null) queryWrapper.in("level", request.getLevelList());
@@ -183,6 +198,12 @@ public class CommandService {
         );
     }
 
+    /**
+     * 执行 getDescriptionByCommandInfoDO 相关业务逻辑。
+     *
+     * @param CommandDO CommandDO
+     * @return String 类型结果
+     */
     public String getDescriptionByCommandInfoDO(CommandInfoDO CommandDO) {
         Command command = getCommandInstance(CommandDO);
         if (command == null) {
@@ -191,6 +212,12 @@ public class CommandService {
         return command.getDescription();
     }
 
+    /**
+     * 执行 updateCommand 相关业务逻辑。
+     *
+     * @param request 请求体封装对象
+     * @return CommandInfoDO 类型结果
+     */
     @Transactional
     public CommandInfoDO updateCommand(CommandReqDTO request) {
 
@@ -214,6 +241,9 @@ public class CommandService {
     }
 
 
+    /**
+     * 执行 reloadEventsByGMCommand 相关业务逻辑。
+     */
     public void reloadEventsByGMCommand() {
         //执行ReloadEventsCommand中的execute方法
         for (Channel ch : Server.getInstance().getAllChannels()) {
@@ -223,12 +253,18 @@ public class CommandService {
 
     }
 
+    /**
+     * 执行 reloadPortalsByGMCommand 相关业务逻辑。
+     */
     public void reloadPortalsByGMCommand() {
         PortalScriptManager.getInstance().reloadPortalScripts();
         log.info(I18nUtil.getMessage("ReloadPortalsCommand.message2"));
     }
 
 
+    /**
+     * 执行 reloadMapsByGMCommand 相关业务逻辑。
+     */
     public void reloadMapsByGMCommand() {
         Server.getInstance().getWorlds().forEach(world -> {
             world.getChannels().forEach(channel -> {

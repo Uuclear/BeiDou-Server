@@ -43,6 +43,9 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * GM5命令：当前玩家已使用的倍率卡：
+ */
 public class DebugCommand extends Command {
     private final static String[] debugTypes = {"monster", "packet", "portal", "spawnpoint", "pos", "map", "mobsp", "event", "areas", "reactors", "servercoupons", "playercoupons", "timer", "marriage", "buff", ""};
     private final static ItemInformationProvider ii = ItemInformationProvider.getInstance();
@@ -51,6 +54,11 @@ public class DebugCommand extends Command {
         setDescription(I18nUtil.getMessage("DebugCommand.message1"));
     }
 
+    /**
+     * 执行命令逻辑
+     * @param c 客户端会话
+     * @param params 命令参数
+     */
     @Override
     public void execute(Client c, String[] params) {
         Character player = c.getPlayer();

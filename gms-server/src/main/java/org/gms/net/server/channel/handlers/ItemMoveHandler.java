@@ -29,9 +29,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
 /**
- * @author Matze
+ * 处理客户端 ITEM_MOVE（移动物品） 封包。
+ * <p>对应操作码：{@link org.gms.net.opcodes.RecvOpcode#ITEM_MOVE}</p>
  */
 public final class ItemMoveHandler extends AbstractPacketHandler {
+    /** 处理 移动物品 封包的业务逻辑。 */
     @Override
     public final void handlePacket(InPacket p, Client c) {  //使用装备、物品、道具
         p.skip(4);

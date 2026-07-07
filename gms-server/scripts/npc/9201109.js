@@ -1,6 +1,12 @@
-/* @Author SharpAceX
-*/
 
+
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：9201109
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ * 原作者：SharpAceX
+ */
 function start() {
     if (cm.getPlayer().getMapId() == 610030500) {
         cm.sendOk("As a powerful Elite Mage, Ridly knew the value of intelligence, the hallmark quality of a wizard. Thus, the Mage Chamber is a twisting maze of devious conception--the Teleport skill is the only skill you can use inside to get around, and Magic Claw is the only skill that will break the statues. You must also kill numerous monsters within. After you solve the maze and defeat all the foes within it, deduce which Mage Statue hides the Staff of First Magic and break it open to claim it! Good luck!");

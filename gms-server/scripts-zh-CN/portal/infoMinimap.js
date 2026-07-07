@@ -20,9 +20,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-@author kevintjuh93
-*/
+
+
+/**
+ * 脚本类型：传送门
+ * 对象 ID：infoMinimap
+ * 功能描述：("UI/tutorial.img/25");（原版描述）。
+ * 原作者：kevintjuh93
+ */
 function enter(pi) {
     if (pi.isQuestStarted(1031)) {
         pi.showInfo("UI/tutorial.img/25");

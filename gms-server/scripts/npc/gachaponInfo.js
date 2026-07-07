@@ -17,6 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：gachaponInfo
+ * 功能描述：扭蛋/抽奖信息查询。
+ */
 /**
  * @author: Ronan
  * @npc: Pio

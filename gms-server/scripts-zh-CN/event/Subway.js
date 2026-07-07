@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：事件
+ * 对象 ID：Subway
+ * 功能描述：游戏事件脚本（Subway），管理实例生命周期与玩家进出。
+ */
 var KC_Waiting;
 var Subway_to_KC;
 var KC_docked;

@@ -35,7 +35,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 事件脚本管理器，负责加载、初始化和执行 JavaScript 事件脚本
+ * 事件脚本管理器，负责在频道启动时加载 {@code scripts/event/*.js} 并创建 {@link EventManager}。
+ * <p>
+ * 每个事件脚本通过 GraalJS 引擎执行，并向脚本注入全局变量 {@code em}（事件管理器）。
+ * 使用 {@link SynchronizedInvocable} 包装引擎以支持多线程安全调用。
+ * 频道关闭或重载时调用 {@link #cancel()} / {@link #dispose()} 释放调度与实例。
+ * </p>
+ *
  * @author Matze
  */
 public class EventScriptManager extends AbstractScriptManager {
@@ -134,9 +140,9 @@ public class EventScriptManager extends AbstractScriptManager {
      */
     private EventEntry initializeEventEntry(String script, Channel channel) {
         ScriptEngine engine = getInvocableScriptEngine("event/" + script + ".js"); // 获取 JS 引擎
-        Invocable iv = SynchronizedInvocable.of((Invocable) engine); // 包装为线程安全的调用接口
-        EventManager eventManager = new EventManager(channel, iv, script); // 创建事件管理器
-        engine.put(INJECTED_VARIABLE_NAME, eventManager); // 向 JS 引擎注入变量 "em"
+        Invocable iv = SynchronizedInvocable.of((Invocable) engine); // GraalJS 引擎需同步包装后方可多线程调用
+        EventManager eventManager = new EventManager(channel, iv, script);
+        engine.put(INJECTED_VARIABLE_NAME, eventManager); // 脚本内通过全局 em 访问 EventManager
         return new EventEntry(iv, eventManager); // 返回事件实体
     }
 

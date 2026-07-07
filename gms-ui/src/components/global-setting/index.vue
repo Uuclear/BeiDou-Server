@@ -1,4 +1,5 @@
 <template>
+  <!-- 全局设置抽屉面板，可调整主题、布局、菜单等应用级配置。 -->
   <div v-if="!appStore.navbar" class="fixed-settings" @click="setVisible">
     <a-button type="primary">
       <template #icon>
@@ -26,6 +27,9 @@
 </template>
 
 <script lang="ts" setup>
+  /**
+   * 全局设置面板组件，读写 app store 中的界面配置项。
+   */
   import { computed } from 'vue';
   import { Message } from '@arco-design/web-vue';
   import { useClipboard } from '@vueuse/core';

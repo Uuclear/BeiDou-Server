@@ -19,13 +19,15 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : kevintjuh93
-	Map(s): 		Aran Training Map 2
-	Description: 		Quest - Help Kid
-	Quest ID : 		21000
-*/
 
+
+
+/**
+ * 脚本类型：任务
+ * 对象 ID：21000
+ * 功能描述：任务相关对话与奖励。
+ * 原作者：kevintjuh93
+ */
 var status = -1;
 
 function start(mode, type, selection) {

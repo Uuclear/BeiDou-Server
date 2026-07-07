@@ -19,6 +19,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1072005
+ * 功能描述：NPC脚本，提供地图传送、物品发放。
+ */
 var status;
 var completed;
 

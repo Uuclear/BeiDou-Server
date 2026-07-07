@@ -1,3 +1,9 @@
+
+/**
+ * 脚本类型：NPC
+ * 对象 ID：1101008
+ * 功能描述：发型更换。
+ */
 function start() {
     status = -1;
     action(1, 0, 0);

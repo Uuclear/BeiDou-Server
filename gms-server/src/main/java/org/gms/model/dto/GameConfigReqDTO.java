@@ -3,6 +3,9 @@ package org.gms.model.dto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * 游戏配置查询/修改请求 DTO，按配置类型与键名分页检索 game_config 表条目。
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor

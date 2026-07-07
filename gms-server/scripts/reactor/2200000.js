@@ -20,11 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @Author Lerk
- * 
- * 2200000.js: Fake Dollhouse: Returns player to Eos Tower 74th Floor [221023200]
-*/
 
+
+
+/**
+ * 脚本类型：反应堆
+ * 对象 ID：2200000
+ * 功能描述：反应堆触发后传送玩家。
+ * 原作者：Lerk
+ */
 function act() {
     rm.playerMessage(5, "Gotcha! Try again next time!");
     rm.warp(221023200);
