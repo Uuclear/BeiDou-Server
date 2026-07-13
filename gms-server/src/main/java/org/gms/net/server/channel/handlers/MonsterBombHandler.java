@@ -28,6 +28,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.life.Monster;
 import org.gms.util.PacketCreator;
 
+/**
+ * 怪物炸弹Handler - 处理怪物炸弹（如闹钟的炸弹）
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class MonsterBombHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

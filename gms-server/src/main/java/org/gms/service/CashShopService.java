@@ -24,15 +24,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+/**
+ * 商城服务类
+ * 提供商城商品分类查询、商品列表分页、商品上下架、批量修改等功能
+ */
 @Service
 @AllArgsConstructor
 public class CashShopService {
     private final ModifiedCashItemMapper modifiedCashItemMapper;
 
+    /**
+     * 加载所有修改过的商城商品
+     * @return 修改过的商城商品列表
+     */
     public List<ModifiedCashItemDO> loadAllModifiedCashItems() {
         return modifiedCashItemMapper.selectAll();
     }
 
+    /**
+     * 获取所有商城分类列表
+     * 从WZ文件中读取分类信息
+     * @return 商城分类列表
+     */
     public List<CashCategory> getAllCategoryList() {
         DataProvider etc = DataProviderFactory.getDataProvider(WZFiles.ETC);
         List<CashCategory> cashCategoryList = new ArrayList<>();
@@ -46,6 +59,11 @@ public class CashShopService {
         return cashCategoryList;
     }
 
+    /**
+     * 根据分类分页查询商品列表
+     * @param data 分类查询条件
+     * @return 分页商品结果
+     */
     public Page<CashShopSearchRtnDTO> getCommodityByCategory(CashCategory data) {
         RequireUtil.requireNotNull(data.getId(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "id"));
         RequireUtil.requireNotNull(data.getSubId(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "subId"));
@@ -93,6 +111,11 @@ public class CashShopService {
                 .page();
     }
 
+    /**
+     * 根据商品SN获取商品详情
+     * @param sn 商品序列号
+     * @return 商品详情DTO
+     */
     public CashShopSearchRtnDTO getCommodityBySn(Integer sn) {
         RequireUtil.requireNotNull(sn, I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "sn"));
         String snStr = String.valueOf(sn);
@@ -109,6 +132,10 @@ public class CashShopService {
         return rtnDTO;
     }
 
+    /**
+     * 修改商品上架状态和信息
+     * @param data 商品修改数据
+     */
     @Transactional(rollbackFor = Exception.class)
     public void changeOnSale(ModifiedCashItemDO data) {
         RequireUtil.requireNotNull(data.getSn(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_NULL", "sn"));
@@ -145,6 +172,12 @@ public class CashShopService {
         CashShop.CashItemFactory.loadAllModifiedCashItems();
     }
 
+    /**
+     * 根据分类ID和子分类ID获取分类信息
+     * @param id 分类ID
+     * @param subId 子分类ID
+     * @return 分类对象
+     */
     private CashCategory getCategory(Integer id, Integer subId) {
         return CashShop.CashItemFactory.getCashCategories().stream()
                 .filter(cc -> Objects.equals(cc.getId(), id) && Objects.equals(cc.getSubId(), subId))
@@ -152,6 +185,12 @@ public class CashShopService {
                 .orElseThrow(() -> new BizException(I18nUtil.getExceptionMessage("CashShopService.getByCategory.exception1")));
     }
 
+    /**
+     * 将WZ商品数据转换为返回DTO
+     * @param cashCategory 分类信息
+     * @param cashItem WZ商品数据
+     * @return 商品返回DTO
+     */
     private CashShopSearchRtnDTO fromCashItem(CashCategory cashCategory, ModifiedCashItemDO cashItem) {
         return CashShopSearchRtnDTO.builder()
                 .categoryId(cashCategory.getId())
@@ -195,6 +234,11 @@ public class CashShopService {
                 .build();
     }
 
+    /**
+     * 使用数据库中的值覆盖DTO中的默认值
+     * @param rtnDTO 返回DTO
+     * @param dbCashItem 数据库中的商品数据
+     */
     private void setDbItemValue(CashShopSearchRtnDTO rtnDTO, ModifiedCashItemDO dbCashItem) {
         rtnDTO.setItemId(Optional.ofNullable(dbCashItem.getItemId()).orElse(rtnDTO.getItemId()));
         rtnDTO.setPrice(Optional.ofNullable(dbCashItem.getPrice()).orElse(rtnDTO.getPrice()));
@@ -215,6 +259,10 @@ public class CashShopService {
         rtnDTO.setPackageSn(Optional.ofNullable(dbCashItem.getPackageSn()).orElse(rtnDTO.getPackageSn()));
     }
 
+    /**
+     * 批量修改商品上架状态和属性
+     * @param submit 批量修改请求数据
+     */
     @Transactional
     public void batchChangeOnSale(CashShopBatchOnSaleReqDTO submit) {
         for (ModifiedCashItemDO data : submit.getData()) {

@@ -35,6 +35,11 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * 查看所有角色Handler - 处理查看账号下所有角色
+ *
+ * @author OdinMS开发团队
+ */
 public final class ViewAllCharHandler extends AbstractPacketHandler {
     private static final int CHARACTER_LIMIT = 60; // Client will crash if sending 61 or more characters
 

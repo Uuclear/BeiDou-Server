@@ -26,6 +26,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 信使类 - 管理聊天信使/好友通知系统
+ *
+ * @author OdinMS开发团队
+ */
 public final class Messenger {
 
     private final int id;

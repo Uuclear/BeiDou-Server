@@ -31,6 +31,12 @@ import org.gms.exception.EmptyMovementException;
 import java.awt.*;
 import java.util.Collection;
 
+/**
+ * 召唤兽移动Handler - 处理召唤兽移动
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class MoveSummonHandler extends AbstractMovementPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

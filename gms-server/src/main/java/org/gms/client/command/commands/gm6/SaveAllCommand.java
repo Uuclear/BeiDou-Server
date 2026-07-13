@@ -33,6 +33,11 @@ import org.gms.service.HpMpAlertService;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * SaveAll命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class SaveAllCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SaveAllCommand.message1"));

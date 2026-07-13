@@ -30,6 +30,11 @@ import org.gms.constants.id.MobId;
 import org.gms.server.life.LifeFactory;
 import org.gms.util.I18nUtil;
 
+/**
+ * Pap命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class PapCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PapCommand.message1"));

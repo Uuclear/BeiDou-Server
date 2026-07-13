@@ -35,6 +35,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 公会BBS操作Handler - 处理公会论坛相关操作
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class BBSOperationHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(BBSOperationHandler.class);
 

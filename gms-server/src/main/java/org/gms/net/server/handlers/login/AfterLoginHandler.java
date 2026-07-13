@@ -27,6 +27,11 @@ import org.gms.net.packet.InPacket;
 import org.gms.net.server.coordinator.session.SessionCoordinator;
 import org.gms.util.PacketCreator;
 
+/**
+ * 登录后Handler - 处理登录成功后的初始化
+ *
+ * @author OdinMS开发团队
+ */
 public final class AfterLoginHandler extends AbstractPacketHandler {
 
     @Override

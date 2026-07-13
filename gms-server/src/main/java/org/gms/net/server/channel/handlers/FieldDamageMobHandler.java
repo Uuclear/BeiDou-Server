@@ -31,6 +31,12 @@ import org.gms.server.life.MonsterInformationProvider;
 import org.gms.server.maps.MapleMap;
 import org.gms.util.PacketCreator;
 
+/**
+ * 地图怪物伤害Handler - 处理地图上怪物受到的伤害
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class FieldDamageMobHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(FieldDamageMobHandler.class);
 

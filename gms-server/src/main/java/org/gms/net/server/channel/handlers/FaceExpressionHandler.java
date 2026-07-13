@@ -28,6 +28,12 @@ import org.gms.constants.inventory.ItemConstants;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 表情Handler - 处理玩家角色表情
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class FaceExpressionHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

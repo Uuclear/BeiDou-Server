@@ -30,6 +30,12 @@ import org.gms.exception.EmptyMovementException;
 
 import java.util.List;
 
+/**
+ * 宠物移动Handler - 处理宠物移动
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class MovePetHandler extends AbstractMovementPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

@@ -85,6 +85,11 @@ import org.gms.server.life.Element;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Skill工厂类 - 客户端/角色核心逻辑层的核心实现
+ *
+ * @author GMS Server
+ */
 public class SkillFactory {
     private static volatile Map<Integer, Skill> skills = new HashMap<>();
     private static final DataProvider datasource = DataProviderFactory.getDataProvider(WZFiles.SKILL);

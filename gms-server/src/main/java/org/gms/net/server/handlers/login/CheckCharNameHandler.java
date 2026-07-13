@@ -27,6 +27,11 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 检查角色名Handler - 处理检查角色名是否可用
+ *
+ * @author OdinMS开发团队
+ */
 public final class CheckCharNameHandler extends AbstractPacketHandler {
 
     @Override

@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.server.life.PlayerNPC;
 import org.gms.util.I18nUtil;
 
+/**
+ * PlayerNpc命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class PlayerNpcCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PlayerNpcCommand.message1"));

@@ -34,6 +34,12 @@ import org.gms.net.server.Server;
 import org.gms.server.ItemInformationProvider;
 import org.gms.util.PacketCreator;
 
+/**
+ * 背包合并Handler - 处理背包道具合并
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class InventoryMergeHandler extends AbstractPacketHandler {
 
     @Override

@@ -38,6 +38,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Iterator;
 
+/**
+ * WhoDrops命令类 - 初级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class WhoDropsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WhoDropsCommand.message1"));

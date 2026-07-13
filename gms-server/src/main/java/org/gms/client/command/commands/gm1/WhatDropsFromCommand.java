@@ -35,6 +35,11 @@ import org.gms.util.Pair;
 
 import java.util.Iterator;
 
+/**
+ * WhatDropsFrom命令类 - 初级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class WhatDropsFromCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WhatDropsFromCommand.message1"));

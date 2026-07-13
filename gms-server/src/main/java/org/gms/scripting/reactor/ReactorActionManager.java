@@ -47,28 +47,68 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 /**
+ * 反应堆动作管理器，继承自AbstractPlayerInteraction，
+ * 为反应堆脚本提供与玩家、地图、怪物和掉落物交互的专用方法。
+ * 支持反应堆击打、触发、掉落物品、生成怪物等功能。
+ *
  * @author Lerk
  * @author Ronan
  */
 public class ReactorActionManager extends AbstractPlayerInteraction {
+    /**
+     * 当前交互的反应堆对象
+     */
     private final Reactor reactor;
+    
+    /**
+     * 脚本引擎可调用接口
+     */
     private final Invocable iv;
+    
+    /**
+     * 物品喷溅定时任务，用于延迟掉落物品
+     */
     private ScheduledFuture<?> sprayTask = null;
 
+    /**
+     * 构造反应堆动作管理器
+     *
+     * @param c 客户端连接对象
+     * @param reactor 反应堆对象
+     * @param iv 脚本引擎可调用接口
+     */
     public ReactorActionManager(Client c, Reactor reactor, Invocable iv) {
         super(c);
         this.reactor = reactor;
         this.iv = iv;
     }
 
+    /**
+     * 击打反应堆，触反应堆击打逻辑
+     */
     public void hitReactor() {
         reactor.hitReactor(c);
     }
 
+    /**
+     * 销毁地图上指定ID的NPC
+     *
+     * @param npcId 要销毁的NPC ID
+     */
     public void destroyNpc(int npcId) {
         reactor.getMap().destroyNPC(npcId);
     }
 
+    /**
+     * 对掉落条目进行分类排序。
+     * 将普通物品、可见任务物品、其他任务物品分开处理。
+     *
+     * @param from 原始掉落列表
+     * @param item 普通物品列表（输出参数）
+     * @param visibleQuest 可见任务物品列表（输出参数）
+     * @param otherQuest 其他任务物品列表（输出参数）
+     * @param chr 当前玩家角色
+     */
     private static void sortDropEntries(List<ReactorDropEntry> from, List<ReactorDropEntry> item, List<ReactorDropEntry> visibleQuest, List<ReactorDropEntry> otherQuest, Character chr) {
         ItemInformationProvider ii = ItemInformationProvider.getInstance();
 
@@ -85,6 +125,13 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         }
     }
 
+    /**
+     * 组装并打乱反应堆掉落列表，使掉落顺序更自然。
+     *
+     * @param chr 当前玩家角色
+     * @param items 原始掉落列表
+     * @return 重新排序后的掉落列表
+     */
     private static List<ReactorDropEntry> assembleReactorDropEntries(Character chr, List<ReactorDropEntry> items) {
         final List<ReactorDropEntry> dropEntry = new ArrayList<>();
         final List<ReactorDropEntry> visibleQuestEntry = new ArrayList<>();
@@ -117,38 +164,112 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         return items1;
     }
 
+    /**
+     * 以喷溅方式掉落物品（使用反应堆位置，无金币）
+     */
     public void sprayItems() {
         sprayItems(false, 0, 0, 0, 0);
     }
 
+    /**
+     * 以喷溅方式掉落物品（使用反应堆位置）
+     *
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率（1/n的概率）
+     * @param minMeso 最小金币数量
+     * @param maxMeso 最大金币数量
+     */
     public void sprayItems(boolean meso, int mesoChance, int minMeso, int maxMeso) {
         sprayItems(meso, mesoChance, minMeso, maxMeso, 0);
     }
 
+    /**
+     * 以喷溅方式掉落物品（使用反应堆位置）
+     *
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率（1/n的概率）
+     * @param minMeso 最小金币数量
+     * @param maxMeso 最大金币数量
+     * @param minItems 最少掉落物品数量
+     */
     public void sprayItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         sprayItems((int) reactor.getPosition().getX(), (int) reactor.getPosition().getY(), meso, mesoChance, minMeso, maxMeso, minItems);
     }
 
+    /**
+     * 以喷溅方式在指定位置掉落物品
+     *
+     * @param posX X坐标
+     * @param posY Y坐标
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率
+     * @param minMeso 最小金币数量
+     * @param maxMeso 最大金币数量
+     * @param minItems 最少掉落物品数量
+     */
     public void sprayItems(int posX, int posY, boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         dropItems(true, posX, posY, meso, mesoChance, minMeso, maxMeso, minItems);
     }
 
+    /**
+     * 一次性掉落所有物品（使用反应堆位置，无金币）
+     */
     public void dropItems() {
         dropItems(false, 0, 0, 0, 0);
     }
 
+    /**
+     * 一次性掉落所有物品（使用反应堆位置）
+     *
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率
+     * @param minMeso 最小金币数量
+     * @param maxMeso 最大金币数量
+     */
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso) {
         dropItems(meso, mesoChance, minMeso, maxMeso, 0);
     }
 
+    /**
+     * 一次性掉落所有物品（使用反应堆位置）
+     *
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率
+     * @param minMeso 最小金币数量
+     * @param maxMeso 最大金币数量
+     * @param minItems 最少掉落物品数量
+     */
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         dropItems((int) reactor.getPosition().getX(), (int) reactor.getPosition().getY(), meso, mesoChance, minMeso, maxMeso, minItems);
     }
 
+    /**
+     * 一次性在指定位置掉落所有物品
+     *
+     * @param posX X坐标
+     * @param posY Y坐标
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率
+     * @param minMeso 最小金币数量
+     * @param maxMeso 最大金币数量
+     * @param minItems 最少掉落物品数量
+     */
     public void dropItems(int posX, int posY, boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
-        dropItems(true, posX, posY, meso, mesoChance, minMeso, maxMeso, minItems);  // all reactors actually drop items sequentially... thanks inhyuk for pointing this out!
+        dropItems(true, posX, posY, meso, mesoChance, minMeso, maxMeso, minItems);
     }
 
+    /**
+     * 掉落物品的核心实现方法，支持延迟喷溅或即时掉落。
+     *
+     * @param delayed 是否使用延迟喷溅模式
+     * @param posX 掉落位置X坐标
+     * @param posY 掉落位置Y坐标
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率
+     * @param minMeso 最小金币数量
+     * @param maxMeso 最大金币数量
+     * @param minItems 最少掉落物品数量
+     */
     public void dropItems(boolean delayed, int posX, int posY, boolean meso, int mesoChance, final int minMeso, final int maxMeso, int minItems) {
         Character chr = c.getPlayer();
         if (chr == null) {
@@ -223,10 +344,25 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         }
     }
 
+    /**
+     * 获取当前反应堆的掉落配置列表
+     *
+     * @return 反应堆掉落条目列表
+     */
     private List<ReactorDropEntry> getDropChances() {
         return ReactorScriptManager.getInstance().getDrops(reactor.getId());
     }
 
+    /**
+     * 根据掉落概率生成实际掉落列表
+     *
+     * @param drops 配置的掉落列表
+     * @param dropRate 掉落倍率
+     * @param meso 是否掉落金币
+     * @param mesoChance 金币掉落概率
+     * @param minItems 最少掉落数量
+     * @return 随机生成的掉落列表
+     */
     private List<ReactorDropEntry> generateDropList(List<ReactorDropEntry> drops, float dropRate, boolean meso, int mesoChance, int minItems) {
         List<ReactorDropEntry> items = new ArrayList<>();
         if (meso && Math.random() < (1 / (double) mesoChance)) {
@@ -246,32 +382,75 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         return items;
     }
 
+    /**
+     * 在反应堆位置生成1只指定怪物
+     *
+     * @param id 怪物ID
+     */
     public void spawnMonster(int id) {
         spawnMonster(id, 1, getPosition());
     }
 
+    /**
+     * 创建地图监视器，用于监控地图状态变化
+     *
+     * @param mapId 要监控的地图ID
+     * @param portal 玩家退出时传送的传送门名称
+     */
     public void createMapMonitor(int mapId, String portal) {
         new MapMonitor(c.getChannelServer().getMapFactory().getMap(mapId), portal);
     }
 
+    /**
+     * 在反应堆位置生成指定数量的怪物
+     *
+     * @param id 怪物ID
+     * @param qty 怪物数量
+     */
     public void spawnMonster(int id, int qty) {
         spawnMonster(id, qty, getPosition());
     }
 
+    /**
+     * 在指定坐标生成指定数量的怪物
+     *
+     * @param id 怪物ID
+     * @param qty 怪物数量
+     * @param x X坐标
+     * @param y Y坐标
+     */
     public void spawnMonster(int id, int qty, int x, int y) {
         spawnMonster(id, qty, new Point(x, y));
     }
 
+    /**
+     * 在指定位置生成指定数量的怪物
+     *
+     * @param id 怪物ID
+     * @param qty 怪物数量
+     * @param pos 生成位置
+     */
     public void spawnMonster(int id, int qty, Point pos) {
         for (int i = 0; i < qty; i++) {
             reactor.getMap().spawnMonsterOnGroundBelow(LifeFactory.getMonster(id), pos);
         }
     }
 
+    /**
+     * 杀死地图上所有指定ID的怪物（不掉落物品）
+     *
+     * @param id 怪物ID
+     */
     public void killMonster(int id) {
         killMonster(id, false);
     }
 
+    /**
+     * 杀死地图上所有指定ID的怪物
+     *
+     * @param id 怪物ID
+     * @param withDrops 杀死怪物时是否掉落物品
+     */
     public void killMonster(int id, boolean withDrops) {
         if (withDrops) {
             getMap().killMonsterWithDrops(id);
@@ -280,30 +459,63 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         }
     }
 
+    /**
+     * 获取反应堆的位置（向上偏移10像素）
+     *
+     * @return 调整后的位置点
+     */
     public Point getPosition() {
         Point pos = reactor.getPosition();
         pos.y -= 10;
         return pos;
     }
 
+    /**
+     * 在反应堆位置生成NPC
+     *
+     * @param npcId NPC ID
+     */
     public void spawnNpc(int npcId) {
         spawnNpc(npcId, getPosition());
     }
 
+    /**
+     * 在指定位置生成NPC
+     *
+     * @param npcId NPC ID
+     * @param pos 生成位置
+     */
     public void spawnNpc(int npcId, Point pos) {
         spawnNpc(npcId, pos, reactor.getMap());
     }
 
+    /**
+     * 获取当前反应堆对象
+     *
+     * @return 反应堆对象
+     */
     public Reactor getReactor() {
         return reactor;
     }
 
+    /**
+     * 生成假怪物（用于显示效果）
+     *
+     * @param id 怪物ID
+     */
     public void spawnFakeMonster(int id) {
         reactor.getMap().spawnFakeMonsterOnGroundBelow(LifeFactory.getMonster(id), getPosition());
     }
 
     /**
-     * Used for Targa and Scarlion
+     * 延迟召唤Boss，用于Targa和Scarlion等Boss战。
+     *
+     * @param mobId Boss怪物ID
+     * @param delayMs 延迟时间（毫秒）
+     * @param x 召唤位置X坐标
+     * @param y 召唤位置Y坐标
+     * @param bgm 召唤时播放的背景音乐
+     * @param summonMessage 召唤时显示的地图消息
      */
     public void summonBossDelayed(final int mobId, final int delayMs, final int x, final int y, final String bgm,
                                   final String summonMessage) {
@@ -312,13 +524,28 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         }, delayMs);
     }
 
+    /**
+     * 立即召唤Boss，播放音乐并显示消息
+     *
+     * @param mobId Boss怪物ID
+     * @param x X坐标
+     * @param y Y坐标
+     * @param bgmName BGM名称
+     * @param summonMessage 召唤消息
+     */
     private void summonBoss(int mobId, int x, int y, String bgmName, String summonMessage) {
         spawnMonster(mobId, x, y);
         changeMusic(bgmName);
         mapMessage(6, summonMessage);
     }
 
-    public void dispelAllMonsters(int num, int team) { //dispels all mobs, cpq
+    /**
+     * 驱散所有怪物的指定守卫技能（用于嘉年华CPQ）
+     *
+     * @param num 守卫技能编号
+     * @param team 队伍编号（0=红队，1=蓝队）
+     */
+    public void dispelAllMonsters(int num, int team) {
         final MCSkill skil = CarnivalFactory.getInstance().getGuardian(num);
         if (skil != null) {
             for (Monster mons : getMap().getAllMonsters()) {

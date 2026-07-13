@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * NX兑换码实体类，对应数据库表 nxcode。
+ * 存储NX充值兑换码。
  *
  * @author sleep
  * @since 2024-05-24
@@ -26,15 +27,30 @@ import java.io.Serial;
 public class NxcodeDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * code
+     */
     private String code;
 
+    /**
+     * retriever
+     */
     private String retriever;
 
+    /**
+     * expiration
+     */
     private BigInteger expiration;
 
 }

@@ -21,21 +21,43 @@
 */
 package org.gms.provider.wz;
 
+/**
+ * WZ数据类型枚举，定义了WZ/XML文件中可能出现的各种数据节点类型。
+ * 用于标识Data节点存储的数据类型，对应冒险岛WZ文件中的各种数据格式。
+ *
+ * @author OdinMS Team
+ */
 public enum DataType {
+    /** 无类型 */
     NONE,
+    /** IMG空节点类型（0x00） */
     IMG_0x00,
+    /** 短整型（16位整数） */
     SHORT,
+    /** 整型（32位整数） */
     INT,
+    /** 单精度浮点数 */
     FLOAT,
+    /** 双精度浮点数 */
     DOUBLE,
+    /** 字符串类型 */
     STRING,
+    /** 扩展类型 */
     EXTENDED,
+    /** 属性/目录节点类型（imgdir） */
     PROPERTY,
+    /** 画布/图片类型，包含宽高信息 */
     CANVAS,
+    /** 二维向量类型，包含x、y坐标 */
     VECTOR,
+    /** 凸多边形类型 */
     CONVEX,
+    /** 声音类型 */
     SOUND,
+    /** UOL（引用链接）类型 */
     UOL,
+    /** 未知类型 */
     UNKNOWN_TYPE,
+    /** 未知扩展类型 */
     UNKNOWN_EXTENDED_TYPE
 }

@@ -30,6 +30,11 @@ import org.gms.net.server.Server;
 import org.gms.net.server.channel.Channel;
 import org.gms.util.I18nUtil;
 
+/**
+ * OnlineTwo命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class OnlineTwoCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("OnlineTwoCommand.message1"));

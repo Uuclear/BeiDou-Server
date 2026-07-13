@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 活动统计实体类，对应数据库表 eventstats。
+ * 存储游戏活动统计数据。
  *
  * @author sleep
  * @since 2024-05-24
@@ -24,9 +25,15 @@ import java.io.Serial;
 public class EventstatsDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id
+    /**
+     * 角色ID
+     */
     private Long characterid;
 
     /**
@@ -34,6 +41,9 @@ public class EventstatsDO implements Serializable {
      */
     private String name;
 
+    /**
+     * 信息内容
+     */
     private Integer info;
 
 }

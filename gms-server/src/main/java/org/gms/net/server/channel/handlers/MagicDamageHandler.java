@@ -39,6 +39,12 @@ import org.gms.util.PacketCreator;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 魔法伤害Handler - 处理魔法攻击伤害
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class MagicDamageHandler extends AbstractDealDamageHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

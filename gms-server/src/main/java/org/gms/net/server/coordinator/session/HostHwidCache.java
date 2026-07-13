@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 主机HWID缓存 - 缓存主机HWID关联信息
+ *
+ * @author OdinMS开发团队
+ */
 class HostHwidCache {
     private final ConcurrentHashMap<String, HostHwid> hostHwidCache = new ConcurrentHashMap<>(); // Key: remoteHost
 

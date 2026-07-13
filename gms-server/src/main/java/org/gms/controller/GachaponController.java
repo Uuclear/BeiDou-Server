@@ -16,12 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 百宝箱（抽奖）管理控制器
+ * 提供百宝箱奖池和奖品管理的Web API接口，包括奖池CRUD、奖品CRUD等功能
+ */
 @RestController
 @RequestMapping("/gachapon")
 public class GachaponController {
+    /**
+     * 百宝箱服务，处理奖池和奖品的业务逻辑
+     */
     @Autowired
     private GachaponService gachaponService;
 
+    /**
+     * 分页查询百宝箱奖池列表
+     * @param request 包含分页参数和查询条件的请求体
+     * @return 分页奖池结果列表
+     */
     @Tag(name = "/gachapon/" + ApiConstant.LATEST)
     @Operation(summary = "获取奖池列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getPools")
@@ -29,6 +41,11 @@ public class GachaponController {
         return ResultBody.success(request, gachaponService.getPools(request.getData()));
     }
 
+    /**
+     * 创建或更新百宝箱奖池
+     * @param request 包含奖池信息的请求体
+     * @return 操作成功结果
+     */
     @Tag(name = "/gachapon/" + ApiConstant.LATEST)
     @Operation(summary = "创建或更新奖池")
     @PostMapping("/" + ApiConstant.LATEST + "/updatePool")
@@ -37,6 +54,11 @@ public class GachaponController {
         return ResultBody.success();
     }
 
+    /**
+     * 删除指定的百宝箱奖池
+     * @param request 包含奖池ID的请求体
+     * @return 操作成功结果
+     */
     @Tag(name = "/gachapon/" + ApiConstant.LATEST)
     @Operation(summary = "删除奖池")
     @PostMapping("/" + ApiConstant.LATEST + "/deletePool")
@@ -45,6 +67,11 @@ public class GachaponController {
         return ResultBody.success();
     }
 
+    /**
+     * 获取指定奖池下的所有奖品列表
+     * @param request 包含奖池ID的请求体
+     * @return 奖品列表
+     */
     @Tag(name = "/gachapon/" + ApiConstant.LATEST)
     @Operation(summary = "获取奖品列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getRewards")
@@ -52,6 +79,11 @@ public class GachaponController {
         return ResultBody.success(gachaponService.getRewards(request.getData().getId()));
     }
 
+    /**
+     * 创建或更新百宝箱奖品
+     * @param request 包含奖品信息的请求体
+     * @return 操作成功结果
+     */
     @Tag(name = "/gachapon/" + ApiConstant.LATEST)
     @Operation(summary = "创建或更新奖品")
     @PostMapping("/" + ApiConstant.LATEST + "/updateReward")
@@ -60,6 +92,11 @@ public class GachaponController {
         return ResultBody.success();
     }
 
+    /**
+     * 删除指定的百宝箱奖品
+     * @param request 包含奖品ID的请求体
+     * @return 操作成功结果
+     */
     @Tag(name = "/gachapon/" + ApiConstant.LATEST)
     @Operation(summary = "删除奖品")
     @PostMapping("/" + ApiConstant.LATEST + "/deleteReward")

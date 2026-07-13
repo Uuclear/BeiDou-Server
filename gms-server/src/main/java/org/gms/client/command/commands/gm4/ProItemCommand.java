@@ -34,6 +34,11 @@ import org.gms.constants.inventory.ItemConstants;
 import org.gms.server.ItemInformationProvider;
 import org.gms.util.I18nUtil;
 
+/**
+ * ProItem命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ProItemCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ProItemCommand.message1"));

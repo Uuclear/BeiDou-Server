@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * HWID封禁实体类，对应数据库表 hwidbans。
+ * 存储被封禁的硬件ID。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,11 +26,20 @@ import java.io.Serial;
 public class HwidbansDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * hwidbanid
+     */
     private Long hwidbanid;
 
+    /**
+     * 硬件ID
+     */
     private String hwid;
 
 }

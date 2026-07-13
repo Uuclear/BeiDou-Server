@@ -30,6 +30,12 @@ import org.slf4j.LoggerFactory;
 import org.gms.server.ChatLogger;
 import org.gms.util.PacketCreator;
 
+/**
+ * 宠物聊天Handler - 处理宠物说话
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class PetChatHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(PetChatHandler.class);
 

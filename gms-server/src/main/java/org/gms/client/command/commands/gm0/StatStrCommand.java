@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.config.GameConfig;
 import org.gms.util.I18nUtil;
 
+/**
+ * StatStr命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class StatStrCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("StatStrCommand.message1"));

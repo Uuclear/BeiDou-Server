@@ -32,6 +32,11 @@ import org.gms.util.I18nUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+/**
+ * UnBan命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class UnBanCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("UnBanCommand.message1"));

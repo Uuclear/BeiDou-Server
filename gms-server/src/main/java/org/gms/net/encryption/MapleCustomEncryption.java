@@ -21,13 +21,34 @@
 */
 package org.gms.net.encryption;
 
+/**
+ * 冒险岛自定义加密算法
+ * 实现冒险岛私有的多层加密算法，在AES加密之前/之后对数据进行额外变换
+ * 使用6轮交替方向的加密操作，包含循环移位、异或、取反等运算
+ *
+ * @author OdinMS开发团队
+ */
 public class MapleCustomEncryption {
+    /**
+     * 字节循环左移
+     *
+     * @param in 输入字节
+     * @param count 移位位数
+     * @return 移位后的字节
+     */
     private static byte rollLeft(byte in, int count) {
         int tmp = (int) in & 0xFF;
         tmp = tmp << (count % 8);
         return (byte) ((tmp & 0xFF) | (tmp >> 8));
     }
 
+    /**
+     * 字节循环右移
+     *
+     * @param in 输入字节
+     * @param count 移位位数
+     * @return 移位后的字节
+     */
     private static byte rollRight(byte in, int count) {
         int tmp = (int) in & 0xFF;
         tmp = (tmp << 8) >>> (count % 8);
@@ -35,6 +56,13 @@ public class MapleCustomEncryption {
         return (byte) ((tmp & 0xFF) | (tmp >>> 8));
     }
 
+    /**
+     * 加密数据
+     * 执行6轮加密，偶数轮从前往后处理，奇数轮从后往前处理
+     *
+     * @param data 要加密的数据（原地修改）
+     * @return 加密后的数据
+     */
     public static byte[] encryptData(byte[] data) {
         for (int j = 0; j < 6; j++) {
             byte remember = 0;
@@ -69,6 +97,13 @@ public class MapleCustomEncryption {
         return data;
     }
 
+    /**
+     * 解密数据
+     * 执行6轮解密，与加密操作顺序相反、操作互逆
+     *
+     * @param data 要解密的数据（原地修改）
+     * @return 解密后的数据
+     */
     public static byte[] decryptData(byte[] data) {
         for (int j = 1; j <= 6; j++) {
             byte remember = 0;

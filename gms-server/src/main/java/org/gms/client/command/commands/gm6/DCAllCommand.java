@@ -30,6 +30,11 @@ import org.gms.net.server.Server;
 import org.gms.net.server.world.World;
 import org.gms.util.I18nUtil;
 
+/**
+ * DCAll命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class DCAllCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("DCAllCommand.message1"));

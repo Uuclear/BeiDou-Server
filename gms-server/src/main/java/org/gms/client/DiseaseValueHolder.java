@@ -21,11 +21,22 @@
 package org.gms.client;
 
 /**
- * @author anybody can do this
+ * 疾病状态值持有者类
+ * 用于存储疾病/异常状态的开始时间和持续时间
+ *
+ * @author OdinMS Team
  */
 public class DiseaseValueHolder {
-    public long startTime, length;
+    /** 状态开始时间（毫秒时间戳） */
+    public long startTime;
+    /** 状态持续时长（毫秒） */
+    public long length;
 
+    /**
+     * 构造函数
+     * @param start 状态开始时间
+     * @param length 状态持续时长
+     */
     public DiseaseValueHolder(long start, long length) {
         this.startTime = start;
         this.length = length;

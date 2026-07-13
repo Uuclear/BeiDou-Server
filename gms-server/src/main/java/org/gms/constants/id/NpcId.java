@@ -1,5 +1,14 @@
 package org.gms.constants.id;
 
+/**
+ * NPC ID常量类
+ * <p>
+ * 定义游戏中各种NPC的ID常量，包括管理员、转蛋机、NPC、玩家NPC等。
+ * </p>
+ *
+ * @author GMS Team
+ * @since 1.0.0
+ */
 public class NpcId {
     public static final int CUSTOM_DEV = 9977777;
 

@@ -29,6 +29,11 @@ import org.gms.client.SkillFactory;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * BuffMe命令类 - 初级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class BuffMeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("BuffMeCommand.message1"));

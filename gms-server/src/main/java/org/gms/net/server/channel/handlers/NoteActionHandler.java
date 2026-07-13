@@ -32,6 +32,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+/**
+ * 便签操作Handler - 处理便签/纸条发送与查看
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class NoteActionHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(NoteActionHandler.class);
 

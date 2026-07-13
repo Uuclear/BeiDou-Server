@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 数据库版本历史实体类，对应数据库表 flyway_schema_history。
+ * Flyway迁移历史记录表。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,27 +26,60 @@ import java.io.Serial;
 public class FlywaySchemaHistoryDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id
+    /**
+     * installedRank
+     */
     private Integer installedRank;
 
+    /**
+     * version
+     */
     private String version;
 
+    /**
+     * 描述说明
+     */
     private String description;
 
+    /**
+     * 类型
+     */
     private String type;
 
+    /**
+     * script
+     */
     private String script;
 
+    /**
+     * checksum
+     */
     private Integer checksum;
 
+    /**
+     * installedBy
+     */
     private String installedBy;
 
+    /**
+     * installedOn
+     */
     private Timestamp installedOn;
 
+    /**
+     * executionTime
+     */
     private Integer executionTime;
 
+    /**
+     * success
+     */
     private Boolean success;
 
 }

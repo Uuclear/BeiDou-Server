@@ -66,57 +66,121 @@ import static org.gms.dao.entity.table.SkillsDOTableDef.SKILLS_D_O;
 import static org.gms.dao.entity.table.TrocklocationsDOTableDef.TROCKLOCATIONS_D_O;
 import static org.gms.dao.entity.table.WishlistsDOTableDef.WISHLISTS_D_O;
 
+/**
+ * 角色服务类
+ * 提供角色相关的核心业务逻辑，包括角色CRUD、在线角色管理、角色数据加载/保存、
+ * 角色扩展值（经验/掉落/金币倍率）管理、排行榜查询、公会管理、账号级联删除等功能。
+ *
+ * @author GMS Server
+ * @since 1.0
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
 public class CharacterService {
+    /** 扩展值数据访问接口 */
     private final ExtendValueMapper extendValueMapper;
+    /** 角色数据访问接口 */
     private final CharactersMapper charactersMapper;
+    /** 技能数据访问接口 */
     private final SkillsMapper skillsMapper;
+    /** 技能宏数据访问接口 */
     private final SkillmacrosMapper skillmacrosMapper;
+    /** 公会数据访问接口 */
     private final GuildsMapper guildsMapper;
+    /** 好友数据访问接口 */
     private final BuddiesMapper buddiesMapper;
+    /** BBS帖子数据访问接口 */
     private final BbsThreadsMapper bbsThreadsMapper;
+    /** BBS回复数据访问接口 */
     private final BbsRepliesMapper bbsRepliesMapper;
+    /** 愿望单数据访问接口 */
     private final WishlistsMapper wishlistsMapper;
+    /** 技能冷却数据访问接口 */
     private final CooldownsMapper cooldownsMapper;
+    /** 玩家状态异常数据访问接口 */
     private final PlayerdiseasesMapper playerdiseasesMapper;
+    /** 区域信息数据访问接口 */
     private final AreaInfoMapper areaInfoMapper;
+    /** 怪物卡数据访问接口 */
     private final MonsterbookMapper monsterbookMapper;
+    /** 家族成员数据访问接口 */
     private final FamilyCharacterMapper familyCharacterMapper;
+    /** 声望日志数据访问接口 */
     private final FamelogMapper famelogMapper;
+    /** 背包服务 */
     private final InventoryService inventoryService;
+    /** 任务服务 */
     private final QuestService questService;
+    /** 弗雷德仓库数据访问接口 */
     private final FredstorageMapper fredstorageMapper;
+    /** 拍卖行服务 */
     private final MtsService mtsService;
+    /** 按键映射数据访问接口 */
     private final KeymapMapper keymapMapper;
+    /** 保存位置数据访问接口 */
     private final SavedlocationsMapper savedlocationsMapper;
+    /** 瞬移岩石位置数据访问接口 */
     private final TrocklocationsMapper trocklocationsMapper;
+    /** 事件统计数据访问接口 */
     private final EventstatsMapper eventstatsMapper;
+    /** 服务器队列数据访问接口 */
     private final ServerQueueMapper serverQueueMapper;
+    /** 改名服务 */
     private final NameChangeService nameChangeService;
+    /** 世界转移服务 */
     private final WorldTransferService worldTransferService;
+    /** 每日BOSS日志数据访问接口 */
     private final BosslogDailyMapper bosslogDailyMapper;
+    /** 每周BOSS日志数据访问接口 */
     private final BosslogWeeklyMapper bosslogWeeklyMapper;
+    /** 家族权限数据访问接口 */
     private final FamilyEntitlementMapper familyEntitlementMapper;
+    /** 商人背包数据访问接口 */
     private final InventorymerchantMapper inventorymerchantMapper;
+    /** Spring应用上下文，用于获取代理对象保证事务生效 */
     private final ApplicationContext applicationContext;
+    /** 账号数据访问接口 */
     private final AccountsMapper accountsMapper;
+    /** 快捷栏按键映射数据访问接口 */
     private final QuickslotkeymappedMapper quickslotkeymappedMapper;
+    /** 仓库数据访问接口 */
     private final StoragesMapper storagesMapper;
+    /** 背包物品数据访问接口 */
     private final InventoryitemsMapper inventoryitemsMapper;
+    /** HWID账号关联数据访问接口 */
     private final HwidaccountsMapper hwidaccountsMapper;
+    /** IP封禁数据访问接口 */
     private final IpbansMapper ipbansMapper;
+    /** MAC封禁数据访问接口 */
     private final MacbansMapper macbansMapper;
 
+    /**
+     * 根据角色ID查询角色信息
+     *
+     * @param id 角色ID
+     * @return 角色数据对象，不存在则返回null
+     */
     public CharactersDO findById(int id) {
         return charactersMapper.selectOneById(id);
     }
 
+    /**
+     * 更新角色信息
+     *
+     * @param condition 包含更新字段的角色数据对象
+     */
     public void update(CharactersDO condition) {
         charactersMapper.update(condition);
     }
 
+    /**
+     * 获取在线角色列表（分页）
+     * 根据世界、角色ID、角色名、地图ID进行过滤
+     *
+     * @param request 查询条件，包含世界ID、角色ID、角色名、地图ID、分页参数
+     * @return 分页后的在线角色列表
+     */
     public Page<ChrOnlineListRtnDTO> getChrOnlineList(ChrOnlineListReqDTO request) {
         Collection<Character> chrList = Server.getInstance().getWorld(request.getWorld()).getPlayerStorage().getAllCharacters();
         return BasePageUtil.create(chrList, request)
@@ -134,6 +198,12 @@ public class CharacterService {
                         .build());
     }
 
+    /**
+     * 更新角色倍率（经验/掉落/金币）
+     * 更新扩展值表，并重置在线角色的倍率设置
+     *
+     * @param data 扩展值数据，包含角色ID、扩展类型、扩展名称、扩展值
+     */
     public void updateRate(ExtendValueDO data) {
         checkName(data);
         data.setExtendType(ExtendType.CHARACTER_EXTEND.getType());
@@ -152,6 +222,12 @@ public class CharacterService {
         character.setCouponRates();
     }
 
+    /**
+     * 重置单项角色倍率
+     * 删除指定的扩展值记录，并重置在线角色的倍率设置
+     *
+     * @param data 扩展值数据，包含角色ID、扩展类型、扩展名称
+     */
     public void resetRate(ExtendValueDO data) {
         checkName(data);
         extendValueMapper.deleteByQuery(QueryWrapper.create()
@@ -164,6 +240,12 @@ public class CharacterService {
         character.setCouponRates();
     }
 
+    /**
+     * 重置所有角色倍率（经验/掉落/金币）
+     * 删除角色的三项倍率扩展值，并重置在线角色的倍率设置
+     *
+     * @param data 扩展值数据，包含角色ID、扩展类型
+     */
     public void resetRates(ExtendValueDO data) {
         check(data);
         extendValueMapper.deleteByQuery(QueryWrapper.create()
@@ -176,10 +258,21 @@ public class CharacterService {
         character.setCouponRates();
     }
 
+    /**
+     * 重置所有角色的商人状态
+     * 将所有角色的hasMerchant字段设置为0，用于服务器重启时清理异常状态
+     */
     public void resetMerchant() {
         charactersMapper.updateAllHasMerchant(0);
     }
 
+    /**
+     * 获取世界排行榜玩家列表
+     * 支持全服排行或按世界分别排行，查询非GM、未封禁角色的前50名
+     *
+     * @param worldSize 世界数量
+     * @return 排行榜列表，全服排行时外层列表只有一个元素
+     */
     public List<List<CharactersDO>> getWorldsRankPlayers(int worldSize) {
         boolean wholeServerRanking = GameConfig.getServerBoolean("use_whole_server_ranking");
         List<List<CharactersDO>> worldsRankingList = new ArrayList<>();
@@ -206,6 +299,12 @@ public class CharacterService {
         return worldsRankingList;
     }
 
+    /**
+     * 获取单个世界的排行榜玩家列表
+     *
+     * @param worldId 世界ID
+     * @return 该世界前50名角色列表
+     */
     public List<CharactersDO> getWorldRankPlayers(int worldId) {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select(CHARACTERS_D_O.NAME, CHARACTERS_D_O.LEVEL, CHARACTERS_D_O.WORLD)
@@ -219,21 +318,46 @@ public class CharacterService {
         return charactersMapper.selectListByQuery(queryWrapper);
     }
 
+    /**
+     * 根据角色名查询角色信息
+     *
+     * @param name 角色名
+     * @return 角色数据对象，不存在则返回null
+     */
     public CharactersDO findByName(String name) {
         List<CharactersDO> charactersDOS = charactersMapper.selectListByQuery(QueryWrapper.create().where(CHARACTERS_D_O.NAME.eq(name)));
         return charactersDOS.isEmpty() ? null : charactersDOS.getFirst();
     }
 
+    /**
+     * 删除角色技能
+     *
+     * @param skillsDO 技能数据对象，包含角色ID和技能ID
+     */
     public void removeSkill(SkillsDO skillsDO) {
         skillsMapper.deleteByQuery(QueryWrapper.create(skillsDO));
     }
 
+    /**
+     * 删除公会
+     * 将会内所有角色的公会ID置0，公会等级置为5（会员），然后删除公会记录
+     *
+     * @param guildsDO 公会数据对象，包含公会ID
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteGuild(GuildsDO guildsDO) {
         charactersMapper.updateByQuery(CharactersDO.builder().guildid(0).guildrank(5).build(), QueryWrapper.create().where(CHARACTERS_D_O.GUILDID.eq(guildsDO.getGuildid())));
         guildsMapper.deleteById(guildsDO.getGuildid());
     }
 
+    /**
+     * 从数据库删除角色（带鉴权）
+     * 验证发送者账号是否拥有该角色，然后执行删除
+     *
+     * @param player 要删除的在线角色对象
+     * @param senderAccId 发送者账号ID
+     * @throws BizException 角色不属于该账号时抛出异常
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteCharFromDB(Character player, int senderAccId) {
         int cid = player.getId();
@@ -246,6 +370,8 @@ public class CharacterService {
     /**
      * 按角色ID删除角色及其全部关联数据（GM后台/账号级联删除入口，无登录态鉴权）。
      * 不依赖在线 Character 对象，guild 清理传 null character（仅 leave/disband，跳过 setGuildMemberOnline）。
+     *
+     * @param cid 角色ID
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteCharacterById(int cid) {
@@ -343,6 +469,12 @@ public class CharacterService {
         worldTransferService.cancelPendingWorldTransfer(cid, false);
     }
 
+    /**
+     * 保存新角色到数据库
+     *
+     * @param player 角色对象
+     * @param notAutosave 是否为非自动保存（用于日志区分）
+     */
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_UNCOMMITTED)
     public void saveCharToDB(Character player, boolean notAutosave) {
         if (!player.isLoggedIn()) {
@@ -355,6 +487,17 @@ public class CharacterService {
         charactersMapper.insertSelective(cdo);
     }
 
+    /**
+     * 从数据库加载角色数据
+     * 包括角色基础信息、地图位置、组队、Messenger、任务状态、技能、冷却、状态异常、
+     * 技能宏、按键映射、保存位置、声望记录、好友列表、仓库等完整数据
+     *
+     * @param cid 角色ID
+     * @param client 客户端连接
+     * @param channelServer 是否为频道服务器加载（频道服务器需要加载完整地图和在线数据）
+     * @return 加载完成的角色对象
+     * @throws BizException 角色不存在时抛出异常
+     */
     public Character loadCharFromDB(int cid, Client client, boolean channelServer) {
         CharactersDO charactersDO = findById(cid);
         RequireUtil.requireNotNull(charactersDO, I18nUtil.getExceptionMessage("UNKNOWN_CHARACTER"));
@@ -472,26 +615,63 @@ public class CharacterService {
         return chr;
     }
 
+    /**
+     * 根据角色ID获取瞬移岩石位置列表
+     *
+     * @param cid 角色ID
+     * @return 瞬移岩石位置列表
+     */
     public List<TrocklocationsDO> getTrockLocationByCharacter(Integer cid) {
         return trocklocationsMapper.selectListByQuery(QueryWrapper.create().where(TROCKLOCATIONS_D_O.CHARACTERID.eq(cid)));
     }
 
+    /**
+     * 根据角色ID获取区域信息列表
+     *
+     * @param cid 角色ID
+     * @return 区域信息列表
+     */
     public List<AreaInfoDO> getAreaInfoByCharacter(Integer cid) {
         return areaInfoMapper.selectListByQuery(QueryWrapper.create().where(AREA_INFO_D_O.CHARID.eq(cid)));
     }
 
+    /**
+     * 根据角色ID获取事件统计列表
+     *
+     * @param cid 角色ID
+     * @return 事件统计列表
+     */
     public List<EventstatsDO> getEventStatsByCharacter(Integer cid) {
         return eventstatsMapper.selectListByQuery(QueryWrapper.create().where(EVENTSTATS_D_O.CHARACTERID.eq(cid)));
     }
 
+    /**
+     * 根据角色ID获取愿望单列表
+     *
+     * @param cid 角色ID
+     * @return 愿望单列表
+     */
     public List<WishlistsDO> getWishlistsByCharacter(Integer cid) {
         return wishlistsMapper.selectListByQuery(QueryWrapper.create().where(WISHLISTS_D_O.CHARID.eq(cid)));
     }
 
+    /**
+     * 根据账号ID获取角色列表
+     *
+     * @param accountId 账号ID
+     * @return 角色数据对象列表
+     */
     public List<CharactersDO> getCharacterByAccountId(int accountId) {
         return charactersMapper.selectListByQuery(QueryWrapper.create().where(CHARACTERS_D_O.ACCOUNTID.eq(accountId)));
     }
 
+    /**
+     * 根据账号ID获取角色列表（GM后台展示用）
+     * 包含世界名称、职业名称、在线状态等额外信息
+     *
+     * @param accountId 账号ID
+     * @return 角色列表项DTO列表
+     */
     public List<CharacterListItemDTO> getCharacterListByAccountId(int accountId) {
         List<CharactersDO> list = getCharacterByAccountId(accountId);
         return list.stream().map(cdo -> {
@@ -520,6 +700,9 @@ public class CharacterService {
 
     /**
      * 删除角色：在线先下线再删，离线直接删。
+     *
+     * @param cid 角色ID
+     * @throws BizException 角色不存在时抛出异常
      */
     public void deleteCharacterWithOnlineCheck(int cid) {
         int accountId = prepareCharacterOffline(cid);
@@ -531,6 +714,9 @@ public class CharacterService {
 
     /**
      * 安全清理角色登录缓存：账号未登录时其 entry 未初始化，直接调用 deleteCharacterEntry 会 NPE，此处兜底忽略。
+     *
+     * @param accountId 账号ID
+     * @param cid 角色ID
      */
     public void safeDeleteCharacterEntry(int accountId, int cid) {
         try {
@@ -543,6 +729,9 @@ public class CharacterService {
     /**
      * 删除账号：级联删除账号下所有角色及其关联数据 + 账号级关联表 + 账号本身。
      * AccountService 作为基类不依赖业务 Service，故账号删除下放到此。
+     *
+     * @param id 账号ID
+     * @throws BizException 账号不存在时抛出异常
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteAccount(int id) {
@@ -578,6 +767,9 @@ public class CharacterService {
     /**
      * 在线角色先下线，返回角色所属 accountId（在线从内存取，离线从 DB 取；角色不存在返回 0）。
      * 供账号级联删除复用。
+     *
+     * @param cid 角色ID
+     * @return 账号ID，角色不存在返回0
      */
     public int prepareCharacterOffline(int cid) {
         Character online = findOnlineCharacter(cid);
@@ -595,6 +787,13 @@ public class CharacterService {
         return cdo == null ? 0 : cdo.getAccountid();
     }
 
+    /**
+     * 查找在线角色
+     * 遍历所有世界的玩家存储查找指定ID的角色
+     *
+     * @param cid 角色ID
+     * @return 在线角色对象，不在线返回null
+     */
     private Character findOnlineCharacter(int cid) {
         for (World world : Server.getInstance().getWorlds()) {
             Character chr = world.getPlayerStorage().getCharacterById(cid);
@@ -605,6 +804,13 @@ public class CharacterService {
         return null;
     }
 
+    /**
+     * 校验倍率更新请求参数
+     * 只允许更新expRate、dropRate、mesoRate三种倍率
+     *
+     * @param data 扩展值数据
+     * @throws BizException 参数不合法时抛出异常
+     */
     private void checkName(ExtendValueDO data) {
         check(data);
         // 非法请求篡改其他字段
@@ -614,12 +820,26 @@ public class CharacterService {
         throw BizException.illegalArgument();
     }
 
+    /**
+     * 校验扩展值基础参数
+     *
+     * @param data 扩展值数据
+     * @throws BizException 参数为空时抛出异常
+     */
     private void check(ExtendValueDO data) {
         RequireUtil.requireNotEmpty(data.getExtendId(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "extendId"));
         RequireUtil.requireNotEmpty(data.getExtendType(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "extendType"));
         RequireUtil.requireNotEmpty(data.getExtendName(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "extendName"));
     }
 
+    /**
+     * 根据扩展值数据获取在线角色对象
+     * 支持按账号ID或角色ID查找
+     *
+     * @param data 扩展值数据，包含扩展类型和扩展ID
+     * @return 在线角色对象
+     * @throws BizException 角色不在线时抛出异常
+     */
     private Character getCharacter(ExtendValueDO data) {
         for (World world : Server.getInstance().getWorlds()) {
             for (Character character : world.getPlayerStorage().getAllCharacters()) {

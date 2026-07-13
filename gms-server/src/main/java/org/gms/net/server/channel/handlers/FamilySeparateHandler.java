@@ -27,6 +27,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 家族分离Handler - 处理家族成员脱离家族
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class FamilySeparateHandler extends AbstractPacketHandler {
 
     @Override

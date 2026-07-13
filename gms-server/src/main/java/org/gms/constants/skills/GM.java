@@ -22,7 +22,12 @@
 package org.gms.constants.skills;
 
 /**
- * @author BubblesDev
+ * 管理员（GM）技能常量类
+ * <p>
+ * 定义该职业的所有技能ID常量，用于技能系统中识别和引用特定技能。
+ * </p>
+ *
+ * @author OdinMS Team
  */
 public class GM {
     public static final int GM_ROAR1 = 9001001;

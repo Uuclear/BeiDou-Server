@@ -21,20 +21,42 @@
 */
 package org.gms.client;
 
+/**
+ * 角色名称和ID数据类
+ * 用于存储角色的基本标识信息（ID和名称）
+ * 主要在加载角色列表时使用
+ *
+ * @author OdinMS Team
+ */
 public class CharacterNameAndId {
+    /** 角色ID */
     private final int id;
+    /** 角色名称 */
     private final String name;
 
+    /**
+     * 构造函数
+     * @param id 角色ID
+     * @param name 角色名称
+     */
     public CharacterNameAndId(int id, String name) {
         super();
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * 获取角色ID
+     * @return 角色ID
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * 获取角色名称
+     * @return 角色名称
+     */
     public String getName() {
         return name;
     }

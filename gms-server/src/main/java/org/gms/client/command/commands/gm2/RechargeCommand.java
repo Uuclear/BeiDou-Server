@@ -32,6 +32,11 @@ import org.gms.constants.inventory.ItemConstants;
 import org.gms.server.ItemInformationProvider;
 import org.gms.util.I18nUtil;
 
+/**
+ * Recharge命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class RechargeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("RechargeCommand.message1"));

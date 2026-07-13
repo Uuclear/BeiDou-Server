@@ -40,6 +40,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 公会联盟类
+ * 管理多个公会组成的联盟，包括：
+ * - 联盟成员公会管理
+ * - 联盟公告、称号设置
+ * - 联盟聊天、联盟排行
+ * - 联盟成员职位管理
+ *
  * @author XoticStory
  * @author Ronan
  */

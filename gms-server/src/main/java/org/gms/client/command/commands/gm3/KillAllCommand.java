@@ -36,6 +36,11 @@ import org.gms.util.I18nUtil;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * KillAll命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class KillAllCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("KillAllCommand.message1"));

@@ -30,6 +30,11 @@ import org.gms.net.server.Server;
 import org.gms.net.server.channel.Channel;
 import org.gms.util.I18nUtil;
 
+/**
+ * Online命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class OnlineCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("OnlineCommand.message1"));

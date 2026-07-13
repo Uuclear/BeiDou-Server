@@ -11,6 +11,11 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+/**
+ * Devtest命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class DevtestCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("DevtestCommand.message1"));

@@ -21,6 +21,13 @@
 */
 package org.gms.net.opcodes;
 
+/**
+ * 客户端→服务器 接收数据包操作码枚举
+ * 定义了所有从客户端发送到服务器的数据包操作码
+ * 涵盖登录、角色管理、移动、攻击、聊天、NPC交互、道具、技能、组队、公会等所有游戏操作
+ *
+ * @author OdinMS开发团队
+ */
 public enum RecvOpcode implements Opcode {
     CUSTOM_PACKET(0x3713),//13 37 lol // 自定义封包
 
@@ -208,17 +215,35 @@ public enum RecvOpcode implements Opcode {
     SET_HPMPALERT(0x1000), // 设置HP/MP警报
     ;
 
+    /**
+     * 操作码数值
+     */
     private int code = -2;
 
+    /**
+     * 构造接收操作码
+     *
+     * @param code 操作码数值
+     */
     RecvOpcode(int code) {
         this.code = code;
     }
 
+    /**
+     * 获取操作码数值
+     *
+     * @return 操作码整数值
+     */
     @Override
     public int getValue() {
         return code;
     }
 
+    /**
+     * 获取操作码名称（枚举名）
+     *
+     * @return 操作码名称
+     */
     @Override
     public String getName() {
         return this.name();

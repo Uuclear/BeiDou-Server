@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 import org.gms.util.StringUtil;
 
+/**
+ * MaxHpMp命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class MaxHpMpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("MaxHpMpCommand.message1"));

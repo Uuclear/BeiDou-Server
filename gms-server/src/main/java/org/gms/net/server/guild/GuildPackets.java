@@ -15,6 +15,11 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 公会数据包类 - 提供公会相关数据包的静态工厂方法
+ *
+ * @author OdinMS开发团队
+ */
 public class GuildPackets {
     public static Packet showGuildInfo(Character chr) {
         OutPacket p = OutPacket.create(SendOpcode.GUILD_OPERATION);

@@ -1,5 +1,15 @@
 package org.gms.constants.id;
 
+/**
+ * 地图ID常量类
+ * <p>
+ * 定义游戏中各种地图的ID常量，包括城镇、特殊地图、旅行地图、副本地图等，
+ * 以及判断地图类型的辅助方法。
+ * </p>
+ *
+ * @author GMS Team
+ * @since 1.0.0
+ */
 public class MapId {
     // Special
     public static final int NONE = 999999999;
@@ -64,6 +74,12 @@ public class MapId {
     private static final int MAPLE_ISLAND_MIN = 0;
     private static final int MAPLE_ISLAND_MAX = 2000001;
 
+    /**
+     * 判断是否为枫叶岛地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是枫叶岛地图返回true
+     */
     public static boolean isMapleIsland(int mapId) {
         return mapId >= MAPLE_ISLAND_MIN && mapId <= MAPLE_ISLAND_MAX;
     }
@@ -89,7 +105,12 @@ public class MapId {
     private static final int BURNING_FOREST_2 = 914000210;
     private static final int BURNING_FOREST_3 = 914000220;
 
-    // Aran tutorial
+    /**
+     * 判断是否为战神教程中的超强属性地图（燃烧森林）
+     *
+     * @param mapId 地图ID
+     * @return 如果是燃烧森林地图返回true
+     */
     public static boolean isGodlyStatMap(int mapId) {
         return mapId == BURNING_FOREST_1 || mapId == BURNING_FOREST_2 || mapId == BURNING_FOREST_3;
     }
@@ -110,6 +131,12 @@ public class MapId {
     private static final int CYGNUS_INTRO_LOCATION_MIN = 913040000;
     private static final int CYGNUS_INTRO_LOCATION_MAX = 913040006;
 
+    /**
+     * 判断是否为骑士团新手教程地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是骑士团教程地图返回true
+     */
     public static boolean isCygnusIntro(int mapId) {
         return mapId >= CYGNUS_INTRO_LOCATION_MIN && mapId <= CYGNUS_INTRO_LOCATION_MAX;
     }
@@ -145,6 +172,12 @@ public class MapId {
     private static final int PHYSICAL_FITNESS_MIN = EVENT_PHYSICAL_FITNESS;
     private static final int PHYSICAL_FITNESS_MAX = FITNESS_EVENT_LAST;
 
+    /**
+     * 判断是否为健身挑战活动地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是健身挑战地图返回true
+     */
     public static boolean isPhysicalFitness(int mapId) {
         return mapId >= PHYSICAL_FITNESS_MIN && mapId <= PHYSICAL_FITNESS_MAX;
     }
@@ -152,6 +185,12 @@ public class MapId {
     private static final int OLA_OLA_MIN = EVENT_OLA_OLA_0;
     private static final int OLA_OLA_MAX = 109030403; // OLA_OLA_4 level 3
 
+    /**
+     * 判断是否为OLA OLA活动地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是OLA OLA地图返回true
+     */
     public static boolean isOlaOla(int mapId) {
         return mapId >= OLA_OLA_MIN && mapId <= OLA_OLA_MAX;
     }
@@ -162,6 +201,12 @@ public class MapId {
     private static final int GPQ_FOUNTAIN_MIN = 990000500;
     private static final int GPQ_FOUNTAIN_MAX = 990000502;
 
+    /**
+     * 判断是否为只能自己捡取物品的地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是仅自己捡取的地图返回true
+     */
     public static boolean isSelfLootableOnly(int mapId) {
         return (mapId >= HAPPYVILLE_TREE_MIN && mapId <= HAPPYVILLE_TREE_MAX) ||
                 (mapId >= GPQ_FOUNTAIN_MIN && mapId <= GPQ_FOUNTAIN_MAX);
@@ -176,10 +221,22 @@ public class MapId {
     private static final int DOJO_PARTY_MIN = 925030100;
     public static final int DOJO_PARTY_MAX = DOJO_MAX;
 
+    /**
+     * 判断是否为武陵道场地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是道场地图返回true
+     */
     public static boolean isDojo(int mapId) {
         return mapId >= DOJO_MIN && mapId <= DOJO_MAX;
     }
 
+    /**
+     * 判断是否为武陵道场组队地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是组队道场地图返回true
+     */
     public static boolean isPartyDojo(int mapId) {
         return mapId >= DOJO_PARTY_MIN && mapId <= DOJO_PARTY_MAX;
     }
@@ -213,6 +270,12 @@ public class MapId {
     private static final int BOSS_RUSH_MIN = 970030100;
     private static final int BOSS_RUSH_MAX = 970042711;
 
+    /**
+     * 判断是否为Boss Rush地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是Boss Rush地图返回true
+     */
     public static boolean isBossRush(int mapId) {
         return mapId >= BOSS_RUSH_MIN && mapId <= BOSS_RUSH_MAX;
     }
@@ -231,6 +294,12 @@ public class MapId {
     private static final int NETTS_PYRAMID_MIN = NETTS_PYRAMID_SOLO_BASE;
     private static final int NETTS_PYRAMID_MAX = 926023500;
 
+    /**
+     * 判断是否为奈特的金字塔地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是金字塔地图返回true
+     */
     public static boolean isNettsPyramid(int mapId) {
         return mapId >= NETTS_PYRAMID_MIN && mapId <= NETTS_PYRAMID_MAX;
     }
@@ -240,6 +309,12 @@ public class MapId {
     private static final int PIER_ON_THE_BEACH = 251000100;
     private static final int PEACEFUL_SHIP = 541010110;
 
+    /**
+     * 判断是否为钓鱼区域地图
+     *
+     * @param mapId 地图ID
+     * @return 如果是钓鱼区域返回true
+     */
     public static boolean isFishingArea(int mapId) {
         return mapId == ON_THE_WAY_TO_THE_HARBOR || mapId == PIER_ON_THE_BEACH || mapId == PEACEFUL_SHIP;
     }

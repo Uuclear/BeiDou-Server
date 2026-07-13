@@ -24,6 +24,11 @@ package org.gms.net.server.world;
 import org.gms.client.Character;
 import org.gms.client.Job;
 
+/**
+ * 组队角色类 - 存储组队成员的角色信息
+ *
+ * @author OdinMS开发团队
+ */
 public class PartyCharacter {
     private final String name;
     private int id;

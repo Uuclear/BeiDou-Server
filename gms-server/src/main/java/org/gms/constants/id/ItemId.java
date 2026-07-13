@@ -2,6 +2,16 @@ package org.gms.constants.id;
 
 import java.util.stream.IntStream;
 
+/**
+ * 道具ID常量类
+ * <p>
+ * 定义游戏中各种道具的ID常量，包括消耗品、装备、椅子、飞镖、子弹等，
+ * 以及判断道具类型的辅助方法。
+ * </p>
+ *
+ * @author GMS Team
+ * @since 1.0.0
+ */
 public class ItemId {
     // Misc
     public static final int PENDANT_OF_THE_SPIRIT = 1122017;
@@ -20,24 +30,54 @@ public class ItemId {
     public static final int ARPQ_SHIELD = 2022269;
     public static final int ROARING_TIGER_MESSENGER = 5390006;
 
+    /**
+     * 判断是否为经验值增加道具
+     *
+     * @param itemId 道具ID
+     * @return 如果是经验增加道具返回true
+     */
     public static boolean isExpIncrease(int itemId) {
         return itemId >= 2022450 && itemId <= 2022452;
     }
 
+    /**
+     * 判断是否为倍率券道具
+     *
+     * @param itemId 道具ID
+     * @return 如果是倍率券返回true
+     */
     public static boolean isRateCoupon(int itemId) {
         int itemType = itemId / 1000;
         return itemType == 5211 || itemType == 5360;
     }
 
+    /**
+     * 判断是否为怪物卡片道具
+     *
+     * @param itemId 道具ID
+     * @return 如果是怪物卡片返回true
+     */
     public static boolean isMonsterCard(int itemId) {
         int itemType = itemId / 10000;
         return itemType == 238;
     }
 
+    /**
+     * 判断是否为金字塔BUFF道具
+     *
+     * @param itemId 道具ID
+     * @return 如果是金字塔BUFF道具返回true
+     */
     public static boolean isPyramidBuff(int itemId) {
         return (itemId >= 2022585 && itemId <= 2022588) || (itemId >= 2022616 && itemId <= 2022617);
     }
 
+    /**
+     * 判断是否为武陵道场BUFF道具
+     *
+     * @param itemId 道具ID
+     * @return 如果是道场BUFF道具返回true
+     */
     public static boolean isDojoBuff(int itemId) {
         return itemId >= 2022359 && itemId <= 2022421;
     }
@@ -62,9 +102,14 @@ public class ItemId {
     private static final int CHAIR_MIN = RELAXER;
     private static final int CHAIR_MAX = FISHING_CHAIR;
 
+    /**
+     * 判断是否为椅子类道具
+     *
+     * @param itemId 道具ID
+     * @return 如果是椅子返回true
+     */
     public static boolean isChair(int itemId) {
         return itemId >= CHAIR_MIN && itemId <= CHAIR_MAX;
-        // alt: return itemId / 10000 == 301;
     }
 
     // Throwing star
@@ -76,6 +121,11 @@ public class ItemId {
     private static final int THROWING_STAR_MAX = 2070016;
     public static final int DEVIL_RAIN_THROWING_STAR = 2070014;
 
+    /**
+     * 获取所有飞镖道具ID数组
+     *
+     * @return 飞镖道具ID数组
+     */
     public static int[] allThrowingStarIds() {
         return IntStream.range(THROWING_STAR_MIN, THROWING_STAR_MAX + 1).toArray();
     }
@@ -87,6 +137,11 @@ public class ItemId {
     public static final int BLAZE_CAPSULE = 2331000;
     public static final int GLAZE_CAPSULE = 2332000;
 
+    /**
+     * 获取所有子弹道具ID数组
+     *
+     * @return 子弹道具ID数组
+     */
     public static int[] allBulletIds() {
         return IntStream.range(BULLET_MIN, BULLET_MAX + 1).toArray();
     }

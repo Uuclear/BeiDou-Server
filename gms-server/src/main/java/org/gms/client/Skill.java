@@ -27,6 +27,11 @@ import org.gms.server.life.Element;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 技能类 - 表示角色技能，包含技能等级、效果等
+ *
+ * @author GMS Server
+ */
 public class Skill {
     private final int id;
     private final List<StatEffect> effects = new ArrayList<>();

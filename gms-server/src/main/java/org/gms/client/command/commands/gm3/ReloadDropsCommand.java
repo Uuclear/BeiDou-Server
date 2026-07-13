@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.server.life.MonsterInformationProvider;
 import org.gms.util.I18nUtil;
 
+/**
+ * ReloadDrops命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ReloadDropsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ReloadDropsCommand.message1"));

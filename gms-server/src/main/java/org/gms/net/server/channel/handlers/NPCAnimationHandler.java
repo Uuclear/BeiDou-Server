@@ -27,6 +27,12 @@ import org.gms.net.opcodes.SendOpcode;
 import org.gms.net.packet.InPacket;
 import org.gms.net.packet.OutPacket;
 
+/**
+ * NPC动画Handler - 处理NPC动画播放
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class NPCAnimationHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

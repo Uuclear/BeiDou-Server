@@ -26,6 +26,12 @@ import org.gms.client.processor.action.SpawnPetProcessor;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 召唤宠物Handler - 处理玩家召唤宠物
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class SpawnPetHandler extends AbstractPacketHandler {
 
     @Override

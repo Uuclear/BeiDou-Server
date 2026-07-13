@@ -117,6 +117,19 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.gms.dao.entity.table.PlayernpcsFieldDOTableDef.PLAYERNPCS_FIELD_D_O;
 
 /**
+ * 世界（服务器）类
+ * 管理单个游戏世界（大区）的所有核心功能，包括：
+ * - 频道管理（添加/移除/获取频道）
+ * - 在线玩家跨频道管理
+ * - 组队、公会、家族、信使等社交系统管理
+ * - 婚姻系统管理
+ * - 世界范围的广播消息
+ * - 世界服务调度（角色自动保存等）
+ * - 经验率、掉率、金币率等服务器倍率配置
+ * - 匹配检查协调（公会创建、CPQ等）
+ * - 组队搜索协调
+ * - 玩家商店、雇佣商人管理
+ *
  * @author kevintjuh93
  * @author Ronan - thread-oriented (world schedules + guild queue + marriages + party chars)
  */

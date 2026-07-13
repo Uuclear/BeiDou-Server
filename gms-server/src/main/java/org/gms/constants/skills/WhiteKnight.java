@@ -22,7 +22,12 @@
 package org.gms.constants.skills;
 
 /**
- * @author BubblesDev
+ * 骑士（圣骑士前身）职业技能常量类
+ * <p>
+ * 定义该职业的所有技能ID常量，用于技能系统中识别和引用特定技能。
+ * </p>
+ *
+ * @author OdinMS Team
  */
 public class WhiteKnight {
     public static final int IMPROVING_MP_RECOVERY = 1210000;

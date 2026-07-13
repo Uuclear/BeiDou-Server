@@ -5,6 +5,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * IP地址类 - 管理IP地址相关信息
+ *
+ * @author OdinMS开发团队
+ */
 public class IpAddresses {
     private static final List<Pattern> LOCAL_ADDRESS_PATTERNS = loadLocalAddressPatterns();
 

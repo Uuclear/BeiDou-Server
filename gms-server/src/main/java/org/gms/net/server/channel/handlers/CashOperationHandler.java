@@ -55,6 +55,12 @@ import java.util.Objects;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 
+/**
+ * 现金商城操作Handler - 处理现金商城相关操作
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class CashOperationHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CashOperationHandler.class);
 

@@ -33,6 +33,11 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * Uptime命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class UptimeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("UptimeCommand.message1"));

@@ -37,13 +37,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
+ * 脚本管理器抽象基类，为各类脚本管理器提供通用的脚本加载和执行功能。
+ * 基于GraalVM JavaScript引擎，支持脚本国际化（i18n），按文件级别优先加载本地化脚本，
+ * 找不到则回退到默认英文脚本。提供脚本引擎缓存机制，支持重置脚本上下文。
+ *
  * @author Matze
  */
 public abstract class AbstractScriptManager {
     private static final Logger log = LoggerFactory.getLogger(AbstractScriptManager.class);
+    
+    /**
+     * 脚本文件根目录
+     */
     private static final String SCRIPT_DIRECTORY = "scripts";
+    
+    /**
+     * 脚本引擎工厂，用于创建GraalVM JS引擎实例
+     */
     private final ScriptEngineFactory sef;
 
+    /**
+     * 构造函数，初始化GraalVM JS脚本引擎工厂
+     */
     protected AbstractScriptManager() {
         sef = new ScriptEngineManager().getEngineByName("graal.js").getFactory();
     }

@@ -34,6 +34,11 @@ import org.gms.util.StringUtil;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
+/**
+ * Jail命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class JailCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("JailCommand.message1"));

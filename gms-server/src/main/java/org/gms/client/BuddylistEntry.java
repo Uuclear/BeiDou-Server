@@ -21,6 +21,11 @@
 */
 package org.gms.client;
 
+/**
+ * 好友列表条目
+ *
+ * @author GMS Server
+ */
 public class BuddylistEntry {
     private final String name;
     private String group;

@@ -8,6 +8,11 @@ import org.gms.server.maps.Portal;
 import org.gms.util.I18nUtil;
 import org.gms.util.StringUtil;
 
+/**
+ * WarpToLife命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class WarpToLifeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("GotoNPCCommand.message1"));

@@ -30,6 +30,11 @@ import org.gms.client.command.Command;
 import org.gms.config.GameConfig;
 import org.gms.util.I18nUtil;
 
+/**
+ * Rates命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class RatesCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("RatesCommand.message1"));

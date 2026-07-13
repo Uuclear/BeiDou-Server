@@ -11,12 +11,24 @@ import org.gms.model.dto.*;
 import org.gms.service.CommandService;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * GM命令管理控制器
+ * 提供GM命令相关的Web API接口，包括命令库查询、命令状态更新、服务器资源重载等功能
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/command")
 public class CommandController {
+    /**
+     * 命令服务，处理GM命令管理和服务器重载逻辑
+     */
     private final CommandService commandService;
 
+    /**
+     * 从数据库分页查询命令库所有指令与状态
+     * @param submitBody 包含分页参数和查询条件的请求体
+     * @return 分页命令列表
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "查询命令库所有指令与状态")
     @PostMapping("/" + ApiConstant.LATEST + "/getCommandListFromDB")
@@ -24,6 +36,11 @@ public class CommandController {
         return ResultBody.success(commandService.getCommandListFromDB(submitBody.getData()));
     }
 
+    /**
+     * 更新命令库中指定指令的状态
+     * @param submitBody 包含命令信息的请求体
+     * @return 更新后的命令信息
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "更新命令库所有指令与状态")
     @PostMapping("/" + ApiConstant.LATEST + "/updateCommand")
@@ -31,7 +48,11 @@ public class CommandController {
         return ResultBody.success(commandService.updateCommand(submitBody.getData()));
     }
 
-    //重载事件
+    /**
+     * 复用GM命令代码重载服务器事件脚本
+     * 重新加载所有事件脚本，无需重启服务器
+     * @return 操作成功结果
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "复用GM命令代码进行重载事件")
     @GetMapping("/" + ApiConstant.LATEST + "/reloadEventsByGMCommand")
@@ -39,7 +60,12 @@ public class CommandController {
         commandService.reloadEventsByGMCommand();
         return ResultBody.success();
     }
-    //重装传送点
+
+    /**
+     * 复用GM命令代码重装所有传送点
+     * 重新加载地图传送点数据，无需重启服务器
+     * @return 操作成功结果
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "复用GM命令代码进行重装传送点")
     @GetMapping("/" + ApiConstant.LATEST + "/reloadPortalsByGMCommand")
@@ -48,7 +74,11 @@ public class CommandController {
         return ResultBody.success();
     }
 
-    //重装地图
+    /**
+     * 复用GM命令代码重装所有地图
+     * 重新加载所有地图数据，并将在线玩家转移到新地图实例
+     * @return 操作成功结果
+     */
     @Tag(name = "/command/" + ApiConstant.LATEST)
     @Operation(summary = "复用GM命令代码进行重装地图")
     @GetMapping("/" + ApiConstant.LATEST + "/reloadMapsByGMCommand")
@@ -56,6 +86,4 @@ public class CommandController {
         commandService.reloadMapsByGMCommand();
         return ResultBody.success();
     }
-
-
 }

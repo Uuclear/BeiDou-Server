@@ -37,6 +37,11 @@ import org.gms.util.I18nUtil;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * Debuff命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class DebuffCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("DebuffCommand.message1"));

@@ -24,10 +24,28 @@ package org.gms.provider;
 import java.util.List;
 
 /**
+ * 数据目录条目接口，表示WZ文件系统中的一个目录条目。
+ * 继承自DataEntry，提供访问子目录、文件和按名称获取条目的能力。
+ *
  * @author Matze
  */
 public interface DataDirectoryEntry extends DataEntry {
+    /**
+     * 获取该目录下的所有子目录
+     * @return 子目录条目列表
+     */
     List<DataDirectoryEntry> getSubdirectories();
+
+    /**
+     * 获取该目录下的所有文件
+     * @return 文件条目列表
+     */
     List<DataFileEntry> getFiles();
+
+    /**
+     * 根据名称获取该目录下的条目（可以是文件或子目录）
+     * @param name 条目名称
+     * @return 找到的条目，如果不存在则返回null
+     */
     DataEntry getEntry(String name);
 }

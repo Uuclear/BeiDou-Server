@@ -32,6 +32,11 @@ import org.gms.server.maps.MapleMap;
 import org.gms.util.I18nUtil;
 import org.gms.util.StringUtil;
 
+/**
+ * Summon命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class SummonCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SummonCommand.message1"));

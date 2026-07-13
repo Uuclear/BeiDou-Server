@@ -28,6 +28,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * GetAcc命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class GetAccCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("GetAccCommand.message1"));

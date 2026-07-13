@@ -32,6 +32,11 @@ import org.gms.client.inventory.InventoryType;
 import org.gms.constants.inventory.ItemConstants;
 import org.gms.util.I18nUtil;
 
+/**
+ * SetEqStat命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class SetEqStatCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SetEqStatCommand.message1"));

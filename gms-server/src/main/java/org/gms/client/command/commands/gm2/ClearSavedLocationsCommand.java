@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.server.maps.SavedLocationType;
 import org.gms.util.I18nUtil;
 
+/**
+ * ClearSavedLocations命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ClearSavedLocationsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ClearSavedLocationsCommand.message1"));

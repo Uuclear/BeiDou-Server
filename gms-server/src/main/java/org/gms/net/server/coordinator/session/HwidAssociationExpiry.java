@@ -7,6 +7,11 @@ import java.time.Instant;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
 
+/**
+ * HWID关联过期类 - 管理HWID关联过期时间
+ *
+ * @author OdinMS开发团队
+ */
 public class HwidAssociationExpiry {
     public static Instant getHwidAccountExpiry(int relevance) {
         return Instant.ofEpochMilli(Server.getInstance().getCurrentTime()).plusMillis(hwidExpirationUpdate(relevance));

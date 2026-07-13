@@ -33,6 +33,11 @@ import org.slf4j.LoggerFactory;
 import org.gms.util.PacketCreator;
 import org.gms.util.Randomizer;
 
+/**
+ * Gm命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class GmCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("GmCommand.message1"));

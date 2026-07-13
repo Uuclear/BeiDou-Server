@@ -40,6 +40,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 好友列表修改Handler - 处理添加/删除好友等操作
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class BuddylistModifyHandler extends AbstractPacketHandler {
     private static class CharacterIdNameBuddyCapacity extends CharacterNameAndId {
         private final int buddyCapacity;

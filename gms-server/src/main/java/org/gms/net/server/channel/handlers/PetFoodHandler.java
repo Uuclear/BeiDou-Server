@@ -34,6 +34,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.net.server.Server;
 import org.gms.util.PacketCreator;
 
+/**
+ * 宠物食品Handler - 处理使用宠物食品
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class PetFoodHandler extends AbstractPacketHandler {
 
     @Override

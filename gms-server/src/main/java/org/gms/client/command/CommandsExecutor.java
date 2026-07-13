@@ -46,6 +46,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * CommandsExecutor类 - GM命令系统的核心实现
+ *
+ * @author GMS Server
+ */
 public class CommandsExecutor {
     private static final Logger log = LoggerFactory.getLogger(CommandsExecutor.class);
     @Getter

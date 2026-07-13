@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 宠物忽略实体类，对应数据库表 petignores。
+ * 存储宠物忽略捡取配置。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,13 +26,25 @@ import java.io.Serial;
 public class PetignoresDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Long id;
 
+    /**
+     * petid
+     */
     private Integer petid;
 
+    /**
+     * 物品ID
+     */
     private Integer itemid;
 
 }

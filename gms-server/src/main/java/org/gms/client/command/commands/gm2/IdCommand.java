@@ -21,6 +21,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Id命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class IdCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("IdCommand.message1"));

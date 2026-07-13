@@ -34,6 +34,11 @@ import org.gms.util.I18nUtil;
 
 import java.util.List;
 
+/**
+ * Gacha命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class GachaCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("GachaCommand.message1"));

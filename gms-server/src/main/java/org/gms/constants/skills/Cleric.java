@@ -21,6 +21,14 @@
 */
 package org.gms.constants.skills;
 
+/**
+ * 牧师（祭司前身）职业技能常量类
+ * <p>
+ * 定义该职业的所有技能ID常量，用于技能系统中识别和引用特定技能。
+ * </p>
+ *
+ * @author OdinMS Team
+ */
 public class Cleric {
     public static final int MP_EATER = 2300000;
     public static final int HEAL = 2301002;

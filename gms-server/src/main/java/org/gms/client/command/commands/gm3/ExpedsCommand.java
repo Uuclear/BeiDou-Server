@@ -34,6 +34,11 @@ import org.gms.util.I18nUtil;
 import java.util.List;
 import java.util.Map.Entry;
 
+/**
+ * Expeds命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ExpedsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ExpedsCommand.message1"));

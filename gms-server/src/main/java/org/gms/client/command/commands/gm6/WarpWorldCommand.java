@@ -33,6 +33,11 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * WarpWorld命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class WarpWorldCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WarpWorldCommand.message1"));

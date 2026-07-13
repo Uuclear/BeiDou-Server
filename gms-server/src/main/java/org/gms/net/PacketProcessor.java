@@ -29,40 +29,46 @@ import org.gms.net.server.channel.handlers.*;
 import org.gms.net.server.handlers.CustomPacketHandler;
 import org.gms.net.server.handlers.KeepAliveHandler;
 import org.gms.net.server.handlers.LoginRequiringNoOpHandler;
-import org.gms.net.server.handlers.login.AcceptToSHandler;
-import org.gms.net.server.handlers.login.AfterLoginHandler;
-import org.gms.net.server.handlers.login.CharSelectedHandler;
-import org.gms.net.server.handlers.login.CharSelectedWithPicHandler;
-import org.gms.net.server.handlers.login.CharlistRequestHandler;
-import org.gms.net.server.handlers.login.CheckCharNameHandler;
-import org.gms.net.server.handlers.login.CreateCharHandler;
-import org.gms.net.server.handlers.login.DeleteCharHandler;
-import org.gms.net.server.handlers.login.GuestLoginHandler;
-import org.gms.net.server.handlers.login.LoginPasswordHandler;
-import org.gms.net.server.handlers.login.RegisterPicHandler;
-import org.gms.net.server.handlers.login.RegisterPinHandler;
-import org.gms.net.server.handlers.login.RelogRequestHandler;
-import org.gms.net.server.handlers.login.ServerStatusRequestHandler;
-import org.gms.net.server.handlers.login.ServerlistRequestHandler;
-import org.gms.net.server.handlers.login.SetGenderHandler;
-import org.gms.net.server.handlers.login.ViewAllCharHandler;
-import org.gms.net.server.handlers.login.ViewAllCharRegisterPicHandler;
-import org.gms.net.server.handlers.login.ViewAllCharSelectedHandler;
-import org.gms.net.server.handlers.login.ViewAllCharSelectedWithPicHandler;
+import org.gms.net.server.handlers.login.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * 数据包处理器注册表
+ * 负责管理和分发所有接收到的客户端数据包到对应的处理器
+ * 根据服务器类型（登录服务器/频道服务器）注册不同的处理器集合
+ * 使用单例模式，每个世界/频道组合维护一个处理器实例
+ *
+ * @author OdinMS开发团队
+ */
 public final class PacketProcessor {
+    /**
+     * 日志记录器
+     */
     private static final Logger log = LoggerFactory.getLogger(PacketProcessor.class);
+
+    /**
+     * 处理器实例缓存，键为"世界ID 频道ID"格式的字符串
+     */
     private static final Map<String, PacketProcessor> instances = new LinkedHashMap<>();
 
+    /**
+     * 频道服务器依赖注入
+     */
     private static ChannelDependencies channelDeps;
 
+    /**
+     * 数据包处理器数组，索引为数据包操作码（Opcode）
+     */
     private PacketHandler[] handlers;
 
+    /**
+     * 私有构造函数，初始化处理器数组
+     * 计算最大的接收操作码值，以此确定数组大小
+     */
     private PacketProcessor() {
         int maxRecvOp = 0;
         for (RecvOpcode op : RecvOpcode.values()) {
@@ -73,14 +79,33 @@ public final class PacketProcessor {
         handlers = new PacketHandler[maxRecvOp + 1];
     }
 
+    /**
+     * 注册游戏处理器所需的依赖
+     *
+     * @param channelDependencies 频道服务器依赖对象，包含各种服务实例
+     */
     public static void registerGameHandlerDependencies(ChannelDependencies channelDependencies) {
         PacketProcessor.channelDeps = channelDependencies;
     }
 
+    /**
+     * 获取登录服务器的数据包处理器
+     * 登录服务器使用固定的世界ID和频道ID
+     *
+     * @return 登录服务器的数据包处理器实例
+     */
     public static PacketProcessor getLoginServerProcessor() {
         return getProcessor(LoginServer.WORLD_ID, LoginServer.CHANNEL_ID);
     }
 
+    /**
+     * 获取指定频道服务器的数据包处理器
+     *
+     * @param world 世界ID
+     * @param channel 频道ID
+     * @return 对应频道的数据包处理器实例
+     * @throws IllegalStateException 如果依赖未注册则抛出异常
+     */
     public static PacketProcessor getChannelServerProcessor(int world, int channel) {
         if (channelDeps == null) {
             throw new IllegalStateException("Unable to get channel server processor - dependencies are not registered");
@@ -89,6 +114,12 @@ public final class PacketProcessor {
         return getProcessor(world, channel);
     }
 
+    /**
+     * 根据数据包ID获取对应的处理器
+     *
+     * @param packetId 数据包操作码ID
+     * @return 对应的数据包处理器，如果ID无效则返回null
+     */
     public PacketHandler getHandler(short packetId) {
         if (packetId < 0 || packetId >= handlers.length) {
             return null;
@@ -97,6 +128,12 @@ public final class PacketProcessor {
         return handler;
     }
 
+    /**
+     * 注册一个数据包处理器
+     *
+     * @param code 数据包操作码
+     * @param handler 对应的处理器实例
+     */
     public void registerHandler(Opcode code, PacketHandler handler) {
         try {
             handlers[code.getValue()] = handler;
@@ -105,6 +142,14 @@ public final class PacketProcessor {
         }
     }
 
+    /**
+     * 获取或创建指定世界和频道的数据包处理器（同步方法）
+     * 如果处理器不存在则创建新实例并初始化
+     *
+     * @param world 世界ID
+     * @param channel 频道ID
+     * @return 数据包处理器实例
+     */
     public synchronized static PacketProcessor getProcessor(int world, int channel) {
         final String processorId = world + " " + channel;
         PacketProcessor processor = instances.get(processorId);
@@ -116,6 +161,12 @@ public final class PacketProcessor {
         return processor;
     }
 
+    /**
+     * 重置并重新注册处理器
+     * 根据服务器版本和频道类型注册对应的处理器集合
+     *
+     * @param channel 频道ID，负数表示登录服务器
+     */
     public void reset(int channel) {
         handlers = new PacketHandler[handlers.length];
 
@@ -135,11 +186,19 @@ public final class PacketProcessor {
         }
     }
 
+    /**
+     * 注册通用处理器
+     * 登录服务器和频道服务器都需要的处理器（如心跳包、自定义包等）
+     */
     private void registerCommonHandlers() {
         registerHandler(RecvOpcode.PONG, new KeepAliveHandler());
         registerHandler(RecvOpcode.CUSTOM_PACKET, new CustomPacketHandler());
     }
 
+    /**
+     * 注册登录服务器专用处理器
+     * 处理登录、角色选择、角色创建/删除等登录阶段的数据包
+     */
     private void registerLoginHandlers() {
         registerHandler(RecvOpcode.ACCEPT_TOS, new AcceptToSHandler());
         registerHandler(RecvOpcode.AFTER_LOGIN, new AfterLoginHandler());
@@ -164,6 +223,10 @@ public final class PacketProcessor {
         registerHandler(RecvOpcode.VIEW_ALL_PIC_REGISTER, new ViewAllCharRegisterPicHandler());
     }
 
+    /**
+     * 注册频道服务器专用处理器
+     * 处理游戏内的所有操作：移动、攻击、聊天、NPC对话、道具、技能、组队、公会等
+     */
     private void registerChannelHandlers() {
         registerHandler(RecvOpcode.NAME_TRANSFER, new TransferNameHandler());
         registerHandler(RecvOpcode.CHECK_CHAR_NAME, new TransferNameResultHandler());

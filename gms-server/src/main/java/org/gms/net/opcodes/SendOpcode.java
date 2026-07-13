@@ -21,6 +21,13 @@
  */
 package org.gms.net.opcodes;
 
+/**
+ * 服务器→客户端 发送数据包操作码枚举
+ * 定义了所有从服务器发送到客户端的数据包操作码
+ * 涵盖登录响应、背包更新、角色信息、地图对象生成、移动、战斗、聊天、NPC商店、公会、组队、现金商店等所有服务器主动推送的数据包
+ *
+ * @author OdinMS开发团队
+ */
 public enum SendOpcode implements Opcode {
 
     LOGIN_STATUS(0x00), // 登录状态
@@ -358,17 +365,36 @@ public enum SendOpcode implements Opcode {
 
     UPDATE_HPMPAALERT(0x1000), // 更新HP/MP/EXP警报
     ;
+
+    /**
+     * 操作码数值
+     */
     private int code = -2;
 
+    /**
+     * 构造发送操作码
+     *
+     * @param code 操作码数值
+     */
     SendOpcode(int code) {
         this.code = code;
     }
 
+    /**
+     * 获取操作码数值
+     *
+     * @return 操作码整数值
+     */
     @Override
     public int getValue() {
         return code;
     }
 
+    /**
+     * 获取操作码名称（枚举名）
+     *
+     * @return 操作码名称
+     */
     @Override
     public String getName() {
         return this.name();

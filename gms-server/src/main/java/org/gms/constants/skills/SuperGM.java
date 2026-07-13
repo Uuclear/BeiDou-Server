@@ -22,7 +22,12 @@
 package org.gms.constants.skills;
 
 /**
- * @author BubblesDev
+ * 超级管理员技能常量类
+ * <p>
+ * 定义该职业的所有技能ID常量，用于技能系统中识别和引用特定技能。
+ * </p>
+ *
+ * @author OdinMS Team
  */
 public class SuperGM {
     public static final int HEAL_PLUS_DISPEL = 9101000;

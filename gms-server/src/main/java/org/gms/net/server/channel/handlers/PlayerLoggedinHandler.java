@@ -74,6 +74,12 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
+/**
+ * 玩家登录完成Handler - 处理玩家进入游戏后的初始化
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class PlayerLoggedinHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(PlayerLoggedinHandler.class);
     private static final Set<Integer> attemptingLoginAccounts = new HashSet<>();

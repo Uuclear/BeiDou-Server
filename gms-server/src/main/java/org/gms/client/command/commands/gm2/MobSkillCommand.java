@@ -11,6 +11,11 @@ import org.gms.util.I18nUtil;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * MobSkill命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class MobSkillCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("MobSkillCommand.message1"));

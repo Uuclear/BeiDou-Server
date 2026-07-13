@@ -26,6 +26,12 @@ import org.gms.client.processor.stat.AssignAPProcessor;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 分配属性点Handler - 处理玩家分配能力点(AP)
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class DistributeAPHandler extends AbstractPacketHandler {
 
     @Override

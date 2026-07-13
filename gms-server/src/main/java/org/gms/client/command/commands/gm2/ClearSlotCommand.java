@@ -32,6 +32,11 @@ import org.gms.client.inventory.manipulator.InventoryManipulator;
 import org.gms.constants.game.GameConstants;
 import org.gms.util.I18nUtil;
 
+/**
+ * ClearSlot命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ClearSlotCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ClearSlotCommand.message1"));

@@ -28,6 +28,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * ServerMessage命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ServerMessageCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ServerMessageCommand.message1"));

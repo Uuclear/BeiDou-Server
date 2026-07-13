@@ -29,6 +29,11 @@ import org.gms.net.server.channel.Channel;
 import org.gms.net.server.world.World;
 import org.gms.util.PacketCreator;
 
+/**
+ * 角色列表请求Handler - 处理请求角色列表
+ *
+ * @author OdinMS开发团队
+ */
 public final class CharlistRequestHandler extends AbstractPacketHandler {
 
     @Override

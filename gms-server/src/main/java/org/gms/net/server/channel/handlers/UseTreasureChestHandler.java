@@ -13,6 +13,12 @@ import org.gms.util.PacketCreator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 使用宝箱Handler - 处理开启宝箱
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class UseTreasureChestHandler extends AbstractPacketHandler {
 
     @Override

@@ -13,10 +13,11 @@ import java.io.Serial;
 import java.util.Date;
 
 /**
- * 游戏参数表 实体类。
+ * 游戏配置实体类，对应数据库表 game_config。
+ * 存储游戏服务器配置参数。
  *
- * @author CN
- * @since 2024-10-18
+ * @author sleep
+ * @since 2024-05-24
  */
 @Data
 @Builder
@@ -26,12 +27,18 @@ import java.util.Date;
 public class GameConfigDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     /**
      * 自增id
      */
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Long id;
 
     /**

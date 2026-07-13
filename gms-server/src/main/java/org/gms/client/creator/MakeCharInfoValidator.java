@@ -5,6 +5,11 @@ import org.gms.provider.Data;
 import org.gms.provider.DataProviderFactory;
 import org.gms.provider.wz.WZFiles;
 
+/**
+ * MakeCharInfoValidator类 - 角色创建系统的核心实现
+ *
+ * @author GMS Server
+ */
 public class MakeCharInfoValidator {
     private static final MakeCharInfo charFemale;
     private static final MakeCharInfo charMale;

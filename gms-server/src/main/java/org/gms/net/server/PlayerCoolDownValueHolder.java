@@ -22,13 +22,35 @@
 package org.gms.net.server;
 
 /**
+ * 玩家技能冷却值持有者类
+ * 用于存储玩家技能的冷却信息，包括技能ID、开始时间和冷却时长
+ * 主要用于角色切换频道或重新登录时恢复技能冷却状态
+ *
  * @author Danny
  */
 public class PlayerCoolDownValueHolder {
+    /**
+     * 技能ID，标识具体的技能
+     */
     public int skillId;
+    
+    /**
+     * 冷却开始时间（时间戳，毫秒）
+     */
     public long startTime;
+    
+    /**
+     * 冷却持续时长（毫秒）
+     */
     public long length;
 
+    /**
+     * 构造函数：创建玩家技能冷却值持有者
+     *
+     * @param skillId 技能ID
+     * @param startTime 冷却开始时间（毫秒时间戳）
+     * @param length 冷却持续时长（毫秒）
+     */
     public PlayerCoolDownValueHolder(int skillId, long startTime, long length) {
         this.skillId = skillId;
         this.startTime = startTime;

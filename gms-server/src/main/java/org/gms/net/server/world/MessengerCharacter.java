@@ -23,6 +23,11 @@ package org.gms.net.server.world;
 
 import org.gms.client.Character;
 
+/**
+ * 信使角色类 - 存储信使系统中的角色信息
+ *
+ * @author OdinMS开发团队
+ */
 public class MessengerCharacter {
     private final String name;
     private final int id;

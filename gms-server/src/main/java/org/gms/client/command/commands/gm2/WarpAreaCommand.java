@@ -32,6 +32,11 @@ import org.gms.util.I18nUtil;
 import java.awt.*;
 import java.util.Collection;
 
+/**
+ * WarpArea命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class WarpAreaCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WarpAreaCommand.message1"));

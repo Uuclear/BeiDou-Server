@@ -22,12 +22,36 @@ package org.gms.net.server;
 
 import org.gms.client.Disease;
 
-public class PlayerDiseaseValueHolder {//Thanks Celino
-
+/**
+ * 玩家疾病（减益效果）值持有者类
+ * 用于存储玩家的减益效果（疾病/Debuff）信息，包括疾病类型、开始时间和持续时长
+ * 主要用于角色切换频道或重新登录时恢复减益状态
+ *
+ * @author Celino
+ */
+public class PlayerDiseaseValueHolder {
+    /**
+     * 减益效果开始时间（时间戳，毫秒）
+     */
     public long startTime;
+    
+    /**
+     * 减益效果持续时长（毫秒）
+     */
     public long length;
+    
+    /**
+     * 疾病（减益效果）枚举，标识具体的减益类型
+     */
     public Disease disease;
 
+    /**
+     * 构造函数：创建玩家疾病（减益效果）值持有者
+     *
+     * @param disease 疾病（减益效果）类型
+     * @param startTime 减益效果开始时间（毫秒时间戳）
+     * @param length 减益效果持续时长（毫秒）
+     */
     public PlayerDiseaseValueHolder(final Disease disease, final long startTime, final long length) {
         this.disease = disease;
         this.startTime = startTime;

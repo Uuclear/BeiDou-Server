@@ -32,6 +32,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * Time命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class TimeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("TimeCommand.message1"));

@@ -27,6 +27,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * ChangeLanguage命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ChangeLanguageCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ChangeLanguageCommand.message1"));

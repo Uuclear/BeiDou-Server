@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 快速栏快捷键实体类，对应数据库表 quickslotkeymapped。
+ * 存储快速栏快捷键映射。
  *
  * @author sleep
  * @since 2024-05-24
@@ -24,11 +25,20 @@ import java.io.Serial;
 public class QuickslotkeymappedDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id
+    /**
+     * 账号ID
+     */
     private Integer accountid;
 
+    /**
+     * keymap
+     */
     private Long keymap;
 
 }

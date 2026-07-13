@@ -21,15 +21,24 @@
 */
 package org.gms.util;
 
+/**
+ * 字符串工具类
+ * <p>
+ * 提供字符串填充、连接、格式化等常用操作。
+ * </p>
+ *
+ * @author GMS Team
+ * @since 1.0.0
+ */
 public class StringUtil {
+
     /**
-     * Gets a string padded from the left to <code>length</code> by
-     * <code>padchar</code>.
+     * 获取左填充到指定长度的字符串
      *
-     * @param in      The input string to be padded.
-     * @param padchar The character to pad with.
-     * @param length  The length to pad to.
-     * @return The padded string.
+     * @param in      输入字符串
+     * @param padchar 用于填充的字符
+     * @param length  目标长度
+     * @return 左填充后的字符串
      */
     public static String getLeftPaddedStr(String in, char padchar, int length) {
         StringBuilder builder = new StringBuilder(length);
@@ -41,13 +50,12 @@ public class StringUtil {
     }
 
     /**
-     * Gets a string padded from the right to <code>length</code> by
-     * <code>padchar</code>.
+     * 获取右填充到指定长度的字符串
      *
-     * @param in      The input string to be padded.
-     * @param padchar The character to pad with.
-     * @param length  The length to pad to.
-     * @return The padded string.
+     * @param in      输入字符串
+     * @param padchar 用于填充的字符
+     * @param length  目标长度
+     * @return 右填充后的字符串
      */
     public static String getRightPaddedStr(String in, char padchar, int length) {
         StringBuilder builder = new StringBuilder(in);
@@ -58,24 +66,23 @@ public class StringUtil {
     }
 
     /**
-     * Joins an array of strings starting from string <code>start</code> with
-     * a space.
+     * 从指定索引开始用空格连接字符串数组
      *
-     * @param arr   The array of strings to join.
-     * @param start Starting from which string.
-     * @return The joined strings.
+     * @param arr   要连接的字符串数组
+     * @param start 起始索引
+     * @return 连接后的字符串
      */
     public static String joinStringFrom(String[] arr, int start) {
         return joinStringFrom(arr, start, " ");
     }
 
     /**
-     * Joins an array of strings starting from string <code>start</code> with
-     * <code>sep</code> as a seperator.
+     * 从指定索引开始用指定分隔符连接字符串数组
      *
-     * @param arr   The array of strings to join.
-     * @param start Starting from which string.
-     * @return The joined strings.
+     * @param arr   要连接的字符串数组
+     * @param start 起始索引
+     * @param sep   分隔符
+     * @return 连接后的字符串
      */
     public static String joinStringFrom(String[] arr, int start, String sep) {
         StringBuilder builder = new StringBuilder();
@@ -89,17 +96,21 @@ public class StringUtil {
     }
 
     /**
-     * Makes an enum name human readable (fixes spaces, capitalization, etc)
+     * 将枚举名称转换为人类可读格式
+     * <p>
+     * 处理下划线分隔的枚举名称，调整大小写，使其更易读。
+     * 长度小于等于2的单词（通常是缩写）保持大写。
+     * </p>
      *
-     * @param enumName The name of the enum to neaten up.
-     * @return The human-readable enum name.
+     * @param enumName 枚举名称（如"MAX_VALUE"）
+     * @return 人类可读的字符串（如"Max Value"）
      */
     public static String makeEnumHumanReadable(String enumName) {
         StringBuilder builder = new StringBuilder(enumName.length() + 1);
         String[] words = enumName.split("_");
         for (String word : words) {
             if (word.length() <= 2) {
-                builder.append(word); // assume that it's an abbrevation
+                builder.append(word);
             } else {
                 builder.append(word.charAt(0));
                 builder.append(word.substring(1).toLowerCase());
@@ -110,11 +121,11 @@ public class StringUtil {
     }
 
     /**
-     * Counts the number of <code>chr</code>'s in <code>str</code>.
+     * 统计字符串中指定字符出现的次数
      *
-     * @param str The string to check for instances of <code>chr</code>.
-     * @param chr The character to check for.
-     * @return The number of times <code>chr</code> occurs in <code>str</code>.
+     * @param str 要检查的字符串
+     * @param chr 要统计的字符
+     * @return 字符出现的次数
      */
     public static int countCharacters(String str, char chr) {
         int ret = 0;
@@ -126,6 +137,12 @@ public class StringUtil {
         return ret;
     }
 
+    /**
+     * 判断字符串是否为数值（整数或小数）
+     *
+     * @param str 要判断的字符串
+     * @return 如果是数值返回true，否则返回false
+     */
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }

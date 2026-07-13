@@ -38,6 +38,11 @@ import org.gms.util.PacketCreator;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * ForceVac命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ForceVacCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ForceVacCommand.message1"));

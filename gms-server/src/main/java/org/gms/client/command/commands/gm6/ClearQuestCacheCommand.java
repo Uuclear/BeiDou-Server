@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.server.quest.Quest;
 import org.gms.util.I18nUtil;
 
+/**
+ * ClearQuestCache命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class ClearQuestCacheCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ClearQuestCacheCommand.message1"));

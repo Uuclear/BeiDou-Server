@@ -37,6 +37,11 @@ import org.gms.server.quest.Quest;
 import org.gms.util.I18nUtil;
 import org.gms.util.Pair;
 
+/**
+ * Search命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class SearchCommand extends Command {
     private static Data npcStringData;
     private static Data mobStringData;

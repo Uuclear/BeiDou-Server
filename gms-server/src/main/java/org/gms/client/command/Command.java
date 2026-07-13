@@ -27,6 +27,11 @@ import lombok.Data;
 import org.gms.client.Client;
 
 @Data
+/**
+ * 命令类 - GM命令系统的核心实现
+ *
+ * @author GMS Server
+ */
 public abstract class Command {
 
     protected int rank;

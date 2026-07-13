@@ -30,6 +30,11 @@ import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 import org.gms.util.StringUtil;
 
+/**
+ * Timer命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class TimerCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("TimerCommand.message1"));

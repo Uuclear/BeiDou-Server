@@ -32,6 +32,11 @@ import org.gms.server.ItemInformationProvider;
 import org.gms.util.I18nUtil;
 import org.gms.util.StringUtil;
 
+/**
+ * Hair命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class HairCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("HairCommand.message1"));

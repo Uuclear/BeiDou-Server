@@ -25,6 +25,11 @@ import org.gms.client.Client;
 import org.gms.net.PacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 需登录空操作Handler - 处理需要登录状态的空操作
+ *
+ * @author OdinMS开发团队
+ */
 public final class LoginRequiringNoOpHandler implements PacketHandler {
     private static final LoginRequiringNoOpHandler instance = new LoginRequiringNoOpHandler();
 

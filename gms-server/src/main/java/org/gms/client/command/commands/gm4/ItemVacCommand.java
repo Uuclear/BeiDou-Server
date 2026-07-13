@@ -33,6 +33,11 @@ import org.gms.util.I18nUtil;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * ItemVac命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ItemVacCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ItemVacCommand.message1"));

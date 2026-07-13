@@ -15,6 +15,11 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 注册安全码Handler - 处理注册/设置安全码(PIC)
+ *
+ * @author OdinMS开发团队
+ */
 public final class RegisterPicHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(RegisterPicHandler.class);
 

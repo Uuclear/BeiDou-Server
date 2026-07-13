@@ -31,6 +31,12 @@ import org.gms.util.I18nUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 给予人气Handler - 处理玩家给他人加/减人气
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class GiveFameHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(GiveFameHandler.class);
 

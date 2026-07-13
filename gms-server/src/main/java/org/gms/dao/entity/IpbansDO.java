@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * IP封禁实体类，对应数据库表 ipbans。
+ * 存储被封禁的IP地址。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,13 +26,25 @@ import java.io.Serial;
 public class IpbansDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * ipbanid
+     */
     private Long ipbanid;
 
+    /**
+     * IP地址
+     */
     private String ip;
 
+    /**
+     * aid
+     */
     private String aid;
 
 }

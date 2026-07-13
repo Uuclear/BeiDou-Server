@@ -36,6 +36,11 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 怪物卡册类 - 怪物收藏卡册系统
+ *
+ * @author GMS Server
+ */
 public final class MonsterBook {
     private int specialCard = 0;
     private int normalCard = 0;

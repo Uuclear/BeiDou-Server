@@ -33,6 +33,11 @@ import org.gms.util.I18nUtil;
 
 import java.awt.*;
 
+/**
+ * Seed命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class SeedCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SeedCommand.message1"));

@@ -21,6 +21,11 @@
 */
 package org.gms.client;
 
+/**
+ * 技能宏类 - 技能快捷宏配置
+ *
+ * @author GMS Server
+ */
 public class SkillMacro {
     private int skill1;
     private int skill2;

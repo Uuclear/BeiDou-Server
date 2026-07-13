@@ -37,6 +37,11 @@ import org.gms.util.Randomizer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 查看所有角色后选择Handler - 处理从所有角色列表选择角色
+ *
+ * @author OdinMS开发团队
+ */
 public final class ViewAllCharSelectedHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ViewAllCharSelectedHandler.class);
 

@@ -52,6 +52,11 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 公会类 - 管理单个公会的信息、成员、权限等
+ *
+ * @author OdinMS开发团队
+ */
 public class Guild {
     private static final Logger log = LoggerFactory.getLogger(Guild.class);
 

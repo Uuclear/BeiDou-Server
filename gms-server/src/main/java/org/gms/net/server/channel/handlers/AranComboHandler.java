@@ -29,6 +29,12 @@ import org.gms.constants.skills.Aran;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 战神连击Handler - 处理战神职业的连击系统
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class AranComboHandler extends AbstractPacketHandler {
 
     @Override

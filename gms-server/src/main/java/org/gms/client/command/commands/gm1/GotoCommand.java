@@ -38,6 +38,11 @@ import org.gms.util.I18nUtil;
 import java.util.*;
 import java.util.Map.Entry;
 
+/**
+ * Goto命令类 - 初级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class GotoCommand extends Command {
 
     {

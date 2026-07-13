@@ -40,6 +40,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 装备类 - 表示可装备物品，包含强化、潜能、升级等属性
+ *
+ * @author GMS Server
+ */
 public class Equip extends Item {
     private static final Logger log = LoggerFactory.getLogger(Equip.class);
 

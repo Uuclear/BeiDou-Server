@@ -33,8 +33,22 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * 冒险岛AES-OFB加密器
+ * 实现冒险岛特有的AES-OFB（输出反馈模式）加密算法
+ * 用于数据包的加解密以及数据包头部的生成和验证
+ *
+ * @author OdinMS开发团队
+ */
 public class MapleAESOFB {
+    /**
+     * 日志记录器
+     */
     private static final Logger log = LoggerFactory.getLogger(MapleAESOFB.class);
+
+    /**
+     * AES加密密钥（固定32字节密钥）
+     */
     private final static SecretKeySpec skey = new SecretKeySpec(
             new byte[]{
                     0x13, 0x00, 0x00, 0x00,
@@ -46,6 +60,10 @@ public class MapleAESOFB {
                     0x33, 0x00, 0x00, 0x00,
                     0x52, 0x00, 0x00, 0x00}, "AES");
 
+    /**
+     * 加密用的魔数查找表（256字节）
+     * 用于IV更新过程中的非线性变换
+     */
     private static final byte[] funnyBytes = new byte[]{
             (byte) 0xEC, (byte) 0x3F, (byte) 0x77, (byte) 0xA4, (byte) 0x45, (byte) 0xD0, (byte) 0x71, (byte) 0xBF,
             (byte) 0xB7, (byte) 0x98, (byte) 0x20, (byte) 0xFC, (byte) 0x4B, (byte) 0xE9, (byte) 0xB3, (byte) 0xE1,
@@ -80,10 +98,27 @@ public class MapleAESOFB {
             (byte) 0x84, (byte) 0x7F, (byte) 0x61, (byte) 0x1E, (byte) 0xCF, (byte) 0xC5, (byte) 0xD1, (byte) 0x56,
             (byte) 0x3D, (byte) 0xCA, (byte) 0xF4, (byte) 0x05, (byte) 0xC6, (byte) 0xE5, (byte) 0x08, (byte) 0x49};
 
+    /**
+     * 冒险岛版本号（字节序已转换）
+     */
     private final short mapleVersion;
+
+    /**
+     * AES密码器实例
+     */
     private final Cipher cipher;
+
+    /**
+     * 当前初始化向量
+     */
     private byte[] iv;
 
+    /**
+     * 构造AES-OFB加密器
+     *
+     * @param iv 初始化向量
+     * @param mapleVersion 冒险岛版本号
+     */
     public MapleAESOFB(InitializationVector iv, short mapleVersion) {
         try {
             cipher = Cipher.getInstance("AES");
@@ -97,6 +132,14 @@ public class MapleAESOFB {
         this.mapleVersion = (short) (((mapleVersion >> 8) & 0xFF) | ((mapleVersion << 8) & 0xFF00));
     }
 
+    /**
+     * 将字节数组重复扩展指定倍数
+     *
+     * @param in 原始字节数组
+     * @param count 原始数组长度
+     * @param mul 重复倍数
+     * @return 扩展后的字节数组
+     */
     private static byte[] multiplyBytes(byte[] in, int count, int mul) {
         final int size = count * mul;
         byte[] ret = new byte[size];
@@ -106,6 +149,14 @@ public class MapleAESOFB {
         return ret;
     }
 
+    /**
+     * 加密/解密数据（同步方法）
+     * 使用AES-OFB模式对数据进行加解密（异或操作，加密解密使用同一方法）
+     * 数据按块处理，每块大小初始为0x5B0，后续块为0x5B4
+     *
+     * @param data 要加解密的数据（会被原地修改）
+     * @return 加解密后的数据（与输入为同一数组）
+     */
     public synchronized byte[] crypt(byte[] data) {
         int remaining = data.length;
         int llength = 0x5B0;
@@ -134,10 +185,21 @@ public class MapleAESOFB {
         return data;
     }
 
+    /**
+     * 更新初始化向量（同步方法）
+     * 每次加解密操作后调用，生成新的IV用于下一次操作
+     */
     private synchronized void updateIv() {
         this.iv = getNewIv(this.iv);
     }
 
+    /**
+     * 生成数据包头部
+     * 4字节头部，包含版本校验和长度信息
+     *
+     * @param length 数据包长度
+     * @return 4字节的数据包头部
+     */
     public byte[] getPacketHeader(int length) {
         int iiv = (iv[3]) & 0xFF;
         iiv |= (iv[2] << 8) & 0xFF00;
@@ -152,17 +214,36 @@ public class MapleAESOFB {
         return ret;
     }
 
+    /**
+     * 从数据包头部解析数据包长度
+     *
+     * @param packetHeader 数据包头部（int形式，4字节）
+     * @return 数据包长度（字节）
+     */
     public static int getPacketLength(int packetHeader) {
         int packetLength = ((packetHeader >>> 16) ^ (packetHeader & 0xFFFF));
         packetLength = ((packetLength << 8) & 0xFF00) | ((packetLength >>> 8) & 0xFF);
         return packetLength;
     }
 
+    /**
+     * 检查数据包头部是否有效
+     * 验证头部中的版本信息是否匹配
+     *
+     * @param packet 数据包头部字节数组（至少2字节）
+     * @return 如果头部有效返回true，否则返回false
+     */
     private boolean checkPacket(byte[] packet) {
         return ((((packet[0] ^ iv[2]) & 0xFF) == ((mapleVersion >> 8) & 0xFF)) &&
                 (((packet[1] ^ iv[3]) & 0xFF) == (mapleVersion & 0xFF)));
     }
 
+    /**
+     * 验证数据包头部是否有效
+     *
+     * @param packetHeader 数据包头部（int形式）
+     * @return 如果头部有效返回true，否则返回false
+     */
     public boolean isValidHeader(int packetHeader) {
         byte[] packetHeaderBuf = new byte[2];
         packetHeaderBuf[0] = (byte) ((packetHeader >> 24) & 0xFF);
@@ -170,6 +251,13 @@ public class MapleAESOFB {
         return checkPacket(packetHeaderBuf);
     }
 
+    /**
+     * 根据旧IV生成新IV
+     * 使用funnyShit算法进行非线性变换
+     *
+     * @param oldIv 旧的初始化向量
+     * @return 新的初始化向量
+     */
     public static byte[] getNewIv(byte[] oldIv) {
         byte[] in = {(byte) 0xf2, 0x53, (byte) 0x50, (byte) 0xc6};
         for (int x = 0; x < 4; x++) {
@@ -178,11 +266,24 @@ public class MapleAESOFB {
         return in;
     }
 
+    /**
+     * 返回IV的十六进制字符串表示
+     *
+     * @return IV的十六进制字符串
+     */
     @Override
     public String toString() {
         return "IV: " + HexTool.toHexString(this.iv);
     }
 
+    /**
+     * IV更新的核心变换算法
+     * 冒险岛私有算法，使用funnyBytes查找表进行一系列字节运算和循环移位
+     *
+     * @param inputByte 输入字节（旧IV的一个字节）
+     * @param in 工作缓冲区（4字节，原地修改）
+     * @return 变换后的工作缓冲区
+     */
     private static byte[] funnyShit(byte inputByte, byte[] in) {
         byte elina = in[1];
         byte anna = inputByte;

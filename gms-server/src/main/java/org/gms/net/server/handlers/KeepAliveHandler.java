@@ -25,6 +25,11 @@ import org.gms.client.Client;
 import org.gms.net.PacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 心跳保持Handler - 处理客户端心跳包(Keep-Alive)
+ *
+ * @author OdinMS开发团队
+ */
 public class KeepAliveHandler implements PacketHandler {
     @Override
     public void handlePacket(InPacket p, Client c) {

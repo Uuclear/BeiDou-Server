@@ -14,10 +14,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 转蛋奖励实体类，对应数据库表 gachapon_reward。
+ * 存储转蛋机奖励配置。
  *
- * @author lee
- * @since 2024-09-19
+ * @author sleep
+ * @since 2024-05-24
  */
 @Data
 @Builder
@@ -27,12 +28,18 @@ import java.io.Serial;
 public class GachaponRewardDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     /**
      * 自增ID
      */
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
     /**
@@ -49,6 +56,9 @@ public class GachaponRewardDO implements Serializable {
      * 道具名称
      */
     @Column(ignore = true)
+    /**
+     * itemName
+     */
     private String itemName;
 
     /**

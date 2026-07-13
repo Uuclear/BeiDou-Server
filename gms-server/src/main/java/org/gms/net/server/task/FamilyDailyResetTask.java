@@ -15,6 +15,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
 
+/**
+ * 家族每日重置任务 - 每日重置家族相关数据
+ *
+ * @author OdinMS开发团队
+ */
 public class FamilyDailyResetTask implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(FamilyDailyResetTask.class);
     private final World world;

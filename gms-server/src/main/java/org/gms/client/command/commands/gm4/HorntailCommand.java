@@ -31,6 +31,11 @@ import org.gms.util.I18nUtil;
 
 import java.awt.*;
 
+/**
+ * Horntail命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class HorntailCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("HorntailCommand.message1"));

@@ -27,6 +27,12 @@ import org.gms.constants.id.ItemId;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 使用椅子Handler - 处理玩家坐下使用椅子
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class UseChairHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

@@ -34,6 +34,12 @@ import org.gms.net.server.Server;
 import org.gms.server.maps.MapleMap;
 import org.gms.util.PacketCreator;
 
+/**
+ * 持续治疗Handler - 处理持续回血/回蓝效果
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class HealOvertimeHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

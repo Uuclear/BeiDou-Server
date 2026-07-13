@@ -30,6 +30,11 @@ import org.gms.net.server.Server;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * Notice命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class NoticeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("NoticeCommand.message1"));

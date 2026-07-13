@@ -34,6 +34,11 @@ import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
 @Slf4j
+/**
+ * 创建角色Handler - 处理创建新角色
+ *
+ * @author OdinMS开发团队
+ */
 public final class CreateCharHandler extends AbstractPacketHandler {
 
     @Override

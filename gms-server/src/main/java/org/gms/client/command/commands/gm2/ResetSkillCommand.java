@@ -34,6 +34,11 @@ import org.gms.provider.DataProviderFactory;
 import org.gms.provider.wz.WZFiles;
 import org.gms.util.I18nUtil;
 
+/**
+ * ResetSkill命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ResetSkillCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ResetSkillCommand.message1"));

@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 import org.gms.util.StringUtil;
 
+/**
+ * UnJail命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class UnJailCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("UnJailCommand.message1"));

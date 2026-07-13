@@ -34,6 +34,12 @@ import org.gms.net.server.world.MessengerCharacter;
 import org.gms.net.server.world.World;
 import org.gms.util.PacketCreator;
 
+/**
+ * 信使Handler - 处理聊天信使/好友通知
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class MessengerHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

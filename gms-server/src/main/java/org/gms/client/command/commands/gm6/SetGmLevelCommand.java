@@ -28,6 +28,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * SetGmLevel命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class SetGmLevelCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SetGmLevelCommand.message1"));

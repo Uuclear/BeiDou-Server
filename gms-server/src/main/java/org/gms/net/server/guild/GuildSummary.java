@@ -21,6 +21,11 @@
 */
 package org.gms.net.server.guild;
 
+/**
+ * 公会摘要类 - 存储公会的概要信息用于列表展示
+ *
+ * @author OdinMS开发团队
+ */
 public class GuildSummary {
     private final String name;
     private final short logoBG;

@@ -25,6 +25,12 @@ import org.gms.client.Client;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 管理员日志Handler - 处理管理员操作日志
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class AdminLogHandler extends AbstractPacketHandler {
 
     @Override

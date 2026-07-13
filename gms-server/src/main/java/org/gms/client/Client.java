@@ -99,6 +99,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 客户端类 - 表示一个连接到服务器的游戏客户端会话，处理网络通信和登录状态
+ *
+ * @author GMS Server
+ */
 public class Client extends ChannelInboundHandlerAdapter {
     private static final Logger log = LoggerFactory.getLogger(Client.class);
 

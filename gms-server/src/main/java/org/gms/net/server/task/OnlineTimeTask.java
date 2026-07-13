@@ -9,6 +9,11 @@ import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * 在线时间任务 - 定时计算玩家在线时间
+ *
+ * @author OdinMS开发团队
+ */
 public class OnlineTimeTask implements Runnable {
     private final AtomicReference<LocalDate> lastUpdated = new AtomicReference<>(LocalDate.now());
     private final AtomicBoolean running = new AtomicBoolean(false);

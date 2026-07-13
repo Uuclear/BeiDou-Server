@@ -28,6 +28,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * HealMap命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class HealMapCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("HealMapCommand.message1"));

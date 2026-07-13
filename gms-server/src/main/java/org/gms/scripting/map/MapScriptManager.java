@@ -32,20 +32,50 @@ import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 地图脚本管理器，负责加载、缓存和执行地图JavaScript脚本。
+ * 处理玩家进入地图时触发的脚本逻辑，支持脚本缓存和热重载，
+ * 可配置是否为首次进入地图的用户执行脚本。
+ *
+ * @author OdinMS Team
+ */
 public class MapScriptManager extends AbstractScriptManager {
     private static final Logger log = LoggerFactory.getLogger(MapScriptManager.class);
+    
+    /**
+     * 单例实例
+     */
     private static final MapScriptManager instance = new MapScriptManager();
 
+    /**
+     * 已加载的地图脚本缓存，key为脚本路径，value为可调用的脚本引擎
+     */
     private final Map<String, Invocable> scripts = new HashMap<>();
 
+    /**
+     * 获取单例实例
+     *
+     * @return MapScriptManager单例对象
+     */
     public static MapScriptManager getInstance() {
         return instance;
     }
 
+    /**
+     * 重新加载所有地图脚本，清空脚本缓存
+     */
     public void reloadScripts() {
         scripts.clear();
     }
 
+    /**
+     * 执行地图脚本
+     *
+     * @param c 客户端连接对象
+     * @param mapScriptPath 地图脚本路径
+     * @param firstUser 是否只对首次进入该地图的玩家执行（防止重复执行）
+     * @return 脚本成功执行返回true，否则返回false
+     */
     public boolean runMapScript(Client c, String mapScriptPath, boolean firstUser) {
         if (firstUser) {
             Character chr = c.getPlayer();

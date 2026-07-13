@@ -37,6 +37,12 @@ import org.gms.server.life.PlayerNPC;
 import org.gms.server.maps.MapObject;
 import org.gms.util.PacketCreator;
 
+/**
+ * NPC对话Handler - 处理开始与NPC对话
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class NPCTalkHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(NPCTalkHandler.class);
 

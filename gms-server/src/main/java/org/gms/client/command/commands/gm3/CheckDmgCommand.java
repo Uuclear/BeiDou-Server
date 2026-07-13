@@ -29,6 +29,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * CheckDmg命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class CheckDmgCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("CheckDmgCommand.message1"));

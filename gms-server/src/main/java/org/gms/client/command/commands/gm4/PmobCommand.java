@@ -38,6 +38,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Pmob命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class PmobCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PmobCommand.message1"));

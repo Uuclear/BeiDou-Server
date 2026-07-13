@@ -34,6 +34,11 @@ import org.gms.util.I18nUtil;
 
 import java.util.HashSet;
 
+/**
+ * WhereaMi命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class WhereaMiCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WhereaMiCommand.message1"));

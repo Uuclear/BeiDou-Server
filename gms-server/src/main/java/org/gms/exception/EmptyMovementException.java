@@ -1,5 +1,5 @@
 /*
-    This file is part of the HeavenMS MapleStory Server
+    This file is part of the HeavenMS Maple Story Server
     Copyleft (L) 2016 - 2019 RonanLana
 
     This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,23 @@ package org.gms.exception;
 
 import org.gms.net.packet.InPacket;
 
-
 /**
+ * 空移动数据异常
+ * <p>
+ * 当解析玩家移动数据包时，如果移动数据为空则抛出此异常。
+ * </p>
+ *
  * @author Ronan
+ * @since 1.0.0
  */
 public class EmptyMovementException extends Exception {
 
+    /**
+     * 构造函数
+     *
+     * @param inPacket 导致异常的数据包
+     */
     public EmptyMovementException(InPacket inPacket) {
         super("Empty movement: " + inPacket);
     }
-
 }

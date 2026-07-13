@@ -28,6 +28,12 @@ import org.gms.client.autoban.AutobanFactory;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 技能宏Handler - 处理技能宏设置
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class SkillMacroHandler extends AbstractPacketHandler {
 
     @Override

@@ -11,12 +11,24 @@ import org.gms.util.I18nUtil;
 import org.gms.util.RequireUtil;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 掉落管理控制器
+ * 提供怪物掉落和全局掉落相关的Web API接口，包括掉落查询、新增、修改、删除等功能
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/drop")
 public class DropController {
+    /**
+     * 掉落服务，处理怪物掉落和全局掉落的业务逻辑
+     */
     private final DropService dropService;
 
+    /**
+     * 分页查询怪物掉落列表
+     * @param request 包含分页参数和查询条件的请求体
+     * @return 分页掉落结果列表
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "分页获取掉落列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getDropList")
@@ -24,6 +36,11 @@ public class DropController {
         return ResultBody.success(request, dropService.getDropList(request.getData(), false));
     }
 
+    /**
+     * 分页查询全局掉落列表
+     * @param request 包含分页参数和查询条件的请求体
+     * @return 分页全局掉落结果列表
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "分页获取全局掉落列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getGlobalDropList")
@@ -31,6 +48,11 @@ public class DropController {
         return ResultBody.success(request, dropService.getDropList(request.getData(), true));
     }
 
+    /**
+     * 新增怪物掉落数据
+     * @param request 包含新掉落信息的请求体
+     * @return 新增的掉落记录ID
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "新增掉落，返回新增id")
     @PutMapping("/" + ApiConstant.LATEST + "/addDropData")
@@ -39,6 +61,11 @@ public class DropController {
         return ResultBody.success(request, dropService.modifyDropData(request.getData(), false, false));
     }
 
+    /**
+     * 新增全局掉落数据
+     * @param request 包含新全局掉落信息的请求体
+     * @return 新增的全局掉落记录ID
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "新增全局掉落，返回新增id")
     @PutMapping("/" + ApiConstant.LATEST + "/addGlobalDropData")
@@ -47,6 +74,11 @@ public class DropController {
         return ResultBody.success(request, dropService.modifyDropData(request.getData(), true, false));
     }
 
+    /**
+     * 根据ID更新怪物掉落信息
+     * @param request 包含更新掉落信息的请求体，必须包含id字段
+     * @return 操作成功结果
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id更新掉落信息")
     @PostMapping("/" + ApiConstant.LATEST + "/updateDropData")
@@ -56,6 +88,11 @@ public class DropController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 根据ID更新全局掉落信息
+     * @param request 包含更新全局掉落信息的请求体，必须包含id字段
+     * @return 操作成功结果
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id更新全局掉落信息")
     @PostMapping("/" + ApiConstant.LATEST + "/updateGlobalDropData")
@@ -65,6 +102,11 @@ public class DropController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 根据ID删除怪物掉落信息
+     * @param id 要删除的掉落记录ID
+     * @return 操作成功结果
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id删除掉落信息")
     @DeleteMapping("/" + ApiConstant.LATEST + "/deleteDropData/{id}")
@@ -73,6 +115,11 @@ public class DropController {
         return ResultBody.success(null);
     }
 
+    /**
+     * 根据ID删除全局掉落信息
+     * @param id 要删除的全局掉落记录ID
+     * @return 操作成功结果
+     */
     @Tag(name = "/drop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id删除全局掉落信息")
     @DeleteMapping("/" + ApiConstant.LATEST + "/deleteGlobalDropData/{id}")

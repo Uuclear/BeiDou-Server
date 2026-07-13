@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.net.server.Server;
 import org.gms.util.I18nUtil;
 
+/**
+ * Fly命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class FlyCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("FlyCommand.message1"));

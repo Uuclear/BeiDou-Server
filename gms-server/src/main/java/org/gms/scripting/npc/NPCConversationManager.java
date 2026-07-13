@@ -79,20 +79,59 @@ import java.util.*;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
+ * NPC对话管理器，继承自AbstractPlayerInteraction，
+ * 为NPC脚本和任务脚本提供完整的对话流程控制和玩家交互功能。
+ * 管理多种对话类型（普通文本、是/否选择、选项选择、数字输入、文本输入等），
+ * 支持物品操作、任务管理、商店、仓库、转职、组队/公会、活动、迷你游戏等丰富功能。
+ *
  * @author Matze
  */
 public class NPCConversationManager extends AbstractPlayerInteraction {
     private static final Logger log = LoggerFactory.getLogger(NPCConversationManager.class);
 
+    /**
+     * 当前对话的NPC ID
+     */
     private final int npc;
+    
+    /**
+     * NPC在地图中的对象ID
+     */
     private int npcOid;
+    
+    /**
+     * 脚本文件名（可选，用于加载自定义脚本而非NPC ID对应的脚本）
+     */
     private String scriptName;
+    
+    /**
+     * 玩家在文本输入框中输入的文本
+     */
     private String getText;
+    
+    /**
+     * 标记当前是否为物品脚本（而非NPC对话脚本）
+     */
     private boolean itemScript;
+    
+    /**
+     * 组队对话时的其他队员列表
+     */
     private List<PartyCharacter> otherParty;
+    
+    /**
+     * 扭蛋机服务，用于处理扭蛋相关逻辑
+     */
     private static final GachaponService gachaponService = ServerManager.getApplicationContext().getBean(GachaponService.class);
 
+    /**
+     * NPC默认对话缓存，避免重复读取
+     */
     private final Map<Integer, String> npcDefaultTalks = new HashMap<>();
+    
+    /**
+     * 多级对话上下文，用于管理对话流程状态
+     */
     @Getter
     private final NextLevelContext nextLevelContext = new NextLevelContext();
 

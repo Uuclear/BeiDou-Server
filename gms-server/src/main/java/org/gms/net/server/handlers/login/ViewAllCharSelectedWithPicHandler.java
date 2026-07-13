@@ -16,6 +16,11 @@ import org.gms.util.Randomizer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 查看所有角色带安全码选择Handler - 处理从所有角色列表带安全码选择角色
+ *
+ * @author OdinMS开发团队
+ */
 public class ViewAllCharSelectedWithPicHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ViewAllCharSelectedWithPicHandler.class);
 

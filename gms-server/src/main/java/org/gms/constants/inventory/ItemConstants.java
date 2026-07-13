@@ -34,6 +34,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 道具常量类
+ * <p>
+ * 定义道具相关的常量和辅助方法，包括道具标志位、道具类型判断（飞镖、子弹、药水、食物、
+ * 可充值道具、箭矢、宠物、卷轴、椅子、武器等），以及永久道具集合。
+ * </p>
+ *
  * @author Jay Estrella
  * @author Ronan
  */

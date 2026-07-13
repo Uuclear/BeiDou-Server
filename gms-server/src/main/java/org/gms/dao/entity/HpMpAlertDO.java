@@ -12,10 +12,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * HPMP警告实体类，对应数据库表 hp_mp_alert。
+ * 存储HP/MP低血量警告配置。
  *
- * @author lee
- * @since 2024-09-06
+ * @author sleep
+ * @since 2024-05-24
  */
 @Data
 @Builder
@@ -25,15 +26,30 @@ import java.io.Serial;
 public class HpMpAlertDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * cId
+     */
     private Integer cId;
 
+    /**
+     * 当前HP
+     */
     private Byte hp;
 
+    /**
+     * 当前MP
+     */
     private Byte mp;
 
 }

@@ -13,7 +13,8 @@ import java.io.Serial;
 import java.util.Date;
 
 /**
- * 自动封禁配置表 实体类。
+ * 自动封禁配置实体类，对应数据库表 autoban_config。
+ * 存储自动反作弊系统的封禁规则配置，包括封禁类型、触发积分、过期时间等。
  *
  * @author Nap
  * @since 2026-04-22
@@ -29,7 +30,7 @@ public class AutobanConfigDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 自增id
+     * 自增主键ID
      */
     @Id(keyType = KeyType.Auto)
     private Integer id;
@@ -40,7 +41,7 @@ public class AutobanConfigDO implements Serializable {
     private String type;
 
     /**
-     * 是否禁用，true=禁用该类型封禁检测
+     * 是否禁用：true=禁用该类型封禁检测
      */
     private Boolean disabled;
 
@@ -50,7 +51,7 @@ public class AutobanConfigDO implements Serializable {
     private Integer points;
 
     /**
-     * 积分过期时间(毫秒)，NULL使用枚举默认值
+     * 积分过期时间（毫秒），NULL使用枚举默认值
      */
     private Long expireTime;
 
@@ -60,12 +61,12 @@ public class AutobanConfigDO implements Serializable {
     private String description;
 
     /**
-     * 创建时间
+     * 记录创建时间
      */
     private Date createTime;
 
     /**
-     * 更新时间
+     * 记录更新时间
      */
     private Date updateTime;
 }

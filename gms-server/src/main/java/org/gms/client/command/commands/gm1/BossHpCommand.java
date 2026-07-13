@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.server.life.Monster;
 import org.gms.util.I18nUtil;
 
+/**
+ * BossHp命令类 - 初级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class BossHpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("BossHpCommand.message1"));

@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 角色异常状态实体类，对应数据库表 playerdiseases。
+ * 存储角色异常状态效果。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,19 +26,40 @@ import java.io.Serial;
 public class PlayerdiseasesDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * 角色ID
+     */
     private Integer charid;
 
+    /**
+     * disease
+     */
     private Integer disease;
 
+    /**
+     * mobskillid
+     */
     private Integer mobskillid;
 
+    /**
+     * mobskilllv
+     */
     private Integer mobskilllv;
 
+    /**
+     * 持续时长毫秒
+     */
     private Long length;
 
 }

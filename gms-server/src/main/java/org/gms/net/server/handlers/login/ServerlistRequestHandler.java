@@ -31,6 +31,11 @@ import org.gms.util.PacketCreator;
 
 import java.util.List;
 
+/**
+ * 服务器列表请求Handler - 处理请求服务器/世界列表
+ *
+ * @author OdinMS开发团队
+ */
 public final class ServerlistRequestHandler extends AbstractPacketHandler {
 
     @Override

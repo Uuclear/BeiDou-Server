@@ -28,6 +28,11 @@ import org.gms.net.server.Server;
 import org.gms.net.server.world.World;
 import org.gms.util.PacketCreator;
 
+/**
+ * 服务器状态请求Handler - 处理查询服务器状态
+ *
+ * @author OdinMS开发团队
+ */
 public final class ServerStatusRequestHandler extends AbstractPacketHandler {
 
     @Override

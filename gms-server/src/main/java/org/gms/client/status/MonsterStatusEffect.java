@@ -27,6 +27,11 @@ import org.gms.server.life.MobSkill;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * MonsterStatus效果类 - 状态效果系统的核心实现
+ *
+ * @author GMS Server
+ */
 public class MonsterStatusEffect {
 
     private final Map<MonsterStatus, Integer> stati;

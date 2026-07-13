@@ -45,6 +45,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.gms.util.PacketCreator;
 
+/**
+ * 技能效果Handler - 处理技能效果显示与应用
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class SkillEffectHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(SkillEffectHandler.class);
 

@@ -16,6 +16,11 @@ import org.gms.util.Randomizer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 查看所有角色注册安全码Handler - 处理查看所有角色时注册安全码
+ *
+ * @author OdinMS开发团队
+ */
 public final class ViewAllCharRegisterPicHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(ViewAllCharRegisterPicHandler.class);
 

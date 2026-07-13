@@ -32,6 +32,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.gms.util.PacketCreator;
 
+/**
+ * ReportBug命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ReportBugCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ReportBugCommand.message1"));

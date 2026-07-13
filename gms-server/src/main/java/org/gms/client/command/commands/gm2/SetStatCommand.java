@@ -28,6 +28,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * SetStat命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class SetStatCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SetStatCommand.message1"));

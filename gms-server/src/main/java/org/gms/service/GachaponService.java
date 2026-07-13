@@ -31,21 +31,40 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * 百宝箱服务类
+ * 提供百宝箱奖池管理、奖励管理、抽奖逻辑等功能，支持公共奖池和专属奖池，
+ * 使用读写锁保证并发安全，奖池奖励数据缓存提高性能。
+ *
+ * @author GMS Server
+ * @since 1.0
+ */
 @Slf4j
 @Service
 public class GachaponService {
+    /** 百宝箱奖池数据访问接口 */
     @Autowired
     private GachaponRewardPoolMapper gachaponRewardPoolMapper;
+    /** 百宝箱奖励数据访问接口 */
     @Autowired
     private GachaponRewardMapper gachaponRewardMapper;
 
 
+    /** 奖池奖励缓存，key为奖池ID */
     private static final HashMap<Integer, List<GachaponRewardDO>> poolRewardsCache = new HashMap<>();
+    /** 读写锁，保证缓存并发安全 */
     private static final ReadWriteLock lock = new ReentrantReadWriteLock(true);
+    /** 读锁 */
     private static final Lock rLock = lock.readLock();
+    /** 写锁 */
     private static final Lock wLock = lock.writeLock();
 
 
+    /**
+     * 更新奖池信息
+     *
+     * @param submit 奖池数据
+     */
     public void updatePool(GachaponRewardPoolDO submit) {
         wLock.lock();
         try {
@@ -67,6 +86,11 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 删除奖池及其所有奖励
+     *
+     * @param id 奖池ID
+     */
     @Transactional
     public void deletePool(Integer id) {
         wLock.lock();
@@ -79,6 +103,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 分页查询奖池列表
+     *
+     * @param condition 查询条件
+     * @return 分页后的奖池列表
+     */
     public Page<GachaponPoolSearchRtnDTO> getPools(GachaponPoolSearchReqDTO condition) {
         rLock.lock();
         try {
@@ -127,6 +157,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 获取奖池的奖励列表
+     *
+     * @param poolId 奖池ID
+     * @return 奖励列表
+     */
     public List<GachaponRewardDO> getRewards(Integer poolId) {
         rLock.lock();
         try {
@@ -143,6 +179,11 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 更新奖励信息
+     *
+     * @param reward 奖励数据
+     */
     public void updateReward(GachaponRewardDO reward) {
         wLock.lock();
         try {
@@ -153,6 +194,11 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 删除奖励
+     *
+     * @param id 奖励ID
+     */
     public void deleteReward(Integer id) {
         wLock.lock();
         try {
@@ -166,6 +212,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 计算奖池真实概率
+     * 公共奖池直接使用配置概率，非公共奖池按权重分配剩余概率
+     *
+     * @param pools 奖池列表
+     */
     private void setRealProb(List<GachaponPoolSearchRtnDTO> pools) {
         int probTotal = pools.stream().mapToInt(GachaponPoolSearchRtnDTO::getProb).sum();
         int probPoint = 100 * probTotal;
@@ -181,6 +233,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 获取当前生效的奖池列表
+     *
+     * @param gachaponId 百宝箱NPC ID
+     * @return 生效的奖池列表
+     */
     private List<GachaponRewardPoolDO> getActivePools(Integer gachaponId) {
         rLock.lock();
         try {
@@ -198,6 +256,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 执行百宝箱抽奖
+     *
+     * @param player 抽奖玩家
+     * @param gachaponId 百宝箱NPC ID
+     */
     public void doGachapon(Character player, int gachaponId) {
         rLock.lock();
         try {
@@ -244,11 +308,23 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 根据NPC ID获取所有相关奖励
+     *
+     * @param npcId NPC ID
+     * @return 奖励列表
+     */
     public List<GachaponRewardDO> getRewardsByNpcId(Integer npcId) {
         List<GachaponRewardPoolDO> activePools = getActivePools(npcId);
         return activePools.stream().flatMap(pool -> getRewards(pool.getId()).stream()).toList();
     }
 
+    /**
+     * 执行奖励发放
+     *
+     * @param player 玩家
+     * @param pool 奖池
+     */
     private void doReward(Character player, GachaponRewardPoolDO pool) {
         List<GachaponRewardDO> poolRewards = getPoolRewards(pool.getId());
         if (poolRewards.isEmpty()) {
@@ -273,6 +349,12 @@ public class GachaponService {
         }
     }
 
+    /**
+     * 获取奖池奖励（带缓存）
+     *
+     * @param poolId 奖池ID
+     * @return 奖励列表
+     */
     private List<GachaponRewardDO> getPoolRewards(Integer poolId) {
         if (poolRewardsCache.containsKey(poolId)) {
             return poolRewardsCache.get(poolId);

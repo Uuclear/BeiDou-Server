@@ -4,7 +4,8 @@ import com.mybatisflex.core.BaseMapper;
 import org.gms.dao.entity.IpbansDO;
 
 /**
- *  映射层。
+ * IP封禁数据访问Mapper接口，对应数据库表 ipbans。
+ * 继承MyBatis-Flex的BaseMapper获得基础CRUD能力。
  *
  * @author sleep
  * @since 2024-05-24

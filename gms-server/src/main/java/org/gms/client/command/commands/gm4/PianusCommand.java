@@ -30,6 +30,11 @@ import org.gms.constants.id.MobId;
 import org.gms.server.life.LifeFactory;
 import org.gms.util.I18nUtil;
 
+/**
+ * Pianus命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class PianusCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PianusCommand.message1"));

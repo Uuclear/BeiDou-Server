@@ -21,6 +21,11 @@
 */
 package org.gms.net.server.world;
 
+/**
+ * 组队操作枚举 - 定义组队相关的操作类型
+ *
+ * @author OdinMS开发团队
+ */
 public enum PartyOperation {
     JOIN, LEAVE, EXPEL, DISBAND, SILENT_UPDATE, LOG_ONOFF, CHANGE_LEADER
 }

@@ -26,6 +26,12 @@ import org.gms.client.Character;
 import org.gms.client.Client;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 触碰怪物伤害Handler - 处理玩家触碰怪物受到的伤害
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class TouchMonsterDamageHandler extends AbstractDealDamageHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

@@ -26,6 +26,12 @@ import org.gms.client.Client;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 取消椅子Handler - 处理玩家离开椅子
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class CancelChairHandler extends AbstractPacketHandler {
 
     @Override

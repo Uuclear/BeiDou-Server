@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.net.packet.logging.MonitoredChrLogger;
 import org.gms.util.I18nUtil;
 
+/**
+ * Monitors命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class MonitorsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("MonitorsCommand.message1"));

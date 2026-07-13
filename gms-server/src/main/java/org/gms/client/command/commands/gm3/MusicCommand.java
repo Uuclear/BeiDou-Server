@@ -31,6 +31,11 @@ import org.gms.constants.id.NpcId;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * Music命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class MusicCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("MusicCommand.message1"));

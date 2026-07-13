@@ -36,6 +36,12 @@ import org.gms.util.PacketCreator;
 
 import java.util.Map;
 
+/**
+ * 技能册Handler - 处理使用技能册学习技能
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class SkillBookHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

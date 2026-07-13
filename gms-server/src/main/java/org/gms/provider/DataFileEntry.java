@@ -22,8 +22,15 @@
 package org.gms.provider;
 
 /**
+ * 数据文件条目接口，表示WZ文件系统中的一个文件条目。
+ * 继承自DataEntry，增加了设置文件偏移量的能力。
+ *
  * @author Matze
  */
 public interface DataFileEntry extends DataEntry {
+    /**
+     * 设置该文件条目在WZ文件中的偏移量位置
+     * @param offset 文件偏移量
+     */
     void setOffset(int offset);
 }

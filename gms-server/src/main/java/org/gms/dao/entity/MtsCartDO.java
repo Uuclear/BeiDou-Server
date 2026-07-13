@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * MTS购物车实体类，对应数据库表 mts_cart。
+ * 存储MTS购物车数据。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,13 +26,25 @@ import java.io.Serial;
 public class MtsCartDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * cid
+     */
     private Integer cid;
 
+    /**
+     * 物品ID
+     */
     private Integer itemid;
 
 }

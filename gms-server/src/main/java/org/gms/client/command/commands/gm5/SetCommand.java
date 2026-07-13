@@ -28,6 +28,11 @@ import org.gms.client.command.Command;
 import org.gms.constants.net.ServerConstants;
 import org.gms.util.I18nUtil;
 
+/**
+ * Set命令类 - 超级管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class SetCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SetCommand.message1"));

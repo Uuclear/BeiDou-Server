@@ -42,6 +42,12 @@ import org.gms.util.Randomizer;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 管理员命令Handler - 处理管理员执行的GM命令
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class AdminCommandHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(AdminCommandHandler.class);
 

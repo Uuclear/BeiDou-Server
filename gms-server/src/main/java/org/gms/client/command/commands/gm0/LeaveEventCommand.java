@@ -28,6 +28,11 @@ import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * LeaveEvent命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class LeaveEventCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("LeaveEventCommand.message1"));

@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 任务动作实体类，对应数据库表 questactions。
+ * 存储任务完成动作配置。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,15 +26,30 @@ import java.io.Serial;
 public class QuestactionsDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * questactionid
+     */
     private Long questactionid;
 
+    /**
+     * 关联任务ID
+     */
     private Integer questid;
 
+    /**
+     * status
+     */
     private Integer status;
 
+    /**
+     * data
+     */
     private byte[] data;
 
 }

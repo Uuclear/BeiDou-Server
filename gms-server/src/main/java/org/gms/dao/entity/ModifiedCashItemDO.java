@@ -24,10 +24,11 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
 
 /**
- * 商城物品修改表 实体类。
+ * 修改现金物品实体类，对应数据库表 modified_cash_item。
+ * 存储被修改的现金物品。
  *
- * @author CN
- * @since 2024-08-08
+ * @author sleep
+ * @since 2024-05-24
  */
 @Data
 @Builder
@@ -37,12 +38,18 @@ import static java.util.concurrent.TimeUnit.HOURS;
 public class ModifiedCashItemDO implements Serializable, Cloneable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     /**
      * sn码
      */
     @Id
+    /**
+     * sn
+     */
     private Integer sn;
 
     /**
@@ -100,14 +107,29 @@ public class ModifiedCashItemDO implements Serializable, Cloneable {
      */
     private Integer onSale;
     @Column("class")
+    /**
+     * clz
+     */
     private Integer clz;
 
+    /**
+     * limit
+     */
     private Integer limit;
 
+    /**
+     * pbCash
+     */
     private Integer pbCash;
 
+    /**
+     * pbPoint
+     */
     private Integer pbPoint;
 
+    /**
+     * pbGift
+     */
     private Integer pbGift;
 
     /**

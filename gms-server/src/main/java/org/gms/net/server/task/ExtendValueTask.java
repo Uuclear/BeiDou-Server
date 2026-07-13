@@ -7,6 +7,11 @@ import org.gms.manager.ServerManager;
 import org.gms.util.I18nUtil;
 
 @Slf4j
+/**
+ * 扩展值任务 - 处理扩展值到期清理
+ *
+ * @author OdinMS开发团队
+ */
 public class ExtendValueTask implements Runnable {
     @Override
     public void run() {

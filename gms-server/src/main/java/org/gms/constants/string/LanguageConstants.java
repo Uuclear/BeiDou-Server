@@ -3,6 +3,12 @@ package org.gms.constants.string;
 import org.gms.client.Character;
 
 /**
+ * 语言常量类
+ * <p>
+ * 定义多语言消息常量，主要包含怪物嘉年华（CPQ）相关的多语言提示消息，
+ * 支持葡萄牙语、西班牙语、英语和简体中文四种语言。提供根据角色语言获取对应消息的方法。
+ * </p>
+ *
  * @author Drago (Dragohe4rt)
  */
 public class LanguageConstants {

@@ -22,79 +22,102 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CField_Wedding, CField_WeddingPhoto, CWeddingMan, OnMarriageResult, and all Wedding/Marriage enum/structs.
+ * 婚礼系统数据包构建类
+ * <p>
+ * 包含婚礼场地、婚礼拍照、婚礼管理等相关的数据结构和数据包构建方法，
+ * 以及婚姻状态、婚礼请求、婚礼类型、婚礼地图、婚礼物品等枚举定义。
+ * </p>
  *
  * @author Eric
- * <p>
- * Wishlists edited by Drago (Dragohe4rt)
+ * @author Drago (Dragohe4rt) - Wishlists edited
  */
 public class WeddingPackets extends PacketCreator {
     private static final Logger log = LoggerFactory.getLogger(WeddingPackets.class);
 
-    /*
-        00000000 CWeddingMan     struc ; (sizeof=0x104)
-        00000000 vfptr           dd ?                    ; offset
-        00000004 ___u1           $01CBC6800BD386B8A8FD818EAD990BEC ?
-        0000000C m_mCharIDToMarriageNo ZMap<unsigned long,unsigned long,unsigned long> ?
-        00000024 m_mReservationPending ZMap<unsigned long,ZRef<GW_WeddingReservation>,unsigned long> ?
-        0000003C m_mReservationPendingGroom ZMap<unsigned long,ZRef<CUser>,unsigned long> ?
-        00000054 m_mReservationPendingBride ZMap<unsigned long,ZRef<CUser>,unsigned long> ?
-        0000006C m_mReservationStartUser ZMap<unsigned long,unsigned long,unsigned long> ?
-        00000084 m_mReservationCompleted ZMap<unsigned long,ZRef<GW_WeddingReservation>,unsigned long> ?
-        0000009C m_mGroomWishList ZMap<unsigned long,ZRef<ZArray<ZXString<char> > >,unsigned long> ?
-        000000B4 m_mBrideWishList ZMap<unsigned long,ZRef<ZArray<ZXString<char> > >,unsigned long> ?
-        000000CC m_mEngagementPending ZMap<unsigned long,ZRef<GW_MarriageRecord>,unsigned long> ?
-        000000E4 m_nCurrentWeddingState dd ?
-        000000E8 m_dwCurrentWeddingNo dd ?
-        000000EC m_dwCurrentWeddingMap dd ?
-        000000F0 m_bIsReservationLoaded dd ?
-        000000F4 m_dwNumGuestBless dd ?
-        000000F8 m_bPhotoSuccess dd ?
-        000000FC m_tLastUpdate   dd ?
-        00000100 m_bStartWeddingCeremony dd ?
-        00000104 CWeddingMan     ends
-    */
-
+    /**
+     * 婚礼场地状态数据结构
+     */
     public class Field_Wedding {
+        /** 公告次数 */
         public int m_nNoticeCount;
+        /** 当前阶段 */
         public int m_nCurrentStep;
+        /** 祝福开始时间 */
         public int m_nBlessStartTime;
     }
 
+    /**
+     * 婚礼拍照场地状态数据结构
+     */
     public class Field_WeddingPhoto {
+        /** 是否已拍照 */
         public boolean m_bPictureTook;
     }
 
+    /**
+     * 婚礼预约数据结构
+     */
     public class GW_WeddingReservation {
+        /** 预约编号 */
         public int dwReservationNo;
+        /** 新郎ID、新娘ID */
         public int dwGroom, dwBride;
+        /** 新郎姓名、新娘姓名 */
         public String sGroomName, sBrideName;
+        /** 婚礼类型 */
         public int usWeddingType;
     }
 
+    /**
+     * 婚礼心愿单数据结构
+     */
     public class WeddingWishList {
+        /** 关联的玩家角色 */
         public Character pUser;
+        /** 婚姻编号 */
         public int dwMarriageNo;
+        /** 性别 */
         public int nGender;
+        /** 心愿单类型 */
         public int nWLType;
+        /** 槽位数量 */
         public int nSlotCount;
+        /** 心愿物品列表 */
         public List<String> asWishList = new ArrayList<>();
-        public int usModifiedFlag; // dword
+        /** 修改标志 */
+        public int usModifiedFlag;
+        /** 是否已加载 */
         public boolean bLoaded;
     }
 
+    /**
+     * 婚礼心愿单数据（网络传输用）
+     */
     public class GW_WeddingWishList {
-        public final int WEDDINGWL_MAX = 0xA; // enum WEDDINGWL
+        /** 心愿单最大物品数 */
+        public final int WEDDINGWL_MAX = 0xA;
+        /** 预约编号 */
         public int dwReservationNo;
+        /** 性别 */
         public byte nGender;
+        /** 物品名称 */
         public String sItemName;
     }
 
+    /**
+     * 婚姻状态枚举
+     */
     public enum MarriageStatus {
+        /** 单身 */
         SINGLE(0x0),
+        /** 已订婚 */
         ENGAGED(0x1),
+        /** 已预约 */
         RESERVED(0x2),
+        /** 已婚 */
         MARRIED(0x3);
+
+        /** 状态值 */
         private final int ms;
 
         MarriageStatus(int ms) {
@@ -106,14 +129,26 @@ public class WeddingPackets extends PacketCreator {
         }
     }
 
+    /**
+     * 婚姻请求类型枚举
+     */
     public enum MarriageRequest {
+        /** 添加婚姻记录 */
         AddMarriageRecord(0x0),
+        /** 设置婚姻记录 */
         SetMarriageRecord(0x1),
+        /** 删除婚姻记录 */
         DeleteMarriageRecord(0x2),
+        /** 加载预约 */
         LoadReservation(0x3),
+        /** 添加预约 */
         AddReservation(0x4),
+        /** 删除预约 */
         DeleteReservation(0x5),
+        /** 获取预约 */
         GetReservation(0x6);
+
+        /** 请求值 */
         private final int req;
 
         MarriageRequest(int req) {
@@ -125,13 +160,24 @@ public class WeddingPackets extends PacketCreator {
         }
     }
 
+    /**
+     * 婚礼类型枚举
+     */
     public enum WeddingType {
+        /** 大教堂 */
         CATHEDRAL(0x1),
+        /** 拉斯维加斯教堂 */
         VEGAS(0x2),
+        /** 大教堂高级版 */
         CATHEDRAL_PREMIUM(0xA),
+        /** 大教堂普通版 */
         CATHEDRAL_NORMAL(0xB),
+        /** 拉斯维加斯高级版 */
         VEGAS_PREMIUM(0x14),
+        /** 拉斯维加斯普通版 */
         VEGAS_NORMAL(0x15);
+
+        /** 类型值 */
         private final int wt;
 
         WeddingType(int wt) {
@@ -143,12 +189,22 @@ public class WeddingPackets extends PacketCreator {
         }
     }
 
+    /**
+     * 婚礼相关地图枚举
+     */
     public enum WeddingMap {
+        /** 婚礼城镇（阿莫利亚） */
         WEDDINGTOWN(MapId.AMORIA),
+        /** 教堂婚礼祭坛起点 */
         CHAPEL_STARTMAP(MapId.CHAPEL_WEDDING_ALTAR),
+        /** 大教堂婚礼祭坛起点 */
         CATHEDRAL_STARTMAP(MapId.CATHEDRAL_WEDDING_ALTAR),
+        /** 拍照地图 */
         PHOTOMAP(MapId.WEDDING_PHOTO),
+        /** 退出地图 */
         EXITMAP(MapId.WEDDING_EXIT);
+
+        /** 地图ID */
         private final int wm;
 
         WeddingMap(int wm) {
@@ -160,38 +216,74 @@ public class WeddingPackets extends PacketCreator {
         }
     }
 
+    /**
+     * 婚礼相关物品枚举
+     */
     public enum WeddingItem {
-        WR_MOONSTONE(ItemId.WEDDING_RING_MOONSTONE), // Wedding Ring
+        /** 月光石结婚戒指 */
+        WR_MOONSTONE(ItemId.WEDDING_RING_MOONSTONE),
+        /** 星宝石结婚戒指 */
         WR_STARGEM(ItemId.WEDDING_RING_STAR),
+        /** 金心结婚戒指 */
         WR_GOLDENHEART(ItemId.WEDDING_RING_GOLDEN),
+        /** 银天鹅结婚戒指 */
         WR_SILVERSWAN(ItemId.WEDDING_RING_SILVER),
-        ERB_MOONSTONE(ItemId.ENGAGEMENT_BOX_MOONSTONE), // Engagement Ring Box
+        /** 月光石订婚戒指盒 */
+        ERB_MOONSTONE(ItemId.ENGAGEMENT_BOX_MOONSTONE),
+        /** 星宝石订婚戒指盒 */
         ERB_STARGEM(ItemId.ENGAGEMENT_BOX_STAR),
+        /** 金心订婚戒指盒 */
         ERB_GOLDENHEART(ItemId.ENGAGEMENT_BOX_GOLDEN),
+        /** 银天鹅订婚戒指盒 */
         ERB_SILVERSWAN(ItemId.ENGAGEMENT_BOX_SILVER),
-        ERBE_MOONSTONE(ItemId.EMPTY_ENGAGEMENT_BOX_MOONSTONE), // Engagement Ring Box (Empty)
-        ER_MOONSTONE(ItemId.ENGAGEMENT_RING_MOONSTONE), // Engagement Ring
+        /** 空的月光石订婚戒指盒 */
+        ERBE_MOONSTONE(ItemId.EMPTY_ENGAGEMENT_BOX_MOONSTONE),
+        /** 月光石订婚戒指 */
+        ER_MOONSTONE(ItemId.ENGAGEMENT_RING_MOONSTONE),
+        /** 空的星宝石订婚戒指盒 */
         ERBE_STARGEM(ItemId.EMPTY_ENGAGEMENT_BOX_STAR),
+        /** 星宝石订婚戒指 */
         ER_STARGEM(ItemId.ENGAGEMENT_RING_STAR),
+        /** 空的金心订婚戒指盒 */
         ERBE_GOLDENHEART(ItemId.EMPTY_ENGAGEMENT_BOX_GOLDEN),
+        /** 金心订婚戒指 */
         ER_GOLDENHEART(ItemId.ENGAGEMENT_RING_GOLDEN),
+        /** 空的银天鹅订婚戒指盒 */
         ERBE_SILVERSWAN(ItemId.EMPTY_ENGAGEMENT_BOX_SILVER),
+        /** 银天鹅订婚戒指 */
         ER_SILVERSWAN(ItemId.ENGAGEMENT_RING_SILVER),
-        PARENTS_BLESSING(ItemId.PARENTS_BLESSING), // Parents Blessing
-        OFFICIATORS_PERMISSION(ItemId.OFFICIATORS_PERMISSION), // Officiator's Permission
-        WR_CATHEDRAL_PREMIUM(ItemId.PREMIUM_CATHEDRAL_RESERVATION_RECEIPT), // Wedding Ring?
+        /** 父母的祝福 */
+        PARENTS_BLESSING(ItemId.PARENTS_BLESSING),
+        /** 主婚人许可 */
+        OFFICIATORS_PERMISSION(ItemId.OFFICIATORS_PERMISSION),
+        /** 大教堂高级预约收据 */
+        WR_CATHEDRAL_PREMIUM(ItemId.PREMIUM_CATHEDRAL_RESERVATION_RECEIPT),
+        /** 教堂高级预约收据 */
         WR_VEGAS_PREMIUM(ItemId.PREMIUM_CHAPEL_RESERVATION_RECEIPT),
-        IB_VEGAS(ItemId.INVITATION_CHAPEL),      // toSend invitation
-        IB_CATHEDRAL(ItemId.INVITATION_CATHEDRAL),  // toSend invitation
-        IG_VEGAS(ItemId.RECEIVED_INVITATION_CHAPEL),      // rcvd invitation
-        IG_CATHEDRAL(ItemId.RECEIVED_INVITATION_CATHEDRAL),  // rcvd invitation
-        OB_FORCOUPLE(ItemId.ONYX_CHEST_FOR_COUPLE), // Onyx Box? For Couple
-        WR_CATHEDRAL_NORMAL(ItemId.NORMAL_CATHEDRAL_RESERVATION_RECEIPT), // Wedding Ring?
+        /** 教堂邀请函 */
+        IB_VEGAS(ItemId.INVITATION_CHAPEL),
+        /** 大教堂邀请函 */
+        IB_CATHEDRAL(ItemId.INVITATION_CATHEDRAL),
+        /** 收到的教堂邀请函 */
+        IG_VEGAS(ItemId.RECEIVED_INVITATION_CHAPEL),
+        /** 收到的大教堂邀请函 */
+        IG_CATHEDRAL(ItemId.RECEIVED_INVITATION_CATHEDRAL),
+        /** 情侣缟玛瑙宝箱 */
+        OB_FORCOUPLE(ItemId.ONYX_CHEST_FOR_COUPLE),
+        /** 大教堂普通预约收据 */
+        WR_CATHEDRAL_NORMAL(ItemId.NORMAL_CATHEDRAL_RESERVATION_RECEIPT),
+        /** 教堂普通预约收据 */
         WR_VEGAS_NORMAL(ItemId.NORMAL_CHAPEL_RESERVATION_RECEIPT),
-        WT_CATHEDRAL_NORMAL(ItemId.NORMAL_WEDDING_TICKET_CATHEDRAL), // Wedding Ticket
+        /** 大教堂普通婚礼票 */
+        WT_CATHEDRAL_NORMAL(ItemId.NORMAL_WEDDING_TICKET_CATHEDRAL),
+        /** 教堂普通婚礼票 */
         WT_VEGAS_NORMAL(ItemId.NORMAL_WEDDING_TICKET_CHAPEL),
+        /** 教堂高级婚礼票 */
         WT_VEGAS_PREMIUM(ItemId.PREMIUM_WEDDING_TICKET_CHAPEL),
+        /** 大教堂高级婚礼票 */
         WT_CATHEDRAL_PREMIUM(ItemId.PREMIUM_WEDDING_TICKET_CATHEDRAL);
+
+        /** 物品ID */
         private final int wi;
 
         WeddingItem(int wi) {

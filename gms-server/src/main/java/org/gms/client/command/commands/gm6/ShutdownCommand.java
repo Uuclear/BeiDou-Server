@@ -36,6 +36,11 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * Shutdown命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class ShutdownCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ShutdownCommand.message1"));

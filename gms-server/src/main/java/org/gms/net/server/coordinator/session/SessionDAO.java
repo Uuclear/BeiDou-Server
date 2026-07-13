@@ -13,6 +13,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 会话数据访问对象 - 会话数据持久化操作
+ *
+ * @author OdinMS开发团队
+ */
 public class SessionDAO {
     private static final Logger log = LoggerFactory.getLogger(SessionDAO.class);
 

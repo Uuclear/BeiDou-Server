@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * MAC过滤器实体类，对应数据库表 macfilters。
+ * 存储MAC地址过滤规则。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,11 +26,20 @@ import java.io.Serial;
 public class MacfiltersDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * macfilterid
+     */
     private Long macfilterid;
 
+    /**
+     * filter
+     */
     private String filter;
 
 }

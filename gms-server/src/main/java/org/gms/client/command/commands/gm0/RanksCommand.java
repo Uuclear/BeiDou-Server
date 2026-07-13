@@ -34,6 +34,11 @@ import org.gms.util.Pair;
 
 import java.util.List;
 
+/**
+ * Ranks命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class RanksCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("RanksCommand.message1"));

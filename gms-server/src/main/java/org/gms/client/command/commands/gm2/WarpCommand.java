@@ -32,6 +32,11 @@ import org.gms.server.maps.MiniDungeonInfo;
 import org.gms.util.I18nUtil;
 import org.gms.server.maps.Portal;
 
+/**
+ * Warp命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class WarpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("WarpCommand.message1"));

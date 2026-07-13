@@ -23,6 +23,11 @@ package org.gms.net.server.guild;
 
 import org.gms.client.Character;
 
+/**
+ * 公会角色类 - 存储公会成员的角色信息
+ *
+ * @author OdinMS开发团队
+ */
 public class GuildCharacter {
     private Character character;
     private int level;

@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.server.quest.Quest;
 import org.gms.util.I18nUtil;
 
+/**
+ * QuestStart命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class QuestStartCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("QuestStartCommand.message1"));

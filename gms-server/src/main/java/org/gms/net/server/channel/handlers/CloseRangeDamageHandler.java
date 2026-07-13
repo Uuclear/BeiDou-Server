@@ -48,6 +48,12 @@ import java.util.List;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 近战伤害Handler - 处理近距离攻击伤害
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
 
     @Override

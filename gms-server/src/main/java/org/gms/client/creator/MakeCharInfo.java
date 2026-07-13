@@ -11,6 +11,11 @@ import org.gms.provider.DataTool;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * MakeChar信息类 - 角色创建系统的核心实现
+ *
+ * @author GMS Server
+ */
 public class MakeCharInfo {
     private static final Logger log = LoggerFactory.getLogger(MakeCharInfo.class);
     private static final String FACE_ID = "0";

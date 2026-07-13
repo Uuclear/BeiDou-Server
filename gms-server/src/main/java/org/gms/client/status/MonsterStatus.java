@@ -21,6 +21,11 @@
 */
 package org.gms.client.status;
 
+/**
+ * MonsterStatus枚举类 - 定义状态效果系统中的相关常量
+ *
+ * @author GMS Server
+ */
 public enum MonsterStatus {
     WATK(0x1),
     WDEF(0x2),

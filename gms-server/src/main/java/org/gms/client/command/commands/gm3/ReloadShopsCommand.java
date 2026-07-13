@@ -29,6 +29,11 @@ import org.gms.server.ShopFactory;
 import org.gms.util.I18nUtil;
 
 
+/**
+ * ReloadShops命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ReloadShopsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ReloadShopsCommand.message1"));

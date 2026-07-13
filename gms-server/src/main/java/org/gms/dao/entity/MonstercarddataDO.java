@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 怪物卡牌数据实体类，对应数据库表 monstercarddata。
+ * 存储怪物卡牌基础数据。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,13 +26,25 @@ import java.io.Serial;
 public class MonstercarddataDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * cardid
+     */
     private Integer cardid;
 
+    /**
+     * mobid
+     */
     private Integer mobid;
 
 }

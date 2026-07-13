@@ -24,18 +24,41 @@ package org.gms.provider.wz;
 import org.gms.provider.DataEntity;
 import org.gms.provider.DataFileEntry;
 
+/**
+ * WZ文件条目类，继承自WZEntry，实现DataFileEntry接口。
+ * 表示WZ文件系统中的一个文件条目（通常对应一个.xml数据文件），
+ * 支持设置和获取文件偏移量。
+ *
+ * @author OdinMS Team
+ */
 public class WZFileEntry extends WZEntry implements DataFileEntry {
+    /** 文件偏移量 */
     private int offset;
 
+    /**
+     * 构造WZ文件条目
+     * @param name 文件名称
+     * @param size 文件大小
+     * @param checksum 校验和
+     * @param parent 父目录条目
+     */
     public WZFileEntry(String name, int size, int checksum, DataEntity parent) {
         super(name, size, checksum, parent);
     }
 
+    /**
+     * 获取文件偏移量
+     * @return 文件在WZ包中的偏移量
+     */
     @Override
     public int getOffset() {
         return offset;
     }
 
+    /**
+     * 设置文件偏移量
+     * @param offset 文件偏移量
+     */
     public void setOffset(int offset) {
         this.offset = offset;
     }

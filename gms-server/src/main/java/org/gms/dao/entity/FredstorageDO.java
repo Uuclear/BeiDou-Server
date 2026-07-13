@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * Fred仓库实体类，对应数据库表 fredstorage。
+ * 存储Fred仓库物品数据。
  *
  * @author sleep
  * @since 2024-05-24
@@ -26,15 +27,30 @@ import java.io.Serial;
 public class FredstorageDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Long id;
 
+    /**
+     * cid
+     */
     private Long cid;
 
+    /**
+     * daynotes
+     */
     private Long daynotes;
 
+    /**
+     * 时间戳
+     */
     private Timestamp timestamp;
 
 }

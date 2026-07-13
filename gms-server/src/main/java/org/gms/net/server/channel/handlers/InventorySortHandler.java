@@ -288,6 +288,12 @@ class PairedQuicksort {
     }
 }
 
+/**
+ * 背包排序Handler - 处理背包道具排序
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class InventorySortHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

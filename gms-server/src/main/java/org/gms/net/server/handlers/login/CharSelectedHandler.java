@@ -36,6 +36,11 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 角色选择Handler - 处理选择角色进入游戏
+ *
+ * @author OdinMS开发团队
+ */
 public final class CharSelectedHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CharSelectedHandler.class);
 

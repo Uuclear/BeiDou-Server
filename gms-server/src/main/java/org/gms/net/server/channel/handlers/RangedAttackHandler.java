@@ -54,6 +54,12 @@ import org.gms.util.Randomizer;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 
+/**
+ * 远程攻击Handler - 处理远程攻击伤害（弓箭、飞镖等）
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class RangedAttackHandler extends AbstractDealDamageHandler {
     private static final Logger log = LoggerFactory.getLogger(RangedAttackHandler.class);
 

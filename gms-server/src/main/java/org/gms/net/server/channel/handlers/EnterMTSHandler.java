@@ -45,6 +45,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * 进入拍卖场Handler - 处理玩家进入拍卖交易系统
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class EnterMTSHandler extends AbstractPacketHandler {
 
     @Override

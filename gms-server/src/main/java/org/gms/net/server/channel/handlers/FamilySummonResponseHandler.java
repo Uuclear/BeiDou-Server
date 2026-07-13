@@ -14,6 +14,12 @@ import org.gms.net.server.coordinator.world.InviteCoordinator.InviteType;
 import org.gms.server.maps.MapleMap;
 import org.gms.util.PacketCreator;
 
+/**
+ * 家族召唤响应Handler - 处理家族召唤请求的响应
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class FamilySummonResponseHandler extends AbstractPacketHandler {
 
     @Override

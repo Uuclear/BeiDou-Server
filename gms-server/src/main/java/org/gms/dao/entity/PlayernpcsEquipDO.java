@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 玩家NPC装备实体类，对应数据库表 playernpcs_equip。
+ * 存储玩家NPC装备配置。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,17 +26,35 @@ import java.io.Serial;
 public class PlayernpcsEquipDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * npcid
+     */
     private Integer npcid;
 
+    /**
+     * equipid
+     */
     private Integer equipid;
 
+    /**
+     * 类型
+     */
     private Integer type;
 
+    /**
+     * equippos
+     */
     private Short equippos;
 
 }

@@ -21,6 +21,11 @@
 */
 package org.gms.client.keybind;
 
+/**
+ * 按键绑定类
+ *
+ * @author GMS Server
+ */
 public class KeyBinding {
     private final int type;
     private final int action;

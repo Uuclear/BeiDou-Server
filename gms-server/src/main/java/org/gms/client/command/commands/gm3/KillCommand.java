@@ -31,6 +31,11 @@ import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 import org.gms.util.StringUtil;
 
+/**
+ * Kill命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class KillCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("KillCommand.message1"));

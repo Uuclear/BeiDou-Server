@@ -2,6 +2,11 @@ package org.gms.client;
 
 import org.gms.util.I18nUtil;
 
+/**
+ * FamilyEntitlement枚举类 - 定义客户端/角色核心逻辑层中的相关常量
+ *
+ * @author GMS Server
+ */
 public enum FamilyEntitlement {
     FAMILY_REUINION(1, 300, I18nUtil.getMessage("FamilyEntitlement.message1"), I18nUtil.getMessage("FamilyEntitlement.message2")),
     SUMMON_FAMILY(1, 500, I18nUtil.getMessage("FamilyEntitlement.message3"), I18nUtil.getMessage("FamilyEntitlement.message4")),

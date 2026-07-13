@@ -6,6 +6,12 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 家族家训Handler - 处理家族家训设置
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class FamilyPreceptsHandler extends AbstractPacketHandler {
 
     @Override

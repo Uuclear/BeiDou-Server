@@ -17,10 +17,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 转蛋奖励池实体类，对应数据库表 gachapon_reward_pool。
+ * 存储转蛋机奖励池配置。
  *
- * @author lee
- * @since 2024-09-19
+ * @author sleep
+ * @since 2024-05-24
  */
 @Data
 @Builder
@@ -30,12 +31,18 @@ import java.io.Serial;
 public class GachaponRewardPoolDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     /**
      * 自增ID
      */
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
     /**
@@ -52,6 +59,9 @@ public class GachaponRewardPoolDO implements Serializable {
      * 转蛋机名称
      */
     @Column(ignore = true)
+    /**
+     * gachaponName
+     */
     private String gachaponName;
 
     /**
@@ -73,12 +83,18 @@ public class GachaponRewardPoolDO implements Serializable {
      * 奖池的启用日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    /**
+     * startTime
+     */
     private LocalDateTime startTime;
 
     /**
      * 奖池的结束日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    /**
+     * endTime
+     */
     private LocalDateTime endTime;
 
     /**

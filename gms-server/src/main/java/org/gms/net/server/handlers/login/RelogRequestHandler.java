@@ -26,6 +26,11 @@ import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 重新登录请求Handler - 处理重新登录请求
+ *
+ * @author OdinMS开发团队
+ */
 public final class RelogRequestHandler extends AbstractPacketHandler {
     @Override
     public boolean validateState(Client c) {

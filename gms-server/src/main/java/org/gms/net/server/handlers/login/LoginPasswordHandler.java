@@ -37,6 +37,11 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Calendar;
 
+/**
+ * 登录密码Handler - 处理账号密码登录
+ *
+ * @author OdinMS开发团队
+ */
 public final class LoginPasswordHandler implements PacketHandler {
 
     @Override

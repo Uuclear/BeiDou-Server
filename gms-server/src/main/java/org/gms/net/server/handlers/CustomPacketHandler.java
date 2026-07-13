@@ -26,6 +26,11 @@ import org.gms.net.PacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.util.PacketCreator;
 
+/**
+ * 自定义数据包Handler - 处理自定义/特殊数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class CustomPacketHandler implements PacketHandler {
     @Override
     public void handlePacket(InPacket p, Client c) {

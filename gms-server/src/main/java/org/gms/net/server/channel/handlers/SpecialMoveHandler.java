@@ -44,6 +44,12 @@ import java.awt.*;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 特殊技能Handler - 处理特殊移动技能（如瞬移、二段跳）
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class SpecialMoveHandler extends AbstractPacketHandler {
 
     @Override

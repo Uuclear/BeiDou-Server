@@ -44,6 +44,11 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 组队类 - 管理组队信息、成员、队长等
+ *
+ * @author OdinMS开发团队
+ */
 public class Party {
 
     @Setter

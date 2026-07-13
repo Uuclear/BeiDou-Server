@@ -10,6 +10,10 @@ import org.gms.client.inventory.Item;
 
 import java.util.Optional;
 
+/**
+ * 背包物品搜索结果返回DTO
+ * 用于返回玩家背包物品的详细信息，支持转换为游戏内Item对象
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -84,6 +88,11 @@ public class InventorySearchRtnDTO {
      */
     private String itemName;
 
+    /**
+     * 将DTO转换为游戏内Item对象
+     * 如果是装备类型则创建Equip对象并设置所有属性，否则创建普通Item对象
+     * @return 游戏内Item对象
+     */
     public Item toItem() {
         Item item;
         if (isEquipment()) {

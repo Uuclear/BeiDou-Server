@@ -31,6 +31,11 @@ import org.gms.server.life.LifeFactory;
 import org.gms.server.life.Monster;
 import org.gms.util.I18nUtil;
 
+/**
+ * Cake命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class CakeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("CakeCommand.message1"));

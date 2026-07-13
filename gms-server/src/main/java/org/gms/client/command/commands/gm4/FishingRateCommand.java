@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * FishingRate命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class FishingRateCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("FishingRateCommand.message1"));

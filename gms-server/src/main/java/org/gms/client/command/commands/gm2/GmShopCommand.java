@@ -28,6 +28,11 @@ import org.gms.client.command.Command;
 import org.gms.server.ShopFactory;
 import org.gms.util.I18nUtil;
 
+/**
+ * GmShop命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class GmShopCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("GmShopCommand.message1"));

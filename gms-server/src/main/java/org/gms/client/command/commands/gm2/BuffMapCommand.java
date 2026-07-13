@@ -29,6 +29,11 @@ import org.gms.client.SkillFactory;
 import org.gms.client.command.Command;
 import org.gms.util.I18nUtil;
 
+/**
+ * BuffMap命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class BuffMapCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("BuffMapCommand.message1"));

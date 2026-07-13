@@ -31,6 +31,12 @@ import org.gms.exception.EmptyMovementException;
 import java.awt.*;
 
 
+/**
+ * 龙神移动Handler - 处理龙神职业的龙移动
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public class MoveDragonHandler extends AbstractMovementPacketHandler {
     @Override
     public void handlePacket(InPacket p, Client c) {

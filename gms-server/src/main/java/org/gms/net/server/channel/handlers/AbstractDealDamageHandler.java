@@ -67,6 +67,18 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 抽象伤害处理Handler基类
+ * 提供近战、远程、魔法攻击伤害处理的基础实现，包括：
+ * - 攻击数据包解析（parseDamage）
+ * - 伤害计算与应用（applyAttack）
+ * - 攻击距离检测（反外挂）
+ * - 技能效果应用（如冰冻、减速、毒等状态）
+ * - 怪物反射伤害处理
+ * - 各种职业技能特殊逻辑（连击、吸血、偷窃等）
+ *
+ * @author OdinMS开发团队
+ */
 public abstract class AbstractDealDamageHandler extends AbstractPacketHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ItemPickupHandler.class);

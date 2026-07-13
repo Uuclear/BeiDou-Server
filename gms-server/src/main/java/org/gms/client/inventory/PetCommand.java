@@ -24,6 +24,11 @@ package org.gms.client.inventory;
 /*
  * @author Leifde
  */
+/**
+ * Pet命令类 - 背包物品系统的核心实现
+ *
+ * @author GMS Server
+ */
 public class PetCommand {
     private final int petId;
     private final int skillId;

@@ -22,9 +22,21 @@
 package org.gms.provider;
 
 /**
+ * 数据实体接口，是所有WZ数据节点和目录/文件条目的基础接口。
+ * 提供获取实体名称和父实体的基本功能，构成WZ资源文件树状结构的基础。
+ *
  * @author Matze
  */
 public interface DataEntity {
+    /**
+     * 获取数据实体的名称
+     * @return 实体名称
+     */
     String getName();
+
+    /**
+     * 获取该实体的父实体
+     * @return 父实体，如果是根节点则返回null
+     */
     DataEntity getParent();
 }

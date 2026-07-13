@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 商店物品实体类，对应数据库表 shopitems。
+ * 存储商店出售物品配置。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,17 +26,35 @@ import java.io.Serial;
 public class ShopitemsDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * shopitemid
+     */
     private Long shopitemid;
 
+    /**
+     * shopid
+     */
     private Long shopid;
 
+    /**
+     * 物品ID
+     */
     private Integer itemid;
 
+    /**
+     * price
+     */
     private Integer price;
 
+    /**
+     * pitch
+     */
     private Integer pitch;
 
     /**

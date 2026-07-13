@@ -12,10 +12,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- * 数据库i18n表 实体类。
+ * 多语言资源实体类，对应数据库表 lang_resources。
+ * 存储多语言本地化文本。
  *
- * @author CN
- * @since 2024-11-22
+ * @author sleep
+ * @since 2024-05-24
  */
 @Data
 @Builder
@@ -25,12 +26,18 @@ import java.io.Serial;
 public class LangResourcesDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     /**
      * 自增id
      */
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Long id;
 
     /**

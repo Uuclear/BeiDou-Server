@@ -27,6 +27,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 操作码常量类
+ * <p>
+ * 用于生成和管理发送/接收操作码的名称映射，方便网络数据包调试和日志记录。
+ * 根据服务器版本初始化对应的操作码映射表。
+ * </p>
+ *
  * @author Ronan
  */
 public class OpcodeConstants {

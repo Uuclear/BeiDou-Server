@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * CharacterListener类 - 客户端/角色核心逻辑层的核心实现
+ *
+ * @author GMS Server
+ */
 public class CharacterListener implements AbstractCharacterListener {
     private final Character character;
     public CharacterListener(Character character) {

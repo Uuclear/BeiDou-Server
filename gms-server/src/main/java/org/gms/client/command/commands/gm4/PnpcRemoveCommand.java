@@ -40,6 +40,11 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * PnpcRemove命令类 - 管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class PnpcRemoveCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PnpcRemoveCommand.message1"));

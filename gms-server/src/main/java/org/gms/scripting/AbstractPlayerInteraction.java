@@ -64,16 +64,36 @@ import java.util.*;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 
+/**
+ * 玩家交互抽象基类，为各类脚本（NPC、任务、传送门、反应堆、物品、地图等）
+ * 提供与玩家和游戏世界交互的通用方法。包含传送、物品操作、任务管理、怪物生成、
+ * 组队/公会操作、活动管理等核心游戏功能，是脚本与服务端交互的主要入口。
+ *
+ * @author OdinMS Team
+ */
 public class AbstractPlayerInteraction {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractPlayerInteraction.class);
 
+    /**
+     * 客户端连接对象，提供对玩家、频道服务器等的访问
+     */
     public Client c;
 
+    /**
+     * 构造玩家交互对象
+     *
+     * @param c 客户端连接对象
+     */
     public AbstractPlayerInteraction(Client c) {
         this.c = c;
     }
 
+    /**
+     * 获取客户端连接对象
+     *
+     * @return 客户端连接对象
+     */
     public Client getClient() {
         return c;
     }

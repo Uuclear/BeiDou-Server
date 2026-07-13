@@ -26,6 +26,11 @@ import org.gms.config.GameConfig;
 import org.gms.dao.entity.GameConfigDO;
 import org.gms.util.I18nUtil;
 
+/**
+ * SupplyRateCoupon命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class SupplyRateCouponCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SupplyRateCouponCommand.message1"));

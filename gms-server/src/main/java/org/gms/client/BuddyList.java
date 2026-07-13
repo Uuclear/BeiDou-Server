@@ -38,29 +38,66 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+/**
+ * 好友列表类
+ * 管理角色的好友列表，包括添加、删除、好友上下线通知等功能
+ *
+ * @author OdinMS Team
+ */
 public class BuddyList {
+    /**
+     * 好友操作枚举
+     */
     public enum BuddyOperation {
-        ADDED, DELETED
+        /** 添加好友 */
+        ADDED,
+        /** 删除好友 */
+        DELETED
     }
 
+    /**
+     * 添加好友结果枚举
+     */
     public enum BuddyAddResult {
-        BUDDYLIST_FULL, ALREADY_ON_LIST, OK
+        /** 好友列表已满 */
+        BUDDYLIST_FULL,
+        /** 已在好友列表中 */
+        ALREADY_ON_LIST,
+        /** 添加成功 */
+        OK
     }
 
+    /** 好友列表，key为角色ID，value为好友条目 */
     private final Map<Integer, BuddylistEntry> buddies = new LinkedHashMap<>();
+    /** 好友列表容量 */
     private int capacity;
+    /** 待处理的好友请求队列 */
     private final Deque<CharacterNameAndId> pendingRequests = new LinkedList<>();
 
+    /**
+     * 构造函数
+     * @param capacity 好友列表初始容量
+     */
     public BuddyList(int capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * 检查好友列表中是否包含指定角色
+     * @param characterId 角色ID
+     * @return 是否包含
+     */
     public boolean contains(int characterId) {
         synchronized (buddies) {
             return buddies.containsKey(characterId);
         }
     }
 
+    /**
+     * 检查好友列表中是否包含指定角色且该好友可见
+     * @param characterId 角色ID
+     * @return 是否可见
+     */
     public boolean containsVisible(int characterId) {
         BuddylistEntry ble;
         synchronized (buddies) {
@@ -71,23 +108,40 @@ public class BuddyList {
             return false;
         }
         return ble.isVisible();
-
     }
 
+    /**
+     * 获取好友列表容量
+     * @return 容量
+     */
     public int getCapacity() {
         return capacity;
     }
 
+    /**
+     * 设置好友列表容量
+     * @param capacity 新容量
+     */
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * 根据角色ID获取好友条目
+     * @param characterId 角色ID
+     * @return 好友条目
+     */
     public BuddylistEntry get(int characterId) {
         synchronized (buddies) {
             return buddies.get(characterId);
         }
     }
 
+    /**
+     * 根据角色名称获取好友条目
+     * @param characterName 角色名称
+     * @return 好友条目
+     */
     public BuddylistEntry get(String characterName) {
         String lowerCaseName = characterName.toLowerCase();
         for (BuddylistEntry ble : getBuddies()) {
@@ -99,30 +153,50 @@ public class BuddyList {
         return null;
     }
 
+    /**
+     * 添加好友到列表
+     * @param entry 好友条目
+     */
     public void put(BuddylistEntry entry) {
         synchronized (buddies) {
             buddies.put(entry.getCharacterId(), entry);
         }
     }
 
+    /**
+     * 从列表中移除好友
+     * @param characterId 角色ID
+     */
     public void remove(int characterId) {
         synchronized (buddies) {
             buddies.remove(characterId);
         }
     }
 
+    /**
+     * 获取所有好友（不可修改视图）
+     * @return 好友条目集合
+     */
     public Collection<BuddylistEntry> getBuddies() {
         synchronized (buddies) {
             return Collections.unmodifiableCollection(buddies.values());
         }
     }
 
+    /**
+     * 检查好友列表是否已满
+     * @return 是否已满
+     */
     public boolean isFull() {
         synchronized (buddies) {
             return buddies.size() >= capacity;
         }
     }
 
+    /**
+     * 获取所有好友ID数组
+     * @return 好友ID数组
+     */
     public int[] getBuddyIds() {
         synchronized (buddies) {
             int[] buddyIds = new int[buddies.size()];
@@ -134,6 +208,11 @@ public class BuddyList {
         }
     }
 
+    /**
+     * 向所有在线好友广播数据包
+     * @param packet 要广播的数据包
+     * @param pstorage 玩家存储
+     */
     public void broadcast(Packet packet, PlayerStorage pstorage) {
         for (int bid : getBuddyIds()) {
             Character chr = pstorage.getCharacterById(bid);
@@ -144,6 +223,10 @@ public class BuddyList {
         }
     }
 
+    /**
+     * 从数据库加载好友列表
+     * @param characterId 角色ID
+     */
     public void loadFromDb(int characterId) {
         try (Connection con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("SELECT b.buddyid, b.pending, b.group, c.name as buddyname FROM buddies as b, characters as c WHERE c.id = b.buddyid AND b.characterid = ?")) {
@@ -168,18 +251,27 @@ public class BuddyList {
         }
     }
 
+    /**
+     * 取出待处理的好友请求
+     * @return 待处理请求
+     */
     public CharacterNameAndId pollPendingRequest() {
         return pendingRequests.pollLast();
     }
 
+    /**
+     * 添加好友请求
+     * @param c 客户端
+     * @param cidFrom 请求发起方角色ID
+     * @param nameFrom 请求发起方名称
+     * @param channelFrom 请求发起方频道
+     */
     public void addBuddyRequest(Client c, int cidFrom, String nameFrom, int channelFrom) {
-        // 落库：给被加方写一条 pending=1，使请求不因下线/重启丢失（与离线加好友分支对齐）。
-        // buddies 表无 (characterid,buddyid) 唯一约束，用 DELETE+INSERT 保证幂等。
         try (Connection con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(
                     "DELETE FROM buddies WHERE characterid = ? AND buddyid = ?")) {
-                ps.setInt(1, c.getPlayer().getId()); // 被加方
-                ps.setInt(2, cidFrom);                // 发起方
+                ps.setInt(1, c.getPlayer().getId());
+                ps.setInt(2, cidFrom);
                 ps.executeUpdate();
             }
             try (PreparedStatement ps = con.prepareStatement(

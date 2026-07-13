@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.server.life.PlayerNPC;
 import org.gms.util.I18nUtil;
 
+/**
+ * SpawnAllPNpcs命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class SpawnAllPNpcsCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SpawnAllPNpcsCommand.message1"));

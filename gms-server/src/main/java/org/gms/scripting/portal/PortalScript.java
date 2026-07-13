@@ -21,6 +21,18 @@
 */
 package org.gms.scripting.portal;
 
+/**
+ * 传送门脚本接口，定义传送门脚本必须实现的方法。
+ * JavaScript传送门脚本通过实现此接口来定义玩家进入传送门时的行为逻辑。
+ *
+ * @author OdinMS Team
+ */
 public interface PortalScript {
+    /**
+     * 玩家进入传送门时调用的方法。
+     *
+     * @param ppi 传送门玩家交互对象，提供与玩家、地图交互的各种方法
+     * @return 如果传送门可以正常进入返回true，否则返回false
+     */
     boolean enter(PortalPlayerInteraction ppi);
 }

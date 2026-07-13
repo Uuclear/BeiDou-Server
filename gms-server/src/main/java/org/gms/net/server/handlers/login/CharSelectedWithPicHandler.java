@@ -15,6 +15,11 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 带安全码角色选择Handler - 处理输入安全码后选择角色
+ *
+ * @author OdinMS开发团队
+ */
 public class CharSelectedWithPicHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CharSelectedWithPicHandler.class);
 

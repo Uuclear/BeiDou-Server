@@ -33,6 +33,11 @@ import org.gms.util.I18nUtil;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Loot命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class LootCommand extends Command {
 
     {

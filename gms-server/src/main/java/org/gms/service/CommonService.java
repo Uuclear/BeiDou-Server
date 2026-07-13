@@ -20,10 +20,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * 通用服务类
+ * 提供装备信息查询、在线玩家统计、游戏信息查询等通用功能
+ *
+ * @author GMS Server
+ * @since 1.0
+ */
 @Service
 @Slf4j
 public class CommonService {
 
+    /** 物品服务 */
     @Autowired
     private ItemService itemService;
 
@@ -31,7 +39,7 @@ public class CommonService {
      * 根据物品ID获取装备信息
      *
      * @param submitData 主要是装备的ID 物品的ID
-     * @return EquipmentInfoRtnDTO
+     * @return EquipmentInfoRtnDTO 装备信息返回DTO
      */
     public EquipmentInfoRtnDTO getEquipmentInfoByItemId(EquipmentInfoReqDTO submitData) {
         if (submitData.getId() == null) {
@@ -75,7 +83,7 @@ public class CommonService {
 
     /**
      * 查询所有世界的在线玩家并加总
-     * @param worldIdList 大区id
+     * @param worldIdList 大区id列表
      * @return 在线玩家总数
      */
     public Integer getAllWorldsOnlinePlayersCount(List<Integer> worldIdList) {
@@ -87,6 +95,13 @@ public class CommonService {
 
     }
 
+    /**
+     * 查询游戏信息
+     * 根据过滤条件和类型查询游戏内的各种信息（物品、怪物、地图、NPC、技能等）
+     *
+     * @param condition 查询条件，包含过滤器和信息类型
+     * @return 信息查询结果列表
+     */
     public List<InformationResult> getInformation(InformationSearch condition) {
         RequireUtil.requireNotEmpty(condition.getFilter(), I18nUtil.getExceptionMessage("PARAMETER_SHOULD_NOT_EMPTY", "filter"));
         if (RequireUtil.isEmpty(condition.getTypes())) {

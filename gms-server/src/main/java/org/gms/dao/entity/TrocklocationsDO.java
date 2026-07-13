@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 传送石位置实体类，对应数据库表 trocklocations。
+ * 存储VIP传送石位置。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,15 +26,30 @@ import java.io.Serial;
 public class TrocklocationsDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * trockid
+     */
     private Integer trockid;
 
+    /**
+     * 角色ID
+     */
     private Integer characterid;
 
+    /**
+     * mapid
+     */
     private Integer mapid;
 
+    /**
+     * vip
+     */
     private Integer vip;
 
 }

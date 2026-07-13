@@ -25,9 +25,18 @@ import org.gms.client.Client;
 import org.gms.scripting.AbstractPlayerInteraction;
 
 /**
+ * 物品脚本方法类，继承自AbstractPlayerInteraction，
+ * 为物品脚本提供与玩家交互的方法。目前作为基础类存在，
+ * 可扩展添加物品脚本专用的交互方法。
+ *
  * @author kevintjuh93
  */
 public class ItemScriptMethods extends AbstractPlayerInteraction {
+    /**
+     * 构造物品脚本方法对象
+     *
+     * @param c 客户端连接对象
+     */
     public ItemScriptMethods(Client c) {
         super(c);
     }

@@ -42,6 +42,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
+/**
+ * Pe命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class PeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("PeCommand.message1"));

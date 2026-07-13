@@ -30,6 +30,12 @@ import org.gms.net.server.coordinator.world.InviteCoordinator.InviteResultType;
 import org.gms.net.server.coordinator.world.InviteCoordinator.InviteType;
 import org.gms.util.PacketCreator;
 
+/**
+ * 拒绝组队邀请Handler - 处理拒绝组队邀请
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class DenyPartyRequestHandler extends AbstractPacketHandler {
 
     @Override

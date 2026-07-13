@@ -38,6 +38,12 @@ import org.gms.util.PacketCreator;
 
 import java.util.List;
 
+/**
+ * 组队操作Handler - 处理组队创建、邀请、退出等操作
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class PartyOperationHandler extends AbstractPacketHandler {
 
     @Override

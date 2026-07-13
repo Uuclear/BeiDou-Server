@@ -29,6 +29,11 @@ import org.gms.config.GameConfig;
 import org.gms.dao.entity.GameConfigDO;
 import org.gms.util.I18nUtil;
 
+/**
+ * ShowMoveLife命令类 - 超级管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ShowMoveLifeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ShowMoveLifeCommand.message1"));

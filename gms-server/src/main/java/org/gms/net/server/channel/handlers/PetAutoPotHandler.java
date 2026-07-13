@@ -29,6 +29,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.ItemInformationProvider;
 import org.gms.server.StatEffect;
 
+/**
+ * 宠物自动药水Handler - 处理宠物自动加血/加蓝
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class PetAutoPotHandler extends AbstractPacketHandler {
 
     @Override

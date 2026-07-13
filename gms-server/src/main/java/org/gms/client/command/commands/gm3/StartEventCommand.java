@@ -31,6 +31,11 @@ import org.gms.server.events.gm.Event;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
 
+/**
+ * StartEvent命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class StartEventCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("StartEventCommand.message1"));

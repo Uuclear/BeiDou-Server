@@ -43,6 +43,11 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Debug命令类 - 超级管理员命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class DebugCommand extends Command {
     private final static String[] debugTypes = {"monster", "packet", "portal", "spawnpoint", "pos", "map", "mobsp", "event", "areas", "reactors", "servercoupons", "playercoupons", "timer", "marriage", "buff", ""};
     private final static ItemInformationProvider ii = ItemInformationProvider.getInstance();

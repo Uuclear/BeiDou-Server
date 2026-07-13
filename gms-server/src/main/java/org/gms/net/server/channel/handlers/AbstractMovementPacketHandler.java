@@ -39,6 +39,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 抽象移动数据包Handler基类
+ * 提供玩家、宠物、怪物、召唤兽等移动处理的基础实现，包括：
+ * - 移动数据包解析（parseMovement）
+ * - 位置更新（updatePosition）
+ * - 各种移动类型处理（普通移动、跳跃、瞬移、突进、下坠等）
+ * - 移动前后坐标记录（用于攻击距离反外挂校验）
+ *
+ * @author OdinMS开发团队
+ */
 public abstract class AbstractMovementPacketHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(AbstractMovementPacketHandler.class);
 

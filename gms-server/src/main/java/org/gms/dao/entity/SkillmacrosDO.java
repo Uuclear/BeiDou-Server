@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 技能宏实体类，对应数据库表 skillmacros。
+ * 存储角色技能宏配置。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,23 +26,50 @@ import java.io.Serial;
 public class SkillmacrosDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * 角色ID
+     */
     private Integer characterid;
 
+    /**
+     * position
+     */
     private Integer position;
 
+    /**
+     * skill1
+     */
     private Integer skill1;
 
+    /**
+     * skill2
+     */
     private Integer skill2;
 
+    /**
+     * skill3
+     */
     private Integer skill3;
 
+    /**
+     * 名称
+     */
     private String name;
 
+    /**
+     * shout
+     */
     private Integer shout;
 
 }

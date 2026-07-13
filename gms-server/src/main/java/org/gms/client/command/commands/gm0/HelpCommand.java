@@ -28,6 +28,11 @@ import org.gms.client.command.Command;
 import org.gms.constants.id.NpcId;
 import org.gms.util.I18nUtil;
 
+/**
+ * Help命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class HelpCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("HelpCommand.message1"));

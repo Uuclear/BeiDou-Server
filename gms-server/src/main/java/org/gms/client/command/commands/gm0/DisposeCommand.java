@@ -30,6 +30,11 @@ import org.gms.scripting.quest.QuestScriptManager;
 import org.gms.util.PacketCreator;
 import org.gms.util.I18nUtil;
 
+/**
+ * Dispose命令类 - 普通玩家命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class DisposeCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("DisposeCommand.message1"));

@@ -27,11 +27,30 @@ import org.gms.provider.wz.XMLWZFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * 数据提供者工厂类，负责创建DataProvider实例。
+ * 支持创建基于XML格式的WZ数据提供者，并自动处理本地化语言包的回退逻辑。
+ *
+ * @author OdinMS Team
+ */
 public class DataProviderFactory {
+    /**
+     * 创建指定路径的WZ数据提供者（XML格式）
+     * @param in WZ文件目录路径
+     * @return 数据提供者实例
+     */
     private static DataProvider getWZ(Path in) {
         return new XMLWZFile(in);
     }
 
+    /**
+     * 根据WZFiles枚举获取数据提供者，自动处理本地化。
+     * 如果存在对应语言的本地化WZ目录，则优先使用；否则使用基础WZ目录。
+     * 本地化WZ中缺失的文件会自动回退到基础WZ。
+     *
+     * @param in WZ文件枚举类型
+     * @return 配置好的数据提供者实例
+     */
     public static DataProvider getDataProvider(WZFiles in) {
         Path basePath = in.getBaseFile();
         Path languagePath = in.getLanguageFile();

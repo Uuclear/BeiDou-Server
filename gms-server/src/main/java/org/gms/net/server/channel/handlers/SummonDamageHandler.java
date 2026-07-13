@@ -44,6 +44,12 @@ import org.gms.util.PacketCreator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 召唤兽攻击伤害Handler - 处理召唤兽攻击造成的伤害
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class SummonDamageHandler extends AbstractDealDamageHandler {
     private static final Logger log = LoggerFactory.getLogger(SummonDamageHandler.class);
 

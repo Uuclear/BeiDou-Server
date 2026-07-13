@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 商人仓库实体类，对应数据库表 inventorymerchant。
+ * 存储个人商店物品库存。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,15 +26,30 @@ import java.io.Serial;
 public class InventorymerchantDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * inventorymerchantid
+     */
     private Long inventorymerchantid;
 
+    /**
+     * 物品栏物品ID
+     */
     private Long inventoryitemid;
 
+    /**
+     * 角色ID
+     */
     private Integer characterid;
 
+    /**
+     * bundles
+     */
     private Integer bundles;
 
 }

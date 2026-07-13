@@ -30,6 +30,12 @@ import org.gms.server.maps.MapObject;
 import org.gms.server.maps.Summon;
 import org.gms.util.PacketCreator;
 
+/**
+ * 召唤兽伤害Handler - 处理召唤兽受到伤害
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class DamageSummonHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

@@ -36,6 +36,11 @@ import org.gms.util.I18nUtil;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 
+/**
+ * ItemDrop命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class ItemDropCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ItemDropCommand.message1"));

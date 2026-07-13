@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 装备栏物品实体类，对应数据库表 inventoryequipment。
+ * 存储装备栏物品详细属性。
  *
  * @author sleep
  * @since 2024-05-24
@@ -26,56 +27,131 @@ import java.io.Serial;
 public class InventoryequipmentDO implements Serializable  {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * inventoryequipmentid
+     */
     private Long inventoryequipmentid;
 
+    /**
+     * 物品栏物品ID
+     */
     private Long inventoryitemid;
 
+    /**
+     * upgradeslots
+     */
     private Integer upgradeslots;
 
+    /**
+     * 等级
+     */
     private Integer level;
 
+    /**
+     * str
+     */
     private Integer str;
 
+    /**
+     * dex
+     */
     private Integer dex;
 
     @Column("int")
+    /**
+     * inte
+     */
     private Integer inte;
 
+    /**
+     * luk
+     */
     private Integer luk;
 
+    /**
+     * 当前HP
+     */
     private Integer hp;
 
+    /**
+     * 当前MP
+     */
     private Integer mp;
 
+    /**
+     * watk
+     */
     private Integer watk;
 
+    /**
+     * matk
+     */
     private Integer matk;
 
+    /**
+     * wdef
+     */
     private Integer wdef;
 
+    /**
+     * mdef
+     */
     private Integer mdef;
 
+    /**
+     * acc
+     */
     private Integer acc;
 
+    /**
+     * avoid
+     */
     private Integer avoid;
 
+    /**
+     * hands
+     */
     private Integer hands;
 
+    /**
+     * speed
+     */
     private Integer speed;
 
+    /**
+     * jump
+     */
     private Integer jump;
 
+    /**
+     * locked
+     */
     private Integer locked;
 
+    /**
+     * vicious
+     */
     private Integer vicious;
 
+    /**
+     * itemlevel
+     */
     private Integer itemlevel;
 
+    /**
+     * itemexp
+     */
     private Integer itemexp;
 
+    /**
+     * ringid
+     */
     private Integer ringid;
 
 }

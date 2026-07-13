@@ -30,6 +30,11 @@ import org.gms.server.life.LifeFactory;
 import org.gms.server.life.Monster;
 import org.gms.util.I18nUtil;
 
+/**
+ * Spawn命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class SpawnCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("SpawnCommand.message1"));

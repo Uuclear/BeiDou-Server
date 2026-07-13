@@ -12,10 +12,11 @@ import java.io.Serializable;
 import java.sql.Date;
 
 /**
- * 扩展字段表 实体类。
+ * 扩展值实体类，对应数据库表 extend_value。
+ * 存储通用扩展键值对数据，支持按账号/角色维度存储扩展信息，包括日级和周级清类型。
  *
- * @author CN
- * @since 2024-07-08
+ * @author Feras
+ * @since 2025-10-15
  */
 @Data
 @Builder
@@ -28,19 +29,19 @@ public class ExtendValueDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 扩展字段id
+     * 扩展字段所属ID（账号ID或角色ID）
      */
     @Id
     private String extendId;
 
     /**
-     * 扩展字段类型，11-账号，12-账号日清，13-账号周清；21-角色，22-角色日清，23-角色周清
+     * 扩展字段类型：11-账号级，12-账号日级，13-账号周级；21-角色级，22-角色日级，23-角色周级
      */
     @Id
     private String extendType;
 
     /**
-     * 扩展字段名称
+     * 扩展字段名称（键名）
      */
     @Id
     private String extendName;
@@ -51,12 +52,12 @@ public class ExtendValueDO implements Serializable {
     private String extendValue;
 
     /**
-     * 创建时间
+     * 记录创建时间
      */
     private Date createTime;
 
     /**
-     * 更新时间
+     * 记录更新时间
      */
     private Date updateTime;
 

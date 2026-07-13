@@ -30,6 +30,11 @@ import org.gms.net.server.Server;
 import org.gms.server.ThreadManager;
 import org.gms.util.I18nUtil;
 
+/**
+ * ServerRemoveWorld命令类 - 游戏逻辑模块的核心实现
+ *
+ * @author GMS Server
+ */
 public class ServerRemoveWorldCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("ServerRemoveWorldCommand.message1"));

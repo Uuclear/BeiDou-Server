@@ -26,6 +26,12 @@ import org.gms.constants.id.NpcId;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 
+/**
+ * 使用生命之水Handler - 处理使用生命之水复活宠物
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class UseWaterOfLifeHandler extends AbstractPacketHandler {
 
     @Override

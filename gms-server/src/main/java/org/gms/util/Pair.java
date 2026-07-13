@@ -21,24 +21,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package org.gms.util;
 
 /**
- * Represents a pair of values.
+ * 二元组（键值对）类
+ * <p>
+ * 用于存储一对相关的值，类似于Map.Entry但更加通用。
+ * 提供了equals、hashCode和toString方法的实现。
+ * </p>
  *
- * @param <E> The type of the left value.
- * @param <F> The type of the right value.
+ * @param <E> 左侧值的类型
+ * @param <F> 右侧值的类型
  * @author Frz
  * @version 1.0
  * @since Revision 333
  */
 public class Pair<E, F> {
 
+    /**
+     * 左侧值
+     */
     public E left;
+
+    /**
+     * 右侧值
+     */
     public F right;
 
     /**
-     * Class constructor - pairs two objects together.
+     * 构造函数，将两个对象组合成一个二元组
      *
-     * @param left  The left object.
-     * @param right The right object.
+     * @param left  左侧对象
+     * @param right 右侧对象
      */
     public Pair(E left, F right) {
         this.left = left;
@@ -46,27 +57,27 @@ public class Pair<E, F> {
     }
 
     /**
-     * Gets the left value.
+     * 获取左侧值
      *
-     * @return The left value.
+     * @return 左侧值
      */
     public E getLeft() {
         return left;
     }
 
     /**
-     * Gets the right value.
+     * 获取右侧值
      *
-     * @return The right value.
+     * @return 右侧值
      */
     public F getRight() {
         return right;
     }
 
     /**
-     * Turns the pair into a string.
+     * 将二元组转换为字符串表示
      *
-     * @return Each value of the pair as a string joined with a colon.
+     * @return 左侧值和右侧值用冒号连接的字符串
      */
     @Override
     public String toString() {
@@ -74,7 +85,9 @@ public class Pair<E, F> {
     }
 
     /**
-     * Gets the hash code of this pair.
+     * 计算二元组的哈希码
+     *
+     * @return 哈希码值
      */
     @Override
     public int hashCode() {
@@ -86,7 +99,10 @@ public class Pair<E, F> {
     }
 
     /**
-     * Checks to see if two pairs are equal.
+     * 判断两个二元组是否相等
+     *
+     * @param obj 要比较的对象
+     * @return 如果两个二元组的左右值都相等则返回true
      */
     @SuppressWarnings("unchecked")
     @Override

@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 快递物品实体类，对应数据库表 dueyitems。
+ * 存储快递包裹物品明细。
  *
  * @author sleep
  * @since 2024-05-24
@@ -25,13 +26,25 @@ import java.io.Serial;
 public class DueyitemsDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Long id;
 
+    /**
+     * 包裹ID
+     */
     private Long packageid;
 
+    /**
+     * 物品栏物品ID
+     */
     private Long inventoryitemid;
 
 }

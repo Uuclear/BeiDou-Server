@@ -1,5 +1,15 @@
 package org.gms.constants.id;
 
+/**
+ * 怪物ID常量类
+ * <p>
+ * 定义游戏中各种怪物的ID常量，包括普通怪物、BOSS、活动怪物等，
+ * 以及判断怪物类型的辅助方法。
+ * </p>
+ *
+ * @author GMS Team
+ * @since 1.0.0
+ */
 public class MobId {
     public static final int ARPQ_BOMB = 9300166;
     public static final int GIANT_CAKE = 9400606;
@@ -36,6 +46,12 @@ public class MobId {
     public static final int ZAKUM_ARM_7 = 8800009;
     public static final int ZAKUM_ARM_8 = 8800010;
 
+    /**
+     * 判断是否为扎昆手臂
+     *
+     * @param mobId 怪物ID
+     * @return 如果是扎昆手臂返回true
+     */
     public static boolean isZakumArm(int mobId) {
         return mobId >= ZAKUM_ARM_1 && mobId <= ZAKUM_ARM_8;
     }
@@ -55,6 +71,12 @@ public class MobId {
     public static final int HORNTAIL = 8810018;
     public static final int SUMMON_HORNTAIL = 8810026;
 
+    /**
+     * 判断是否为暗黑龙王死亡部位
+     *
+     * @param mobId 怪物ID
+     * @return 如果是死亡的龙王部位返回true
+     */
     public static boolean isDeadHorntailPart(int mobId) {
         return mobId >= DEAD_HORNTAIL_MIN && mobId <= DEAD_HORNTAIL_MAX;
     }
@@ -97,6 +119,12 @@ public class MobId {
     private static final int DOJO_BOSS_MIN = 9300184;
     private static final int DOJO_BOSS_MAX = 9300215;
 
+    /**
+     * 判断是否为武陵道场BOSS
+     *
+     * @param mobId 怪物ID
+     * @return 如果是道场BOSS返回true
+     */
     public static boolean isDojoBoss(int mobId) {
         return mobId >= DOJO_BOSS_MIN && mobId <= DOJO_BOSS_MAX;
     }

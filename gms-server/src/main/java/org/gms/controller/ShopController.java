@@ -12,14 +12,24 @@ import org.gms.util.RequireUtil;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 后面如有商城相关，叫cashShop
+ * 游戏内商店管理控制器
+ * 提供游戏NPC商店相关的Web API接口，包括商店查询、商品CRUD等功能
+ * 注意：商城（CashShop）相关功能请使用CashShopController
  */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/shop")
 public class ShopController {
+    /**
+     * 商店服务，处理游戏商店和商品的业务逻辑
+     */
     private final ShopService shopService;
 
+    /**
+     * 分页查询商店列表
+     * @param request 包含分页参数和查询条件的请求体
+     * @return 分页商店结果列表
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "分页获取商店列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getShopList")
@@ -27,6 +37,11 @@ public class ShopController {
         return ResultBody.success(request, shopService.getShopList(request.getData()));
     }
 
+    /**
+     * 根据商店ID分页获取该商店的商品列表
+     * @param request 包含商店ID和分页参数的请求体
+     * @return 分页商品结果列表
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据商店id分页获取商品列表")
     @PostMapping("/" + ApiConstant.LATEST + "/getShopItemList")
@@ -34,6 +49,11 @@ public class ShopController {
         return ResultBody.success(request, shopService.getShopItemList(request.getData()));
     }
 
+    /**
+     * 根据商品ID查询商品详细信息
+     * @param id 商品ID
+     * @return 商品详细信息DTO
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id查询商品信息")
     @GetMapping("/" + ApiConstant.LATEST + "/getShopItem/{id}")
@@ -41,6 +61,11 @@ public class ShopController {
         return ResultBody.success(shopService.getShopItem(id));
     }
 
+    /**
+     * 新增商店商品
+     * @param request 包含新商品信息的请求体
+     * @return 新增的商品ID
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "新增商品信息，返回新增的商品id")
     @PutMapping("/" + ApiConstant.LATEST + "/addShopItem")
@@ -49,6 +74,11 @@ public class ShopController {
         return ResultBody.success(request, shopService.modifyShopItem(request.getData(), false));
     }
 
+    /**
+     * 根据ID更新商店商品信息
+     * @param request 包含更新商品信息的请求体，必须包含id字段
+     * @return 操作成功结果
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id更新商品信息")
     @PostMapping("/" + ApiConstant.LATEST + "/updateShopItem")
@@ -58,6 +88,11 @@ public class ShopController {
         return ResultBody.success(request, null);
     }
 
+    /**
+     * 根据ID删除商店商品
+     * @param id 要删除的商品ID
+     * @return 操作成功结果
+     */
     @Tag(name = "/shop/" + ApiConstant.LATEST)
     @Operation(summary = "根据id删除商品信息")
     @DeleteMapping("/" + ApiConstant.LATEST + "/deleteShopItem/{id}")

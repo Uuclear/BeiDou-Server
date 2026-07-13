@@ -21,7 +21,23 @@
 */
 package org.gms.provider;
 
+/**
+ * 数据提供者接口，负责提供WZ/XML资源数据的访问。
+ * 是WZ资源解析系统的核心接口，支持按路径获取数据节点和获取根目录条目。
+ *
+ * @author OdinMS Team
+ */
 public interface DataProvider {
+    /**
+     * 根据指定路径获取数据节点
+     * @param path 数据路径，如"Map/Map/000000000.img"
+     * @return 对应的数据节点，如果不存在则返回null
+     */
     Data getData(String path);
+
+    /**
+     * 获取数据提供者的根目录条目，用于遍历整个资源文件结构
+     * @return 根目录条目
+     */
     DataDirectoryEntry getRoot();
 }

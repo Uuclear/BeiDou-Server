@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 /**
- *  实体类。
+ * 每周BOSS记录实体类，对应数据库表 bosslog_weekly。
+ * 记录角色每周BOSS挑战时间。
  *
  * @author sleep
  * @since 2024-05-24
@@ -26,15 +27,30 @@ import java.io.Serial;
 public class BosslogWeeklyDO implements Serializable {
 
     @Serial
+    /**
+     * 序列化版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     @Id(keyType = KeyType.Auto)
+    /**
+     * 唯一ID
+     */
     private Integer id;
 
+    /**
+     * 角色ID
+     */
     private Integer characterid;
 
+    /**
+     * BOSS类型标识
+     */
     private String bosstype;
 
+    /**
+     * 挑战尝试时间
+     */
     private Timestamp attempttime;
 
 }

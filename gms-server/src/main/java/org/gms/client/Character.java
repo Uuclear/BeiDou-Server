@@ -108,6 +108,11 @@ import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.*;
 
+/**
+ * 角色类 - 表示游戏中的玩家角色，包含角色所有属性、技能、背包、任务、好友等核心数据
+ *
+ * @author GMS Server
+ */
 public class Character extends AbstractCharacterObject {
     private static final Logger log = LoggerFactory.getLogger(Character.class);
 

@@ -16,15 +16,28 @@ import java.util.*;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * 文件树服务类
+ * 提供脚本和WZ文件的浏览、读取、写入功能，支持目录树导航，
+ * 严格限制访问范围到scripts、wz等指定目录，防止路径逃逸攻击。
+ *
+ * @author GMS Server
+ * @since 1.0
+ */
 @Slf4j
 @Service
 public class FileTreeService {
 
+    /** 文件树基础目录，即服务器工作目录 */
     private static final String FILE_TREE_BASE_DIR = System.getProperty("user.dir");
+    /** 文件树基础目录路径对象 */
     private static final Path FILE_TREE_BASE_DIR_PATH = Path.of(FILE_TREE_BASE_DIR);
+    /** 文件树键分隔符，用于构建层级索引 */
     private static final String FILE_TREE_KEY_DELIMITER = "-";
+    /** 允许访问的目录模式集合 */
     private static final Set<String> FILE_TREE_LIMITED_PATTERNS = new HashSet<>();
 
+    /** 是否启用严格路径模式，防止路径逃逸 */
     private static final boolean FILE_TREE_PATH_STRICT_MODE = true;
 
     static {
@@ -34,6 +47,15 @@ public class FileTreeService {
         FILE_TREE_LIMITED_PATTERNS.add("wz-zh-CN");
     }
 
+    /**
+     * 读取文件内容
+     * 先尝试UTF-8编码读取，失败则尝试ISO-8859-1编码
+     *
+     * @param currentKey 当前目录的键
+     * @param filename 文件名
+     * @return 文件内容字符串
+     * @throws BizException 文件不存在或读取失败时抛出异常
+     */
     public String readFile(String currentKey, String filename) {
         File file = resolveByTreeKey(currentKey);
         if (!filename.equals(file.getName())) throw new BizException("文件目录发生变动，请重新读取");
@@ -53,6 +75,15 @@ public class FileTreeService {
         }
     }
 
+    /**
+     * 写入文件内容
+     * 使用UTF-8编码写入
+     *
+     * @param currentKey 当前目录的键
+     * @param filename 文件名
+     * @param content 要写入的内容
+     * @throws BizException 写入失败时抛出异常
+     */
     public void writeFile(String currentKey, String filename, String content) {
         File file = resolveByTreeKey(currentKey);
         if (!filename.equals(file.getName())) throw new BizException("文件目录发生变动，请重新写入");
@@ -65,6 +96,13 @@ public class FileTreeService {
     }
 
 
+    /**
+     * 获取目录树节点列表
+     *
+     * @param currentKey 当前目录的键，空字符串表示根目录
+     * @return 文件树节点列表
+     * @throws BizException 路径不是目录时抛出异常
+     */
     public List<FileTreeNodeDTO> tree(String currentKey) {
         // 入参为空表示在根目录
         boolean root = !StringUtils.hasText(currentKey);
@@ -90,6 +128,14 @@ public class FileTreeService {
         return nodes;
     }
 
+    /**
+     * 根据树键解析实际文件路径
+     * 支持层级索引解析，严格模式下检查路径逃逸
+     *
+     * @param currentKey 文件树键
+     * @return 对应的文件对象
+     * @throws BizException 路径不存在或逃逸时抛出异常
+     */
     public File resolveByTreeKey(String currentKey) {
         @SuppressWarnings("UnnecessaryLocalVariable")
         File base = FILE_TREE_BASE_DIR_PATH.toFile();
@@ -121,6 +167,12 @@ public class FileTreeService {
         return current;
     }
 
+    /**
+     * 检查路径是否匹配允许访问的目录模式
+     *
+     * @param path 待检查的路径
+     * @return 是否匹配允许的模式
+     */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean matchAnyLimitPattern(Path path) {
         if (FILE_TREE_PATH_STRICT_MODE) {
@@ -130,4 +182,3 @@ public class FileTreeService {
     }
 
 }
-

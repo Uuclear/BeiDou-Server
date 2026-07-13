@@ -28,6 +28,12 @@ import org.gms.net.packet.InPacket;
 import org.gms.server.ChatLogger;
 import org.gms.util.PacketCreator;
 
+/**
+ * 配偶聊天Handler - 处理夫妻间私聊
+ * 处理客户端发送的相关数据包
+ *
+ * @author OdinMS开发团队
+ */
 public final class SpouseChatHandler extends AbstractPacketHandler {
     @Override
     public final void handlePacket(InPacket p, Client c) {

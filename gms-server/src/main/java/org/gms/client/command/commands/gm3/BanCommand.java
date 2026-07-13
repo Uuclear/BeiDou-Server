@@ -36,6 +36,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Ban命令类 - 高级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class BanCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("BanCommand.message1"));

@@ -29,6 +29,11 @@ import org.gms.client.command.Command;
 import org.gms.config.GameConfig;
 import org.gms.util.I18nUtil;
 
+/**
+ * Level命令类 - 中级GM命令的核心实现
+ *
+ * @author GMS Server
+ */
 public class LevelCommand extends Command {
     {
         setDescription(I18nUtil.getMessage("LevelCommand.message1"));
